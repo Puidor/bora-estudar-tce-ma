@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Redes Locais e de Longa Distância</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Blue */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #1d4ed8;
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+          Redes Locais e de Longa Distância (Visão Geral)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Conceitos Centrais -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">🌍</span> Visão Macro: LAN vs WAN
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border border-emerald-100 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-900/10 rounded-lg p-4">
+              <h3
+                class="font-bold text-emerald-800 dark:text-emerald-400 mb-2 border-b border-emerald-200 dark:border-emerald-800 pb-1 flex items-center gap-2"
+              >
+                <span class="text-lg">🏢</span> LAN (Local Area Network)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Rede de abrangência local (um prédio, uma sala, um campus pequeno). Focada em compartilhar recursos locais com
+                <strong>altíssima velocidade</strong> e baixíssimas taxas de erro.
+              </p>
+              <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2">Padrões: Ethernet (802.3) e Wi-Fi (802.11)</p>
+            </div>
+            <div class="border border-orange-100 dark:border-orange-900/50 bg-orange-50/50 dark:bg-orange-900/10 rounded-lg p-4">
+              <h3
+                class="font-bold text-orange-800 dark:text-orange-400 mb-2 border-b border-orange-200 dark:border-orange-800 pb-1 flex items-center gap-2"
+              >
+                <span class="text-lg">🗺️</span> WAN (Wide Area Network)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Rede de longa distância que interliga várias LANs, cruzando cidades, países e oceanos. Usa roteadores de borda e infraestrutura
+                alugada de operadoras de telecom.
+              </p>
+              <p class="text-xs font-bold text-orange-600 dark:text-orange-400 mt-2">Exemplos: A própria Internet, MPLS, SD-WAN</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa (Foco de Prova) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto em Provas (As Diferenças Técnicas)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">LAN (Local)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
+                    WAN (Longa Distância)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Taxa de Transmissão (Largura de Banda)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Muito Alta (1 Gbps a 100 Gbps)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Menor comparativamente</td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Taxa de Erros e Latência
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Baixíssima (Meio controlado)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-orange-600 dark:text-orange-400 font-bold">
+                    Mais Alta (Atrasa mais e perde mais pacotes)
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Propriedade do Meio Físico
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Privada (A própria empresa compra os cabos/switches)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Alugada / Terceirizada (Operadoras de Telecom / ISPs)
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Equipamento Central / Típico
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Switches, Access Points</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Roteadores de Borda, Gateways, Modems
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Clássicas de Concurso</h2>
+          <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm">
+            <li>
+              <strong>O "Paradoxo da Fibra":</strong> A banca tenta te enganar dizendo que hoje as WANs são mais rápidas que as LANs porque usam Fibra
+              Óptica nos oceanos. <br />
+              <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Cuidado!</span>
+              Para fins de prova conceitual (Tanenbaum, Kurose), a <strong>LAN sempre apresenta velocidade superior e menor latência</strong> que a
+              WAN em redes equivalentes.
+            </li>
+            <li>
+              <strong>Ethernet é só LAN?</strong> O protocolo Ethernet nasceu nas LANs, mas hoje existe o <em>Carrier Ethernet</em> (ou Metro
+              Ethernet), que permite usar o padrão Ethernet em MANs e WANs. Se a banca disser "A tecnologia Ethernet é restrita única e exclusivamente
+              a redes LAN", marque como falso.
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência das Redes Locais (LAN)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>LAN (Local Area Network)</strong> é uma rede de computadores projetada para interconectar dispositivos em uma área geográfica
+              limitada e controlada, como uma residência, um laboratório, um edifício comercial ou um campus universitário de pequeno porte.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Características Tecnológicas</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Propriedade Privada:</strong> O hardware (cabos de par trançado, switches de acesso, roteadores internos e access points)
+                pertence e é administrado inteiramente pela organização ou usuário dono da rede.
+                <span class="hl-green">Não há cobrança de tarifas por megabyte transferido internamente.</span>
+              </li>
+              <li>
+                <strong>Topologia Típica:</strong> Atualmente utilizam a topologia física em <strong>Estrela</strong> (ou Estrela Estendida), com
+                switches centralizando as conexões ponto-a-ponto de cada host.
+              </li>
+              <li>
+                <strong>Padrões Predominantes:</strong> A hegemonia é dividida entre as redes cabeadas
+                <span class="hl-yellow">Ethernet (padrão IEEE 802.3)</span> e as redes sem fio
+                <span class="hl-yellow">Wi-Fi (padrão IEEE 802.11)</span>.
+              </li>
+              <li>
+                <strong>Desempenho:</strong> Por operarem em um ambiente controlado e com distâncias curtas, possuem
+                <span class="hl-green">altíssima largura de banda (1 Gbps, 10 Gbps ou mais)</span> e taxas de erro e latência quase insignificantes.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Arquitetura das Redes de Longa Distância (WAN)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>WAN (Wide Area Network)</strong> cobre vastas áreas geográficas (cidades, países, continentes). O seu propósito fundamental
+              não é conectar computadores finais diretamente, mas sim <strong>interconectar diversas LANs</strong> que estão distantes entre si. A
+              Internet é o exemplo supremo de uma WAN.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Características Tecnológicas</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Infraestrutura Alugada:</strong> Uma empresa não passa seus próprios cabos de São Paulo até Nova York. Ela
+                <span class="hl-red">aluga o canal de transmissão</span> (links dedicados ou virtuais) de empresas de telecomunicação (ISPs /
+                Operadoras).
+              </li>
+              <li>
+                <strong>Equipamentos de Borda:</strong> A conexão de uma LAN para uma WAN é feita por um equipamento chamado
+                <strong>CPE (Customer Premises Equipment)</strong>, geralmente um Roteador de Borda. Esse roteador se conecta aos roteadores centrais
+                (Core) do provedor de internet.
+              </li>
+              <li>
+                <strong>Desempenho Relativo:</strong> Devido à enorme distância percorrida, necessidade de saltar por dezenas de roteadores e
+                compartilhamento de links, as WANs possuem
+                <span class="hl-red">maior latência, maior jitter (variação de atraso) e maior taxa de perda de pacotes</span> do que as LANs.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Tecnologias de Transporte WAN (Spoilers do Item 4.1)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Diferente da LAN, que é dominada pelo Ethernet, a WAN possui uma sopa de letrinhas histórica de tecnologias de transporte na Camada 2.
+              Entender essa evolução é crucial:
+            </p>
+
+            <div class="border-l-4 border-slate-300 dark:border-slate-600 pl-4 space-y-3 mt-4">
+              <p>
+                <strong>1. Tecnologias Legadas (Caiem pouco, mas caem):</strong> <br />- <em>Frame Relay:</em> Tecnologia antiga de comutação de
+                pacotes baseada em circuitos virtuais. <br />- <em>ATM (Asynchronous Transfer Mode):</em> Comutação de células de tamanho fixo (53
+                bytes). Era excelente para voz e vídeo, mas muito complexa.
+              </p>
+
+              <p>
+                <strong>2. O Padrão de Mercado Atual (Muito cobrado):</strong> <br />-
+                <span class="hl-yellow">MPLS (Multiprotocol Label Switching):</span> Veio para resolver a lentidão do roteamento IP tradicional. Ele
+                insere pequenos "rótulos" (labels) nos pacotes, permitindo que os roteadores tomem decisões de encaminhamento de forma incrivelmente
+                rápida. Cria VPNs de alta qualidade corporativa. (Aprofundaremos nele no item 4.1).
+              </p>
+
+              <p>
+                <strong>3. A Nova Tendência (Modernização):</strong> <br />- <span class="hl-green">SD-WAN (Software-Defined WAN):</span> Separa o
+                plano de controle (inteligência) do plano de dados (hardware). Permite que a empresa use múltiplos links comuns de internet (mais
+                baratos) para simular um link dedicado seguro e inteligente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

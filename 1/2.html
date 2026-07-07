@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Endereçamento e Protocolos TCP/IP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Blue */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #1d4ed8;
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+          Endereçamento e Protocolos TCP/IP
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Endereçamento IP: Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">🌐</span> Endereçamento IP (IPv4 vs IPv6)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border border-blue-100 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/10 rounded-lg p-4">
+              <h3 class="font-bold text-blue-800 dark:text-blue-300 mb-2 border-b border-blue-200 dark:border-blue-800 pb-1">IPv4</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>🎯 <strong>Tamanho:</strong> 32 bits (4 bytes).</li>
+                <li>📝 <strong>Formato:</strong> Decimal Pontuada (ex: 192.168.1.1).</li>
+                <li>🔐 <strong>IPSec:</strong> Opcional.</li>
+                <li>🔄 <strong>Loopback:</strong> 127.0.0.0 a 127.255.255.255.</li>
+              </ul>
+            </div>
+            <div class="border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-900/10 rounded-lg p-4">
+              <h3 class="font-bold text-indigo-800 dark:text-indigo-300 mb-2 border-b border-indigo-200 dark:border-indigo-800 pb-1">IPv6</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>🎯 <strong>Tamanho:</strong> 128 bits (16 bytes).</li>
+                <li>📝 <strong>Formato:</strong> Hexadecimal (ex: 2001:0db8::ff00:42:8329).</li>
+                <li>🔐 <strong>IPSec:</strong> Nativo (Obrigatório na especificação original).</li>
+                <li>🔄 <strong>Loopback:</strong> ::1</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa de Protocolos de Transporte -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Camada de Transporte: TCP vs UDP</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-400">
+                    TCP (Transmission Control Protocol)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
+                    UDP (User Datagram Protocol)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Conexão</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-blue-700 dark:text-blue-300 font-medium">
+                    Orientado a Conexão (3-Way Handshake)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-orange-600 dark:text-orange-400 font-medium">
+                    Não Orientado a Conexão
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Confiabilidade</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Alta.</strong> Garante a entrega (retransmite falhas).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Nula.</strong> Não garante entrega (Best Effort).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Velocidade</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Mais lento (tem muito <em>overhead</em>/controle).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Mais rápido</strong> (cabeçalho leve de 8 bytes).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Uso Principal</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Web (HTTP), E-mail (SMTP), Arquivos (FTP).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Streaming, VoIP, DNS, Jogos Online.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Portas Importantes -->
+        <section class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl shadow-sm p-6">
+          <h2 class="text-lg font-bold text-blue-800 dark:text-blue-400 mb-4 flex items-center gap-2">
+            📌 Core Decoreba: Portas e Protocolos (Camada de Aplicação)
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">20/21</span> - FTP
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">22</span> - SSH
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-slate-400 line-through">23</span> - Telnet (Inseguro)
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">25 / 587</span> - SMTP
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">53</span> - DNS
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">67/68</span> - DHCP
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">80</span> - HTTP
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">110</span> - POP3
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">143</span> - IMAP
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">443</span> - HTTPS
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+              <span class="font-bold text-blue-600 dark:text-blue-400">161</span> - SNMP
+            </div>
+          </div>
+        </section>
+
+        <!-- Alertas e Macetes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Macetes Email -->
+          <section class="bg-purple-50 dark:bg-purple-900/20 border-l-4 border-purple-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-purple-800 dark:text-purple-400 mb-3 flex items-center gap-2">🧠 Macetes: E-mail</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>S</strong>MTP = <strong>S</strong>ua <strong>M</strong>ensagem <strong>T</strong>á <strong>P</strong>artindo (Usado para
+                <em>ENVIAR</em> e-mail).
+              </li>
+              <li><strong>P</strong>OP3 = <strong>P</strong>uxa (Baixa da caixa postal e, por padrão, apaga do servidor).</li>
+              <li>
+                <strong>I</strong>MAP = <strong>I</strong>nterage (Sincroniza, deixa os e-mails lá no servidor. Ideal para acessar do PC e do
+                Celular).
+              </li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>DNS vs ARP:</strong> A banca diz que o ARP converte nome (www) para IP.
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                Quem traduz Nome para IP é o <strong>DNS</strong>. O <strong>ARP</strong> descobre o Endereço Físico (MAC) a partir de um IP.
+              </li>
+              <li>
+                <strong>Modelo OSI vs TCP/IP:</strong> Protocolos de Aplicação, Apresentação e Sessão do OSI correspondem a
+                <strong>UMA ÚNICA camada</strong> no TCP/IP: A camada de Aplicação.
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Arquitetura TCP/IP
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A arquitetura TCP/IP não é apenas uma dupla de protocolos, mas uma <span class="hl-yellow">pilha (suíte) completa</span> que rege a
+              Internet mundial. Diferente do modelo OSI (que é puramente teórico e possui 7 camadas), o modelo TCP/IP é prático e implementado.
+            </p>
+            <p>
+              Em provas, o modelo TCP/IP pode ser cobrado com <strong>4 ou 5 camadas</strong> (ambas as abordagens estão corretas, dependendo do autor
+              adotado pela banca, como Kurose ou Tanenbaum):
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <ul class="list-none space-y-3">
+                <li>
+                  <strong class="text-blue-600 dark:text-blue-400">5. Aplicação:</strong> Combina as camadas 5, 6 e 7 do OSI. Responsável pelos
+                  serviços de rede para os usuários. <em>Ex: HTTP, SMTP, DNS, FTP.</em>
+                </li>
+                <li>
+                  <strong class="text-blue-600 dark:text-blue-400">4. Transporte:</strong> Comunicação fim a fim. Responsável pela segmentação e, no
+                  caso do TCP, pela confiabilidade. <em>Ex: TCP, UDP.</em>
+                </li>
+                <li>
+                  <strong class="text-blue-600 dark:text-blue-400">3. Internet (ou Rede):</strong> Responsável pelo roteamento de pacotes através da
+                  rede lógica. <em>Ex: IP, ICMP, IPSec.</em>
+                </li>
+                <li>
+                  <strong class="text-blue-600 dark:text-blue-400">2. Enlace (Link de Dados):</strong> Responsável pela entrega do quadro no mesmo
+                  segmento de rede (rede local).
+                </li>
+                <li>
+                  <strong class="text-blue-600 dark:text-blue-400">1. Física:</strong> Transmissão dos bits brutos pelo meio (cabo, ar, fibra).
+                  <br /><span class="text-sm italic text-slate-500 mt-1 block"
+                    >*Nota: Em abordagens de 4 camadas, Enlace e Física são fundidas na camada "Acesso à Rede".</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. O Escovão de Bits: Camada de Transporte
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A camada de transporte gera as famosas <strong>Portas (sockets)</strong>, essenciais para que um computador saiba para qual aplicativo
+              entregar o dado (Porta 80 vai pro Navegador, Porta 25 vai pro Email).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              O Protocolo TCP e o 3-Way Handshake
+            </h3>
+            <p>
+              O TCP é incrivelmente complexo porque ele precisa garantir que o dado chegue na ordem correta e sem perdas em um ambiente caótico (a
+              internet). Para isso, ele estabelece uma conexão formal antes de enviar qualquer byte de dado. Esse processo cai demais em provas
+              avançadas:
+            </p>
+            <ul class="list-decimal pl-6 space-y-2 mt-2">
+              <li>
+                <strong>Passo 1 (SYN):</strong> O Cliente envia um pacote com a flag <code>SYN</code> ativa, pedindo para sincronizar (abrir conexão)
+                com o Servidor.
+              </li>
+              <li>
+                <strong>Passo 2 (SYN-ACK):</strong> O Servidor recebe, concorda e responde com <code>SYN</code> e <code>ACK</code> (Acknowledge -
+                reconhecimento).
+              </li>
+              <li>
+                <strong>Passo 3 (ACK):</strong> O Cliente confirma o recebimento do Servidor enviando um <code>ACK</code> final.
+                <span class="hl-green">Conexão estabelecida!</span> Os dados agora podem trafegar.
+              </li>
+            </ul>
+            <p class="mt-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 p-3 rounded">
+              ⚠️ <strong>Ataque SYN Flood:</strong> Ocorre quando um hacker manda milhares de pacotes do "Passo 1" (SYN), mas nunca responde o "Passo
+              3" (ACK). O Servidor fica esperando infinitamente com portas abertas até travar (Ataque de Negação de Serviço - DoS).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-orange-500 pl-3">O Protocolo UDP</h3>
+            <p>
+              O UDP é o exato oposto. Ele <span class="hl-red">não faz handshake</span>, não liga para a ordem dos pacotes e não retransmite se algo
+              der errado. Ele simplesmente "cospe" os dados na rede (Datagramas).
+            </p>
+            <p>
+              Por que usaríamos algo "inseguro"? Por causa da <span class="hl-green">baixa latência (velocidade)</span>. Em uma videochamada ou jogo
+              online, é melhor perder um frame de imagem (um pequeno travamento na tela) do que parar tudo para esperar o pacote perdido ser
+              retransmitido (o que geraria um delay insuportável).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Protocolos de Internet (Rede)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div>
+              <h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">Protocolo IP (Internet Protocol)</h3>
+              <p>
+                Sua função é fornecer <strong>roteamento</strong>. Ele entrega o pacote da origem ao destino com base em endereços lógicos.
+                Características de prova: o IP é um protocolo <em>connectionless</em> (não orientado a conexão) e de <em>Best-Effort</em> (melhor
+                esforço). Ou seja, <span class="hl-red">o protocolo IP, por si só, não garante entrega</span>. Quem garante a entrega é o TCP na
+                camada de cima.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">ICMP (Internet Control Message Protocol)</h3>
+              <p>
+                Como o IP não é confiável, o ICMP atua como seu "assistente de diagnóstico e reporte de erros". É o protocolo utilizado por trás de
+                comandos famosos como o <span class="hl-yellow">PING</span> (que manda mensagens de Echo Request / Echo Reply) e o
+                <span class="hl-yellow">Tracert/Traceroute</span>.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">ARP (Address Resolution Protocol)</h3>
+              <p>
+                Vital em provas! Um pacote viaja pela internet usando o IP, mas quando ele chega na rede local de destino, o switch não entende IP. O
+                switch precisa do <strong>Endereço MAC</strong> (físico) da placa de rede. O ARP grita na rede (em broadcast):
+                <em>"Quem é o dono do IP 192.168.1.5?"</em>. O computador dono do IP responde: <em>"Sou eu, meu MAC Address é XX:XX:XX..."</em>.
+                <br /><span class="hl-green">Resumo: ARP converte IP lógico em MAC Address físico.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Endereçamento e Sub-redes (Overview Crítico)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              <strong>Endereços IPv4 de Teste:</strong> A banca vai cobrar o endereço de Loopback (Localhost), que serve para a máquina testar a
+              própria pilha TCP/IP. No IPv4, a faixa inteira <span class="hl-yellow">127.0.0.0/8</span> é reservada para isso (geralmente usamos o
+              <code>127.0.0.1</code>). No IPv6, é o <code>::1</code>.
+            </p>
+            <p>
+              <strong>APIPA (Automatic Private IP Addressing):</strong> Quando seu computador está configurado para receber IP dinâmico (DHCP), mas o
+              servidor DHCP cai ou o cabo desconecta, o Windows atribui um IP automático de falha que começa com
+              <span class="hl-red">169.254.x.x</span>. Viu esse IP na prova? Significa falha na rede!
+            </p>
+            <p>
+              <strong>CIDR (Roteamento Interdomínios Sem Classe):</strong> O antigo sistema de classes (A, B, C, D e E) foi abolido na prática e
+              substituído pelo CIDR (ex: /24, /26). O valor após a barra indica
+              <strong>quantos bits estão ligados (1) na máscara de sub-rede</strong> para representar a rede. <br />Exemplo em prova:
+              <code>/24</code> significa que 24 bits representam a Rede, sobrando 8 bits para Hosts. Com 8 bits, podemos ter \(2^8 = 256\) endereços,
+              mas tiramos 2 (um para a Rede e um para o Broadcast), sobrando <span class="hl-green">254 hosts válidos</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

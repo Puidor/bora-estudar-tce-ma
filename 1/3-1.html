@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gerenciamento de Redes (SNMP)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Blue */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #1d4ed8;
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+          Gerenciamento de Redes TCP/IP
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Sopa de Letrinhas: Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">🧠</span> A Sopa de Letrinhas (SNMP, MIB, SMI)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border border-blue-100 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/10 rounded-lg p-4">
+              <h3 class="font-bold text-blue-800 dark:text-blue-300 mb-2 border-b border-blue-200 dark:border-blue-800 pb-1 flex items-center gap-2">
+                <span class="text-lg">📜</span> SMI
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                <strong>A Gramática.</strong> Define as regras gerais e os tipos de dados permitidos (ex: Inteiro, String). É baseada em ASN.1.
+              </p>
+            </div>
+            <div class="border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-900/10 rounded-lg p-4">
+              <h3
+                class="font-bold text-indigo-800 dark:text-indigo-300 mb-2 border-b border-indigo-200 dark:border-indigo-800 pb-1 flex items-center gap-2"
+              >
+                <span class="text-lg">🗄️</span> MIB
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                <strong>O Dicionário.</strong> É o banco de dados hierárquico (em árvore) que armazena as variáveis do dispositivo (ex: temperatura,
+                uso de CPU). Identificado pelos <strong>OID</strong>s.
+              </p>
+            </div>
+            <div class="border border-sky-100 dark:border-sky-900/50 bg-sky-50/50 dark:bg-sky-900/10 rounded-lg p-4">
+              <h3 class="font-bold text-sky-800 dark:text-sky-300 mb-2 border-b border-sky-200 dark:border-sky-800 pb-1 flex items-center gap-2">
+                <span class="text-lg">🚚</span> SNMP
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                <strong>O Transportador.</strong> É o protocolo de rede em si que leva a mensagem do Gerente para o Agente, solicitando ou alterando
+                dados da MIB.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa de Versões do SNMP -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛡️ Evolução do SNMP (v1 x v2c x v3)</h2>
+            <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">MUITO COBRADO</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Versão</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Principais Inovações</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Segurança</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">SNMPv1</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Get, Set, GetNext, Trap (básico).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-red-600 dark:text-red-400 font-medium">
+                    Nenhuma. Autentica por "Community String" em texto claro.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">SNMPv2c</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Introduz
+                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 px-1 rounded font-bold">GetBulk</span> (puxa vários
+                    dados) e <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 px-1 rounded font-bold">Inform</span> (Trap
+                    com recibo ACK).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-red-600 dark:text-red-400 font-medium">
+                    Continua usando Community String em texto claro (Inseguro).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">SNMPv3</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Foco total na reestruturação de arquitetura segura (USM/VACM).</td>
+                  <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold">Autenticação forte (Hash) + Criptografia (Privacidade).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Portas UDP -->
+          <section class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-blue-800 dark:text-blue-400 mb-3 flex items-center gap-2">🚪 Portas UDP do SNMP</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong class="text-blue-600 dark:text-blue-400 text-base">Porta 161 (Agente):</strong> Onde o Roteador/Switch fica escutando as
+                ordens (Get/Set) enviadas pelo Gerente.
+              </li>
+              <li>
+                <strong class="text-blue-600 dark:text-blue-400 text-base">Porta 162 (Gerente):</strong> Onde o Gerente fica escutando. Usada
+                exclusivamente para receber os <strong>Traps</strong> (Avisos de perigo/erro que o agente manda sozinho).
+              </li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>Trap garante entrega?</strong> A banca diz que o Trap é confiável.
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                Trap usa UDP, se o pacote sumir, o gerente nunca saberá. A solução para isso é o <strong>InformRequest (v2c/v3)</strong>, que exige um
+                ACK do gerente.
+              </li>
+              <li>
+                <strong>SNMPv2c Segurança:</strong> A letra "c" do v2c significa <em>Community-based</em>. Ele trouxe melhorias de performance, mas
+                <span class="underline decoration-red-500 font-bold">falhou</span> em melhorar a segurança em relação ao v1.
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Arquitetura de Gerenciamento de Redes
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O modelo tradicional de gerenciamento de redes TCP/IP é baseado no paradigma <strong>Gerente-Agente</strong>. Ele é composto por três
+              peças fundamentais:
+            </p>
+
+            <ul class="list-none space-y-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400 text-lg">Gerente (NMS - Network Management System):</strong>
+                É o "chefe". Um software rodando em um servidor central (ex: Zabbix, PRTG, Nagios). Ele é responsável por enviar as solicitações de
+                leitura ou alteração de configurações.
+                <span class="hl-green">Ele atua ativamente realizando "Polling" (perguntando aos dispositivos de tempos em tempos)</span> e
+                passivamente aguardando alertas emergenciais.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400 text-lg">Agente (Agent):</strong>
+                É o "funcionário". Um pequeno módulo de software que roda dentro do dispositivo de rede (como um roteador da Cisco, um switch ou uma
+                impressora). Sua função é ficar monitorando o hardware local, respondendo ao Gerente e
+                <span class="hl-red">avisando o Gerente imediatamente caso algo dê errado (via Trap)</span>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400 text-lg">Objeto Gerenciado:</strong>
+                É a informação específica dentro do agente que estamos monitorando (ex: status da porta Gigabit 0/1, temperatura da CPU, tráfego de
+                entrada).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Estruturação dos Dados: SMI e MIB
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para que um servidor Dell nos EUA entenda a temperatura enviada por um switch Huawei na China, é necessário haver uma padronização
+              universal dos dados. É aqui que entram a SMI e a MIB.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              SMI (Structure of Management Information)
+            </h3>
+            <p>
+              A SMI define a <strong>sintaxe universal</strong>. Ela dita as regras sobre como os objetos gerenciados devem ser nomeados e quais tipos
+              de dados eles podem assumir. Ela é fortemente baseada em um subconjunto da linguagem
+              <span class="hl-yellow">ASN.1 (Abstract Syntax Notation One)</span>. <br /><em
+                >Exemplo em prova: A SMI garante que uma variável de "velocidade de rede" seja sempre lida como um número inteiro por qualquer
+                fabricante.</em
+              >
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              MIB (Management Information Base)
+            </h3>
+            <p>
+              A MIB é o <strong>banco de dados virtual</strong> que reside no Agente. Ela possui uma estrutura em
+              <span class="hl-yellow">forma de árvore (hierárquica)</span>, semelhante a pastas no Windows.
+            </p>
+            <p>
+              Cada objeto dentro da MIB possui um endereço único chamado de
+              <strong class="text-blue-600 dark:text-blue-400">OID (Object Identifier)</strong>. O OID é uma sequência de números separados por pontos
+              (ex: <code>1.3.6.1.2.1.2.2.1</code>).
+            </p>
+            <ul class="list-disc pl-6 space-y-1 mt-2 text-sm italic">
+              <li>1 = ISO</li>
+              <li>3 = Organização identificada</li>
+              <li>6 = Departamento de Defesa (DoD)</li>
+              <li>1 = Internet...</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Operações do Protocolo SNMP
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O SNMP atua na <strong>Camada de Aplicação</strong> e, por questões de performance e simplicidade (para não sobrecarregar processadores
+              antigos de roteadores), ele utiliza o <span class="hl-red">UDP (User Datagram Protocol) na camada de transporte</span>.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="border border-slate-200 dark:border-slate-700 rounded p-4">
+                <h4 class="font-bold text-slate-800 dark:text-white mb-2">Comandos do GERENTE ➔ AGENTE</h4>
+                <ul class="space-y-2 text-sm">
+                  <li><code>GetRequest</code>: Busca o valor de uma variável específica.</li>
+                  <li><code>GetNextRequest</code>: Busca o valor da próxima variável na tabela MIB.</li>
+                  <li><span class="hl-green">GetBulkRequest (v2c/v3)</span>: Pede grandes blocos de dados de uma vez só (alta eficiência).</li>
+                  <li><code>SetRequest</code>: Altera a configuração do agente (ex: desliga uma porta).</li>
+                </ul>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 rounded p-4">
+                <h4 class="font-bold text-slate-800 dark:text-white mb-2">Comandos do AGENTE ➔ GERENTE</h4>
+                <ul class="space-y-2 text-sm">
+                  <li><code>Response</code>: A resposta aos comandos "Get" e "Set".</li>
+                  <li>
+                    <span class="hl-red">Trap</span>: Um alerta não solicitado. O roteador reiniciou? Ele manda um Trap avisando. Como é UDP e não
+                    exige confirmação, <strong>pode se perder na rede</strong>.
+                  </li>
+                  <li>
+                    <span class="hl-green">InformRequest (v2c/v3)</span>: O "Trap Seguro". É um alerta que exige que o Gerente responda com um
+                    <code>Response</code> (recibo). Se o recibo não chegar, o agente envia de novo.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. A Trilha de Segurança do SNMP
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              <strong>SNMPv1 e v2c (Community Strings):</strong> Nestas versões, a autenticação baseia-se num conceito de "Community String", que
+              funciona como uma senha compartilhada (geralmente `public` para leitura e `private` para escrita). O problema fatal para a segurança é
+              que <span class="hl-red">essas strings trafegam em texto claro pela rede</span>. Qualquer atacante fazendo <em>sniffing</em> captura a
+              senha instantaneamente.
+            </p>
+
+            <p>
+              <strong>SNMPv3 (A Revolução de Segurança):</strong> Para mitigar esses problemas, o SNMPv3 abandonou as "communities" e implementou dois
+              novos módulos de segurança robustos:
+            </p>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>USM (User-based Security Model):</strong> Responsável pela autenticação e privacidade. Permite autenticar os usuários com
+                <code>HMAC-MD5</code> ou <code>HMAC-SHA</code> e criptografar o pacote inteiro (Payload) com algoritmos como <code>DES</code> e
+                <code>AES</code>.
+              </li>
+              <li>
+                <strong>VACM (View-based Access Control Model):</strong> Controle de acesso minucioso. Permite configurar que o "Usuário João" pode
+                ler a MIB de tráfego de rede, mas não tem permissão para ler ou alterar a MIB de roteamento.
+              </li>
+            </ul>
+            <div
+              class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 p-4 rounded mt-4 border border-emerald-200 dark:border-emerald-800 text-sm"
+            >
+              <strong>Níveis de Segurança do SNMPv3 (Caem muito!):</strong>
+              <ol class="list-decimal pl-4 mt-1">
+                <li><strong>noAuthNoPriv:</strong> Sem autenticação criptográfica e sem criptografia (similar ao v1/v2c).</li>
+                <li>
+                  <strong>authNoPriv:</strong> Autenticação ativada (via Hash, garantindo quem enviou e integridade), mas pacote trafega sem
+                  criptografia (conteúdo legível).
+                </li>
+                <li>
+                  <strong>authPriv:</strong> O nível máximo. Autenticado (Hash) e Criptografado (AES/DES). Confidencialidade e Integridade totais.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

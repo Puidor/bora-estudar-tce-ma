@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Redes de Computadores</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Blue */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #1d4ed8;
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+          Redes de Computadores
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Classificação Geográfica:</strong> As bancas amam classificar as redes pelo tamanho. Memorize a ordem crescente:
+              <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 font-bold px-1.5 py-0.5 rounded"
+                >PAN &lt; LAN &lt; MAN &lt; WAN</span
+              >.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Hub (Camada 1):</strong> É o equipamento "burro". Ele recebe a informação e <strong>repete (broadcast)</strong> para TODAS as
+              portas. Gera muitas colisões.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Switch (Camada 2):</strong> É "inteligente". Aprende os MAC Addresses e manda a informação
+              <strong>direto para o destinatário (Unicast)</strong>. Isola domínios de colisão.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Roteador (Camada 3):</strong> Serve para <strong class="text-blue-700 dark:text-blue-400">interligar redes diferentes</strong>.
+              Trabalha com endereços lógicos (IP).
+            </li>
+          </ul>
+        </section>
+
+        <!-- Tabela Comparativa -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📊 Tabela Comparativa: Topologias de Rede (Física)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Topologia</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Como funciona?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-400">Ponto Fraco na Prova</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Barramento (Bus)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Todos usam o mesmo cabo central (backbone).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Se o cabo central romper, <strong>toda a rede cai</strong>.
+                  </td>
+                </tr>
+                <tr class="bg-blue-50/50 dark:bg-blue-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Anel (Ring)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Sinal passa de um para outro até o destino.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Se um nó parar, a rede pode cair (em anéis simples).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Estrela (Star)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Todos ligados a um <strong>nó central</strong> (Hub/Switch).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Ponto único de falha no equipamento central.
+                  </td>
+                </tr>
+                <tr class="bg-blue-50/50 dark:bg-blue-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Malha (Mesh)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Todos ligados a todos (redundância total).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Alto <strong>CUSTO</strong> e complexidade de cabeamento.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alertas -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Alerta de Pegadinha</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Switch vs Hub:</strong> A banca diz: "O Switch envia o pacote de dados para todas as portas, assim como o Hub". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase"
+                  >Falso!</span
+                >
+                O Switch envia em <em>Unicast</em>. Ele só faz broadcast em 3 casos: endereço desconhecido, pacote nativo de broadcast ou multicast.
+              </li>
+              <li>
+                <strong>Topologia Ethernet:</strong> A banca diz: "A rede Ethernet atual usa topologia física de barramento". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase"
+                  >Falso!</span
+                >
+                Usa topologia <strong>Física em ESTRELA</strong> (ligados a um Switch), mas mantém a topologia
+                <strong>Lógica em BARRAMENTO</strong> (comportamento lógico).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos e Escala Geográfica
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Uma rede de computadores é formada por um conjunto de <span class="hl-yellow">nós (hosts ou dispositivos)</span> interconectados por
+              meio de <span class="hl-yellow">enlaces (links)</span> de comunicação, com o objetivo de compartilhar recursos e informações.
+            </p>
+            <p>A classificação mais cobrada em provas diz respeito à <strong>abrangência geográfica</strong> da rede:</p>
+            <ul class="list-disc pl-6 space-y-3 mt-4">
+              <li>
+                <strong>PAN (Personal Area Network):</strong> Redes de curtíssimo alcance (alguns metros). Conectam dispositivos de uso pessoal.
+                Exemplo prático: fone de ouvido conectado ao smartphone via <span class="hl-green">Bluetooth</span>.
+              </li>
+              <li>
+                <strong>LAN (Local Area Network):</strong> Redes locais que abrangem uma pequena área física, como uma sala, escritório, residência ou
+                até um único prédio. Possuem <span class="hl-green">altas taxas de transmissão</span> e baixos índices de erro. Padrões comuns:
+                Ethernet (cabeado) e Wi-Fi (WLAN).
+              </li>
+              <li>
+                <strong>MAN (Metropolitan Area Network):</strong> Redes que abrangem a extensão de uma cidade ou um grande campus metropolitano.
+                Interligam várias LANs. Freqüentemente utilizam enlaces de fibra óptica.
+              </li>
+              <li>
+                <strong>WAN (Wide Area Network):</strong> Redes de longa distância que ultrapassam limites de cidades, estados ou países. A
+                <span class="hl-yellow">Internet é a maior WAN existente</span>. Historicamente, possuem
+                <span class="hl-red">maior latência e menor largura de banda</span> se comparadas às LANs.
+              </li>
+            </ul>
+            <p class="bg-slate-50 dark:bg-slate-900/50 p-4 border-l-4 border-blue-500 rounded text-sm italic mt-4">
+              <strong>Nota Técnica de Prova:</strong> Algumas bancas (como a FGV) podem cobrar a <strong>SAN (Storage Area Network)</strong>. Ela não
+              é geográfica, mas sim uma rede dedicada de altíssimo desempenho, cujo único propósito é interligar servidores a matrizes de
+              armazenamento (storages).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Topologias: Física vs Lógica
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              É fundamental separar a topologia <strong>Física</strong> (como os cabos estão realmente desenhados e passados na parede) da topologia
+              <strong>Lógica</strong> (como os dados fluem eletronicamente pelo meio).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Topologia de Barramento (Bus)</h3>
+            <p>
+              Todos os hosts compartilham um único cabo central (backbone). Se o cabo falhar,
+              <span class="hl-red">toda a rede entra em colapso</span>. Lógicamente, os dados trafegam por todo o barramento (broadcast), o que gera
+              alta <span class="hl-yellow">colisão de pacotes</span>. Usava os antigos cabos coaxiais.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Topologia Estrela (Star)</h3>
+            <p>
+              Disposição onde todos os hosts se conectam a um equipamento central (Hub ou Switch). Se um cabo de um host romper,
+              <span class="hl-green">apenas aquele host perde a conexão</span>. No entanto, o equipamento central é o chamado
+              <em>Single Point of Failure</em>: se ele queimar, <span class="hl-red">a rede toda para</span>. É o padrão absoluto das redes atuais.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Topologia Malha (Mesh)</h3>
+            <p>
+              Nesta topologia, cada nó está diretamente conectado a diversos outros nós. Em uma <em>Malha Completa</em> (Full Mesh), todo host liga-se
+              diretamente a todos os outros. Oferece o mais alto grau de <span class="hl-green">tolerância a falhas (redundância)</span>, pois existem
+              diversos caminhos para o dado chegar. O ponto negativo explorado em provas é o
+              <span class="hl-red">altíssimo custo financeiro e complexidade</span> de infraestrutura.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Equipamentos de Interconexão (O Escovão de Bits)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <!-- Hub -->
+            <div>
+              <h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">Hub (Concentrador) - Camada 1</h3>
+              <p>
+                Atua na <strong>Camada Física (1)</strong> do modelo OSI. Ele é basicamente um repetidor multiportas. Ele não entende endereços MAC
+                nem endereços IP.
+              </p>
+              <p class="mt-2">
+                <strong>Comportamento:</strong> Quando recebe um sinal elétrico em uma porta, ele
+                <span class="hl-red">replica esse sinal para todas as outras portas ativas (broadcast físico)</span>. Devido a isso, ele forma um
+                único <span class="hl-yellow">Domínio de Colisão</span> e um único <span class="hl-yellow">Domínio de Broadcast</span>. Opera em
+                <em>Half-Duplex</em> (só pode falar ou ouvir por vez). Hoje, é considerado obsoleto comercialmente.
+              </p>
+            </div>
+
+            <!-- Switch -->
+            <div>
+              <h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">Switch (Comutador) - Camada 2</h3>
+              <p>
+                Atua primariamente na <strong>Camada de Enlace (2)</strong> do modelo OSI. É um equipamento inteligente que constrói e mantém uma
+                <em>Tabela MAC (Tabela CAM)</em>, mapeando qual endereço físico (MAC Address) está conectado em qual porta.
+              </p>
+              <p class="mt-2">
+                <strong>Comportamento:</strong> Ao receber um quadro (frame), ele analisa o MAC de destino e envia a informação
+                <span class="hl-green">exclusivamente para a porta correta (Unicast)</span>. Isso permite operações <em>Full-Duplex</em> (falar e
+                ouvir simultaneamente).
+              </p>
+              <p class="mt-2 font-medium">Atenção máxima para as bancas:</p>
+              <ul class="list-disc pl-6 mt-1">
+                <li>O Switch cria <strong>múltiplos Domínios de Colisão</strong> (cada porta é um domínio isolado).</li>
+                <li>
+                  Por padrão, o Switch compõe <strong>apenas UM Domínio de Broadcast</strong> (todos na mesma rede recebem mensagens de broadcast).
+                  Para quebrar domínios de broadcast em um Switch, é necessário configurar <span class="hl-green">VLANs (Virtual LANs)</span>.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Router -->
+            <div>
+              <h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">Roteador (Router) - Camada 3</h3>
+              <p>
+                Atua na <strong>Camada de Rede (3)</strong> do modelo OSI. Sua missão de vida é descobrir a melhor rota (caminho) para um pacote e
+                <span class="hl-yellow">interligar redes distintas</span> (ex: LAN para WAN).
+              </p>
+              <p class="mt-2">
+                Diferente do Switch que olha para o MAC Address, o Roteador lê os <strong>Endereços Lógicos (Endereço IP)</strong>. Ele naturalmente
+                <span class="hl-green">barrada (isola) pacotes de broadcast</span>, impedindo que "barulhos" de uma rede local afetem a Internet ou
+                outras redes. Portanto, cada porta de um roteador é um Domínio de Broadcast independente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
