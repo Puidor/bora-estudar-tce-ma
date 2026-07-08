@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Sistemas Operacionais</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Cyan */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #06b6d4;
+        border-radius: 4px;
+      } /* Cyan-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0e7490;
+      } /* Cyan-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-cyan-600 dark:text-cyan-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-cyan-600 dark:text-cyan-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-cyan-500 pb-2 inline-block">
+          Sistemas Operacionais
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-cyan-600 border-b-2 border-cyan-600 dark:text-cyan-400 dark:border-cyan-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: Kernel -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-cyan-800 dark:bg-cyan-900 p-4 border-b border-cyan-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧠 O Núcleo: Monolítico vs Microkernel</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-cyan-700 dark:text-cyan-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">Monolítico</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>
+                  <span class="text-emerald-500 font-bold">✓ Vantagem:</span> <strong>Alta Performance.</strong> Tudo roda no mesmo espaço de memória
+                  (Modo Kernel).
+                </li>
+                <li>
+                  <span class="text-red-500 font-bold">✗ Desvantagem:</span> Se um driver falhar (crash), o sistema inteiro congela (Tela Azul/Kernel
+                  Panic).
+                </li>
+                <li><strong>Exemplos:</strong> Linux, DOS, Sistemas Unix clássicos.</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-cyan-700 dark:text-cyan-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">Microkernel</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>
+                  <span class="text-emerald-500 font-bold">✓ Vantagem:</span> <strong>Alta Estabilidade.</strong> Serviços rodam separados no Espaço
+                  do Usuário. Se um driver cai, o resto continua.
+                </li>
+                <li>
+                  <span class="text-red-500 font-bold">✗ Desvantagem:</span> Mais <strong>Lento</strong> devido à troca constante de mensagens (IPC).
+                </li>
+                <li><strong>Exemplos:</strong> Minix, QNX. <em>(Windows e macOS são híbridos)</em>.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Estados do Processo e Threads -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-cyan-500 text-2xl">⚙️</span> O Ciclo de Vida de um Processo
+          </h2>
+
+          <div class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 font-bold text-sm text-center mb-6">
+            <div
+              class="bg-slate-100 dark:bg-slate-700 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300"
+            >
+              NOVO<br /><span class="text-xs font-normal">Criado</span>
+            </div>
+            <div class="text-slate-400">➔</div>
+            <div
+              class="bg-cyan-100 dark:bg-cyan-900/40 px-4 py-2 rounded-lg border border-cyan-300 dark:border-cyan-600 text-cyan-700 dark:text-cyan-400"
+            >
+              PRONTO<br /><span class="text-xs font-normal">Fila da CPU</span>
+            </div>
+            <div class="text-cyan-400 text-xl">⇄</div>
+            <div
+              class="bg-emerald-100 dark:bg-emerald-900/40 px-4 py-2 rounded-lg border border-emerald-300 dark:border-emerald-600 text-emerald-700 dark:text-emerald-400 shadow-md"
+            >
+              EXECUÇÃO<br /><span class="text-xs font-normal">Na CPU</span>
+            </div>
+            <div class="text-slate-400">➔</div>
+            <div
+              class="bg-slate-100 dark:bg-slate-700 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300"
+            >
+              SAÍDA<br /><span class="text-xs font-normal">Finalizado</span>
+            </div>
+          </div>
+
+          <div
+            class="bg-orange-50 dark:bg-orange-900/20 p-4 border border-orange-200 dark:border-orange-800 rounded-lg text-center mb-6 max-w-md mx-auto relative mt-[-10px]"
+          >
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 text-slate-400">⬆ ⬇</div>
+            <strong class="text-orange-700 dark:text-orange-400">BLOQUEADO (Espera)</strong>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Aguardando Disco, Teclado ou I/O.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded border-l-4 border-cyan-500">
+              <strong class="text-slate-800 dark:text-white">Processo vs Thread</strong><br />
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                Processos são pesados e <strong>NÃO</strong> compartilham memória entre si. Threads (fios de execução) são leves e
+                <span class="text-cyan-600 dark:text-cyan-400 font-bold">COMPARTILHAM</span> a mesma memória e recursos do processo pai.
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded border-l-4 border-red-500">
+              <strong class="text-slate-800 dark:text-white">Deadlock (Abraço Mortal)</strong><br />
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                Ocorre quando o Processo A prende o recurso 1 e pede o 2. O Processo B prende o 2 e pede o 1. Ambos ficam travados infinitamente.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Windows vs Linux -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🐧 Linux vs 🪟 Windows Server</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-blue-600 dark:text-blue-400">Windows Server</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">Linux</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Sistema de Arquivos
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">NTFS, ReFS (Resilient FS)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">ext4, XFS, Btrfs</td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Serviços de Fundo</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Services (<code>services.msc</code>)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Daemons (<code>systemd</code>)
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Gestão de Diretório
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-blue-600 dark:text-blue-400 font-bold">
+                    Active Directory (AD DS)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">OpenLDAP, FreeIPA</td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Filosofia Principal
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Tudo usa o <em>Registro (Registry)</em>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-orange-600 dark:text-orange-400 font-bold">
+                    Tudo é um arquivo.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Gestão de Memória</h2>
+          <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm">
+            <li>
+              <strong>Fragmentação:</strong> <br />
+              👉
+              <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded text-xs uppercase tracking-wide"
+                >Paginação</span
+              >
+              gera fragmentação <strong>INTERNA</strong> (sobra espaço inútil <em>dentro</em> da página fixa). <br />
+              👉
+              <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded text-xs uppercase tracking-wide"
+                >Segmentação</span
+              >
+              gera fragmentação <strong>EXTERNA</strong> (sobra espaço inútil <em>entre</em> os segmentos na memória).
+            </li>
+            <li>
+              <strong>Swapping (Páginação em Disco):</strong> A banca diz que "O uso intenso de memória virtual/swapping melhora o desempenho geral da
+              máquina". <br />
+              <span
+                class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                >Falso!</span
+              >
+              O acesso ao disco rígido é milhares de vezes mais lento que a memória RAM. Se o SO passar a vida toda trocando páginas com o disco
+              (fenômeno chamado de <strong>Thrashing</strong>), a máquina fica extremamente lenta.
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos e Arquitetura do Kernel
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>Sistema Operacional</strong> atua como um gerenciador de recursos e uma máquina estendida. Ele abstrai a complexidade do
+              hardware cru (discos, CPU, placa de rede) entregando APIs e interfaces fáceis para os programas e usuários (o conceito de Máquina
+              Virtual/Estendida).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Modo Usuário vs Modo Kernel</h3>
+            <p>Os processadores modernos possuem níveis de privilégio de hardware (Anéis / Rings).</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong class="text-cyan-600 dark:text-cyan-400">Modo Usuário (Ring 3):</strong> Onde rodam os programas comuns (Navegador, Word). Não
+                têm acesso direto ao hardware. Se um programa tenta fazer algo proibido, o SO encerra-o.
+              </li>
+              <li>
+                <strong class="text-cyan-600 dark:text-cyan-400">Modo Kernel (Ring 0):</strong> Privilégio total e absoluto. Controla a memória,
+                processos e fala com o hardware. Para um programa pedir para ler o disco rígido, ele precisa invocar uma
+                <span class="hl-yellow">System Call (Chamada de Sistema)</span>, mudando temporariamente para o Modo Kernel.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Gestão de Processos e Deadlocks
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um <strong>Processo</strong> é um programa em execução. Ele possui um código, dados, pilhas (stacks) e um bloco de controle (PCB -
+              Process Control Block).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-cyan-500 pl-3">Escalonamento (Scheduling)</h3>
+            <p>
+              Num PC com 1 processador de núcleo único, apenas 1 processo roda de cada vez. O <strong>Escalonador (Scheduler)</strong> gera a ilusão
+              de paralelismo trocando a CPU de processo rapidamente.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong>Escalonamento Cooperativo:</strong> O processo só sai da CPU se ele quiser ou quando terminar.
+                <span class="hl-red">Problema:</span> Um programa travado trava a máquina inteira (comum no Windows 3.1).
+              </li>
+              <li>
+                <strong>Escalonamento Preemptivo:</strong> Padrão atual. O SO usa uma interrupção de relógio. Se o "Quantum" (tempo na CPU) acabar, o
+                SO <span class="hl-green">arranca o processo à força</span> e coloca o próximo. (Ato chamado de Troca de Contexto / Context Switch).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-cyan-500 pl-3">
+              Deadlock (Atenção às 4 Condições)
+            </h3>
+            <p>
+              O interbloqueio ocorre apenas se <strong class="underline">QUATRO condições</strong> acontecerem simultaneamente (caem com frequência na
+              FCC/FGV):
+            </p>
+            <ol class="list-decimal pl-6 space-y-1">
+              <li><strong>Exclusão Mútua:</strong> O recurso só pode ser usado por 1 processo por vez.</li>
+              <li><strong>Posse e Espera:</strong> O processo retém um recurso enquanto espera por outro.</li>
+              <li><strong>Não Preempção:</strong> O recurso não pode ser tirado à força do processo.</li>
+              <li><strong>Espera Circular:</strong> P1 espera por P2, que espera por P3... que espera por P1.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Gestão de Memória
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Sistemas modernos usam o conceito de <strong>Memória Virtual</strong>. Ela separa os endereços que o programa vê (Endereços Lógicos) da
+              RAM física real, além de usar o Disco Rígido como extensão da RAM (Swapping). A conversão lógico/físico é feita na CPU por um chip
+              chamado <span class="hl-yellow">MMU (Memory Management Unit)</span>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-cyan-500 pl-3">Paginação vs Segmentação</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-cyan-600 dark:text-cyan-400">Paginação:</strong> A memória (lógica e física) é dividida em blocos de
+                <strong>tamanho rigorosamente fixo</strong> (geralmente 4KB). <br /><span class="text-sm"
+                  >-> Elimina fragmentação externa, mas gera fragmentação interna (se o programa só precisa de 1KB, os outros 3KB da página são
+                  desperdiçados).</span
+                >
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-cyan-600 dark:text-cyan-400">Segmentação:</strong> A memória é dividida em blocos de
+                <strong>tamanho variável</strong> conforme a necessidade da estrutura do programa (ex: um segmento para código, outro para pilhas).
+                <br /><span class="text-sm"
+                  >-> Não gera fragmentação interna, mas gera forte fragmentação externa (buracos entre os segmentos após serem apagados).</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Entrada e Saída (I/O)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Transferir dados do disco para a memória exige coordenação. Como a CPU é notificada de que o disco terminou de buscar o arquivo?</p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4">
+              <li>
+                <strong>Espera Ocupada (Polling):</strong> A CPU fica constantemente a perguntar ao dispositivo: "Já acabou? E agora, já?".
+                <span class="hl-red">Desperdiça tempo total da CPU</span>.
+              </li>
+              <li>
+                <strong>Interrupção (Interrupt):</strong> O disco avisa: "Cpu, pode fazer as suas coisas. Quando eu terminar, envio-te um sinal
+                (IRQs)". <span class="hl-green">Muito mais eficiente.</span>
+              </li>
+              <li>
+                <strong>DMA (Direct Memory Access):</strong> Essencial em provas! Um chip especial transfere dados massivos (ex: 1GB) do Disco rígido
+                <strong>DIRETAMENTE</strong> para a Memória RAM, sem que a CPU precise tratar byte a byte.
+                <span class="hl-yellow">Poupa a CPU para outras tarefas</span> enquanto os dados viajam.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            5. Windows Server e Linux (Diferenciais Administrativos)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Windows Server</h3>
+            <p>
+              A joia da coroa corporativa do Windows Server é o <strong>Active Directory (AD DS)</strong>. Ele funciona como o catálogo global da rede
+              e o centro de identidade. Em conjunto com a <span class="hl-yellow">GPO (Group Policy Object)</span>, permite a um administrador impor
+              de forma centralizada que nenhum computador da rede possa usar pendrives ou trocar de papel de parede. O sistema de ficheiros nativo de
+              alta segurança é o NTFS, com transição atual para o ReFS em grandes volumes de dados.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Linux (Sistemas Unix-like)</h3>
+            <p>
+              O Linux é estruturado de forma completamente diferente. A principal filosofia é:
+              <span class="hl-green">"Tudo é um arquivo"</span> (processos, dispositivos de hardware, conexões de rede... tudo é mapeado no sistema de
+              ficheiros virtual como `/dev` ou `/proc`).
+            </p>
+            <p>
+              <strong>Estrutura de Permissões:</strong> Caem muito em provas comandos como <code>chmod</code>, <code>chown</code>. O esquema padrão
+              possui três blocos de leitura/escrita/execução (rwx): <br />1º bloco: O Utilizador Dono (User). <br />2º bloco: O Grupo (Group).
+              <br />3º bloco: Todos os outros (Others).
+            </p>
+            <p class="text-sm italic mt-2">
+              Exemplo de prova: Um arquivo com permissão <code>777</code> dá acesso total a toda a gente, um enorme risco de segurança. O usuário
+              administrador supremo no Linux tem sempre o nome <span class="hl-yellow">root</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-cyan-600", "border-cyan-600", "dark:text-cyan-400", "dark:border-cyan-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-cyan-600", "border-cyan-600", "dark:text-cyan-400", "dark:border-cyan-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

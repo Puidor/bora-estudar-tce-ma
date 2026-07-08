@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="pt-PT" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Cloud Computing e Virtualização</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9;
+        border-radius: 4px;
+      } /* Sky-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1;
+      } /* Sky-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Cloud Computing e Virtualização
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: Modelos de Serviço -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-sky-800 dark:bg-sky-900 p-4 border-b border-sky-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">☁️ Modelos de Serviço (A Pirâmide SPI)</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-sky-700 dark:text-sky-400 mb-1">IaaS (Infraestrutura)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                Máquinas virtuais, redes e armazenamento "crus". Você instala e gere o Sistema Operativo.
+              </p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Ex: AWS EC2, Azure VMs.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-sky-700 dark:text-sky-400 mb-1">PaaS (Plataforma)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                Foco em <strong>Programadores</strong>. A nuvem gere o SO e os servidores; você gere apenas a sua aplicação e os dados.
+              </p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Ex: Heroku, Google App Engine.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-sky-700 dark:text-sky-400 mb-1">SaaS (Software)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                Foco no <strong>Utilizador Final</strong>. Software pronto a usar via browser. O fornecedor gere tudo (da rede à aplicação).
+              </p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Ex: Gmail, Microsoft 365, Dropbox.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Virtualização -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">💻 Virtualização: O Hypervisor (VMM)</h2>
+            <p class="text-sm text-slate-300 mt-1">O Hypervisor é a camada de software que permite criar e gerir as Máquinas Virtuais (VMs).</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Tipo de Hypervisor</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">Como Funciona?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Performance / Uso</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Tipo 1 (Bare-Metal)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Instalado <strong>DIRETAMENTE</strong> sobre o hardware físico (não existe um SO convencional por baixo).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-emerald-600 dark:text-emerald-400 font-semibold">
+                    Alto Desempenho. Usado em Datacenters. (Ex: VMware ESXi, Hyper-V, Xen).
+                  </td>
+                </tr>
+                <tr class="bg-sky-50/50 dark:bg-sky-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Tipo 2 (Hosted)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Instalado como uma <strong>aplicação sobre um Sistema Operativo</strong> hospedeiro (Windows/Linux/macOS).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Menor desempenho. Usado em PCs domésticos/testes. (Ex: VirtualBox, VMware Workstation).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Macete NIST -->
+          <section class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-blue-800 dark:text-blue-400 mb-3 flex items-center gap-2">📋 As 5 Características (NIST)</h2>
+            <ul class="space-y-2 text-slate-800 dark:text-slate-200 text-sm font-medium">
+              <li>1. Autoatendimento a pedido (On-demand)</li>
+              <li>2. Amplo acesso à rede</li>
+              <li>3. Agrupamento de recursos (Resource Pooling)</li>
+              <li>4. Rápida elasticidade</li>
+              <li>5. Serviço medido (Pay-as-you-go)</li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>Elasticidade vs Escalabilidade:</strong> <br />
+                👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Escalabilidade</span
+                >: Capacidade de suportar o aumento de carga adicionando mais hardware (processo geralmente planeado/estático).<br />
+                👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Elasticidade</span
+                >: É a capacidade de crescer <strong>e encolher</strong> de forma rápida e <strong class="underline">automática</strong> (dinâmica)
+                conforme a procura.
+              </li>
+              <li>
+                <strong>Cloud é Virtualização?</strong> Falso! A virtualização é a <em>tecnologia</em> que abstrai o hardware. Cloud Computing é o
+                <em>modelo de negócio e entrega</em> de serviços através da internet (que tipicamente usa a virtualização como base).
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência da Computação em Nuvem
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Computação em Nuvem (Cloud Computing) é um modelo que permite o acesso ubíquo, conveniente e a pedido, através da rede, a um
+              <strong>conjunto partilhado de recursos de computação configuráveis</strong> (redes, servidores, armazenamento, aplicações e serviços)
+              que podem ser rapidamente aprovisionados e libertados com um esforço mínimo de gestão.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">
+              A Definição Oficial (NIST SP 800-145)
+            </h3>
+            <p>Todas as bancas de concurso baseiam-se no documento do NIST, que define 5 características essenciais da Nuvem:</p>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-600 dark:text-sky-400">1. Autoatendimento a Pedido (On-demand self-service):</strong> O utilizador pode
+                aprovisionar recursos (como tempo de CPU ou espaço em disco) unilateralmente e de forma automática, sem necessitar de interação humana
+                com o prestador do serviço.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-600 dark:text-sky-400">2. Amplo Acesso à Rede (Broad network access):</strong> Os recursos estão disponíveis
+                através da rede e podem ser acedidos através de mecanismos padronizados por várias plataformas (telemóveis, tablets, portáteis,
+                workstations).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-600 dark:text-sky-400">3. Agrupamento de Recursos (Resource pooling):</strong> O modelo
+                <em>multi-tenant</em> (multilocatário). Os recursos do fornecedor são agrupados para servir múltiplos consumidores, com recursos
+                físicos e virtuais atribuídos dinamicamente (o cliente não sabe a localização exata do hardware).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-600 dark:text-sky-400">4. Rápida Elasticidade (Rapid elasticity):</strong> Capacidade de escalar rapidamente
+                para cima (aumentar) ou para baixo (diminuir/libertar recursos) em sintonia com a procura, dando a ilusão de recursos infinitos.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-600 dark:text-sky-400">5. Serviço Medido (Measured service):</strong> "Pay as you go". O sistema controla,
+                otimiza e <span class="hl-green">reporta a utilização dos recursos</span> de forma transparente, cobrando apenas pelo que foi
+                efetivamente utilizado (gigabytes armazenados, horas de processamento).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Modelos de Implantação (Deployment Models)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Onde reside a infraestrutura e quem tem acesso a ela?</p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4">
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400 text-lg">Nuvem Pública (Public Cloud):</strong>
+                A infraestrutura pertence a uma organização que vende serviços na cloud (AWS, Azure, Google Cloud) e é disponibilizada ao público em
+                geral. <span class="hl-red">Maior risco de segurança aparente (ambiente partilhado), mas custos muito baixos.</span>
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400 text-lg">Nuvem Privada (Private Cloud):</strong>
+                A infraestrutura é operada exclusivamente para uma única organização (pode ser gerida pela própria ou por terceiros, on-premise ou
+                off-premise). <span class="hl-green">Garante controlo total e isolamento dos dados.</span>
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400 text-lg">Nuvem Híbrida (Hybrid Cloud):</strong>
+                Uma composição de duas ou mais nuvens distintas (privada e pública) ligadas por tecnologia padronizada.
+                <span class="hl-yellow">Exemplo de prova: <em>Cloud Bursting</em>.</span> A empresa usa a sua Nuvem Privada para a operação normal,
+                mas se houver um pico súbito de tráfego na Black Friday, a infraestrutura "transborda" temporariamente e passa a alugar capacidade da
+                Nuvem Pública.
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400 text-lg">Nuvem Comunitária (Community Cloud):</strong>
+                A infraestrutura é partilhada por várias organizações que partilham preocupações comuns (ex: um grupo de hospitais, ou departamentos
+                do mesmo Governo).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Modelos de Serviço (IaaS, PaaS, SaaS)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Determina o grau de responsabilidade técnica: o que o fornecedor gere vs o que o cliente tem de gerir.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <div class="border border-slate-200 dark:border-slate-700 rounded p-4 shadow-sm bg-slate-50 dark:bg-slate-900">
+                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-lg mb-2 text-center">
+                  IaaS <br /><span class="text-xs text-slate-500 font-normal">Infraestrutura como Serviço</span>
+                </h4>
+                <p class="text-sm">O fornecedor entrega o <strong>hardware cru</strong>, armazenamento, redes e máquinas virtuais.</p>
+                <p class="text-sm mt-2 text-slate-800 dark:text-slate-200 font-semibold">Responsabilidade do Cliente:</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">
+                  Instalar o Sistema Operativo (SO), aplicar patches, instalar as bases de dados e a aplicação.
+                </p>
+                <p class="text-xs mt-3 italic text-slate-500">Ex: AWS EC2, Azure Virtual Machines.</p>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 rounded p-4 shadow-sm bg-slate-50 dark:bg-slate-900">
+                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-lg mb-2 text-center">
+                  PaaS <br /><span class="text-xs text-slate-500 font-normal">Plataforma como Serviço</span>
+                </h4>
+                <p class="text-sm">
+                  O fornecedor entrega a máquina já com o SO, linguagens de programação e base de dados instalados.
+                  <strong>Ideal para Programadores</strong>.
+                </p>
+                <p class="text-sm mt-2 text-slate-800 dark:text-slate-200 font-semibold">Responsabilidade do Cliente:</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">Apenas focar em escrever e enviar o código da sua Aplicação.</p>
+                <p class="text-xs mt-3 text-slate-500 italic">Ex: AWS Elastic Beanstalk, Google App Engine.</p>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 rounded p-4 shadow-sm bg-slate-50 dark:bg-slate-900">
+                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-lg mb-2 text-center">
+                  SaaS <br /><span class="text-xs text-slate-500 font-normal">Software como Serviço</span>
+                </h4>
+                <p class="text-sm">
+                  O fornecedor gere <strong>absolutamente tudo</strong>. O cliente apenas acede ao software pronto a usar através de um navegador web.
+                </p>
+                <p class="text-sm mt-2 text-slate-800 dark:text-slate-200 font-semibold">Responsabilidade do Cliente:</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">Configurações de utilizadores e os dados inseridos.</p>
+                <p class="text-xs mt-3 text-slate-500 italic">Ex: Gmail, Microsoft 365, Salesforce.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Virtualização (A Base da Nuvem)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Nuvem não existiria sem a virtualização. A peça central desta tecnologia é o
+              <strong class="text-sky-600 dark:text-sky-400">Hypervisor</strong> (Monitor de Máquina Virtual - VMM). É o software que cria, gere e
+              fatia os recursos físicos (CPU, RAM) para as Máquinas Virtuais (VMs).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">Tipos de Hypervisor</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Tipo 1 (Bare-Metal ou Nativo):</strong> O Hypervisor roda <span class="hl-green">diretamente sobre o hardware puro</span>. Não
+                há um Sistema Operacional base. Ele É o SO. Alta performance. <br /><em>Exemplos: VMware ESXi, Microsoft Hyper-V, XenServer.</em>
+              </li>
+              <li>
+                <strong>Tipo 2 (Hospedado / Hosted):</strong> O Hypervisor é um software que se instala por cima de um Sistema Operativo hospedeiro
+                normal (Windows, Linux, macOS). <span class="hl-red">Mais lento</span>, pois passa por mais camadas. <br /><em
+                  >Exemplos: VMware Workstation, Oracle VirtualBox.</em
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-cyan-600", "border-cyan-600", "dark:text-cyan-400", "dark:border-cyan-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-cyan-600", "border-cyan-600", "dark:text-cyan-400", "dark:border-cyan-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

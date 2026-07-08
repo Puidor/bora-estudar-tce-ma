@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="pt-PT" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Data Center, Armazenamento e Backup</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Emerald */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #10b981;
+        border-radius: 4px;
+      } /* Emerald-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #047857;
+      } /* Emerald-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-emerald-500 pb-2 inline-block">
+          Data Center, RAID, SAN e Backup
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-emerald-600 border-b-2 border-emerald-600 dark:text-emerald-400 dark:border-emerald-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Confronto: SAN vs NAS -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-emerald-800 dark:bg-emerald-900 p-4 border-b border-emerald-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: NAS vs SAN</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">
+                    NAS (Network Attached Storage)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    SAN (Storage Area Network)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Acesso a Dados</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-sky-600 dark:text-sky-400">
+                    Nível de Ficheiro (File-Level)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Nível de Bloco (Block-Level)
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Protocolos Usados</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    NFS, SMB/CIFS, HTTP (via TCP/IP)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Fibre Channel (FC), iSCSI, FCoE
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Visão do Computador
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Aparece como uma <strong>Pasta Partilhada</strong> na rede.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Aparece como um <strong>Disco Local</strong> (unidade c: / d:).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Performance e Custo
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Mais barato e simples. Menor performance.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Alto custo e complexidade. <strong>Altíssima performance</strong>.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa de Backup -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">💾 Os Tipos de Backup (Core Decoreba)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Tipo</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">O que copia?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400">Archive Bit (Marcador)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Restauração (Restore)</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-slate-400">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Completo (Full)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>TUDO.</strong> Todos os ficheiros selecionados.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">LIMPA o bit.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Rápida (só precisa de 1 fita/arquivo).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-sky-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Diferencial</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Tudo o que mudou desde o último <strong>COMPLETO</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">NÃO LIMPA o bit.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Média (precisa do Completo + Último Diferencial = 2 fitas).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Incremental</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Tudo o que mudou desde o <strong>ÚLTIMO BACKUP</strong> (qualquer tipo).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">LIMPA o bit.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">
+                    Lenta (precisa do Completo + TODOS os Incrementais diários).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Níveis de RAID -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-emerald-500 text-2xl">💽</span> Níveis de RAID
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 text-center">
+              <h3 class="font-black text-slate-800 dark:text-white text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-2">RAID 0</h3>
+              <p class="font-bold text-emerald-600 dark:text-emerald-400 mb-1">Striping</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Fatia os dados entre discos. Soma o espaço. <strong>Performance máxima, ZERO tolerância a falhas</strong>. Se 1 disco morrer, perde-se
+                tudo.
+              </p>
+              <p class="text-xs font-bold mt-2">Mín: 2 discos</p>
+            </div>
+
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 text-center">
+              <h3 class="font-black text-slate-800 dark:text-white text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-2">RAID 1</h3>
+              <p class="font-bold text-sky-600 dark:text-sky-400 mb-1">Mirroring (Espelho)</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Grava a mesma coisa nos dois discos. <strong>Redundância total</strong>. Perde-se 50% do espaço total para o espelho.
+              </p>
+              <p class="text-xs font-bold mt-2">Mín: 2 discos</p>
+            </div>
+
+            <div class="border-t-4 border-indigo-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <h3 class="font-black text-slate-800 dark:text-white text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-2">RAID 5</h3>
+              <p class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">Striping c/ Paridade</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                O mais famoso! Une performance e segurança. Se <strong>UM disco</strong> queimar, a paridade reconstrói os dados.
+              </p>
+              <p class="text-xs font-bold mt-2 text-indigo-600 dark:text-indigo-400">Mín: 3 discos</p>
+            </div>
+
+            <div class="border-t-4 border-fuchsia-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <h3 class="font-black text-slate-800 dark:text-white text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-2">RAID 10</h3>
+              <p class="font-bold text-fuchsia-600 dark:text-fuchsia-400 mb-1">RAID 1 + RAID 0</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Faz o espelhamento (1) e depois fatia (0). O melhor de ambos os mundos para bases de dados críticas, mas muito caro.
+              </p>
+              <p class="text-xs font-bold mt-2 text-fuchsia-600 dark:text-fuchsia-400">Mín: 4 discos</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+          <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+          <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+            <li>
+              <strong>O que é Deduplicação?</strong> A banca diz que Deduplicação é o mesmo que Compressão (ZIP).
+              <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>. A
+              Compressão reduz o tamanho do ficheiro através de algoritmos. A <strong>Deduplicação elimina blocos de dados idênticos</strong>. Se
+              tivermos 100 VMs Windows Server, em vez de guardar o C:\Windows 100 vezes no backup, a deduplicação guarda apenas 1 cópia e cria 99
+              atalhos.
+            </li>
+            <li>
+              <strong>O Restauro do Incremental:</strong> Para restaurar um servidor de Sexta-feira que usa backup Incremental Diário, precisa de:
+              Backup Completo (Domingo) + Incremental (Seg) + Inc (Ter) + Inc (Qua) + Inc (Qui) + Inc (Sex). Se a fita de Quarta-feira estiver
+              corrompida, <strong class="underline decoration-red-500">perde todos os dados de Quarta em diante!</strong>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Data Center e Alta Disponibilidade (Tiers)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um Data Center (Centro de Processamento de Dados) é uma instalação física dedicada a alojar sistemas informáticos e os seus componentes
+              (telecomunicações e sistemas de armazenamento). Para garantir a disponibilidade (Uptime), o <em>Uptime Institute</em> criou a
+              classificação em <strong>Tiers (Camadas)</strong>:
+            </p>
+            <ul class="list-none space-y-3 mt-4">
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Tier 1 (Básico):</strong> Componentes sem redundância. Se houver manutenção,
+                tem de desligar tudo. Disponibilidade de 99,67%.
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Tier 2 (Componentes Redundantes):</strong> Tem UPS e geradores, mas apenas um
+                caminho de distribuição de energia/frio. Manutenção ainda exige paragem.
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Tier 3 (Manutenção Concorrente):</strong> Múltiplos caminhos de energia.
+                Permite fazer manutenção num equipamento sem desligar o Data Center. Disponibilidade de 99,98%.
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Tier 4 (Tolerante a Falhas):</strong> Totalmente redundante em todos os aspetos
+                (2N). Se um equipamento explodir ou a energia da cidade cair, a infraestrutura nem "pisca". Exigido para
+                <strong>Ambientes de Missão Crítica</strong> (hospitais, bancos). Disponibilidade de 99,995%.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Armazenamento, Discos e Interfaces
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2 border-l-4 border-emerald-500 pl-3">Tecnologias de Disco</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>HDD (Hard Disk Drive):</strong> Discos magnéticos mecânicos. Lentos, mas oferecem
+                <span class="hl-yellow">alta capacidade de armazenamento a baixo custo</span>. Muito usados para backups frios ou dados arquivados.
+              </li>
+              <li>
+                <strong>SSD (Solid State Drive):</strong> Usa memória Flash (NAND). Sem partes móveis. Altíssima velocidade de Leitura/Escrita (IOPS).
+                Preço por GB mais alto que o HDD.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-emerald-500 pl-3">
+              Protocolos e Interfaces de Conexão
+            </h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>SATA:</strong> Padrão doméstico/empresarial básico. Limitado historicamente a ~600 MB/s (SATA III).</li>
+              <li>
+                <strong>SAS (Serial Attached SCSI):</strong> Padrão corporativo para servidores. Mais rápido, fiável e permite ligar dezenas de discos
+                em cascata. Substituiu o antigo SCSI paralelo.
+              </li>
+              <li>
+                <strong>NVMe (Non-Volatile Memory Express):</strong> A revolução! Desenvolvido especificamente para SSDs. Ele abandona os cabos
+                SATA/SAS lentos e liga-se diretamente ao barramento <strong>PCI Express (PCIe)</strong> da motherboard, atingindo velocidades de
+                vários Gigabytes por segundo.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Arquiteturas: DAS, NAS e SAN
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">DAS (Direct Attached Storage)</h3>
+            <p>
+              É o disco ligado diretamente à máquina (seja por cabo SATA, USB ou SAS). Se o Servidor A desligar, o Servidor B não consegue ler os
+              discos do Servidor A. (Baixa escalabilidade).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">NAS (Network Attached Storage)</h3>
+            <p>
+              É um "mini computador" ligado à rede local (switch Ethernet normal via TCP/IP). Ele tem o seu próprio SO e partilha as suas pastas na
+              rede através de protocolos de ficheiros como <strong>NFS (Linux/Unix) ou SMB/CIFS (Windows)</strong>. É fácil de instalar, gerir e é
+              mais barato. O acesso ocorre <em>File-Level (Nível de Ficheiro)</em>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-emerald-500 pl-3">SAN (Storage Area Network)</h3>
+            <p>
+              É uma rede inteira construída <strong>exclusivamente</strong> para armazenamento. Em vez de usar os cabos de rede normais da empresa
+              (que poderiam congestionar), a SAN corporativa usa cabos de fibra ótica e switches dedicados utilizando o protocolo
+              <span class="hl-yellow">Fibre Channel (FC)</span> ou o <span class="hl-yellow">iSCSI</span> (que empacota o SCSI em TCP/IP para usar
+              cabos ethernet normais).
+            </p>
+            <p>
+              Na SAN, a Array de discos gigante fica na prateleira. Quando um servidor se liga à SAN, o SO do servidor "pensa" que acabou de lhe ser
+              encaixado um disco rígido físico local vazio. Ele formata o disco (NTFS/ext4) e gere-o a <em>Block-Level (Nível de Bloco)</em>. É vital
+              para Bases de Dados gigantes e Clusters de Virtualização.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Otimização Avançada de Armazenamento
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Deduplicação (Data Deduplication)</h3>
+            <p>
+              Técnica especializada para reduzir drasticamente a necessidade de espaço de armazenamento,
+              <strong>eliminando cópias redundantes de dados a nível de bloco de bytes</strong>. Se 100 utilizadores receberem o mesmo anexo de e-mail
+              de 10MB, em vez de guardar 1GB, o sistema de storage inteligente guarda apenas os 10MB originais e cria 99 ponteiros (ponteiros de
+              referência).
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong>Inline Deduplication:</strong> Os dados são deduplicados na memória RAM <em>antes</em> de serem escritos no disco.
+                <span class="hl-red">Exige processadores fortíssimos</span>, mas poupa escritas no disco (aumentando a vida útil de SSDs).
+              </li>
+              <li>
+                <strong>Post-Process Deduplication:</strong> Os dados são gravados normalmente no disco. Durante a madrugada (horário de baixo
+                tráfego), o sistema varre o disco, encontra os blocos iguais e apaga os repetidos.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">RAID 6 (O Reforço)</h3>
+            <p>
+              Conforme os discos cresceram para 10TB, 20TB, o RAID 5 começou a apresentar problemas: se um disco falhar, reconstruir 20TB nos
+              restantes pode demorar dias. Se um segundo disco falhar durante a reconstrução, perde-se TUDO. O
+              <strong class="text-emerald-600 dark:text-emerald-400">RAID 6</strong> resolve isso introduzindo <strong>Dupla Paridade</strong>. Exige
+              no mínimo 4 discos e <span class="hl-green">suporta a falha simultânea de até 2 discos</span> sem perder informação.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-emerald-600", "border-emerald-600", "dark:text-emerald-400", "dark:border-emerald-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-emerald-600", "border-emerald-600", "dark:text-emerald-400", "dark:border-emerald-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

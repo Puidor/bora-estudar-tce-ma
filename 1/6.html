@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Criptografia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Criptografia e Certificação
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: O Confronto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Simétrica vs Assimétrica</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">
+                    Simétrica (Chave Secreta)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
+                    Assimétrica (Chave Pública)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Chaves Utilizadas</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>UMA</strong> única chave (usada para cifrar e decifrar).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>DUAS</strong> chaves (Par: Pública e Privada).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Velocidade e Custo de CPU
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Muito Rápida e Leve
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">Muito Lenta e Pesada</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">O Grande Problema</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Distribuição segura da chave secreta.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Autenticidade (A chave pública é mesmo daquela pessoa?).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Algoritmos Famosos</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>AES</strong>, DES, 3DES, RC4, Blowfish, ChaCha20
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>RSA</strong>, <strong>ECC</strong>, Diffie-Hellman, ElGamal
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Resumo Visual: Assinatura vs Sigilo -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">🔄</span> A Lógica das Chaves Assimétricas
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Para Sigilo -->
+            <div class="border border-sky-200 dark:border-sky-800 rounded-lg p-5 relative overflow-hidden bg-sky-50 dark:bg-sky-900/10">
+              <div class="absolute top-0 right-0 bg-sky-200 dark:bg-sky-800 text-sky-800 dark:text-sky-200 text-xs font-bold px-3 py-1 rounded-bl-lg">
+                OBJETIVO: SIGILO
+              </div>
+              <h3 class="font-bold text-sky-800 dark:text-sky-400 mb-3 mt-2">Garantir Confidencialidade</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">Se João quer enviar um segredo para Maria:</p>
+              <ol class="text-sm space-y-2 list-decimal list-inside text-slate-800 dark:text-slate-200 font-medium">
+                <li>João cifra com a <strong class="text-sky-600 dark:text-sky-400">Chave PÚBLICA de Maria</strong>.</li>
+                <li>Maria decifra com a <strong class="text-sky-600 dark:text-sky-400">Chave PRIVADA de Maria</strong>.</li>
+              </ol>
+              <p class="text-xs text-slate-500 mt-3 italic">*Apenas Maria possui a chave privada dela, logo, só ela consegue ler.</p>
+            </div>
+
+            <!-- Para Assinatura -->
+            <div
+              class="border border-fuchsia-200 dark:border-fuchsia-800 rounded-lg p-5 relative overflow-hidden bg-fuchsia-50 dark:bg-fuchsia-900/10"
+            >
+              <div
+                class="absolute top-0 right-0 bg-fuchsia-200 dark:bg-fuchsia-800 text-fuchsia-800 dark:text-fuchsia-200 text-xs font-bold px-3 py-1 rounded-bl-lg"
+              >
+                OBJETIVO: ASSINATURA
+              </div>
+              <h3 class="font-bold text-fuchsia-800 dark:text-fuchsia-400 mb-3 mt-2">Garantir Autenticidade e Não-Repúdio</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">Se João quer provar para Maria que o documento é dele:</p>
+              <ol class="text-sm space-y-2 list-decimal list-inside text-slate-800 dark:text-slate-200 font-medium">
+                <li>João cifra o HASH com a <strong class="text-fuchsia-600 dark:text-fuchsia-400">Chave PRIVADA do João</strong>.</li>
+                <li>Maria decifra o HASH com a <strong class="text-fuchsia-600 dark:text-fuchsia-400">Chave PÚBLICA do João</strong>.</li>
+              </ol>
+              <p class="text-xs text-slate-500 mt-3 italic">
+                *Como a pública abriu, é a prova matemática de que foi trancado com a privada exclusiva de João.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Certificado Digital -->
+          <section class="bg-teal-50 dark:bg-teal-900/20 border-l-4 border-teal-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-teal-800 dark:text-teal-400 mb-3 flex items-center gap-2">📜 Certificação Digital (ICP)</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>O que é o Certificado?</strong> É um arquivo eletrônico que funciona como um "RG digital". Ele
+                <strong class="text-teal-600 dark:text-teal-400">associa uma Entidade (João) à sua Chave Pública</strong>.
+              </li>
+              <li><strong>AC (Autoridade Certificadora):</strong> O "Cartório". Entidade de confiança que emite, assina e revoga os certificados.</li>
+              <li>
+                <strong>AR (Autoridade de Registro):</strong> O "Balcão". Interface entre o usuário e a AC. Recebe os documentos, tira a foto, valida
+                a biometria, mas <span class="underline decoration-teal-500">NÃO emite o certificado</span>.
+              </li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>A Assinatura Digital esconde o arquivo?</strong>
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                Assinar digitalmente um arquivo PDF <strong>não criptografa o texto do PDF</strong>. O PDF continua legível. Apenas o "Resumo Hash" é
+                criptografado.
+              </li>
+              <li>
+                <strong>Diffie-Hellman criptografa dados?</strong>
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                O algoritmo Diffie-Hellman não serve para criptografar uma mensagem nem para assinar. Ele serve <strong>EXCLUSIVAMENTE</strong> para o
+                <em>Acordo/Troca Segura de Chaves Simétricas</em> em um canal inseguro.
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência da Criptografia
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A criptografia é o ramo da matemática focado em proteger a informação. O processo pega num <strong>Texto Claro (Plaintext)</strong> e,
+              através de um algoritmo e uma <strong>Chave</strong>, o transforma em um <strong>Texto Cifrado (Ciphertext)</strong> ininteligível.
+            </p>
+            <p>
+              <strong>Princípio de Kerckhoffs:</strong> Um conceito que cai em provas teóricas. Kerckhoffs afirmou que
+              <span class="hl-green"
+                >a segurança de um sistema criptográfico não deve depender de manter o algoritmo em segredo, mas SIM de manter a CHAVE em
+                segredo</span
+              >. Todos os algoritmos modernos (como o AES e o RSA) são públicos e exaustivamente testados por hackers do mundo todo.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Cifra de Bloco vs Cifra de Fluxo (Stream)</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Bloco (Block Cipher):</strong> Pega a mensagem, corta em pedaços fixos (ex: blocos de 128 bits) e criptografa bloco por bloco.
+                É o método do <span class="hl-yellow">AES e do DES</span>. Excelente para arquivos guardados (Data at Rest).
+              </li>
+              <li>
+                <strong>Fluxo (Stream Cipher):</strong> Criptografa bit a bit (ou byte a byte) de forma contínua em tempo real. É o método do
+                <span class="hl-yellow">RC4 e do ChaCha20</span>. Muito rápido, excelente para streaming de áudio/vídeo.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Criptografia Simétrica (Chave Secreta)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Criptografia Simétrica usa <strong>uma única chave</strong> (chave secreta) para fazer a ida (cifrar) e a volta (decifrar). Ela
+              baseia-se em operações matemáticas simples, como deslocamentos de bits (XOR) e permutações.
+            </p>
+            <p>
+              <span class="hl-green">Vantagem Ouro:</span> É extremamente rápida (chega a ser de 100 a 1000 vezes mais rápida que a assimétrica).
+              Ideal para encriptar bancos de dados gigantes ou discos rígidos inteiros (BitLocker). <br /><span class="hl-red"
+                >Desvantagem Fatal:</span
+              >
+              O "Problema da Distribuição de Chaves". Como eu envio a chave secreta para a Maria de forma segura, se a internet é cheia de espiões?
+              (Este problema foi resolvido pela Criptografia Assimétrica).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
+              O Escovão de Bits dos Algoritmos
+            </h3>
+            <ul class="list-none space-y-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">DES (Data Encryption Standard):</strong> O avô de todos. Criado nos anos 70. Usa
+                blocos de 64 bits e chave efetiva de apenas <strong>56 bits</strong>. Hoje é
+                <span class="hl-red">considerado quebrado e totalmente obsoleto</span>, pois pode ser quebrado por força bruta em poucas horas.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">3DES (Triple DES):</strong> A solução temporária. Pega no algoritmo DES e passa o
+                arquivo por ele três vezes, usando 2 ou 3 chaves diferentes. É mais seguro (112 ou 168 bits), mas é
+                <span class="hl-yellow">pesado e muito lento</span>. Está a ser descontinuado (deprecated) pelo NIST.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">AES (Advanced Encryption Standard):</strong> O Padrão Ouro Mundial. Foi o
+                vencedor do concurso para substituir o DES (seu nome original era Rijndael). Possui blocos de 128 bits e aceita chaves de
+                <strong>128, 192 ou 256 bits</strong>. É rápido, elegante e
+                <span class="hl-green">matematicamente inquebrável pelas tecnologias clássicas atuais</span>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Criptografia Assimétrica (Chave Pública)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Inventada nos anos 70 por Diffie e Hellman, ela usa um <strong>Par de Chaves</strong> matematicamente entrelaçadas. Uma chave é a
+              <strong>Pública</strong> (pode publicar no jornal, no site, entregar a todos) e a outra é a <strong>Privada</strong> (fica trancada no
+              seu cofre/Smartcard). <br /><span class="hl-yellow"
+                >Regra de Ouro: O que uma chave tranca, APENAS a outra chave do par consegue destrancar.</span
+              >
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
+              A Matemática por Trás (Para o CEBRASPE)
+            </h3>
+            <ul class="list-none space-y-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">RSA (Rivest-Shamir-Adleman):</strong> O mais famoso e amplamente utilizado. A sua
+                segurança matemática baseia-se na extrema dificuldade computacional de se realizar a
+                <span class="hl-yellow">fatoração de números primos gigantescos</span>. Se você multiplicar dois números primos enormes, calcular o
+                resultado (chave pública) é fácil e imediato, mas pegar no resultado e descobrir quais foram os dois primos originais (chave privada)
+                leva milhões de anos num computador convencional. As chaves são grandes (2048 a 4096 bits).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">ECC (Elliptic Curve Cryptography - Curvas Elípticas):</strong> A evolução.
+                Baseia-se no cálculo do logaritmo discreto em curvas elípticas. O grande benefício de prova é que o ECC
+                <span class="hl-green">oferece a mesma segurança que o RSA, usando chaves infinitamente menores</span>. (Ex: Uma chave ECC de 256 bits
+                equivale em segurança a uma chave RSA de 3072 bits). Por ser leve, é o padrão absoluto hoje para dispositivos móveis, IoT e
+                criptomoedas.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Assinatura, Certificação (PKI) e Protocolos
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">A Assinatura Digital Perfeita</h3>
+            <p>
+              A Assinatura Digital combina a <strong>Função Hash</strong> com a <strong>Criptografia Assimétrica</strong>. O remetente passa o
+              documento por um Hash (MD5, SHA256). Esse Hash resultante é criptografado usando a <em>Chave Privada</em> do remetente. O documento (em
+              texto claro) e o Hash criptografado viajam juntos. O destinatário usa a <em>Chave Pública</em> do remetente para descriptografar o Hash
+              e provar a <strong>Autenticidade</strong> e o <strong>Não-repúdio</strong>, garantindo também a <strong>Integridade</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A Infraestrutura de Chaves Públicas (PKI / ICP-Brasil)</h3>
+            <p>
+              Como eu tenho a certeza que a chave pública "Maria_Pub.key" pertence realmente à Maria, e não a um hacker fingindo ser ela? O
+              <span class="hl-yellow">Certificado Digital</span> (Padrão X.509) resolve isso. Ele é um documento assinado digitalmente por um
+              "cartório de confiança", afirmando: <em>"Eu garanto que esta chave pertence à Maria"</em>.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 text-sm mt-2">
+              <li>
+                <strong>Autoridade Raiz:</strong> No Brasil, é o ITI (Instituto Nacional de Tecnologia da Informação). É o topo da cadeia da
+                ICP-Brasil.
+              </li>
+              <li><strong>AC (Autoridade Certificadora):</strong> Entidade que emite os certificados (Ex: Serpro, Caixa Econômica, Certisign).</li>
+              <li>
+                <strong>AR (Autoridade de Registro):</strong> Onde você vai presencialmente levar a sua identidade (RG/CNH) para a validação.
+                <span class="hl-red">Elas não emitem o certificado, só fazem a coleta e conferência de dados.</span>
+              </li>
+              <li>
+                <strong>LCR (Lista de Certificados Revogados):</strong> Uma "lista negra" pública gerida pela AC, contendo todos os certificados que
+                foram cancelados antes da data de expiração (ex: porque o smartcard foi roubado ou o funcionário foi demitido). Se o certificado
+                estiver na LCR, ele torna-se inválido instantaneamente.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              O Casamento (Sistemas Híbridos)
+            </h3>
+            <p>
+              Protocolos do mundo real (como o <strong>SSL/TLS</strong> que protege os sites HTTPS, ou o <strong>IPSec</strong> que protege as VPNs)
+              usam <span class="hl-green">Sistemas Híbridos</span>.
+            </p>
+            <p>
+              Eles usam a <strong>Criptografia Assimétrica (RSA/ECC/Diffie-Hellman)</strong> num primeiro momento de "Aperto de Mãos" (Handshake)
+              apenas para trocar e concordar com uma Chave Secreta de forma segura através da Internet. Depois que ambos concordam com a chave
+              secreta, eles <em>descartam</em> a assimétrica e passam a usar apenas a <strong>Criptografia Simétrica (AES)</strong> para encriptar o
+              volume de dados da sessão, garantindo máxima velocidade.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

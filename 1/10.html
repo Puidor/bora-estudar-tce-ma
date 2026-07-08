@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Servidores de Aplicação e HA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Fuchsia */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d946ef;
+        border-radius: 4px;
+      } /* Fuchsia-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #a21caf;
+      } /* Fuchsia-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-fuchsia-600 dark:text-fuchsia-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-fuchsia-600 dark:text-fuchsia-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-fuchsia-500 pb-2 inline-block">
+          Servidores de Aplicação e HA
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-fuchsia-600 border-b-2 border-fuchsia-600 dark:text-fuchsia-400 dark:border-fuchsia-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Web Server vs App Server -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-fuchsia-800 dark:bg-fuchsia-900 p-4 border-b border-fuchsia-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Servidor Web vs Servidor de Aplicação</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">Servidor Web</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-fuchsia-600 dark:text-fuchsia-400">
+                    Servidor de Aplicação
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Conteúdo <strong>Estático</strong> (HTML, Imagens, CSS).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Conteúdo <strong>Dinâmico</strong> e Lógica de Negócio.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Protocolos Suportados
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Principalmente HTTP / HTTPS.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    HTTP, RMI, RPC, JMS, protocolos de banco de dados.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Funcionalidades Extras
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Proxy reverso, Cache.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Connection Pooling, Gestão de Transações e Sessões.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Exemplos Clássicos</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-sky-600 dark:text-sky-400">
+                    Apache HTTP Server, Nginx, IIS.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-fuchsia-600 dark:text-fuchsia-400">
+                    Tomcat, JBoss/WildFly, WebSphere, WebLogic.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- A Tríade da Alta Disponibilidade -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-fuchsia-500 text-2xl">⚙️</span> A Tríade da Alta Disponibilidade (HA)
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Balanceamento -->
+            <div class="border-t-4 border-sky-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 relative">
+              <div class="absolute -top-3 -right-2 text-2xl">⚖️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Load Balancing</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                Distribui as requisições dos usuários entre vários servidores para evitar sobrecarga em um único nó. (Escalabilidade Horizontal).
+              </p>
+            </div>
+
+            <!-- Fail-over -->
+            <div class="border-t-4 border-rose-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 relative">
+              <div class="absolute -top-3 -right-2 text-2xl">🔄</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Fail-over</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                Mecanismo de tolerância a falhas. Se o Servidor A "morrer", o Servidor B detecta (via <em>Heartbeat</em>) e assume o tráfego
+                instantaneamente.
+              </p>
+            </div>
+
+            <!-- Replicação de Estado -->
+            <div class="border-t-4 border-fuchsia-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 relative">
+              <div class="absolute -top-3 -right-2 text-2xl">💾</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Session Replication</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                Copia os dados da sessão (ex: carrinho de compras) para os outros nós. Se o servidor cair, o usuário não perde o que estava fazendo.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Macete Sticky Session -->
+          <section class="bg-indigo-50 dark:bg-indigo-900/20 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-indigo-800 dark:text-indigo-400 mb-3 flex items-center gap-2">📌 Sticky Sessions (Afinidade)</h2>
+            <ul class="space-y-2 text-slate-800 dark:text-slate-200 text-sm font-medium">
+              <li>
+                Quando o Load Balancer roteia o Usuário X para o Servidor 1 na primeira vez, e "gruda" (prende) esse usuário sempre no Servidor 1 nas
+                requisições futuras.
+              </li>
+              <li><strong>Vantagem:</strong> Evita a necessidade complexa de replicar o estado da sessão para todos os nós.</li>
+              <li><strong>Desvantagem:</strong> Se o Servidor 1 cair, o Usuário X perde a sessão inteira (é deslogado).</li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Desempenho</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>Connection Pooling (Pool de Conexões):</strong> A banca vai dizer que serve para criptografar o banco de dados.
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                Serve para <strong>reaproveitar conexões</strong> abertas com o Banco de Dados, economizando CPU e tempo. É crucial para o desempenho.
+              </li>
+              <li>
+                <strong>Ativo-Ativo vs Ativo-Passivo:</strong> <br />
+                👉 <em>Ativo-Ativo</em>: Todos os servidores atendem requisições ao mesmo tempo (Usa Load Balancer).<br />
+                👉 <em>Ativo-Passivo</em>: O Servidor 2 fica dormindo. Só acorda e trabalha se o Servidor 1 pifar (É puramente Fail-over).
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Arquitetura em 3 Camadas (3-Tier)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para entender o Servidor de Aplicação, precisamos entender onde ele mora. A arquitetura corporativa clássica divide o sistema em três
+              camadas físicas ou lógicas:
+            </p>
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400">1. Camada de Apresentação (Web Server):</strong> Fica na linha de frente
+                (frequentemente numa DMZ). Lida com o protocolo HTTP e entrega páginas HTML, CSS e Imagens direto para o navegador.
+                <em>(Ex: Nginx, Apache HTTPd)</em>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-fuchsia-500">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400">2. Camada de Lógica de Negócio (App Server):</strong> O "Cérebro". Fica
+                escondido na rede interna. Processa os cálculos complexos, validações de negócio, gerencia transações financeiras e compila páginas
+                dinâmicas (PHP, Java EE, .NET). <em>(Ex: JBoss, Tomcat, WebLogic)</em>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400">3. Camada de Dados (Database Server):</strong> Onde a informação é armazenada
+                persistentemente. O Servidor de Aplicação é o único que tem permissão para conversar com o Banco de Dados.
+                <em>(Ex: Oracle, PostgreSQL)</em>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Balanceamento de Carga (Load Balancing)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para garantir <strong>Escalabilidade Horizontal</strong> (adicionar mais máquinas lado a lado), colocamos um Balanceador de Carga na
+              frente dos servidores de aplicação. Ele atua como um maestro.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-fuchsia-500 pl-3">
+              Algoritmos de Distribuição (Atenção para Provas)
+            </h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong class="text-slate-900 dark:text-white">Round-Robin (Chave de Prova):</strong> É o método mais simples. Distribui as
+                requisições de forma circular e sequencial. Requisição 1 vai pro Servidor A; Requisição 2 vai pro Servidor B; Requisição 3 vai pro
+                Servidor C; a Requisição 4 volta pro A. <span class="hl-red">Não leva em conta se o servidor A já está sobrecarregado</span>.
+              </li>
+              <li>
+                <strong class="text-slate-900 dark:text-white">Least Connections (Menos Conexões):</strong> Mais inteligente. Envia a nova requisição
+                para o servidor que tiver o <span class="hl-green">menor número de sessões/conexões ativas</span> no momento.
+              </li>
+              <li>
+                <strong class="text-slate-900 dark:text-white">IP Hash:</strong> Usa o Endereço IP do cliente para gerar um hash e determinar o
+                servidor. Garante que o Cliente X sempre caia no Servidor A (é uma forma de implementar <em>Sticky Sessions</em> no nível do
+                balanceador).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Gestão e Replicação de Estado (State)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O protocolo HTTP é <em>Stateless</em> (não guarda estado). Se você faz login na página 1 e vai para a página 2, o servidor não lembraria
+              quem você é. Os Servidores de Aplicação resolvem isso criando uma <strong>Sessão (Session)</strong> mantida na memória RAM.
+            </p>
+            <p>
+              O problema: Num Cluster com 3 servidores, se você fez login no Servidor A, e a próxima requisição cair no Servidor B, o B não tem a sua
+              sessão em memória. O sistema pedirá para você fazer login de novo.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Técnicas de Resolução</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400 text-lg">1. Afinidade de Sessão (Sticky Sessions)</strong><br />
+                Mandar o usuário sempre para o mesmo servidor.
+                <br /><span class="text-sm italic">Problema: Fere o balanceamento perfeito e, se o nó falhar, a sessão morre.</span>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400 text-lg">2. In-Memory Session Replication</strong><br />
+                Sempre que o Servidor A atualiza uma sessão, ele envia uma cópia (via rede, normalmente <em>Multicast</em>) para as memórias RAM dos
+                Servidores B e C. <br /><span class="text-sm italic"
+                  >Problema: Se o cluster crescer muito (ex: 20 servidores), a rede fica engarrafada só copiando sessões (Traffic Overhead).</span
+                >
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400 text-lg">3. Cache Externo / Banco Centralizado</strong><br />
+                A melhor abordagem moderna. Nenhum servidor guarda a sessão na sua própria RAM. Eles gravam as sessões num servidor de Cache externo
+                ultra-rápido (como <span class="hl-yellow">Redis ou Memcached</span>). Qualquer nó pode atender qualquer requisição e ler o estado no
+                Redis.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Otimização de Desempenho (Tuning) e Detecção de Problemas
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A administração de servidores de aplicação (como o Tomcat ou JBoss) exige configurações finas ("Tuning") para evitar gargalos
+              (Bottlenecks) e vazamentos de memória (Memory Leaks).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-fuchsia-500 pl-3">
+              A Mágica do Connection Pooling
+            </h3>
+            <p>
+              Abrir uma conexão TCP com um Banco de Dados é um processo demorado e custoso para a CPU. Se o App Server abrisse e fechasse uma conexão
+              para cada clique de cada usuário, o sistema colapsaria. O <strong>Pool de Conexões</strong> mantém um "lote" de conexões já abertas e
+              ativas com o banco. O usuário pega uma emprestada, usa em milissegundos e devolve ao Pool.
+              <span class="hl-green">Economiza recursos massivamente.</span>
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-fuchsia-500 pl-3">Thread Pooling</h3>
+            <p>
+              Idêntico ao banco de dados, mas focado no processamento de requisições web. O servidor pré-cria um número X de "operários" (Threads). Se
+              chegar uma carga súbita de 1000 usuários e só houver 200 threads no pool, 800 usuários ficarão na fila de espera. O
+              <em>tuning</em> correto do <code>maxThreads</code> é vital.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-fuchsia-500 pl-3">
+              Detecção de Problemas (APM e JVM)
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong>APM (Application Performance Monitoring):</strong> Ferramentas (ex: Dynatrace, New Relic) que injetam agentes no código e
+                mostram exatamente em qual linha de código a lentidão está a ocorrer.
+              </li>
+              <li>
+                <strong>Garbage Collection (GC):</strong> No ecossistema Java (onde rodam os maiores App Servers), o GC limpa a memória RAM
+                automaticamente. Se mal configurado, o GC pode "congelar" o servidor inteiro (fenômeno <em>Stop-the-World</em>) por vários segundos.
+                Monitorizar os logs do GC é rotina de administração obrigatória.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-fuchsia-600", "border-fuchsia-600", "dark:text-fuchsia-400", "dark:border-fuchsia-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-fuchsia-600", "border-fuchsia-600", "dark:text-fuchsia-400", "dark:border-fuchsia-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

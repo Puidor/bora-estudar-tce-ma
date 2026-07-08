@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="pt-PT" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Serviços de Diretório (AD e LDAP)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Serviços de Diretório: AD e LDAP
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>Serviço de Diretório:</strong> É um banco de dados hierárquico, <strong>altamente otimizado para leituras</strong> e pesquisas
+              (e não para escritas constantes), usado para armazenar informações sobre utilizadores, computadores e recursos da rede.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>LDAP (Lightweight Directory Access Protocol):</strong> É o protocolo de comunicação padrão da indústria (Porta
+              <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded">TCP/UDP 389</span
+              >) usado para consultar e modificar os serviços de diretório.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>Active Directory (AD DS):</strong> É a implementação proprietária da Microsoft de um serviço de diretório. Utiliza o LDAP para
+              consultas, o
+              <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded">Kerberos</span>
+              para autenticação e depende criticamente do
+              <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded">DNS</span> para
+              localização de serviços.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Estrutura Lógica do AD -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🌳 Estrutura Lógica do Active Directory</h2>
+            <p class="text-sm text-slate-300 mt-1">Hierarquia clássica cobrada em provas (da menor para a maior):</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1">1. Objeto</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                A unidade básica. Pode ser um Utilizador (João), um Computador (PC-RH) ou uma Impressora.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1">2. UO (Unidade Organizacional)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                A "pasta". Agrupa objetos para facilitar a administração e aplicar políticas (GPOs). Ex: UO_Financas.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1">3. Domínio</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                A fronteira central de segurança e administração. Partilha a mesma base de dados. Ex: <code>empresa.local</code>.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1">4. Árvore e Floresta</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Árvore:</strong> Domínios com o mesmo espaço de nomes contíguo. <strong>Floresta:</strong> O nível máximo, agrupa várias
+                árvores distintas que partilham o mesmo Catálogo Global.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Sintaxe LDAP -->
+          <section class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-blue-800 dark:text-blue-400 mb-3 flex items-center gap-2">🔤 Sintaxe LDAP (Decoreba)</h2>
+            <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+              O LDAP utiliza o <strong>Distinguished Name (DN)</strong> para identificar o caminho exato de um objeto:
+            </p>
+            <div
+              class="bg-white dark:bg-slate-800 p-3 rounded border border-blue-200 dark:border-blue-800 font-mono text-xs overflow-x-auto mb-3 text-slate-800 dark:text-slate-200"
+            >
+              CN=Joao Silva, OU=TI, DC=empresa, DC=com
+            </div>
+            <ul class="space-y-2 text-slate-800 dark:text-slate-200 text-sm">
+              <li><strong class="text-blue-700 dark:text-blue-400">CN (Common Name):</strong> Nome comum (o objeto em si, ex: pessoa ou PC).</li>
+              <li><strong class="text-blue-700 dark:text-blue-400">OU (Organizational Unit):</strong> A Unidade Organizacional (pasta).</li>
+              <li>
+                <strong class="text-blue-700 dark:text-blue-400">DC (Domain Component):</strong> Os pedaços do domínio DNS. (empresa.com vira
+                DC=empresa, DC=com).
+              </li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>LDAP Autentica?</strong> A banca diz que "O AD utiliza o LDAP como o seu principal protocolo de autenticação segura." <br />
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                O LDAP é para <strong class="underline">consultas/pesquisas</strong>. O protocolo principal de autenticação do AD é o
+                <strong>Kerberos</strong> (embora o LDAP possa ser usado de forma secundária/simples).
+              </li>
+              <li>
+                <strong>Lógico vs Físico:</strong> "Os <em>Sites</em> e as <em>UOs</em> formam a estrutura lógica do AD." <br />
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                As UOs, Domínios e Florestas são a estrutura <strong>Lógica</strong>. Os <strong>Sites</strong> (localidades geográficas ligadas por
+                sub-redes IP) e os <strong>Controladores de Domínio (DC)</strong> formam a estrutura <strong>Física</strong>.
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Que é um Serviço de Diretório?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um serviço de diretório é um repositório centralizado e hierárquico. Ao contrário de uma base de dados relacional tradicional (como SQL
+              Server ou Oracle), que é otimizada para lidar com milhares de transações de escrita por segundo, o serviço de diretório é
+              <span class="hl-green">fortemente otimizado para leituras e pesquisas em alto volume</span>.
+            </p>
+            <p>
+              Ele gere identidades. Quando você faz login no seu computador corporativo, a máquina consulta o diretório para verificar se o seu
+              utilizador existe, se a palavra-passe está correta e a quais pastas e impressoras você tem acesso.
+            </p>
+            <p class="text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700 mt-2">
+              * O padrão avô de todos os serviços de diretório é o <strong>X.500</strong> (criado pela ITU-T). Era muito pesado e operava na camada de
+              aplicação do modelo OSI.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. O Protocolo LDAP (Lightweight Directory Access Protocol)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Como o padrão X.500 era muito "pesado" para os computadores antigos se ligarem, criou-se o LDAP (a versão "Lightweight" / leve), que
+              funciona diretamente sobre TCP/IP.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Características Técnicas para Concursos
+            </h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Portas Padrão:</strong> O tráfego LDAP regular ocorre nas portas <span class="hl-yellow">TCP 389 e UDP 389</span>. O tráfego
+                seguro e encriptado (LDAPS - LDAP over SSL/TLS) ocorre na porta <span class="hl-yellow">TCP 636</span>.
+              </li>
+              <li>
+                <strong>DIT (Directory Information Tree):</strong> É a estrutura em árvore como a informação é organizada. Tudo nasce de uma raiz
+                (Root) e ramifica-se.
+              </li>
+              <li>
+                <strong>Esquema (Schema):</strong> Define as regras do diretório. Diz, por exemplo, que o objeto do tipo "Utilizador" DEVE ter o
+                atributo <code>nome</code> e PODE ter o atributo <code>telefone</code>. Se quiser adicionar a data de aniversário da pessoa e isso não
+                existir, terá que <span class="hl-green">"estender o esquema"</span>.
+              </li>
+              <li>
+                <strong>DAP (Directory Access Protocol):</strong> O LDAP define um conjunto de operações para interagir com o diretório:
+                <code>Bind</code> (conectar/autenticar), <code>Search</code> (pesquisar), <code>Add</code>, <code>Delete</code>, <code>Modify</code> e
+                <code>Unbind</code> (desconectar).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Microsoft Active Directory (AD DS)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>O <em>Active Directory Domain Services</em> é a principal implementação de diretório do mercado.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">A Trindade do AD</h3>
+            <p>Para o AD funcionar, ele depende vitalmente de três componentes tecnológicos:</p>
+            <ol class="list-decimal pl-6 space-y-2 mt-2">
+              <li><strong>LDAP:</strong> Para que os clientes e serviços consultem o diretório.</li>
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">DNS (Domain Name System):</strong> Fundamental! O AD utiliza registos DNS
+                especiais (registos SRV) para que um computador saiba qual é o IP do Controlador de Domínio mais próximo.
+                <span class="hl-red">Sem DNS, o AD não funciona</span>.
+              </li>
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">Kerberos:</strong> O protocolo de autenticação principal. Baseia-se em bilhetes
+                (Tickets) e num servidor de confiança (KDC - Key Distribution Center) que roda no Controlador de Domínio. Funciona na porta TCP/UDP
+                88.
+              </li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Estrutura Física: Sites e Catálogo Global
+            </h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Controlador de Domínio (DC):</strong>
+                O servidor real que aloja a base de dados do AD (o ficheiro <code>NTDS.DIT</code>). Nas versões modernas do Windows, todos os DCs são
+                pares (Multi-master replication), ou seja, se alterar uma senha no DC-1, ele replica para o DC-2.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Sites:</strong>
+                Representam a topologia física da rede (ex: Escritório de Lisboa, Fábrica no Porto). São mapeados por <strong>Sub-redes IP</strong>.
+                Servem para otimizar a replicação de dados e garantir que um utilizador em Lisboa faça login no servidor de Lisboa (sem atravessar o
+                link WAN lento até o Porto).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Catálogo Global (GC - Global Catalog):</strong>
+                Funciona como o "Índice" da Floresta. Ele contém uma réplica completa de todos os objetos do seu próprio domínio, e uma
+                <span class="hl-yellow">réplica parcial (apenas atributos principais)</span> de todos os objetos dos outros domínios da floresta.
+                Responde na porta <strong>TCP 3268</strong>. Essencial para buscas rápidas em redes globais gigantes.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Interoperabilidade (Windows ⇄ Linux)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A interoperabilidade é a capacidade de sistemas diferentes "conversarem". Num ambiente corporativo real, temos servidores Linux e
+              estações Windows, e queremos que o utilizador use <span class="hl-green">a mesma palavra-passe (Single Sign-On / Integração)</span> em
+              ambos.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Como colocar o Linux no Domínio AD?</h3>
+            <p>
+              Para o Linux entender o AD, ele precisa falar os mesmos protocolos (Kerberos e LDAP). Existem várias ferramentas de mercado que fazem
+              essa ponte. As bancas cobram as seguintes tecnologias:
+            </p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4">
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">SAMBA (Winbind):</strong>
+                O Samba nasceu para partilhar ficheiros (protocolo SMB/CIFS), mas a ferramenta <code>winbind</code> permite que o Linux resolva nomes
+                e grupos perguntando ao Active Directory. O Samba versão 4 e superiores também consegue
+                <span class="hl-yellow">atuar como se fosse um Controlador de Domínio do próprio AD</span>!
+              </li>
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">SSSD (System Security Services Daemon):</strong>
+                A ferramenta moderna padrão em distribuições como Red Hat e CentOS para conectar o Linux ao AD (ou a outros servidores LDAP). Ele faz
+                cache de credenciais localmente, permitindo login mesmo se a rede cair temporariamente.
+              </li>
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">FreeIPA:</strong>
+                É uma solução completa de gestão de identidades para o ecossistema Linux (patrocinada pela Red Hat). Em vez de tentar "imitar" o AD,
+                ela pode estabelecer um <strong>Trust (Relação de Confiança)</strong> com o AD da Microsoft.
+              </li>
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">PAM (Pluggable Authentication Modules):</strong>
+                É o coração da autenticação no Linux. É a arquitetura que permite "plugar" módulos de autenticação. É através do PAM que configuramos
+                o sistema operativo Linux para, em vez de olhar para o ficheiro <code>/etc/shadow</code> local, enviar o pedido de autenticação para o
+                SSSD ou Winbind.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
