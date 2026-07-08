@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo: Redes Cabeadas e Sem Fio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom scrollbar Blue */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #1d4ed8; }
+        
+        /* Tab transition */
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Marca-texto CSS para Aba 2 */
+        .hl-yellow { @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium; }
+        .hl-red { @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium; }
+        .hl-green { @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Voltar ao Edital
+            </a>
+            
+            <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+        
+        <header>
+            <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+                Redes Cabeadas e Sem Fio
+            </h1>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+            <button id="btn-tab-1" class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors">
+                🎯 Resumo Visual
+            </button>
+            <button id="btn-tab-2" class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors">
+                📖 Teoria Aprofundada
+            </button>
+        </div>
+
+        <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+        <div id="tab-1" class="tab-content active space-y-8">
+            
+            <!-- Direto ao Ponto: IEEE -->
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="text-blue-500 text-2xl">⚡</span> Padrões IEEE (Decoreba Inicial)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="border border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg p-4">
+                        <h3 class="font-bold text-blue-800 dark:text-blue-300 mb-1">IEEE 802.3</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300"><strong>Ethernet.</strong> Padrão para as Redes Cabeadas LAN. Usa método de acesso <span class="font-mono text-xs bg-slate-200 dark:bg-slate-700 px-1 rounded">CSMA/CD</span>.</p>
+                    </div>
+                    <div class="border border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg p-4">
+                        <h3 class="font-bold text-sky-800 dark:text-sky-300 mb-1">IEEE 802.11</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300"><strong>Wi-Fi.</strong> Padrão para Redes Sem Fio (WLAN). Usa método de acesso <span class="font-mono text-xs bg-slate-200 dark:bg-slate-700 px-1 rounded">CSMA/CA</span> (Evita colisões).</p>
+                    </div>
+                    <div class="border border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg p-4">
+                        <h3 class="font-bold text-indigo-800 dark:text-indigo-300 mb-1">IEEE 802.1X</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300"><strong>Controle de Acesso.</strong> Padrão de segurança baseado em portas. Bloqueia a rede até o usuário se autenticar (usando EAP).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabela Comparativa 802.11 -->
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        📶 Família Wi-Fi (Padrões 802.11)
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                                <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Padrão</th>
+                                <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Geração</th>
+                                <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-400">Frequência</th>
+                                <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Inovação Principal</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">802.11b</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Wi-Fi 1</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">2.4 GHz</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">O primeiro popular. Lento (11 Mbps).</td>
+                            </tr>
+                            <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">802.11a</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Wi-Fi 2</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">5 GHz</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Mais rápido (54 Mbps), mas menor alcance.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">802.11g</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Wi-Fi 3</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">2.4 GHz</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Velocidade do 'a' (54 Mbps) com alcance do 'b'.</td>
+                            </tr>
+                            <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">802.11n</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">Wi-Fi 4</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">2.4 e 5 GHz (Dual Band)</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Introduziu o <strong>MIMO</strong> (múltiplas antenas).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">802.11ac</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">Wi-Fi 5</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">5 GHz (Apenas)</td>
+                                <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Rompeu a barreira do Gigabit (MU-MIMO).</td>
+                            </tr>
+                            <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-indigo-500">
+                                <td class="p-4 font-bold text-slate-800 dark:text-slate-200">802.11ax</td>
+                                <td class="p-4 font-bold text-emerald-600 dark:text-emerald-400">Wi-Fi 6 / 6E</td>
+                                <td class="p-4 font-bold text-indigo-600 dark:text-indigo-400">2.4, 5 e 6 GHz</td>
+                                <td class="p-4 text-slate-700 dark:text-slate-300">Introduziu <strong>OFDMA</strong> (Alta densidade de usuários).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Segurança Wireless -->
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        🔒 Evolução da Segurança (WEP ➔ WPA2)
+                    </h2>
+                    <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
+                </div>
+                <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="font-bold text-slate-800 dark:text-white text-lg">WEP</h3>
+                        <p class="text-xs font-bold text-red-500 uppercase tracking-wider mb-2">Totalmente Inseguro</p>
+                        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-400">
+                            <li>Criptografia: <strong>RC4</strong></li>
+                            <li>Vulnerabilidade: Usa <em>Vetores de Inicialização (IV)</em> curtos, estáticos e em texto claro.</li>
+                            <li>Status: Depreciado.</li>
+                        </ul>
+                    </div>
+                    <div class="border-l-4 border-amber-500 pl-4">
+                        <h3 class="font-bold text-slate-800 dark:text-white text-lg">WPA</h3>
+                        <p class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-2">Transição / "Remendo"</p>
+                        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-400">
+                            <li>Protocolo: <strong>TKIP</strong></li>
+                            <li>Criptografia: Ainda usa <strong>RC4</strong>.</li>
+                            <li>Inovação: Troca as chaves dinamicamente por pacote, resolvendo o problema do WEP.</li>
+                        </ul>
+                    </div>
+                    <div class="border-l-4 border-emerald-500 pl-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-r-lg p-2">
+                        <h3 class="font-bold text-slate-800 dark:text-white text-lg">WPA2</h3>
+                        <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2">Padrão Ouro de Prova</p>
+                        <ul class="text-sm space-y-1 text-slate-800 dark:text-slate-200 font-medium">
+                            <li>Protocolo: <strong>CCMP</strong></li>
+                            <li>Criptografia: <strong>AES</strong> (Muito forte)</li>
+                            <li>Inovação: Cumpre os requisitos completos do padrão 802.11i de segurança robusta.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerta Pegadinha -->
+            <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+                <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+                    🚨 Pegadinhas e Siglas
+                </h2>
+                <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm">
+                    <li>
+                        <strong>A "Sopa" WPA:</strong> Decore as combinações exatas, as bancas adoram misturá-las: <br>
+                        👉 <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-mono px-1 rounded text-xs">WEP = RC4</span> | 
+                        <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-mono px-1 rounded text-xs">WPA = TKIP (RC4)</span> | 
+                        <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-mono px-1 rounded text-xs">WPA2 = CCMP (AES)</span>.
+                    </li>
+                    <li>
+                        <strong>WPA-Personal vs WPA-Enterprise:</strong> <br>
+                        A versão <strong>Personal (PSK)</strong> usa uma senha pré-compartilhada única (a senha do Wi-Fi de casa). <br>
+                        A versão <strong>Enterprise</strong> usa o <strong>802.1x e EAP</strong> (cada usuário faz login com seu próprio usuário/senha através de um servidor RADIUS).
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+        <div id="tab-2" class="tab-content space-y-8">
+            
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    1. Redes Cabeadas (O Mundo Ethernet 802.3)
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A tecnologia dominante absoluta em LANs cabeadas é a família <strong>Ethernet (IEEE 802.3)</strong>. Originalmente usava topologia física de barramento, mas hoje emprega a topologia <strong>Estrela</strong> (comutadores centrais/Switches).
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">CSMA/CD (O Controle de Colisões)</h3>
+                    <p>
+                        Nas antigas redes Ethernet com HUBs (Half-duplex), havia muita colisão. O método criado para lidar com isso foi o <span class="hl-yellow">CSMA/CD (Carrier Sense Multiple Access with Collision Detection)</span>. O funcionamento básico é:
+                    </p>
+                    <ol class="list-decimal pl-6 space-y-1">
+                        <li>Escute o cabo. Está livre? Transmita.</li>
+                        <li>Enquanto transmite, continue escutando.</li>
+                        <li>Se detectar uma colisão de energia, pare tudo e mande um sinal de "jam" (congestionamento).</li>
+                        <li><strong>Espere um tempo aleatório (Backoff algorithm)</strong> e tente novamente.</li>
+                    </ol>
+                    <p class="text-sm italic mt-2 bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-slate-400 rounded">
+                        *Nota de prova: Em redes modernas usando Switches operando em Full-Duplex (caminhos de envio e recebimento separados), <span class="hl-green">as colisões não existem mais</span>, tornando o CSMA/CD desnecessário, embora ainda faça parte do padrão por compatibilidade.
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Meios de Transmissão Físicos</h3>
+                    <ul class="list-disc pl-6 space-y-3">
+                        <li><strong>Cabo de Par Trançado (Twisted Pair):</strong> Usa fios de cobre enrolados entre si para cancelar a <span class="hl-red">Interferência Eletromagnética (EMI) e o Crosstalk (diafonia)</span>.
+                            <ul class="list-[circle] pl-6 mt-1 space-y-1 text-sm">
+                                <li><strong>UTP:</strong> Sem blindagem (mais barato e flexível). Padrão em escritórios.</li>
+                                <li><strong>STP:</strong> Com blindagem (malha metálica). Usado em ambientes industriais com muito ruído.</li>
+                                <li><strong>Categorias de Prova:</strong> Cat5e (1 Gbps), Cat6 (1 Gbps até 100m, ou 10 Gbps curtas distâncias), <span class="hl-green">Cat6a (10 Gbps garantido a 100m)</span>.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Fibra Óptica:</strong> Imune a interferências eletromagnéticas.
+                            <ul class="list-[circle] pl-6 mt-1 space-y-1 text-sm">
+                                <li><strong>Monomodo (SMF):</strong> Núcleo finíssimo, o laser viaja em linha reta. <span class="hl-green">Atinge dezenas de quilômetros</span>. Mais cara.</li>
+                                <li><strong>Multimodo (MMF):</strong> Núcleo mais espesso, a luz do LED rebate nas paredes de vidro (vários "modos"). Usada para <span class="hl-yellow">curtas distâncias</span> (ex: dentro de um datacenter).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    2. Redes Sem Fio (Wi-Fi 802.11 e CSMA/CA)
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A transmissão de dados pelo ar (rádio) é naturalmente caótica, sofre interferências (paredes, micro-ondas) e os dispositivos sofrem do problema do <span class="hl-red">"Terminal Oculto"</span> (um notebook não consegue ver que o outro notebook já está transmitindo).
+                    </p>
+                    <p>
+                        Por isso, a rede sem fio <strong>não consegue "detectar" colisões com precisão</strong> (não dá para ler a energia e transmitir ao mesmo tempo na mesma antena). A solução da norma 802.11 foi criar o <span class="hl-yellow">CSMA/CA (Collision AVOIDANCE - Prevenção de Colisões)</span>.
+                    </p>
+                    <p>
+                        No CSMA/CA, a máquina primeiro envia um pacote curtinho chamado <strong>RTS (Request to Send)</strong>. O Access Point responde com <strong>CTS (Clear to Send)</strong>, avisando todos os outros para calarem a boca, e só então a máquina manda os dados. Esse processo exige que <span class="hl-green">todo pacote de dados receba um ACK de confirmação</span> (ao contrário do Ethernet cabeado).
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">A Evolução Tecnológica do Wi-Fi</h3>
+                    <p>
+                        O salto gigante na evolução (a partir do 802.11n) se deu com a adoção do <span class="hl-yellow">MIMO (Multiple Input, Multiple Output)</span>, que permitiu aos Access Points usarem várias antenas simultaneamente para transmitir mais dados em canais paralelos (multiplexação espacial). O 802.11ac trouxe o MU-MIMO (Múltiplos Usuários simultâneos), e o mais recente 802.11ax (Wi-Fi 6) trouxe o <strong>OFDMA</strong> (que fatia os canais de frequência para atender dezenas de dispositivos IoT sem latência).
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    3. Segurança Wi-Fi (Do Caos ao Padrão Ouro)
+                </h2>
+                <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-red-600 dark:text-red-400 mb-2">WEP (Wired Equivalent Privacy)</h3>
+                        <p>
+                            Foi o primeiro protocolo, e o objetivo era dar ao rádio "a mesma privacidade de um cabo". Falhou miseravelmente. 
+                            Ele usa a cifra de fluxo <strong class="text-red-700 dark:text-red-400">RC4</strong>. O problema crítico é que ele concatena a chave secreta com um Vetor de Inicialização (IV) de apenas 24 bits, que trafega <strong>em texto claro</strong>. Um hacker capturando alguns minutos de tráfego consegue descobrir a senha (pois os IVs se repetem).
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-600 dark:text-amber-400 mb-2">WPA (Wi-Fi Protected Access) e TKIP</h3>
+                        <p>
+                            Lançado às pressas pela Wi-Fi Alliance como um curativo. O hardware da época não aguentava algoritmos pesados, então o WPA ainda usava o RC4. A grande sacada foi inserir o protocolo <strong class="text-amber-700 dark:text-amber-400">TKIP (Temporal Key Integrity Protocol)</strong>, que mistura a chave básica com o endereço MAC e gera <span class="hl-yellow">uma nova chave diferente para cada pacote enviado</span>. Isso neutralizou os ataques antigos contra o WEP.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">WPA2 (802.11i) e AES/CCMP</h3>
+                        <p>
+                            A solução definitiva, que exigiu a troca de hardwares no mercado. O WPA2 abandonou o obsoleto RC4 e o TKIP, adotando o <strong class="text-emerald-700 dark:text-emerald-400">AES (Advanced Encryption Standard)</strong> acoplado ao protocolo <strong>CCMP</strong> (Counter Mode with Cipher Block Chaining Message Authentication Code Protocol). 
+                            O AES/CCMP garante confidencialidade inquebrável por força bruta tradicional e proteção nativa da integridade do cabeçalho.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 p-4 border-l-4 border-blue-500 text-sm mt-4">
+                        <strong class="font-bold">E o WPA3?</strong> Embora não explícito no seu edital, saiba que o WPA3 já existe. Ele abandona o Handshake tradicional de 4 vias (que era vulnerável ao ataque de dicionário KRACK) e adota o <span class="hl-green">SAE (Simultaneous Authentication of Equals)</span>, tornando impossível descobrir a senha mesmo que o atacante capture os pacotes de negociação iniciais.
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    4. Controle de Acesso: 802.1X e EAP
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A senha compartilhada (WPA-Personal) é um pesadelo em grandes empresas. Se um funcionário for demitido, o TI teria que mudar a senha do Wi-Fi de todos os outros 500 funcionários. A solução corporativa é o modo <strong>WPA-Enterprise</strong>, estruturado nos padrões <span class="hl-yellow">IEEE 802.1X e EAP</span>.
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">A Arquitetura 802.1X (3 Elementos de Prova)</h3>
+                    <p>
+                        O 802.1X não foi feito só para Wi-Fi (ele nasceu para switches de rede cabeada). Ele <strong>bloqueia fisicamente/logicamente a porta</strong> até a pessoa se autenticar. Possui três peças que despencam em concursos:
+                    </p>
+                    <ul class="list-decimal pl-6 space-y-3 mt-2">
+                        <li><strong>Suplicante (Supplicant):</strong> É o cliente. O software no notebook/celular do usuário que quer se conectar à rede e envia as credenciais.</li>
+                        <li><strong>Autenticador (Authenticator):</strong> É o porteiro (O Switch ou o Access Point Wi-Fi). Ele <span class="hl-red">não sabe verificar senhas</span>. Ele apenas bloqueia o tráfego e repassa a tentativa de login do Suplicante adiante.</li>
+                        <li><strong>Servidor de Autenticação (AS - RADIUS/TACACS+):</strong> É o "chefe da segurança" (ex: um servidor Windows Server rodando Active Directory e NPS). Ele recebe as credenciais, valida no banco de dados e avisa o Autenticador: <em>"A senha confere, libere a porta!"</em>.</li>
+                    </ul>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">O Protocolo EAP (Extensible Authentication Protocol)</h3>
+                    <p>
+                        O 802.1X é a "casca", enquanto o EAP é a "linguagem" de autenticação. 
+                        O grande poder do EAP é que ele é <em>extensível</em>. Em vez de obrigar o uso de apenas "Usuário/Senha", ele suporta vários métodos internos (plugins). 
+                    </p>
+                    <p>
+                        <strong>Principais sabores do EAP:</strong>
+                        <ul class="list-[circle] pl-6 mt-1 space-y-1">
+                            <li><strong>EAP-TLS:</strong> O mais seguro de todos. Exige instalação de Certificados Digitais tanto no servidor quanto no cliente. (Caro e complexo de gerir).</li>
+                            <li><strong>PEAP / EAP-TTLS:</strong> Os mais comuns. Exigem Certificado Digital <span class="hl-yellow">apenas no servidor</span>. Eles criam um túnel TLS criptografado (como um HTTPS) e só depois trafegam o login/senha do usuário em segurança por dentro desse túnel.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Tab switching logic
+        const btnTab1 = document.getElementById('btn-tab-1');
+        const btnTab2 = document.getElementById('btn-tab-2');
+        const tab1 = document.getElementById('tab-1');
+        const tab2 = document.getElementById('tab-2');
+
+        function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+            // Update Buttons
+            activeBtn.classList.add('text-blue-600', 'border-blue-600', 'dark:text-blue-400', 'dark:border-blue-400', 'font-bold');
+            activeBtn.classList.remove('text-slate-500', 'border-transparent', 'font-medium');
+            
+            inactiveBtn.classList.remove('text-blue-600', 'border-blue-600', 'dark:text-blue-400', 'dark:border-blue-400', 'font-bold');
+            inactiveBtn.classList.add('text-slate-500', 'border-transparent', 'font-medium');
+
+            // Update Tabs
+            activeTab.classList.add('active');
+            inactiveTab.classList.remove('active');
+        }
+
+        btnTab1.addEventListener('click', () => switchTab(btnTab1, btnTab2, tab1, tab2));
+        btnTab2.addEventListener('click', () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+        // Theme switching logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: MPLS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Blue */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #1d4ed8;
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+          MPLS (Multiprotocol Label Switching)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>O que é?</strong> É uma tecnologia de encaminhamento de pacotes que usa <strong>rótulos (Labels)</strong> em vez de endereços IP
+              complexos para tomar decisões de envio.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>A Camada 2.5:</strong> Opera
+              <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 font-bold px-1.5 py-0.5 rounded"
+                >entre as camadas de Enlace (2) e Rede (3)</span
+              >
+              do modelo OSI. Ele insere (encapsula) seu próprio cabeçalho no meio do pacote.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Multiprotocolo:</strong> Pode transportar qualquer carga útil (IP, IPv6, Ethernet, Frame Relay, ATM). Por isso o nome
+              "Multiprotocol".
+            </li>
+          </ul>
+        </section>
+
+        <!-- A Sopa de Letrinhas -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔤 Vocabulário de Prova (Core Decoreba)</h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-blue-700 dark:text-blue-400 mb-1">LER (Label Edge Router)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Roteador de Borda. É quem <strong>insere</strong> (Ingress) ou <strong>remove</strong> (Egress) o rótulo quando o pacote entra ou sai
+                da rede MPLS.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-blue-700 dark:text-blue-400 mb-1">LSR (Label Switching Router)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Roteador de Núcleo (Core). Ele <strong>não olha para o IP</strong>, apenas lê o rótulo, troca por outro e repassa o pacote (Swap).
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1">FEC (Forwarding Equivalence Class)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Conjunto de pacotes que recebem o <strong>mesmo tratamento</strong> (mesmo rótulo). Ex: Todos os pacotes pro IP 10.0.0.X viram a FEC
+                #45.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1">LSP (Label Switched Path)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                O <strong>caminho físico</strong> pré-estabelecido que o pacote com aquele rótulo vai percorrer de ponta a ponta (como um túnel).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Macetes Email -->
+          <section class="bg-sky-50 dark:bg-sky-900/20 border-l-4 border-sky-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-sky-800 dark:text-sky-400 mb-3 flex items-center gap-2">🧠 Macete: Operações de Rótulo</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li><strong class="text-sky-600 dark:text-sky-400">PUSH:</strong> "Empurrar" (Inserir) um rótulo. Feito pelo LER de Ingress.</li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">SWAP:</strong> "Trocar" o rótulo atual por um novo. Feito pelos LSRs no meio do
+                caminho.
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">POP:</strong> "Estourar" (Remover) o rótulo e entregar o IP limpo. Feito pelo LER de
+                Egress.
+              </li>
+            </ul>
+          </section>
+
+          <!-- Alerta Pegadinha -->
+          <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>Roteamento vs Encaminhamento:</strong> A banca diz que o MPLS substitui protocolos como OSPF ou BGP.
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                O MPLS não descobre rotas, ele apenas <strong>encaminha</strong> (faz switching). Ele precisa do OSPF/BGP para montar as tabelas
+                iniciais.
+              </li>
+              <li>
+                <strong>Criptografia Nativa:</strong> A banca diz que as VPNs MPLS usam forte criptografia nativa.
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+                MPLS faz isolamento de tráfego, mas não criptografa nativamente (precisa do IPsec para isso).
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Por que o MPLS foi criado?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No roteamento IP tradicional (Camada 3), cada roteador no caminho precisa abrir o pacote, ler o endereço IP de destino e fazer uma
+              varredura complexa em sua gigantesca tabela de roteamento <em>(longest prefix match)</em> para decidir a próxima parada. Isso exige alto
+              poder de processamento e, antigamente, gerava lentidão.
+            </p>
+            <p>
+              O <strong>MPLS (Multiprotocol Label Switching)</strong> foi criado para combinar a inteligência do roteamento IP (Camada 3) com a
+              velocidade alucinante do switching por hardware (Camada 2).
+            </p>
+            <p>
+              Ele faz isso atribuindo um <span class="hl-yellow">rótulo de tamanho fixo</span> ao pacote assim que ele entra na rede. Os roteadores
+              internos não precisam mais analisar o cabeçalho IP longo; eles apenas olham o rótulo curto, consultam uma tabela simples e o repassam
+              imediatamente.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Posição na Arquitetura (A Camada 2.5)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Esta é possivelmente a característica mais cobrada em provas sobre o MPLS. Ele não pertence estritamente nem à Camada 2 (Enlace) nem à
+              Camada 3 (Rede).
+            </p>
+            <p>
+              O cabeçalho MPLS, frequentemente chamado de <em>Shim Header</em>, é
+              <span class="hl-green">inserido entre o cabeçalho da Camada 2 (ex: Frame Ethernet) e o cabeçalho da Camada 3 (ex: Pacote IP)</span>. Por
+              isso, é universalmente conhecido na literatura acadêmica e em concursos como operando na <strong>Camada 2.5</strong>.
+            </p>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 text-center font-mono text-sm overflow-x-auto"
+            >
+              <span class="text-slate-500">[Cabeçalho Enlace (L2)]</span> ➔
+              <span class="font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded"
+                >[Cabeçalho MPLS (L2.5)]</span
+              >
+              ➔ <span class="text-slate-500">[Cabeçalho Rede (L3)]</span> ➔
+              <span class="text-slate-500">[Dados]</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Cabeçalho MPLS (Escovando os Bits)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O CEBRASPE ama cobrar o tamanho e os campos do cabeçalho MPLS. Você precisa saber que ele é incrivelmente enxuto: possui exatos
+              <strong>32 bits (4 bytes)</strong>, divididos em 4 campos:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400">1. Label Value (20 bits):</strong><br />
+                É o rótulo propriamente dito. É o número que o roteador vai olhar para tomar a decisão de encaminhamento. Permite até mais de 1 milhão
+                de rótulos.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400">2. EXP / TC (3 bits):</strong><br />
+                <em>Traffic Class</em> (antigamente chamado de <em>Experimental</em>). Usado para <strong>QoS (Quality of Service)</strong>. Determina
+                a prioridade do pacote (ex: voz tem prioridade sobre download).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400">3. S (Bottom of Stack) (1 bit):</strong><br />
+                O MPLS permite <em>empilhar</em> vários rótulos (um dentro do outro, como uma Matrioska, muito usado em VPNs). Esse bit, se estiver em
+                '1', avisa: <span class="hl-yellow">"Atenção, este é o último rótulo da pilha. O que vem depois já é o IP."</span>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400">4. TTL (Time to Live) (8 bits):</strong><br />
+                Mesma função do TTL do IP: evitar que o pacote fique em loop infinito na rede. A cada roteador que passa, diminui em 1. Se chegar a
+                zero, o pacote é descartado.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Arquitetura Lógica e Engenharia de Tráfego
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-blue-500 pl-3">A Mágica da FEC</h3>
+            <p>
+              A <strong class="text-blue-600 dark:text-blue-400">FEC (Forwarding Equivalence Class)</strong> é um conceito vital. O roteador de borda
+              (LER) olha para o pacote que está chegando (pode olhar IP de origem, IP de destino, porta TCP, etc) e decide: "Este pacote pertence ao
+              grupo X". Ele então aplica um rótulo referente a esse grupo. A partir daí, todos os roteadores do núcleo (LSR) tratarão esse pacote de
+              forma idêntica.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              Engenharia de Tráfego (MPLS-TE)
+            </h3>
+            <p>
+              No roteamento IP normal, o tráfego sempre segue o "caminho mais curto". Se esse caminho lotar, a rede trava, enquanto outros caminhos
+              mais longos ficam vazios.
+            </p>
+            <p>
+              O MPLS permite criar <strong>LSPs (Label Switched Paths - caminhos fixos)</strong> arbitrários. O administrador pode forçar parte do
+              tráfego a ir pelo caminho mais longo, garantindo o balanceamento de carga de forma elegante. Essa capacidade de
+              <span class="hl-green">Engenharia de Tráfego</span> é a principal razão pela qual o MPLS ainda é amplamente usado por provedores de
+              Telecom (ISPs).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">VPNs MPLS (L2VPN e L3VPN)</h3>
+            <p>
+              O MPLS é campeão absoluto na criação de VPNs corporativas. Ele isola o tráfego da Empresa A do tráfego da Empresa B no núcleo da rede da
+              operadora, usando empilhamento de rótulos.
+              <strong>Aviso importante de prova:</strong> VPN MPLS oferece
+              <span class="hl-yellow">isolamento e confidencialidade lógicas comparáveis a um cabo dedicado</span> (como Frame Relay antigo), mas
+              <span class="hl-red">não provê criptografia nativa</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
