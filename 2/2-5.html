@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Big Data - Ingestão e Armazenamento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Ingestão e Armazenamento de Big Data
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Os 5 Vs do Big Data -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">🐘</span> Os 5 V's do Big Data
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-800">
+              <div class="text-2xl mb-1">📦</div>
+              <strong class="text-indigo-800 dark:text-indigo-300 block text-sm">Volume</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Terabytes a Petabytes. A quantidade brutal de dados.</p>
+            </div>
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-800">
+              <div class="text-2xl mb-1">⚡</div>
+              <strong class="text-indigo-800 dark:text-indigo-300 block text-sm">Velocidade</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Rapidez na geração e na necessidade de processamento (Streaming).</p>
+            </div>
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-800">
+              <div class="text-2xl mb-1">🗂️</div>
+              <strong class="text-indigo-800 dark:text-indigo-300 block text-sm">Variedade</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Dados estruturados, semi e NÃO estruturados (vídeos, logs).</p>
+            </div>
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-800">
+              <div class="text-2xl mb-1">✅</div>
+              <strong class="text-indigo-800 dark:text-indigo-300 block text-sm">Veracidade</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Confiabilidade e qualidade da informação (limpar o "lixo").</p>
+            </div>
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-800 col-span-2 md:col-span-1">
+              <div class="text-2xl mb-1">💎</div>
+              <strong class="text-indigo-800 dark:text-indigo-300 block text-sm">Valor</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">A utilidade que o dado traz para o negócio (O V mais importante).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Ferramentas do Ecossistema -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛠️ O Ecossistema de Big Data (Decoreba de Prova)</h2>
+            <p class="text-sm text-slate-300 mt-1">Quem faz o quê no mundo da Engenharia de Dados massivos.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Ferramenta</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Categoria / Função Principal</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400">
+                    Palavra-Chave em Questões
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-indigo-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">HDFS (Hadoop)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Armazenamento</strong> Distribuído
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    Blocos de 128MB, NameNode, DataNode
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-indigo-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">MapReduce</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Processamento</strong> em Lote (Batch)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Processamento em Disco, Mapear e Reduzir
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Apache Spark</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Processamento</strong> Híbrido (Batch + Micro-batch)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Em Memória (In-Memory), 100x mais rápido que MapReduce
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-amber-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Apache Kafka</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Ingestão</strong> em Tempo Real (Streaming)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-amber-600 dark:text-amber-500">
+                    Mensageria, Publish-Subscribe, Tópicos, Partições
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-slate-400">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Apache Sqoop</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300"><strong>Ingestão</strong> em Lote (Batch)</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Exporta/Importa de Bancos Relacionais (RDBMS) para o HDFS</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 Pegadinhas de Prova: Hadoop vs Spark vs Kafka
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Hadoop faz Streaming?</strong> A banca diz que "O MapReduce do Hadoop é altamente recomendado para o processamento de dados em
+                tempo real (streaming)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O MapReduce é estritamente <strong class="underline decoration-red-500">Batch (em lote)</strong> e lê/grava intensamente no disco,
+                sendo lento. Para tempo real, usamos Kafka, Spark Streaming ou Flink.
+              </li>
+              <li>
+                <strong>O Spark substitui o HDFS?</strong> "O Apache Spark é um sistema de arquivos distribuído que substituiu completamente o HDFS".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Spark é um motor de <strong>PROCESSAMENTO</strong> em memória. Ele NÃO possui sistema de arquivos próprio de armazenamento
+                persistente. O Spark usa o HDFS, o S3 da AWS ou bancos NoSQL para armazenar/ler os dados que ele vai processar.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência do Big Data (Além do Volume)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Big Data não é apenas "ter muitos dados". É um ecossistema de tecnologias desenhado para tratar conjuntos de dados que são tão grandes e
+              complexos que os aplicativos tradicionais de processamento de dados (como bancos relacionais únicos e Excel) simplesmente não conseguem
+              lidar.
+            </p>
+            <p>
+              O Gartner e autores como Doug Laney definiram inicialmente os
+              <strong class="text-indigo-600 dark:text-indigo-400">3 V's originais</strong>, que depois foram expandidos para 5 (os mais cobrados):
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong>Volume:</strong> A dimensão massiva. Exige armazenamento distribuído através de dezenas ou milhares de servidores paralelos
+                (cluster).
+              </li>
+              <li>
+                <strong>Velocidade:</strong> O fluxo constante e o tempo de resposta exigido. Vai desde <em>batch processing</em> noturno (lento) até
+                processamento de cartões de crédito em milissegundos (<em>Streaming/Real-time</em>).
+              </li>
+              <li>
+                <strong>Variedade:</strong> O calcanhar de Aquiles dos BDs antigos. Lidar não apenas com tabelas, mas com áudios, vídeos, JSONs de
+                APIs e texto livre (caos estrutural).
+              </li>
+              <li>
+                <strong>Veracidade:</strong> Com muitos dados, surge o "ruído". Como garantir a qualidade, autenticidade e limpar dados espúrios de
+                bots do Twitter ou sensores de IoT defeituosos?
+              </li>
+              <li>
+                <strong>Valor:</strong> Tudo isso custa caro. O Big Data tem que gerar insights acionáveis que se revertam em lucros, segurança ou
+                melhoria para a empresa.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Ingestão Massiva de Dados
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A ingestão é o processo de trazer os dados das fontes externas (ERPs, APIs Web, Redes Sociais, Dispositivos IoT) para dentro do Data
+              Lake da empresa.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">A. Ingestão em Lote (Batch)</h3>
+            <p>
+              Os dados são recolhidos de uma só vez numa janela de tempo programada (ex: toda meia-noite). É o método clássico para mover grandes
+              bancos de dados (SGBDRs) sem sobrecarregar as redes durante o dia.
+              <br />🛠️ <strong>Ferramenta clássica de prova:</strong> <code>Apache Sqoop</code> (SQL-to-Hadoop). Ferramenta para transferir dados de
+              bancos relacionais para o HDFS de forma massiva.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-amber-500 pl-3">
+              B. Ingestão em Tempo Real (Streaming)
+            </h3>
+            <p>
+              Aqui o dado flui de forma ininterrupta, e o sistema tem que reagir milissegundos após a geração do dado (ex: sensores de um carro
+              autônomo, transações de banco).
+            </p>
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-2">
+              <strong class="text-amber-600 dark:text-amber-500 block mb-2">A Estrela da Prova: Apache Kafka</strong>
+              <p class="text-sm">
+                É uma plataforma distribuída de <em>streaming</em> de eventos, funcionando com o paradigma
+                <span class="hl-yellow">Publish/Subscribe (Produtor/Consumidor)</span>.
+              </p>
+              <ul class="list-disc pl-6 mt-2 text-sm space-y-1">
+                <li><strong>Produtores (Producers):</strong> Sistemas que geram a informação e a jogam no Kafka.</li>
+                <li>
+                  <strong>Tópicos (Topics):</strong> "Pastas" ou categorias para onde as mensagens vão. São divididos em
+                  <strong>Partições</strong> para permitir processamento paralelo e tolerância a falhas.
+                </li>
+                <li>
+                  <strong>Consumidores (Consumers):</strong> Sistemas (como o Spark Streaming) que "assinam" os tópicos e processam os dados assim que
+                  chegam.
+                </li>
+                <li>
+                  <strong>Vantagem:</strong> O Kafka atua como um <em>amortecedor (buffer) gigante</em>. Se o banco de dados cair, o Kafka guarda as
+                  mensagens em disco até que o sistema retorne, não perdendo nada.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Armazenamento Distribuído: Hadoop HDFS
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Hadoop foi a primeira grande resposta open-source ao Big Data. O <strong>HDFS (Hadoop Distributed File System)</strong> é o coração do
+              armazenamento. Ele resolve o problema: <em>"Como eu guardo um arquivo de 1 Terabyte se o disco rígido mais barato só tem 500GB?"</em>
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Arquitetura Master-Slave</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-indigo-500">
+                <strong class="text-indigo-600 dark:text-indigo-400">NameNode (O Mestre):</strong> É o "cérebro" do sistema. Ele
+                <span class="hl-red">NÃO guarda os dados reais</span>. Ele guarda os <strong>Metadados</strong> (o índice). Ele sabe que o "Arquivo_X"
+                foi fatiado e os pedaços foram para as Máquinas 2, 8 e 15. Ele coordena as operações.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-slate-400">
+                <strong class="text-slate-800 dark:text-slate-200">DataNode (Os Escravos/Trabalhadores):</strong> São as máquinas (geralmente
+                hardwares simples e baratos) que guardam os blocos reais de dados no disco rígido.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Características Clássicas de Prova (HDFS)</h3>
+            <ul class="list-disc pl-6 space-y-2 text-sm">
+              <li>
+                <strong>Tamanho do Bloco (Block Size):</strong> O HDFS trabalha com blocos gigantes, por padrão de
+                <strong class="text-indigo-600 dark:text-indigo-400">128 MB</strong> (em sistemas antigos era 64MB). Arquivos são divididos nestes
+                blocos de 128MB e espalhados pelos DataNodes.
+              </li>
+              <li>
+                <strong>Tolerância a Falhas (Replicação):</strong> Máquinas baratas pifam o tempo todo. Para evitar perder dados, o HDFS faz cópias
+                idênticas. O <strong class="text-indigo-600 dark:text-indigo-400">fator de replicação padrão é 3</strong> (ou seja, cada bloco existe
+                em 3 máquinas diferentes).
+              </li>
+              <li>
+                <strong>Write-Once, Read-Many (WORM):</strong> O HDFS foi feito para arquivos que são escritos uma vez e lidos milhares de vezes. Ele
+                é péssimo se você precisar ficar atualizando os arquivos constantemente.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Processamento Massivo: MapReduce vs Spark
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Armazenar é metade da batalha; processar milhares de discos em paralelo é o desafio real.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">O Avô: MapReduce (Hadoop)</h3>
+            <p>
+              Modelo de programação criado para processamento paralelo de grandes lotes em clusters. Divide-se em duas fases:
+              <br />1. <strong>Map (Mapear):</strong> O problema é dividido em pequenos pedaços e enviado para onde os dados já residem fisicamente
+              (evitando trafegar 1TB pela rede). Ele gera pares de chave-valor temporários. <br />2. <strong>Reduce (Reduzir):</strong> Pega nos
+              resultados temporários dos nós "Map", consolida tudo e entrega a resposta final. <br /><span class="hl-red">O Problema:</span> A cada
+              etapa, o MapReduce escreve os resultados temporários no Disco Rígido. Isso causa uma extrema lentidão de Entrada/Saída (I/O).
+            </p>
+
+            <h3 class="text-lg font-bold text-emerald-600 dark:text-emerald-500 mt-6 mb-2">O Sucessor Triunfante: Apache Spark</h3>
+            <p>
+              O Spark veio para corrigir a lentidão do MapReduce, sendo até
+              <strong class="text-emerald-600 dark:text-emerald-500">100 vezes mais rápido</strong> para certos trabalhos. A sua grande "arma secreta"
+              cobrada em concursos é:
+            </p>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 border border-emerald-200 dark:border-emerald-800 rounded mt-2">
+              <strong class="text-emerald-800 dark:text-emerald-300 block mb-2">Processamento Em Memória (In-Memory Processing)</strong>
+              <p class="text-sm">
+                Ao invés de gravar os dados temporários no disco rígido, o Spark usa uma abstração chamada
+                <strong>RDD (Resilient Distributed Dataset)</strong> ou, mais modernamente, <em>DataFrames</em>, e realiza todas as transformações
+                complexas na Memória RAM dos servidores espalhados no cluster. Só vai para o disco no final, na hora de guardar o resultado!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

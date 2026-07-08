@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Modelagem e Normalização de Dados</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">
+          Engenharia de Dados / Banco de Dados
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Modelagem e Normalização
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Os 3 Níveis da Modelagem -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">📐</span> Os 3 Níveis da Modelagem
+          </h2>
+
+          <div class="flex flex-col gap-4 max-w-3xl mx-auto relative">
+            <!-- Nível 1: Conceitual -->
+            <div class="bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700 rounded-lg p-4 z-10">
+              <h3 class="font-black text-indigo-800 dark:text-indigo-300 text-lg uppercase tracking-wide">1. Modelo Conceitual</h3>
+              <p class="text-slate-700 dark:text-slate-300 text-sm mt-1">
+                Foco no <strong>Negócio</strong> e no Usuário. Responde <em>"O que vamos guardar?"</em>. <br />✅ Alto nível de abstração. <br />✅
+                Totalmente independente de tecnologia/SGBD.<br />🛠️ Ferramenta típica: <strong>MER / DER</strong>.
+              </p>
+            </div>
+
+            <!-- Nível 2: Lógico -->
+            <div class="bg-indigo-200 dark:bg-indigo-800/50 border border-indigo-300 dark:border-indigo-600 rounded-lg p-4 z-10 w-11/12 mx-auto">
+              <h3 class="font-black text-indigo-900 dark:text-indigo-200 text-lg uppercase tracking-wide">2. Modelo Lógico</h3>
+              <p class="text-slate-800 dark:text-slate-200 text-sm mt-1">
+                Foco na <strong>Estrutura</strong>. Responde <em>"Como se organiza?"</em>. <br />✅ Define Tabelas, Chaves Primárias (PK) e
+                Estrangeiras (FK).<br />✅ Depende do <em>tipo</em> de SGBD (Relacional vs NoSQL), mas não do fornecedor.
+              </p>
+            </div>
+
+            <!-- Nível 3: Físico -->
+            <div class="bg-indigo-500 dark:bg-indigo-600 text-white rounded-lg p-4 shadow-md z-10 w-10/12 mx-auto">
+              <h3 class="font-black text-white text-lg uppercase tracking-wide">3. Modelo Físico</h3>
+              <p class="text-indigo-50 text-sm mt-1">
+                Foco na <strong>Máquina/Software</strong>. Responde <em>"Como cria?"</em>. <br />✅ Scripts SQL (DDL). <br />✅ Define tipos de dados
+                (VARCHAR, INT), Índices, Partições. <br />✅ Totalmente dependente do SGBD (ex: Oracle, MySQL).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Formas Normais -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧹 O Filtro da Normalização (1FN, 2FN, 3FN)</h2>
+            <p class="text-sm text-slate-300 mt-1">
+              Regra de ouro: Para estar em uma forma normal, a tabela obrigatoriamente deve atender à forma normal ANTERIOR.
+            </p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Forma Normal</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400">
+                    O que ela ELIMINA? (Regra Principal)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">1FN (Primeira)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Elimina <strong>atributos multivalorados e compostos</strong>. Todos os valores devem ser <em>atômicos</em> (indivisíveis). A
+                    tabela deve ter Chave Primária (PK).
+                  </td>
+                </tr>
+                <tr class="bg-indigo-50/50 dark:bg-indigo-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">2FN (Segunda)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Elimina a <strong>dependência funcional parcial</strong>. Se a PK for composta (ex: ID_Aluno + ID_Curso), os outros campos devem
+                    depender da PK <em>inteira</em>, e não apenas de metade dela.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">3FN (Terceira)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Elimina a <strong>dependência transitiva</strong>. Nenhum campo "não-chave" pode depender de outro campo "não-chave". Tudo tem que
+                    depender APENAS da PK.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">FNBC (Boyce-Codd)</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    É uma 3FN "mais forte". Todo determinante (quem define outro campo) deve obrigatoriamente ser uma <em>Chave Candidata</em>.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Pegadinhas e Alertas -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 Pegadinhas de Prova: Normalização x Desnormalização
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão da Performance:</strong> A banca afirma que "Normalizar um banco de dados até a 3FN garante o aumento da performance
+                das consultas (leitura) de relatórios do sistema". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A normalização <strong>piora</strong> a leitura complexa, pois fragmenta a tabela em várias menores, exigindo dezenas de `JOINs` caros
+                para montar o relatório. A normalização é boa para <strong>Escrita e Consistência (OLTP)</strong>, não para leitura pesada!
+              </li>
+              <li>
+                <strong>O Data Warehouse (OLAP):</strong> Ocorrerá a afirmação: "Ambientes de Big Data e Data Warehouses devem ser rigorosamente
+                normalizados na 3FN". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Na engenharia de dados (OLAP), nós aplicamos a <strong class="underline decoration-red-500">Desnormalização</strong> intencional (ex:
+                Modelagem Dimensional em Estrela). Aceitamos a redundância de dados para que a leitura dos painéis de BI seja ultra-rápida.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência da Modelagem (MER e DER)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A modelagem conceitual é a primeira etapa de qualquer projeto de banco de dados. O autor mais famoso e sempre cobrado é
+              <strong>Peter Chen</strong>, criador da Modelagem Entidade-Relacionamento (MER) e do seu diagrama visual (DER).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Componentes do DER (Notação Clássica)
+            </h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Entidade (Retângulo):</strong> Uma coisa do mundo real com existência
+                independente (Física: Carro, Cliente. Lógica: Departamento, Venda). <br /><em>Atenção:</em> Entidade <strong>Fraca</strong> (Retângulo
+                duplo) é aquela que não tem chave primária própria e sua existência depende da entidade forte. (Ex: O 'Dependente' só existe se o
+                'Funcionário' existir).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Relacionamento (Losango):</strong> O verbo que liga as entidades. (O Cliente
+                <em>compra</em> um Produto).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Atributos (Elipse):</strong> As características da Entidade (Nome, CPF).
+                <ul class="list-disc pl-6 mt-2 text-sm">
+                  <li><strong>Simples / Atômico:</strong> Indivisível (Ex: Sexo).</li>
+                  <li><strong>Composto:</strong> Pode ser dividido (Ex: Endereço = Rua + Número + Bairro).</li>
+                  <li>
+                    <strong>Multivalorado (Elipse dupla):</strong> Pode ter vários valores para a mesma pessoa (Ex: Telefone. A pessoa pode ter 3
+                    telefones).
+                  </li>
+                  <li>
+                    <strong>Derivado (Elipse tracejada):</strong> É calculado e não precisa ser guardado (Ex: Idade, que é derivada da Data de
+                    Nascimento).
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Cardinalidade (Regras de Negócio)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A cardinalidade define as restrições numéricas da participação de uma entidade num relacionamento. Lê-se sempre (Mínimo, Máximo).</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+              <div class="border border-slate-200 dark:border-slate-700 p-4 rounded text-center">
+                <strong class="block text-indigo-600 dark:text-indigo-400 text-lg mb-1">1:1</strong>
+                <span class="text-sm">Um-para-Um</span>
+                <p class="text-xs mt-2 text-slate-500">Ex: Um Governador governa apenas Um Estado. Um Estado é governado por apenas Um Governador.</p>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 p-4 rounded text-center">
+                <strong class="block text-indigo-600 dark:text-indigo-400 text-lg mb-1">1:N</strong>
+                <span class="text-sm">Um-para-Muitos</span>
+                <p class="text-xs mt-2 text-slate-500">
+                  Ex: Um Departamento tem Vários Funcionários, mas um Funcionário pertence a apenas Um Departamento.
+                </p>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 p-4 rounded text-center bg-indigo-50 dark:bg-indigo-900/20">
+                <strong class="block text-indigo-600 dark:text-indigo-400 text-lg mb-1">N:M</strong>
+                <span class="text-sm">Muitos-para-Muitos</span>
+                <p class="text-xs mt-2 text-slate-500">Ex: Um Aluno cursa Várias Disciplinas, e uma Disciplina tem Vários Alunos.</p>
+                <p class="text-[10px] font-bold text-red-500 mt-2">Gera uma NOVA TABELA no Modelo Lógico!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Porquê da Normalização (Anomalias)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O modelo relacional foi criado por <strong>E.F. Codd</strong>. Ele propôs o processo de Normalização para evitar as terríveis
+              <strong>Anomalias de Atualização, Inserção e Exclusão</strong>.
+            </p>
+            <p class="text-sm bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-red-400">
+              <em>Imagine uma tabela única com os dados do Aluno E do Curso juntos:</em><br />
+              <strong>Anomalia de Inserção:</strong> Se eu criar um Curso novo, não consigo salvá-lo no banco até que um aluno se matricule nele (pois
+              a chave primária ficaria nula).<br />
+              <strong>Anomalia de Exclusão:</strong> Se o único aluno do Curso "Matemática" desistir e eu apagar o registro dele, o cadastro do curso
+              de "Matemática" desaparece do banco de dados junto com ele.<br />
+              <strong>Anomalia de Atualização:</strong> Se o nome do curso mudar, tenho que alterar em 500 linhas (uma para cada aluno matriculado).
+            </p>
+            <p>A Normalização resolve isso fragmentando tabelas grandonas em tabelas menores e coesas.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. As Formas Normais em Detalhe
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <!-- 1FN -->
+            <div>
+              <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">Primeira Forma Normal (1FN) - A Regra da Atomicidade</h3>
+              <p>Uma relação está na 1FN se e somente se todos os seus domínios subjacentes contêm apenas valores atômicos.</p>
+              <p class="mt-2 text-sm">
+                <strong>Na prática:</strong> Não pode haver atributos compostos ou multivalorados. <br /><em>Exemplo errado:</em> Uma coluna
+                <code>Telefones</code> contendo "9999-1111, 8888-2222" na mesma linha. <br /><em>Como arrumar:</em> Separar em múltiplos registros ou
+                criar uma nova tabela específica para telefones.
+              </p>
+            </div>
+
+            <!-- 2FN -->
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+              <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">Segunda Forma Normal (2FN) - Dependência Parcial</h3>
+              <p>
+                Para estar na 2FN, deve estar na 1FN. Além disso, os atributos não-chave devem depender <strong>totalmente</strong> da Chave Primária.
+                Este problema só ocorre em tabelas que possuem <strong>Chave Primária Composta</strong>.
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>Exemplo Clássico:</strong> Tabela <code>Vendas</code>. Chave composta: <code>(ID_NotaFiscal + ID_Produto)</code>. A tabela
+                também tem as colunas <code>Qtd_Vendida</code> e <code>Nome_Produto</code>.<br />
+                A <code>Qtd_Vendida</code> depende da Nota E do Produto inteiro. Correto.<br />
+                O <code>Nome_Produto</code> depende APENAS do <code>ID_Produto</code> (metade da chave).
+                <span class="text-red-500 font-bold">Viola a 2FN!</span><br />
+                <em>Como arrumar:</em> Tirar <code>Nome_Produto</code> e criar uma tabela própria de "Produtos".
+              </p>
+            </div>
+
+            <!-- 3FN -->
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+              <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">Terceira Forma Normal (3FN) - Dependência Transitiva</h3>
+              <p>
+                Para estar na 3FN, deve estar na 2FN. Além disso, nenhum atributo não-chave pode ser dependente de outro atributo não-chave. Todos
+                devem depender <strong class="text-indigo-600 dark:text-indigo-400">exclusivamente e diretamente</strong> da Chave Primária.
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>Exemplo Clássico:</strong> Tabela <code>Funcionario</code> com Chave <code>ID_Funcionario</code>. Temos as colunas:
+                <code>Nome</code>, <code>ID_Departamento</code> e <code>Nome_Departamento</code>.<br />
+                O <code>Nome_Departamento</code> não depende do <code>ID_Funcionario</code>, ele depende do <code>ID_Departamento</code> (que não é a
+                chave primária da tabela). Houve um trânsito. <span class="text-red-500 font-bold">Viola a 3FN!</span><br />
+                <em>Como arrumar:</em> Tirar o <code>Nome_Departamento</code> e mandá-lo para uma tabela independente de "Departamentos".
+              </p>
+            </div>
+
+            <div
+              class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-800 dark:text-indigo-300 p-4 border-l-4 border-indigo-500 text-sm mt-4 font-semibold"
+            >
+              A frase clássica do banco de dados resume a normalização até a 3FN: "O campo deve depender da chave (1FN), de toda a chave (2FN) e nada
+              mais do que a chave (3FN). Que Codd o ajude."
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

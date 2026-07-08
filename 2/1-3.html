@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Pipeline de Dados</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Ciclo de Vida do Dado (Pipeline)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Pipeline Visual -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">🛤️</span> As 5 Fases do Pipeline
+          </h2>
+
+          <div class="flex flex-col md:flex-row items-stretch justify-between gap-3 text-center">
+            <div class="flex-1 bg-slate-50 dark:bg-slate-700 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+              <span class="text-2xl block mb-1">🎣</span>
+              <strong class="text-sm text-slate-800 dark:text-white">1. Coleta</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Extração de APIs, BDs, Logs (Batch ou Streaming).</p>
+            </div>
+            <div class="hidden md:flex items-center text-slate-400">➔</div>
+
+            <div class="flex-1 bg-slate-50 dark:bg-slate-700 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+              <span class="text-2xl block mb-1">🧹</span>
+              <strong class="text-sm text-slate-800 dark:text-white">2. Tratamento</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Limpeza, tipagem, normalização e qualidade (Data Quality).</p>
+            </div>
+            <div class="hidden md:flex items-center text-slate-400">➔</div>
+
+            <div class="flex-1 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-lg border-2 border-indigo-400 dark:border-indigo-600 shadow-sm">
+              <span class="text-2xl block mb-1">🧩</span>
+              <strong class="text-sm text-indigo-800 dark:text-indigo-300">3. Integração</strong>
+              <p class="text-xs text-slate-700 dark:text-slate-300 mt-1">Unir silos. Consolidação da verdade via ETL ou ELT.</p>
+            </div>
+            <div class="hidden md:flex items-center text-slate-400">➔</div>
+
+            <div class="flex-1 bg-slate-50 dark:bg-slate-700 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+              <span class="text-2xl block mb-1">🗄️</span>
+              <strong class="text-sm text-slate-800 dark:text-white">4. Armaz.</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Guardar no Data Lake ou Data Warehouse.</p>
+            </div>
+            <div class="hidden md:flex items-center text-slate-400">➔</div>
+
+            <div class="flex-1 bg-slate-50 dark:bg-slate-700 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+              <span class="text-2xl block mb-1">📊</span>
+              <strong class="text-sm text-slate-800 dark:text-white">5. Recuperação</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Consultas SQL/APIs para Dashboards de BI e IA.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa (ETL vs ELT) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-indigo-800 dark:bg-indigo-900 p-4 border-b border-indigo-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: ETL vs ELT</h2>
+            <p class="text-sm text-slate-300 mt-1">É o tema mais cobrado em Integração de Dados.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400">
+                    ETL (Extract, Transform, Load)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    ELT (Extract, Load, Transform)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Onde ocorre a Transformação?
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Num <strong>Servidor Intermediário</strong> (Motor de ETL).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Dentro do Destino (BD/Data Warehouse).
+                  </td>
+                </tr>
+                <tr class="bg-indigo-50/50 dark:bg-indigo-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Dado que chega ao Destino
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Apenas o dado já tratado, limpo e estruturado.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    O dado <strong>bruto</strong> chega primeiro, sendo tratado depois.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Volume de Dados (Big Data)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Limitado pela capacidade do servidor intermediário.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Altamente escalável (Usa o poder computacional da Nuvem).
+                  </td>
+                </tr>
+                <tr class="bg-indigo-50/50 dark:bg-indigo-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Destino Típico</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Data Warehouses Tradicionais (On-premise).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Data Lakes e Cloud Data Warehouses (Snowflake, BigQuery).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Batch vs Streaming:</strong> A banca vai dizer que "A ingestão em tempo real (Streaming) substituiu completamente a
+                necessidade de ingestão Batch nas empresas modernas". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A ingestão Batch (em lotes) ainda é o padrão ouro para processamentos pesados noturnos (fechamento de folha de pagamento, consolidação
+                de vendas), pois é mais barata e consome menos recursos de rede durante o dia.
+              </li>
+              <li>
+                <strong>Data Lake vs Data Warehouse:</strong> A banca tentará te convencer que um Data Lake armazena apenas dados estruturados em SQL.
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O <strong>Data Lake</strong> é um grande reservatório de dados <strong>brutos e não estruturados</strong> (vídeos, logs, json). Quem
+                armazena dados altamente estruturados e limpos para BI é o <strong>Data Warehouse</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Coleta e Ingestão de Dados
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A etapa de coleta (ou ingestão) é o processo de capturar dados de diversas fontes externas (Bancos de dados de ERPs, APIs web, logs de
+              servidores, sensores IoT) e trazê-los para o ambiente de engenharia de dados.
+            </p>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Padrões de Ingestão:</h3>
+            <ul class="list-none space-y-3 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Processamento em Lote (Batch):</strong> Os dados são coletados periodicamente em
+                grandes pacotes (ex: toda meia-noite extrai-se as vendas do dia). É ideal para volumes massivos onde o atraso (latência) de horas não
+                é um problema. Ferramentas: <em>Apache Airflow, AWS Glue</em>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Processamento em Tempo Real (Streaming):</strong> Os dados são capturados e
+                processados no exato momento em que são gerados (milissegundos). Essencial para detecção de fraudes em cartões de crédito e
+                monitoramento de IoT. Ferramentas: <span class="hl-yellow">Apache Kafka, Apache Flink, AWS Kinesis</span>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Tratamento de Dados (Data Quality)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um velho ditado da computação diz: <em>"Garbage In, Garbage Out"</em> (Se entra lixo, sai lixo). O tratamento visa melhorar a qualidade
+              dos dados antes que cheguem aos diretores que tomam as decisões. Envolve:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm">
+              <li>
+                <strong>Limpeza (Cleansing):</strong> Remoção de dados duplicados, correção de erros de digitação e tratamento de valores nulos
+                (Null).
+              </li>
+              <li>
+                <strong>Normalização:</strong> Padronização de formatos. (Ex: Mudar datas de <code>MM/DD/YYYY</code> para <code>YYYY-MM-DD</code>).
+              </li>
+              <li>
+                <strong>Enriquecimento:</strong> Cruzar o dado com bases externas. (Ex: Pegar o CEP do cliente e enriquecer a tabela com a Latitude e
+                Longitude).
+              </li>
+              <li>
+                <strong>Anonimização/Mascaramento:</strong> Ocultar dados sensíveis (PII) para cumprir regras da LGPD, como trocar CPFs por hashes
+                irreconhecíveis.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Integração (A Guerra ETL vs ELT)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A Integração consolida dados de várias origens num único destino coerente.</p>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">ETL (Extrair, Transformar, Carregar)</h3>
+            <p>
+              Abordagem clássica dos anos 90/2000. O dado sai do sistema original, entra num "motor de transformação" (Servidor ETL) onde sofre todo o
+              tratamento pesado, e <strong>só depois de limpo</strong> é carregado no Data Warehouse (Destino). <br /><span class="hl-red"
+                >Problema:</span
+              >
+              O servidor ETL torna-se um gargalo se o volume for da ordem de Petabytes.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">ELT (Extrair, Carregar, Transformar)</h3>
+            <p>
+              Abordagem moderna de Big Data. Você extrai o dado e o
+              <strong class="text-indigo-600 dark:text-indigo-400">despeja bruto (Load) imediatamente no destino</strong> (ex: um Data Lake na nuvem).
+              Depois, você usa o imenso poder de processamento do próprio destino para transformar os dados através de scripts SQL ou Spark.
+              <br /><span class="hl-green">Vantagem Ouro:</span> Reduz o tempo de ingestão e preserva os dados em seu estado original/bruto para uso
+              futuro da equipe de Data Science.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Armazenamento e Recuperação
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Paradigmas de Armazenamento Centralizado</h3>
+            <ul class="list-none space-y-3 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-slate-400 rounded">
+                <strong class="text-slate-800 dark:text-white">Data Warehouse (DW):</strong> Repositório de dados <strong>estruturados</strong>,
+                limpos e otimizados para consultas rápidas de Business Intelligence (BI). Usa <em>Schema-on-write</em>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-indigo-500 rounded">
+                <strong class="text-indigo-700 dark:text-indigo-400">Data Lake:</strong> O "Lago". Armazena volumes massivos de dados
+                <strong>brutos</strong> (estruturados, semiestruturados e não estruturados - imagens, vídeos, logs). Usa <em>Schema-on-read</em>.
+                Muito usado por Cientistas de Dados.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-emerald-500 rounded">
+                <strong class="text-emerald-700 dark:text-emerald-400">Data Lakehouse:</strong> O conceito mais moderno! Junta o melhor dos dois
+                mundos. O armazenamento barato e flexível do Data Lake com a confiabilidade e suporte a transações ACID do Data Warehouse.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Recuperação (Consumo)</h3>
+            <p>
+              A recuperação é a "ponta da lança". Após o pipeline terminar, os dados precisam ser entregues aos usuários finais. Isso é feito através
+              de:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Dashboards (Painéis de BI):</strong> Ferramentas como PowerBI ou Tableau executam consultas analíticas (OLAP).</li>
+              <li><strong>APIs:</strong> Sistemas externos recuperam dados em formato JSON em tempo real.</li>
+              <li><strong>Modelos de Machine Learning:</strong> Algoritmos que consomem dados do Lake para treinar IAs.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

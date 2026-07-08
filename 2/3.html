@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Modelagem de Dados (Conceitual, Lógica e Física)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          3. Modelagem de Dados
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Visão Geral dos 3 Níveis -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">📐</span> O Ciclo de Vida da Modelagem
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-indigo-400 bg-indigo-50 dark:bg-indigo-900/10 rounded-b-lg p-5">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">1️⃣</span>
+                <h3 class="font-black text-indigo-800 dark:text-indigo-300 text-lg uppercase">Conceitual</h3>
+              </div>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Independente do SGBD. Focado no <strong>Negócio e no Usuário</strong>. Responde
+                <strong class="text-indigo-600 dark:text-indigo-400">"O QUE"</strong> deve ser guardado.
+              </p>
+              <p
+                class="text-xs mt-3 font-mono bg-white dark:bg-slate-800 p-1.5 rounded border border-indigo-100 dark:border-indigo-800 text-slate-500"
+              >
+                Ferramentas: Entidades, MER, DER.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-indigo-500 bg-indigo-100 dark:bg-indigo-900/30 rounded-b-lg p-5 transform md:scale-105 shadow-md">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">2️⃣</span>
+                <h3 class="font-black text-indigo-900 dark:text-indigo-200 text-lg uppercase">Lógica</h3>
+              </div>
+              <p class="text-sm text-slate-800 dark:text-slate-200">
+                Depende do <em>tipo</em> de SGBD (Ex: Relacional), mas não do fabricante. Responde
+                <strong class="text-indigo-700 dark:text-indigo-300">"COMO"</strong> será guardado.
+              </p>
+              <p
+                class="text-xs mt-3 font-mono bg-white/50 dark:bg-slate-800/50 p-1.5 rounded border border-indigo-200 dark:border-indigo-700 text-slate-600 dark:text-slate-400"
+              >
+                Ferramentas: Tabelas, PK, FK, Normalização.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-indigo-600 bg-indigo-600 rounded-b-lg p-5 text-white">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">3️⃣</span>
+                <h3 class="font-black text-white text-lg uppercase">Física</h3>
+              </div>
+              <p class="text-sm text-indigo-100">
+                Totalmente amarrado ao SGBD escolhido (Oracle, MySQL). Focado na <strong>Máquina/Software</strong>.
+              </p>
+              <p class="text-xs mt-3 font-mono bg-indigo-700 p-1.5 rounded border border-indigo-500 text-indigo-50">
+                Ferramentas: Scripts SQL, DDL, Índices, Tipos (VARCHAR).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Regras de Mapeamento (Conceitual -> Lógico) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 Mapeamento Clássico (Conceitual ➔ Lógico)</h2>
+            <p class="text-sm text-slate-300 mt-1">Como os Losangos (Relacionamentos) viram Tabelas? (Despenca em Provas)</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-1/4">Relacionamento (Conceitual)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400 w-3/4">
+                    Como Fica no Modelo Lógico (Relacional)?
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    <div class="inline-block bg-slate-200 dark:bg-slate-700 px-3 py-1 rounded">1 : 1</div>
+                    <br />
+                    <span class="text-xs font-normal">(Um para Um)</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A Chave Primária (PK) de uma entidade vai como <strong>Chave Estrangeira (FK)</strong> para a outra. A escolha de quem recebe a FK
+                    é do projetista (geralmente vai para a entidade que tem participação total).
+                  </td>
+                </tr>
+                <tr class="bg-indigo-50/50 dark:bg-indigo-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    <div class="inline-block bg-slate-200 dark:bg-slate-700 px-3 py-1 rounded">1 : N</div>
+                    <br />
+                    <span class="text-xs font-normal">(Um para Muitos)</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A entidade do lado "N" (Muitos) <strong class="text-indigo-600 dark:text-indigo-400">RECEBE a Chave Estrangeira (FK)</strong> da
+                    entidade do lado "1". <br />
+                    <em>Ex: 1 Departamento tem N Funcionários. A tabela "Funcionário" ganha a coluna "ID_Departamento".</em>
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    <div class="inline-block bg-slate-200 dark:bg-slate-700 px-3 py-1 rounded">N : M</div>
+                    <br />
+                    <span class="text-xs font-normal">(Muitos para Muitos)</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong class="text-emerald-600 dark:text-emerald-400 uppercase">Cria uma NOVA Tabela!</strong> Esta nova tabela terá uma chave
+                    primária composta, formada pelas Chaves Estrangeiras (FKs) das duas entidades originais.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200 text-center">Atributo Multivalorado</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    <em>Ex: Telefone.</em> Vira uma <strong>NOVA Tabela</strong> no modelo lógico, contendo o valor do telefone + a FK do dono do
+                    telefone. (Isso resolve a Primeira Forma Normal - 1FN).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Pegadinhas e Alertas -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Top Pegadinhas de Modelagem</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Tabelas na Modelagem Conceitual?</strong> A banca diz que "No modelo conceitual, definimos as tabelas e suas chaves primárias
+                usando o DER". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                No modelo conceitual (MER/DER) nós NÃO falamos de Tabelas ou Chaves Estrangeiras (FK). Nós falamos de
+                <strong>Entidades, Relacionamentos e Atributos</strong>. O conceito de "Tabela" e "Chave Estrangeira" nasce no
+                <strong>Modelo Lógico</strong> Relacional.
+              </li>
+              <li>
+                <strong>A Confusão MER vs DER:</strong><br />
+                O <strong>MER (Modelo Entidade-Relacionamento)</strong> é o modelo/teoria de dados (os conceitos de Peter Chen).<br />
+                O <strong>DER (Diagrama Entidade-Relacionamento)</strong> é o desenho (os retângulos e losangos) que representa o MER graficamente.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Modelagem Conceitual (O Começo)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A modelagem de dados é o processo de projetar a estrutura do banco de dados para representar as informações do mundo real. O processo
+              começa sempre pelo <strong>Nível Conceitual</strong>.
+            </p>
+            <p>
+              Nesta fase, o engenheiro ou analista senta com os usuários do sistema (o cliente) para entender o negócio. A ferramenta padrão universal
+              é a <strong>Modelagem Entidade-Relacionamento (MER)</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Elementos do MER/DER (Notação de Peter Chen)
+            </h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Entidade (Retângulo):</strong> Representa um objeto do mundo real sobre o qual se
+                deseja guardar dados (Ex: CARRO, CLIENTE). <br /><span class="hl-red text-sm mt-1"
+                  >Atenção à Entidade Fraca (Retângulo com linha dupla):</span
+                >
+                Aquela cuja existência depende de outra entidade forte. (Ex: O <em>Dependente</em> de um Plano de Saúde só existe no banco se o
+                titular <em>Funcionário</em> existir).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Relacionamento (Losango):</strong> Associação entre entidades. É o verbo que as
+                liga (Ex: O Cliente <span class="hl-yellow">COMPRA</span> o Carro).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400">Atributos (Elipse):</strong> As propriedades das entidades.
+                <ul class="list-disc pl-6 mt-2 text-sm">
+                  <li><strong>Atômicos / Simples:</strong> Indivisíveis (Ex: CPF, Idade).</li>
+                  <li><strong>Compostos:</strong> Podem ser divididos (Ex: Endereço é dividido em Rua, CEP, Bairro).</li>
+                  <li><strong>Multivalorados (Elipse dupla):</strong> O usuário pode ter vários ao mesmo tempo (Ex: Telefone, E-mail).</li>
+                  <li>
+                    <strong>Derivados (Elipse tracejada):</strong> É um valor que pode ser calculado a partir de outro, não precisando ser guardado
+                    rigidamente (Ex: A Idade pode ser derivada da Data de Nascimento).
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Modelagem Lógica (O Padrão Relacional)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Após o DER ser aprovado pelo cliente, o projetista precisa traduzir esse desenho para a linguagem de um Banco de Dados. A Modelagem
+              Lógica assume o modelo de implementação (por exemplo, <strong>Modelo Relacional de Edgar Codd</strong>).
+            </p>
+            <p>
+              Aqui é onde o linguajar muda. Deixamos de falar de "Entidades" e passamos a falar de
+              <strong class="text-indigo-600 dark:text-indigo-400">Tabelas (Relações)</strong>, <strong>Linhas/Registros (Tuplas)</strong> e
+              <strong>Colunas (Atributos)</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">As Chaves do Modelo Lógico</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Superchave:</strong> Qualquer conjunto de um ou mais atributos que, juntos, consigam identificar uma linha de forma única.
+                (Ex: Nome + CPF + Idade).
+              </li>
+              <li>
+                <strong>Chave Candidata:</strong> É uma superchave "enxuta", mínima. Se você tirar qualquer atributo dela, ela perde a capacidade de
+                identificar unicamente a linha. (Ex: O <em>CPF</em> sozinho é candidato. O <em>Email</em> sozinho também é).
+              </li>
+              <li>
+                <strong>Chave Primária (PK):</strong> É a chave candidata que o DBA (ou você) ESCOLHEU para ser a identificadora oficial da tabela.
+                Ela <strong>nunca pode ser nula (Regra de Integridade de Entidade)</strong> e não pode se repetir.
+              </li>
+              <li>
+                <strong>Chave Estrangeira (FK):</strong> É um atributo numa tabela que é Chave Primária noutra tabela. É ela que faz o "Join" (a
+                amarração/relacionamento) entre tabelas separadas. O valor da FK deve ser Nulo, ou deve existir obrigatoriamente na tabela de origem
+                <strong>(Regra de Integridade Referencial)</strong>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Derivação e Cardinalidades
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para provas discursivas e objetivas difíceis, você deve saber ler as regras de negócio de acordo com a restrição de cardinalidade. A
+              leitura é sempre (Mínimo, Máximo).
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-indigo-600 dark:text-indigo-400 block mb-2">Exemplos Clássicos:</strong>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <strong>(0, 1) - Zero para Um:</strong> Participação Opcional. O funcionário pode <em>NÃO ter</em> ou ter <em>no máximo 1</em> carro
+                  da empresa.
+                </li>
+                <li>
+                  <strong>(1, 1) - Um para Um:</strong> Participação Obrigatória (Total). O departamento <em>TEM QUE TER no mínimo 1</em>, e
+                  <em>no máximo 1</em> gerente.
+                </li>
+                <li>
+                  <strong>(0, N) - Zero para Muitos:</strong> O cliente pode <em>nunca ter comprado</em> nada, ou ter <em>várias compras</em> no
+                  histórico.
+                </li>
+                <li>
+                  <strong>(1, N) - Um para Muitos:</strong> Um curso tem que ter <em>pelo menos 1</em> aluno matriculado para abrir turma, e pode ter
+                  <em>infinitos (N)</em> alunos.
+                </li>
+              </ul>
+            </div>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">O N:M Vira Tabela!</h3>
+            <p>
+              Se o diagrama DER mostra que 1 Aluno cursa N Disciplinas, e 1 Disciplina tem M Alunos (relação M:N), o SGBD relacional
+              <strong>NÃO SUPORTA ISSO DIRETAMENTE</strong>.
+            </p>
+            <p>
+              No Mapeamento Lógico, nós quebramos esse losango e criamos uma tabela intermediária (ex: <code>Historico_Escolar</code>). Esta nova
+              tabela vai "sugar" a Chave Primária (PK) da tabela Aluno e a PK da tabela Disciplinas. Juntas, elas formam a PK Composta da nova tabela
+              (e ambas atuarão como FKs apontando para as tabelas originais).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. A Modelagem Física
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>É a última etapa. Aqui nós implementamos o projeto lógico no hardware e no software reais. Deixa de ser teoria e vira código.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm">
+              <li><strong>Scripts DDL:</strong> Geração dos comandos <code>CREATE TABLE</code>.</li>
+              <li>
+                <strong>Tipos de Dados:</strong> Tradução do genérico para o específico. O que no lógico era "Texto", no físico vira
+                <code>VARCHAR2(50)</code> (no Oracle) ou <code>NVARCHAR</code> (no SQL Server).
+              </li>
+              <li>
+                <strong>Performance:</strong> Onde aplicamos os <strong>Índices (B-Tree, Bitmap)</strong> para acelerar as buscas, e decidimos sobre o
+                particionamento de tabelas nos discos rígidos (Tablespaces).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

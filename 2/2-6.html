@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Banco de Dados NoSQL</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Banco de Dados NoSQL
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Teorema CAP -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">📐</span> O Teorema CAP (Decoreba de Ouro)
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            Num sistema distribuído (como clusters de Big Data e NoSQL), é <strong>IMPOSSÍVEL garantir simultaneamente as três propriedades</strong>.
+            Você só pode escolher DUAS.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 rounded-b-lg p-5 text-center shadow-sm">
+              <div class="text-3xl font-black text-indigo-700 dark:text-indigo-400 mb-1">C</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Consistency</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                <strong>(Consistência)</strong><br />Todos os nós do cluster veem exatamente os mesmos dados ao mesmo tempo.
+              </p>
+            </div>
+            <div class="border-t-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 rounded-b-lg p-5 text-center shadow-sm">
+              <div class="text-3xl font-black text-emerald-700 dark:text-emerald-400 mb-1">A</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Availability</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                <strong>(Disponibilidade)</strong><br />Toda requisição recebe uma resposta de sucesso ou falha, mesmo se algum nó "morrer".
+              </p>
+            </div>
+            <div class="border-t-4 border-rose-500 bg-rose-50 dark:bg-rose-900/20 rounded-b-lg p-5 text-center shadow-sm">
+              <div class="text-3xl font-black text-rose-700 dark:text-rose-400 mb-1">P</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Partition tolerance</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                <strong>(Tolerância a Partição)</strong><br />O sistema continua operando mesmo se houver falha de rede/comunicação entre os nós.
+              </p>
+            </div>
+          </div>
+          <div
+            class="mt-4 p-3 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded text-center text-sm font-medium text-slate-800 dark:text-slate-200"
+          >
+            Como a tolerância a falhas de rede (P) é obrigatória na internet, bancos NoSQL geralmente são <strong>CP</strong> (Consistência +
+            Tolerância) ou <strong>AP</strong> (Disponibilidade + Tolerância).
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: As 4 Famílias NoSQL -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🗂️ As 4 Famílias de Bancos NoSQL</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Família</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Como armazena? (Estrutura)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Casos de Uso Ideais</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400">
+                    Exemplos (Em Prova)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-blue-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Chave-Valor</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    O mais simples. Uma Chave única associada a um Valor bruto (blob, string).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Sistemas de <strong>Cache</strong> em memória, carrinhos de compras. (MUITO rápido).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    Redis, Amazon DynamoDB, Riak.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Orientado a Documento
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Semelhante ao chave-valor, mas o "valor" é um documento estruturado
+                    <strong class="text-emerald-600 dark:text-emerald-400">(JSON, BSON, XML)</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Catálogos de produtos, CMS, blogs. Permite indexar campos do documento.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    MongoDB, CouchDB.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-amber-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Família de Colunas (Colunar)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Guarda dados agrupadados por <strong>colunas</strong> em vez de linhas. Esquema altamente flexível.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Logs de eventos, análise de Big Data, IoT (Sensores). Otimizado para <strong>escrita massiva</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    Apache Cassandra, HBase.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-purple-500">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Baseado em Grafo</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    Armazena entidades (Nós/Vértices) e seus <strong>relacionamentos (Arestas/Edges)</strong>.
+                  </td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    Redes sociais (Quem conhece quem), sistemas de recomendação, detecção de fraude.
+                  </td>
+                  <td class="p-4 font-bold text-indigo-600 dark:text-indigo-400">Neo4j, Amazon Neptune, OrientDB.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova: ACID vs BASE</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do Fim do SQL:</strong> "A sigla NoSQL significa que não se deve usar a linguagem SQL para consultar os dados."
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A sigla significa <strong>"Not Only SQL" (Não Apenas SQL)</strong>. Vários bancos NoSQL suportam dialetos de SQL para fazer consultas
+                de forma mais amigável.
+              </li>
+              <li>
+                <strong>Bancos Relacionais (SQL) usam ACID. Bancos NoSQL usam BASE:</strong> As bancas dizem que os bancos NoSQL garantem integridade
+                transacional ACID absoluta (Atomicidade, Consistência, Isolamento, Durabilidade). <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Para conseguir distribuir dados massivos em múltiplos nós e ter alta performance (Big Data), os bancos NoSQL geralmente abrem mão do
+                rigor do ACID e usam as propriedades <strong>BASE</strong> (Basicamente Disponível, Estado Flexível,
+                <strong class="underline decoration-red-500">Consistência Eventual</strong>). Se você fizer uma compra no site, pode demorar alguns
+                milissegundos para outro servidor no mundo refletir a compra, mas "eventualmente" tudo ficará consistente.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Que é NoSQL e Por Que Surgiu?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Bancos de dados relacionais clássicos (SGBDR, como Oracle ou MySQL) são fantásticos para consistência transacional e relacionamentos
+              organizados (Tabelas normalizadas). Contudo, eles possuem um "teto de vidro": a <strong>Escalabilidade Vertical</strong>. Para fazer um
+              SGBDR aguentar mais carga, você geralmente precisa comprar um servidor maior, com mais CPU e mais RAM (Scale-up), o que é caríssimo e
+              tem limite físico.
+            </p>
+            <p>
+              Com a explosão da Web 2.0 (Google, Amazon, Facebook) e do <strong>Big Data</strong>, surgiu a necessidade de guardar Petabytes de dados
+              não estruturados gerados a cada segundo. A solução foi a <strong>Escalabilidade Horizontal (Scale-out)</strong>: espalhar os dados por
+              centenas de computadores baratos normais (cluster).
+            </p>
+            <p>
+              O modelo relacional lida muito mal com divisão de tabelas em dezenas de computadores (joins distribuídos são muito lentos). Assim
+              nasceram os bancos <strong>NoSQL (Not Only SQL)</strong>: feitos para serem distribuídos desde o nascimento, lidando com grandes
+              volumes, sem esquema fixo (<em>schema-less</em>), oferecendo flexibilidade extrema.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. O Teorema CAP e Propriedades BASE
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A teoria de sistemas distribuídos tem um pilar inquebrável formulado pelo cientista da computação Eric Brewer:
+              <strong>O Teorema CAP</strong>. Ele afirma que em um sistema que compartilha dados pela rede, você pode escolher, no máximo, duas destas
+              três garantias simultâneas:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-indigo-500">
+                <strong class="text-indigo-600 dark:text-indigo-400 text-lg">C - Consistência (Consistency):</strong> Toda leitura recebe a escrita
+                mais recente ou um erro. Ninguém lê dados "velhos".
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-emerald-500">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">A - Disponibilidade (Availability):</strong> Toda requisição
+                (leitura/escrita) feita a um nó do cluster que não esteja quebrado recebe uma resposta de sucesso garantida, mas não garante que
+                contém o dado mais recente.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-rose-500">
+                <strong class="text-rose-600 dark:text-rose-400 text-lg">P - Tolerância a Partição (Partition Tolerance):</strong> O sistema continua
+                a funcionar mesmo que alguns pacotes de rede sejam descartados ou atrasados entre os nós do cluster (a rede foi "partida").
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-b border-slate-200 dark:border-slate-700 pb-2">
+              A Lógica da Consistência Eventual
+            </h3>
+            <p>
+              Como falhas de rede na internet (P) são inevitáveis, a sua escolha prática é entre <strong>CP</strong> ou <strong>AP</strong>. Bancos de
+              dados relacionais são tradicionalmente CA (assumem que a rede local nunca falha e, se falhar, o sistema para).
+            </p>
+            <p>
+              Para conseguir ter AP (Disponibilidade e Tolerância altíssimas para os sites não caírem), os bancos NoSQL adotam as
+              <strong>Propriedades BASE</strong>. A mais importante para as provas é o E de BASE:
+              <em>Eventual Consistency (Consistência Eventual)</em>. Significa que, se não houver novas atualizações a um dado, *eventualmente* todos
+              os acessos retornarão o último valor atualizado. Enquanto os nós do cluster se sincronizam, os usuários podem temporariamente ver
+              valores antigos.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Deep Dive nas 4 Famílias de Bancos NoSQL
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <!-- Chave-Valor -->
+            <div>
+              <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">1. Chave-Valor (Key-Value Store)</h3>
+              <p>
+                São os bancos de dados NoSQL mais simples e de execução mais rápida. Tratam os dados como um gigantesco dicionário (Hash table). Cada
+                valor bruto é mapeado para uma chave primária.
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>Prós:</strong> Desempenho absurdo (muitos rodam inteiramente na memória RAM). Perfeitos para Cache, controle de sessão de
+                usuários (login), carrinhos de e-commerce. <br />
+                <strong>Sistemas Clássicos:</strong> <code>Redis</code>, <code>Memcached</code>, <code>Amazon DynamoDB</code>, <code>Riak</code>.
+              </p>
+            </div>
+
+            <!-- Documento -->
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+              <h3 class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">2. Orientado a Documentos (Document Store)</h3>
+              <p>
+                Um "upgrade" lógico do chave-valor. Em vez de o valor ser uma "caixa preta", o valor é um documento de formato estruturado (geralmente
+                arquivos <strong>JSON ou BSON</strong>). Isso permite que o banco entenda a estrutura interna da informação e você consiga fazer
+                consultas pelas propriedades internas do documento (ex: "Traga todos os documentos cujo campo 'Idade' > 30").
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>Prós:</strong> Esquema flexível (um documento cliente pode ter telefone, o outro pode não ter). Ideal para sistemas de
+                conteúdo (CMS), catálogos, perfis de redes sociais. <br />
+                <strong>Sistemas Clássicos:</strong> <code>MongoDB</code> (O grande rei das provas), <code>CouchDB</code>.
+              </p>
+            </div>
+
+            <!-- Colunar -->
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+              <h3 class="text-xl font-bold text-amber-600 dark:text-amber-500 mb-2">3. Família de Colunas (Column-Family / Wide-Column)</h3>
+              <p>
+                Enquanto o SGBDR grava e lê uma linha inteira de dados no disco (ex: Lê ID, Nome, Idade, Salário), os bancos colunares gravam as
+                <strong>colunas juntas</strong>. Se você só quer processar a média dos salários, ele só puxa a coluna "Salários" do disco, ignorando o
+                resto. É esmagadoramente mais rápido para agregações analíticas (OLAP).
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>Prós:</strong> Processamento muito veloz em colunas, alta capacidade de compressão de dados semelhantes, exímios em ingerir
+                montanhas de dados (altíssima taxa de Escrita). <br />
+                <strong>Sistemas Clássicos:</strong> <code>Apache Cassandra</code> (Desenvolvido pelo Facebook), <code>HBase</code> (Da família
+                Hadoop).
+              </p>
+            </div>
+
+            <!-- Grafo -->
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+              <h3 class="text-xl font-bold text-purple-600 dark:text-purple-400 mb-2">4. Baseado em Grafo (Graph Database)</h3>
+              <p>
+                Criados não para os dados em si, mas para os <strong>RELACIONAMENTOS entre os dados</strong>. Os dados são armazenados como Nós
+                (Vértices) e os relacionamentos como Arestas (Edges). No banco de dados relacional (SGBDR), fazer dezenas de conexões (`JOINs`) para
+                descobrir os "amigos dos amigos dos amigos" de uma pessoa causa o travamento completo do sistema. O banco de grafo faz isso
+                nativamente em milissegundos.
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>Prós:</strong> Navegação ágil em redes complexas de relacionamentos, sistemas de recomendação (Amazon/Netflix sugerindo
+                produtos baseados nos seus amigos), deteção de fraudes financeiras e grafos de conhecimento. <br />
+                <strong>Sistemas Clássicos:</strong> <code>Neo4j</code>, <code>Amazon Neptune</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
