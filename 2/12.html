@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Integração e Ingestão de Dados (ETL/ELT)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Integração e Ingestão de Dados
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- ETL vs ELT -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-indigo-800 dark:bg-indigo-900 p-4 border-b border-indigo-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚔️ O Grande Confronto: ETL vs ELT</h2>
+            <span class="bg-yellow-400 text-indigo-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">⚙️</div>
+              <h3 class="font-black text-indigo-700 dark:text-indigo-400 mb-1 text-xl">E T L</h3>
+              <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-700 pb-2">
+                Extract ➔ Transform ➔ Load
+              </p>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  📍 <strong>Onde Transforma?</strong> No meio do caminho. Num servidor dedicado de ETL (ex: PowerCenter, Pentaho), ANTES de gravar no
+                  destino.
+                </li>
+                <li>🎯 <strong>Destino Típico:</strong> Data Warehouse Tradicional (Relacional). O DW só recebe dados limpos e perfeitos.</li>
+                <li>
+                  🛡️ <strong>Segurança/LGPD:</strong> Excelente. Pode mascarar CPFs no servidor do meio antes que o dado sensível chegue ao destino.
+                </li>
+                <li>🐢 <strong>Velocidade:</strong> Lento para grandes volumes (Big Data), pois o servidor do meio vira um gargalo.</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">🚀</div>
+              <h3 class="font-black text-emerald-600 dark:text-emerald-400 mb-1 text-xl">E L T</h3>
+              <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-700 pb-2">
+                Extract ➔ Load ➔ Transform
+              </p>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  📍 <strong>Onde Transforma?</strong> No próprio destino! Puxa o dado bruto e joga no destino. O próprio destino faz o cálculo (via
+                  SQL pesado).
+                </li>
+                <li>🎯 <strong>Destino Típico:</strong> Data Lake ou Cloud Data Warehouse Moderno (Snowflake, BigQuery).</li>
+                <li>
+                  💾 <strong>Flexibilidade:</strong> Excelente. O dado bruto ("Raw") fica salvo. Se as regras de negócio mudarem amanhã, você ainda
+                  tem o dado original.
+                </li>
+                <li>⚡ <strong>Velocidade:</strong> Altíssima ingestão. Aproveita o poder de processamento em cluster da Nuvem.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Métodos de Integração -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">🔗</span> Padrões de Integração de Dados
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Arquivos -->
+            <div class="border-t-4 border-sky-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <div class="text-3xl mb-2">📁</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Transferência de Arquivos</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                A aplicação exporta dados em lote para um arquivo (CSV, XML, JSON) e o sistema de destino importa esse arquivo (via SFTP, MFT ou
+                Amazon S3).
+              </p>
+              <p class="text-xs font-bold mt-2 text-sky-600 dark:text-sky-400">Alto acoplamento de formato / Baixa latência: Ruim</p>
+            </div>
+
+            <!-- Banco de Dados Partilhado -->
+            <div class="border-t-4 border-fuchsia-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <div class="text-3xl mb-2">🗄️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Base de Dados Compartilhada</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Múltiplas aplicações leem e escrevem exatamente no <strong>mesmo banco de dados físico</strong>. (Integração direta).
+              </p>
+              <p class="text-xs font-bold mt-2 text-fuchsia-600 dark:text-fuchsia-400">Ponto único de falha / Gargalo de esquema</p>
+            </div>
+
+            <!-- Mensageria/CDC -->
+            <div
+              class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center relative overflow-hidden"
+            >
+              <div class="absolute -right-4 -bottom-4 text-6xl opacity-10">🚀</div>
+              <div class="text-3xl mb-2">📬</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">CDC / Mensageria</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Técnica assíncrona. Quando ocorre um evento (venda), uma mensagem é enviada (ex: Kafka) ou o log do banco é lido (CDC) para atualizar
+                o destino em "Near Real-Time".
+              </p>
+              <p class="text-xs font-bold mt-2 text-emerald-600 dark:text-emerald-400">Padrão Ouro Atual (Microserviços)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Ingestão e Integração</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do ELT Leve:</strong> A banca diz que "No modelo ELT, como a transformação ocorre no destino, não é necessário
+                hardware potente para processamento". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Exige-se hardware <strong>MUITO potente no destino</strong> (ex: clusters na nuvem), pois o Data Warehouse ou Data Lake assumirá 100%
+                da carga pesada de transformar dados via consultas SQL massivas.
+              </li>
+              <li>
+                <strong>CDC baseado em Log vs Query:</strong> "O Change Data Capture feito através de queries (SELECT na tabela de origem procurando
+                por Data_Alteracao) é a forma que menos impacta a performance do banco de origem". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Fazer <em>SELECTs</em> constantes impacta fortemente a origem. A melhor forma (e mais cobrada) é o
+                <strong>CDC baseado em LOG (Log-based CDC)</strong>, onde a ferramenta apenas "lê" silenciosamente o arquivo de log de transações do
+                banco, gerando <strong class="underline decoration-red-500">quase zero overhead</strong> na origem.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Evolução: Do ETL para o ELT
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A integração de dados envolve mover dados de Sistemas Operacionais (OLTP) para Sistemas Analíticos (OLAP). Historicamente, a arquitetura
+              clássica é o <strong>ETL</strong>. Contudo, com o barateamento do armazenamento na nuvem e o surgimento dos <em>Data Lakes</em>, o
+              mercado migrou fortemente para o <strong>ELT</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">O Modelo ETL Clássico</h3>
+            <p>
+              No ETL, existe um <strong>Servidor de Integração dedicado no meio</strong> do caminho. O dado é <em>Extraído</em> da origem, colocado na
+              memória desse servidor do meio, onde sofre <em>Transformações</em> pesadas (limpeza, junções, cálculos, anonimização), e só então a
+              versão final e limpa é <em>Carregada</em> no Data Warehouse. <br /><strong>Ponto Forte (Prova):</strong> Protege o Data Warehouse, pois
+              o DW só recebe dados modelados. Evita que dados sensíveis cruzem a rede, pois são limpos no meio do caminho.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-emerald-500 pl-3">
+              O Modelo ELT Moderno (Big Data)
+            </h3>
+            <p>
+              No ELT, o dado é <em>Extraído</em> e imediatamente <em>Carregado</em> no destino (geralmente um Data Lake no formato "Bruto" / Raw
+              Zone). Somente depois de estar a salvo no Data Lake/Warehouse é que scripts SQL ou Spark são acionados para <em>Transformar</em> o dado
+              lá dentro. <br /><strong>Ponto Forte (Prova):</strong> A <span class="hl-green">Ingestão é ultra-rápida</span>. Você não perde tempo
+              transformando dados durante o tráfego. Além disso, você <strong>guarda o histórico do dado cru</strong>; se daqui a dois anos a regra de
+              negócio mudar, você pode reprocessar o dado bruto original sem precisar extrair de novo do banco operacional.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Integração via Base de Dados (CDC)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Se uma empresa faz 10 mil vendas por dia, é inviável fazer um "SELECT * FROM Vendas" toda noite para alimentar o Data Warehouse
+              (demoraria horas e derrubaria a performance). A solução exigida em provas é a ingestão incremental usando
+              <strong>CDC (Change Data Capture)</strong>.
+            </p>
+            <p>O CDC captura apenas o que <span class="hl-yellow">mudou</span> (INSERTS, UPDATES, DELETES) desde a última extração.</p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4">
+              <li>
+                <strong>CDC Baseado em Trigger:</strong> Cria-se um "Gatilho" no banco de origem. Sempre que alguém vende algo, o gatilho grava o dado
+                novo numa tabelinha auxiliar. <br /><em>Ponto Fraco: O overhead (peso) na origem é enorme, deixando o banco operacional lento.</em>
+              </li>
+              <li>
+                <strong>CDC Baseado em Query (Data/Timestamp):</strong> A origem tem uma coluna "Data_Atualizacao". O ETL roda a query
+                <code>WHERE Data_Atualizacao > Ontem</code>. <br /><em
+                  >Ponto Fraco: Não consegue capturar "DELETES" (pois se a linha foi apagada, a data sumiu com ela).</em
+                >
+              </li>
+              <li>
+                <strong>CDC Baseado em LOG (O Padrão Ouro):</strong> Todo SGBDR guarda um log de segurança interno de tudo que acontece (Write-Ahead
+                Log, Redo Log). Ferramentas como o <em>Debezium</em> ou <em>GoldenGate</em> "leem" silenciosamente esse arquivo de texto de log por
+                fora, sem usar a CPU do banco de dados, e replicam a mudança para a nuvem.<br />
+                <span class="hl-green">Vantagem em Prova: Quase zero overhead e captura TUDO (inclusive deletes) em tempo real.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Transferência de Arquivos (Batch Ingestion)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Mesmo com APIs e CDC modernos, grande parte do volume de dados do mundo ainda trafega através de arquivos (Files). Essa modalidade é
+              chamada de <strong>Ingestão Batch (em Lote)</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Formatos de Arquivo (Foco em Big Data)</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>CSV:</strong> Padrão aberto. Fácil leitura humana, mas ocupa muito espaço, não guarda tipos de dados (metadados ruins) e é
+                terrível para consultas analíticas pesadas.
+              </li>
+              <li>
+                <strong>JSON:</strong> Padrão para APIs e dados Semi-estruturados. Autodescritivo, mas também ocupa muito espaço e é lento para fazer
+                agregações.
+              </li>
+              <li>
+                <strong>Parquet / ORC:</strong> <span class="hl-green">Os Queridinhos do Big Data.</span> São arquivos
+                <strong>Orientados a Colunas</strong> e com <strong>Alta Compressão</strong>. Se você quer integrar 1 Terabyte de dados do seu sistema
+                de faturamento para um Data Lake na nuvem, exportar e transferir um arquivo Parquet gastará menos banda de rede e permitirá consultas
+                milhares de vezes mais rápidas no destino.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              MFT (Managed File Transfer)
+            </h3>
+            <p>
+              Em concursos superiores, cita-se o <strong>MFT</strong>. Quando bancos precisam enviar arquivos TXT bilionários de compensação de
+              boletos, o FTP não serve (não tem auditoria e cai no meio). Ferramentas MFT garantem que a
+              <strong>Transferência de Arquivo</strong> tenha criptografia de ponta-a-ponta, <em>retry</em> automático se o link cair, compressão
+              <em>on-the-fly</em> e trilha de auditoria para <em>compliance</em>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

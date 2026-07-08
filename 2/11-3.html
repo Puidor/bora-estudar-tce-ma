@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Otimização de Performance em Larga Escala</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Otimização de Performance (Tuning)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Trio da Otimização -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-indigo-800 dark:bg-indigo-900 p-4 border-b border-indigo-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🚀 Os Três Pilares do Tuning</h2>
+            <p class="text-sm text-slate-300 mt-1">Como resolver o problema de consultas que demoram horas para rodar.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">📇</div>
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">
+                1. Indexação (Índices)
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Funciona como o <strong>índice de um livro</strong>. Evita que o banco tenha que ler a tabela inteira linha por linha (<span
+                  class="italic text-red-500"
+                  >Full Table Scan</span
+                >). Aumenta a velocidade de Leitura, mas penaliza a Escrita.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">🔪</div>
+              <h3 class="font-bold text-emerald-700 dark:text-emerald-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">
+                2. Particionamento
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Dividir para Conquistar.</strong> Quebra uma tabela gigante de 1 bilhão de linhas em "pedaços" menores (ex: por Ano ou por
+                Região), espalhando a carga de I/O em discos diferentes.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">👁️</div>
+              <h3 class="font-bold text-fuchsia-700 dark:text-fuchsia-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">
+                3. Visão Materializada
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Pré-computação.</strong> Executa consultas super complexas (com vários JOINs e agregações) de madrugada e
+                <em>salva o resultado fisicamente no disco</em> para consulta instantânea de dia.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: B-Tree vs Bitmap -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Tipos de Índices (Cai Muito!)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400 text-center">
+                    Índice Árvore-B (B-Tree)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400 text-center">
+                    Índice Bitmap
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Ideal Para...</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-center">
+                    Colunas de <strong>Alta Cardinalidade</strong><br /><span class="text-xs text-slate-500">(Muitos valores diferentes)</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-center">
+                    Colunas de <strong>Baixa Cardinalidade</strong><br /><span class="text-xs text-slate-500">(Poucos valores diferentes)</span>
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Exemplo Clássico</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-center font-mono">CPF, E-mail, ID_Cliente</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-center font-mono">
+                    Sexo (M/F), UF (SP/RJ/MG), Status (Ativo/Inativo)
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Velocidade de Atualização
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-center text-emerald-600 dark:text-emerald-400 font-bold">
+                    Razoável (OLTP)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-center text-rose-600 dark:text-rose-400 font-bold">
+                    Péssima (Causa travamentos no INSERT/UPDATE)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 Pegadinhas de Performance (FGV / CEBRASPE)
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do Índice:</strong> A banca afirma: "Para otimizar o banco de dados, a melhor prática é criar índices para TODAS as
+                colunas de todas as tabelas". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Índices aceleram a Leitura (SELECT), mas <strong>penalizam gravemente a Escrita (INSERT, UPDATE, DELETE)</strong>. Cada vez que uma
+                linha é inserida, todos os índices da tabela precisam ser reorganizados na memória e no disco.
+              </li>
+              <li>
+                <strong>View Simples vs Materializada:</strong> "Uma View (Visão) melhora a performance de consultas complexas". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Atenção!</span
+                >
+                Uma View <em>simples</em> (lógica) não guarda dados, é apenas uma "máscara" do comando SELECT. Ela roda em tempo real e não melhora a
+                performance. Apenas a <strong>View MATERIALIZADA</strong> melhora a performance, porque ela roda o SELECT e guarda o resultado
+                fisicamente como uma tabela real no disco.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Indexação (O Fim do Full Table Scan)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando executamos um <code>SELECT * FROM Clientes WHERE Nome = 'João'</code> numa tabela sem índices, o banco de dados é forçado a ler
+              bloco por bloco do disco rígido até ao fim da tabela. Isso chama-se
+              <strong class="text-red-600 dark:text-red-400">Full Table Scan (FTS)</strong> e é o maior vilão da performance de um SGBD.
+            </p>
+            <p>
+              Para resolver isso, criamos <strong>Índices</strong>. Um índice é uma estrutura de dados extra que armazena os valores da coluna
+              indexada ordenados, contendo ponteiros físicos diretos para o local exato onde o resto da linha está no disco.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">O Rei: B-Tree (Árvore B)</h3>
+            <p>
+              É o tipo de índice padrão em 99% dos bancos relacionais (Oracle, Postgres, SQL Server). Estruturado como uma árvore balanceada. Ele é
+              perfeito para pesquisas exatas (<code>=</code>) e pesquisas por intervalos (<code>BETWEEN</code>, <code>&gt;</code>, <code>&lt;</code>).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">O Especialista: Bitmap</h3>
+            <p>
+              Usa matrizes de bits (0 e 1) em vez de ponteiros de árvore. É imbatível em Data Warehouses quando queremos fazer consultas complexas
+              cruzando colunas de <span class="hl-yellow">baixa cardinalidade</span> (ex:
+              <code>WHERE Sexo = 'F' AND UF = 'SP' AND Estado_Civil = 'Casado'</code>). A operação lógica <code>AND/OR</code> com zeros e uns no
+              processador é quase instantânea.
+            </p>
+            <p class="text-sm bg-red-50 dark:bg-red-900/10 text-red-800 dark:text-red-300 p-3 rounded mt-2">
+              <strong>Perigo OLTP:</strong> Se tentar usar índice Bitmap num sistema de caixa de supermercado (muitos INSERTS), o banco trava. O
+              Bitmap exige bloqueio (Lock) de páginas inteiras de dados durante uma atualização.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Particionamento e Sharding (Dividir para Conquistar)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Mesmo com índices, uma tabela com 5 bilhões de linhas torna-se instável para gerir (para fazer backup, por exemplo). A solução
+              estrutural é o <strong>Particionamento</strong>. O SGBD quebra a tabela gigante em pedaços menores internamente, mas para o
+              utilizador/programador, ela continua a parecer uma tabela única.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Particionamento Vertical</h3>
+            <p>
+              Divide a tabela por <strong>colunas</strong>. Se a "Tabela Clientes" tem 50 colunas, mas 90% das consultas só pedem Nome, CPF e E-mail,
+              podemos separar as outras 47 colunas (Foto, Biografia, etc) numa partição física diferente. A consulta fica mais "fina" e rápida de ser
+              carregada do disco para a memória.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Particionamento Horizontal</h3>
+            <p>
+              Divide a tabela por <strong>linhas</strong> com base numa regra (chave de partição). Exemplo (Particionamento por Range/Intervalo):
+              Linhas de 2021 ficam na Partição 1, linhas de 2022 na Partição 2. Se a query for <code>SELECT * WHERE ANO = 2022</code>, o banco ignora
+              completamente o disco da Partição 1 (<span class="hl-green">Partition Pruning</span>), poupando I/O.
+            </p>
+
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded border-l-4 border-indigo-500 mt-4 text-sm">
+              <strong class="text-indigo-800 dark:text-indigo-300">Sharding (Fragmentação):</strong><br />
+              É a evolução do particionamento horizontal para arquiteturas distribuídas (muito comum em Bancos NoSQL). Em vez de guardar as partições
+              horizontais num único super servidor, o
+              <strong>Sharding espalha as partições (Shards) por diferentes Servidores Físicos distintos espalhados pelo mundo</strong>.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Query Tuning e o Otimizador
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um índice só ajuda se o <strong>Otimizador de Consultas (Query Optimizer)</strong> do SGBD decidir usá-lo. O Otimizador é o "cérebro" do
+              banco que analisa a sua consulta SQL e cria um <em>Plano de Execução (Execution Plan)</em> baseado nas estatísticas da tabela.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-rose-500 pl-3">
+              Erros de Código que inutilizam Índices (Cai em Prova!)
+            </h3>
+            <p>Muitas vezes o índice existe, mas o programador escreve um SQL mau que cega o banco, forçando um <em>Full Table Scan</em>. Evite:</p>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Funções na Cláusula WHERE:</strong> <code>WHERE UPPER(Nome) = 'JOÃO'</code>. Como você aplicou a função <code>UPPER()</code>,
+                o banco não consegue procurar no índice direto, ele precisa converter linha por linha antes de comparar. <br /><em>Solução:</em> Criar
+                um <em>Índice Baseado em Função (Function-based Index)</em>.
+              </li>
+              <li>
+                <strong>Curinga (Wildcard) no início do LIKE:</strong> <code>WHERE Nome LIKE '%Silva'</code>. O índice B-Tree é organizado
+                alfabeticamente pela primeira letra. Como você colocou o <code>%</code> no começo, ele não sabe por qual letra começar e varre a
+                tabela toda.
+              </li>
+              <li>
+                <strong>Ocultamento por Conversão de Tipo (Casting):</strong> A coluna CPF é <code>VARCHAR</code>, mas você faz
+                <code>WHERE CPF = 123456</code> (número). O banco fará conversão implícita de todos os CPFs para número antes de comparar, ignorando o
+                índice.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Visões Materializadas e Caching
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">A Visão Materializada (Materialized View)</h3>
+            <p>
+              Em Business Intelligence (BI), é comum ter dashboards que calculam o "Total de Vendas por Estado do último ano", varrendo dezenas de
+              milhões de linhas com funções <code>SUM()</code> e vários <code>JOINs</code>. Se cada diretor atualizar a tela, o banco pode "cair".
+            </p>
+            <p>
+              A <strong class="text-indigo-600 dark:text-indigo-400">Visão Materializada</strong> resolve isso. Ela executa essa consulta pesada uma
+              vez (geralmente agendada de madrugada via <em>Job</em>) e salva a tabela resultante fisicamente no disco. Quando o diretor abre o
+              dashboard, o banco lê uma tabela pronta de 27 linhas (os Estados), o que demora 1 milissegundo. O desafio é o <em>Refresh</em> (mantê-la
+              atualizada sem onerar o banco).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              Caching em Memória (Redis / Memcached)
+            </h3>
+            <p>
+              A arquitetura de otimização em larga escala moderna (usada por Google, Netflix, X) adiciona uma camada antes do Banco de Dados
+              Relacional.
+            </p>
+            <p>
+              Se a aplicação pede os detalhes do produto "Smartphone XPTO", o sistema não vai ao banco de dados. Ele pergunta primeiro ao
+              <span class="hl-yellow">Cache em Memória (ex: Redis)</span>. Se o Redis tiver essa informação na RAM (<em>Cache Hit</em>), devolve em
+              microssegundos. Só vai ao SGBD se der <em>Cache Miss</em>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

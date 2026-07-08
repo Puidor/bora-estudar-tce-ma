@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: DML (Linguagem de Manipulação de Dados)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Linguagem DML (Manipulação de Dados)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>O que faz?</strong> A DML (<em>Data Manipulation Language</em>) é responsável por
+              <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded"
+                >INSERIR, ALTERAR E APAGAR</span
+              >
+              os registros (linhas) de uma tabela já existente.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>Não manipula a estrutura:</strong> Se você quiser adicionar uma nova <em>coluna</em> ou apagar a <em>tabela</em> inteira do
+              sistema, você deve usar a DDL (ALTER, DROP).
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>O Poder do Arrependimento:</strong> Comandos DML geram logs de transação precisos. A menos que a transação seja "comitada", você
+              pode usar o comando <code class="font-bold text-emerald-600 dark:text-emerald-400">ROLLBACK</code> para desfazer as alterações e voltar
+              no tempo.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Os Comandos DML -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛠️ O Trio da Manipulação (DML)</h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5 border-t-4 border-t-emerald-500">
+              <h3 class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-lg mb-1">INSERT</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Insere novos registros.</strong> Permite adicionar uma nova linha preenchendo as colunas com os valores correspondentes.
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 border-t-4 border-t-blue-500">
+              <h3 class="font-mono font-bold text-blue-600 dark:text-blue-400 text-lg mb-1">UPDATE</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Atualiza registros já existentes.</strong> Usado para trocar um valor antigo por um novo (ex: aumentar salário de quem bater a
+                meta).
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 border-t-4 border-t-rose-500">
+              <h3 class="font-mono font-bold text-rose-600 dark:text-rose-400 text-lg mb-1">DELETE</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Apaga registros da tabela.</strong> Pode apagar uma linha, várias ou todas (se você não usar um filtro), mantendo a estrutura
+                da tabela intacta.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- O Perigo de Omitir o WHERE -->
+        <section class="bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-800 rounded-xl p-6 relative overflow-hidden">
+          <h2 class="text-lg font-bold text-rose-800 dark:text-rose-400 mb-3 text-center">🔥 O Perigo Número 1 (A Regra de Ouro)</h2>
+          <div class="flex flex-col md:flex-row gap-4 items-center justify-center">
+            <div class="bg-white dark:bg-slate-800 p-4 rounded shadow border border-slate-200 dark:border-slate-700 text-center flex-1">
+              <p class="font-mono text-sm text-blue-600 dark:text-blue-400 mb-2 font-bold">UPDATE clientes SET status = 'INATIVO';</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Sem o WHERE, <strong>TODOS</strong> os clientes do banco de dados ficarão inativos ao mesmo tempo.
+              </p>
+            </div>
+            <div class="hidden md:flex text-rose-400 font-bold">VS</div>
+            <div class="bg-white dark:bg-slate-800 p-4 rounded shadow border border-rose-300 dark:border-rose-600 text-center flex-1">
+              <p class="font-mono text-sm text-emerald-600 dark:text-emerald-400 mb-2 font-bold">
+                UPDATE clientes SET status = 'INATIVO' <br /><span class="text-rose-600 dark:text-rose-400">WHERE id_cliente = 5</span>;
+              </p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Com o WHERE, <strong>APENAS</strong> o cliente 5 terá o seu status alterado de forma segura.
+              </p>
+            </div>
+          </div>
+          <p class="text-center text-sm font-bold mt-4 text-rose-700 dark:text-rose-300">
+            A mesma regra de destruição em massa aplica-se ao DELETE sem WHERE!
+          </p>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Sintaxe</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do Asterisco no DELETE:</strong> A banca vai te dar o código <code>DELETE * FROM tabela WHERE id = 1;</code> e
+                perguntar se está correto. <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Diferentemente do <code>SELECT *</code>, o comando DELETE exclui a linha inteira por definição. Portanto,
+                <strong>não se usa asterisco no comando DELETE</strong> (o correto em ANSI SQL é simplesmente <code>DELETE FROM tabela</code>).
+              </li>
+              <li>
+                <strong>Ocultar nomes das colunas no INSERT:</strong> "É obrigatório declarar o nome de todas as colunas no comando INSERT INTO".<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Você pode omitir a lista de colunas, <strong>DESDE QUE</strong> passe na cláusula <code>VALUES</code> os dados exatos para
+                <strong>todas</strong> as colunas da tabela e <strong>na mesma ordem</strong> em que elas foram criadas originalmente.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Sintaxe do INSERT
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O comando <code>INSERT INTO</code> é utilizado para adicionar novos registros numa tabela. Há duas formas principais de escrever este
+              comando, o que é frequentemente cobrado para testar a sua atenção a detalhes.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Forma Explícita (Recomendada)
+            </h3>
+            <p>
+              Você nomeia as colunas em que deseja inserir dados. Isso permite inserir dados fora de ordem e omitir colunas que aceitem
+              <code>NULL</code> ou que tenham valores <code>DEFAULT</code>.
+            </p>
+            <div class="bg-slate-900 text-emerald-400 p-3 rounded font-mono text-sm mt-2 mb-2 overflow-x-auto">
+              <span class="text-pink-400">INSERT INTO</span> funcionarios (nome, salario, departamento)<br />
+              <span class="text-pink-400">VALUES</span> ('João Silva', 5000, 'TI');
+            </div>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">Forma Implícita (Perigosa)</h3>
+            <p>
+              Se omitir os nomes das colunas, tem de inserir um valor para <strong>cada coluna</strong> que existe na tabela, estritamente na ordem
+              física em que a tabela foi desenhada.
+            </p>
+            <div class="bg-slate-900 text-emerald-400 p-3 rounded font-mono text-sm mt-2 mb-2 overflow-x-auto">
+              <span class="text-slate-500">-- Assumindo que a tabela tem id, nome, salario, departamento, nesta ordem:</span><br />
+              <span class="text-pink-400">INSERT INTO</span> funcionarios <br />
+              <span class="text-pink-400">VALUES</span> (101, 'Maria Sousa', 6000, 'RH');
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Sintaxe do UPDATE
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O comando <code>UPDATE</code> altera dados que já estão na tabela. A palavra-chave <code>SET</code> é usada para indicar qual coluna
+              receberá o novo valor.
+            </p>
+            <p class="font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/10 p-2 rounded">
+              É perigosíssimo esquecer a cláusula WHERE, pois o comando afetará a tabela inteira!
+            </p>
+
+            <div class="bg-slate-900 text-blue-400 p-4 rounded font-mono text-sm mt-4 overflow-x-auto shadow-inner">
+              <span class="text-slate-500">-- Atualizando apenas um registro:</span><br />
+              <span class="text-pink-400">UPDATE</span> produtos <br />
+              <span class="text-pink-400">SET</span> preco = 150.00 <br />
+              <span class="text-pink-400">WHERE</span> id_produto = 10;<br /><br />
+
+              <span class="text-slate-500">-- Atualizando múltiplas colunas de uma vez:</span><br />
+              <span class="text-pink-400">UPDATE</span> empregados <br />
+              <span class="text-pink-400">SET</span> cargo = 'Gerente', salario = 8000 <br />
+              <span class="text-pink-400">WHERE</span> id_empregado = 45;
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Sintaxe do DELETE e sua diferença para DDL
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <code>DELETE</code> apaga as <strong>linhas</strong> da tabela. A estrutura da tabela (colunas, tipos) e os próprios metadados não são
+              afetados.
+            </p>
+
+            <div class="bg-slate-900 text-rose-400 p-4 rounded font-mono text-sm mt-4 overflow-x-auto shadow-inner">
+              <span class="text-slate-500">-- Apaga apenas os inativos:</span><br />
+              <span class="text-pink-400">DELETE FROM</span> usuarios <span class="text-pink-400">WHERE</span> status = 'inativo';<br /><br />
+
+              <span class="text-slate-500">-- Apaga TUDO (Lento, mas com log de transação):</span><br />
+              <span class="text-pink-400">DELETE FROM</span> usuarios;
+            </div>
+
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded mt-6">
+              <h4 class="font-bold text-indigo-800 dark:text-indigo-300 mb-2">Relembrando: DELETE vs TRUNCATE (Item 2.9 do Edital)</h4>
+              <p class="text-sm mb-2">
+                Embora o <code>DELETE FROM tabela</code> (sem WHERE) apague todos os registros, assim como o <code>TRUNCATE TABLE tabela</code>, a
+                banca exigirá que você diferencie a <strong>mecânica interna</strong>:
+              </p>
+              <ul class="list-disc pl-5 space-y-1 text-sm">
+                <li>
+                  O <strong class="text-blue-600 dark:text-blue-400">DELETE é DML</strong>: Ele vai linha a linha registrando no log que a apagou.
+                  Acionará <em>triggers</em> (gatilhos) de exclusão e poderá ser desfeito via <code>ROLLBACK</code>.
+                </li>
+                <li>
+                  O <strong class="text-indigo-600 dark:text-indigo-400">TRUNCATE é DDL</strong>: Ele redefine o ponteiro da tabela, esvaziando-a
+                  imediatamente (muito mais rápido). Não aciona <em>triggers</em> de exclusão e geralmente efetua commit automático, impedindo o
+                  <code>ROLLBACK</code>.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. DML e Transações (TCL)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Uma das características mais fortes da DML em bancos de dados relacionais é o respeito profundo pelas
+              <strong>Transações (Propriedades ACID)</strong>.
+            </p>
+            <p>
+              Quando você digita um <code>UPDATE</code> ou <code>INSERT</code>, na vasta maioria dos SGBDs modernos (em modo transacional), essa
+              mudança ocorre apenas na <strong>memória RAM e nos seus logs de sessão</strong>. Para o resto da empresa, o banco de dados continua
+              mostrando o valor antigo.
+            </p>
+            <ul class="list-disc pl-6 space-y-3 mt-4">
+              <li>
+                Para efetivar e "cravar" a mudança definitivamente no disco, tornando-a visível a todos, você precisa utilizar o comando de Controle
+                de Transação:
+                <strong class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded">COMMIT</strong>.
+              </li>
+              <li>
+                Se algo der errado, se cair a energia, ou se você perceber que fez um UPDATE sem WHERE a tempo, você pode usar o comando
+                <strong class="bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200 px-1 rounded">ROLLBACK</strong> para desfazer a
+                alteração (apenas as que ainda não sofreram Commit).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
