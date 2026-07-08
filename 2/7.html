@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Modelagem Dimensional</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          Modelagem Dimensional
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>O que é?</strong> É uma técnica de design lógico de banco de dados (criada por Ralph Kimball) projetada especificamente para
+              <strong>Data Warehouses (OLAP)</strong>.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full"
+            >
+              <strong>Objetivo:</strong> Otimizar a
+              <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded"
+                >leitura rápida e agregação de dados</span
+              >, sacrificando a normalização rígida para reduzir a complexidade e a quantidade de <code>JOINs</code>.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Anatomia: Fatos vs Dimensões -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-indigo-800 dark:bg-indigo-900 p-4 border-b border-indigo-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧩 A Anatomia: Fatos vs Dimensões</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <!-- Fatos -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🔢</div>
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-2 text-xl">Tabela de Fatos</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+                Armazena as <strong>métricas (valores quantitativos)</strong> do negócio. Responde "o quanto". Costuma ser gigantesca (milhões de
+                linhas).
+              </p>
+              <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-400 list-disc list-inside">
+                <li>Contém chaves estrangeiras (FKs) para as dimensões.</li>
+                <li>Exemplos de colunas: <code>Valor_Venda</code>, <code>Qtde_Vendida</code>, <code>Desconto</code>.</li>
+              </ul>
+            </div>
+            <!-- Dimensões -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🏷️</div>
+              <h3 class="font-bold text-emerald-700 dark:text-emerald-400 mb-2 text-xl">Tabelas de Dimensão</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+                Armazena o <strong>contexto (atributos descritivos)</strong> dos fatos. Responde "quem, onde, quando e o quê".
+              </p>
+              <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-400 list-disc list-inside">
+                <li>Geralmente possuem poucas linhas, mas muitas colunas "largas" (textos).</li>
+                <li>Exemplos: <code>Dim_Cliente</code> (Nome, Idade), <code>Dim_Tempo</code>, <code>Dim_Loja</code>.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Star vs Snowflake -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Star Schema vs Snowflake Schema</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400">
+                    Esquema Estrela (Star)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">
+                    Esquema Floco de Neve (Snowflake)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Nível de Normalização
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">Desnormalizado</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">Normalizado</td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Velocidade de Consulta (Query)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-indigo-700 dark:text-indigo-300 font-medium">
+                    Muito Rápido (Poucos JOINs)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Mais lento (Muitos JOINs para remontar a tabela)
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Redundância de Dados
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Alta (O estado se repete a cada cliente na mesma tabela)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Baixa (O estado vira uma tabela separada)
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Design Visual</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    1 Tabela de Fatos no centro, ligada <strong>diretamente</strong> às Dimensões.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Dimensões ligam-se a sub-dimensões (ramificações).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova (Chaves e Tipos)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm">
+              <li>
+                <strong>A Chave Surrogate (Artificial):</strong> A banca vai dizer que a Tabela de Dimensão deve usar o CPF do cliente (chave natural)
+                como chave primária (PK). <br />
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso!</span>
+                A recomendação absoluta em Kimball é <strong>NÃO usar chaves de negócio</strong> (Natural Keys) como PK no Data Warehouse. Deve-se
+                criar uma <strong>Surrogate Key</strong> (uma chave artificial, um ID inteiro gerado pelo banco) para isolar o DW de mudanças no
+                sistema original.
+              </li>
+              <li>
+                <strong>Medidas Semi-Aditivas:</strong> Fatos podem ser Aditivos (podem ser somados em qualquer dimensão, ex: Valor_Venda),
+                Não-aditivos (ex: Margem de Lucro em % - não faz sentido somar 10% com 15%) e
+                <span class="underline decoration-red-500">Semi-aditivos</span>. O exemplo clássico de prova do semi-aditivo é o
+                <strong>Saldo Bancário</strong> (você pode somar o saldo de todos os clientes numa agência, mas não pode somar o saldo do cliente ao
+                longo dos 30 dias do mês, senão o valor não faz sentido).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos: OLTP vs OLAP
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O modelo entidade-relacionamento tradicional (3FN) é perfeito para sistemas operacionais
+              <strong>OLTP (Online Transaction Processing)</strong>, como o sistema de caixa de um supermercado, pois evita redundâncias e anomalias
+              de atualização em operações rápidas.
+            </p>
+            <p>
+              No entanto, para sistemas de suporte à decisão <strong>OLAP (Online Analytical Processing)</strong>, o objetivo não é inserir uma venda
+              rápida, mas sim consultar o histórico de 10 anos de vendas agrupado por região e produto. Se o Data Warehouse usasse a 3FN, essa
+              consulta exigiria 15 ou 20 <code>JOINs</code> simultâneos, travando o banco de dados. A solução de <strong>Ralph Kimball</strong> foi a
+              <em>Modelagem Dimensional</em>: sacrificar a normalização em favor do desempenho absurdo de leitura.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Evolução dos Esquemas (Schemas)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div>
+              <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">Esquema Estrela (Star Schema)</h3>
+              <p>
+                A abordagem clássica. O diagrama visual lembra uma estrela: a enorme <strong>Tabela de Fatos</strong> fica no centro, conectada por
+                uma relação 1:N diretamente às <strong>Tabelas de Dimensão</strong> nas pontas.
+              </p>
+              <p class="mt-2">
+                As tabelas de dimensão no esquema estrela são <strong>fortemente desnormalizadas</strong>. Exemplo: A tabela
+                <code>Dim_Cliente</code> terá colunas para <code>Nome</code>, <code>Cidade</code>, <code>Estado</code> e <code>País</code>, repetindo
+                a palavra "Brasil" para milhares de clientes, ocupando mais espaço em disco.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-sky-600 dark:text-sky-400 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                Esquema Floco de Neve (Snowflake Schema)
+              </h3>
+              <p>
+                É um modelo Estrela onde as Dimensões foram <strong>normalizadas</strong>. A tabela <code>Dim_Cliente</code> agora tem apenas um
+                <code>ID_Cidade</code>, que aponta para uma tabela <code>Dim_Cidade</code>, que tem um <code>ID_Estado</code>, que aponta para
+                <code>Dim_Estado</code>.
+              </p>
+              <p class="mt-2">
+                A estrutura ramifica-se parecendo um floco de neve.
+                <span class="hl-green">Poupa espaço em disco (não repete "Brasil" mil vezes)</span>, mas o desempenho cai porque a query precisa de
+                múltiplos JOINs nas ramificações.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                Esquema Constelação (Galaxy Schema / Fact Constellation)
+              </h3>
+              <p>
+                Usado em cenários mais complexos. Ocorre quando temos
+                <strong>duas ou mais Tabelas de Fatos que compartilham as mesmas Dimensões</strong>. Exemplo: A Tabela <code>Fato_Vendas</code> e a
+                Tabela <code>Fato_Estoque</code> ambas se conectam à tabela <code>Dim_Produto</code> (Dimensão Conformada).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. SCD: Slowly Changing Dimensions (Cai Sempre!)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O que acontece no Data Warehouse quando um atributo da dimensão muda na vida real? (Exemplo: O Cliente João casou-se, ou mudou de
+              endereço de SP para o RJ). Como rastreamos esse histórico? Existem várias técnicas, mas 3 tipos despencam em concursos:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400 text-lg">Tipo 1 (Sobrescrita / Overwrite):</strong>
+                O valor antigo é apagado e o novo é gravado por cima. <br />
+                <span class="text-sm font-semibold">Efeito:</span> Não guarda nenhum histórico. É fácil de implementar, mas todas as análises passadas
+                do João agora aparecerão como se ele sempre morasse no RJ.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-emerald-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Tipo 2 (Nova Linha / New Row):</strong>
+                <span
+                  class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-bold text-xs uppercase ml-2"
+                  >A Mais Cobrada</span
+                ><br />
+                Cria-se uma <strong>nova linha</strong> (novo registro) para o João, com uma nova <em>Surrogate Key</em> e o endereço do RJ. A linha
+                antiga (com o endereço de SP) permanece intocada.<br />
+                <span class="text-sm font-semibold">Efeito:</span> Preserva o <strong>histórico perfeito e ilimitado</strong>. Normalmente usam-se
+                colunas de "Data_Inicio", "Data_Fim" ou "Flag_Ativo" para saber qual é a linha atual.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-indigo-600 dark:text-indigo-400 text-lg">Tipo 3 (Nova Coluna / New Attribute):</strong>
+                Adiciona-se uma nova coluna na tabela (ex: <code>Endereco_Anterior</code>). O endereço de SP vai para essa coluna, e a coluna
+                principal <code>Endereco_Atual</code> recebe o RJ.<br />
+                <span class="text-sm font-semibold">Efeito:</span> Guarda histórico, mas é <strong>muito limitado</strong> (só consegue rastrear a
+                mudança anterior imediata).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Fatos Factless (Tabela de Fatos Sem Fatos)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A teoria diz que a Tabela de Fatos guarda medidas numéricas. Mas existe uma "exceção" clássica de prova: a
+              <strong>Factless Fact Table</strong>.
+            </p>
+            <p>
+              É uma tabela de fatos que <span class="hl-yellow">não possui NENHUMA medida quantitativa (numérica)</span>; ela contém apenas as Chaves
+              Estrangeiras apontando para as Dimensões.
+            </p>
+            <p>
+              <strong>Para que serve?</strong> Serve para registrar eventos ou cobertura. <br /><em>Exemplo 1:</em> Um sistema de controle de presença
+              universitária. A tabela de fato registra apenas <code>ID_Data</code>, <code>ID_Aluno</code> e <code>ID_Disciplina</code>. Não há valor
+              financeiro ou métrica, o mero cruzamento dessas chaves já atesta o "Fato" de que o aluno estava presente naquele dia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

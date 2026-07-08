@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Abordagem Relacional</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          4. Abordagem Relacional
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Tradutor Relacional -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">🗣️</span> O Dicionário Relacional (Codd)
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-l-4 border-indigo-400 bg-indigo-50 dark:bg-indigo-900/10 p-4 rounded-r-lg">
+              <h3 class="font-black text-indigo-800 dark:text-indigo-300 text-lg uppercase tracking-wide">Relação</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                O equivalente à <strong class="text-indigo-600 dark:text-indigo-400">Tabela</strong> na implementação SQL. É um conjunto matemático de
+                tuplas.
+              </p>
+            </div>
+
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10 p-4 rounded-r-lg">
+              <h3 class="font-black text-indigo-800 dark:text-indigo-300 text-lg uppercase tracking-wide">Tupla</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                O equivalente a uma <strong class="text-indigo-600 dark:text-indigo-400">Linha / Registro</strong>. Representa uma ocorrência (um
+                fato) daquela relação.
+              </p>
+            </div>
+
+            <div class="border-l-4 border-indigo-600 bg-indigo-50 dark:bg-indigo-900/10 p-4 rounded-r-lg">
+              <h3 class="font-black text-indigo-800 dark:text-indigo-300 text-lg uppercase tracking-wide">Atributo</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                O equivalente a uma <strong class="text-indigo-600 dark:text-indigo-400">Coluna / Campo</strong>. Tem um nome e os valores pertencem a
+                um Domínio.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Álgebra Relacional -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧮 Álgebra Relacional (O Coração do SQL)</h2>
+            <p class="text-sm text-slate-300 mt-1">Como extrair dados usando as operações matemáticas formais de Codd.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-1/4">Operação (Símbolo)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400 w-3/4">
+                    O que faz? (Cai na Prova!)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    Seleção ( <code>σ</code> ) <br /><span class="text-xs font-normal text-slate-500">Sigma</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Filtra <strong>LINHAS (Tuplas)</strong> que satisfazem uma condição. <br />
+                    <em>Em SQL: Equivalente à cláusula <code>WHERE</code>.</em> (Ex: Pessoas com Idade > 30).
+                  </td>
+                </tr>
+                <tr class="bg-indigo-50/50 dark:bg-indigo-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    Projeção ( <code>π</code> ) <br /><span class="text-xs font-normal text-slate-500">Pi</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Filtra <strong>COLUNAS (Atributos)</strong>. Escolhe quais atributos mostrar e descarta o resto. <br />
+                    <em>Em SQL: Equivalente ao <code>SELECT Nome, CPF</code>.</em>
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    Produto Cartesiano ( <code>×</code> )
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Combina CADA linha da Tabela A com CADA linha da Tabela B. Se A tem 5 linhas e B tem 10, o resultado terá 50 linhas.
+                  </td>
+                </tr>
+                <tr class="bg-indigo-50/50 dark:bg-indigo-900/10">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200 text-center">
+                    Junção ( <code>⨝</code> ) <br /><span class="text-xs font-normal text-slate-500">Join</span>
+                  </td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    É uma operação derivada (Produto Cartesiano + Seleção). Junta duas tabelas com base numa condição de igualdade (ex:
+                    <code>ID_Dep = ID_Dep</code>).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Top Pegadinhas de Prova (Teoria pura!)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ordem Importa?</strong> A banca diz que "No modelo relacional, a ordem das linhas e das colunas determina o significado do
+                dado armazenado". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Por definição matemática (teoria dos conjuntos),
+                <strong class="underline">não existe ordem para as tuplas (linhas) nem para os atributos (colunas)</strong> em uma Relação.
+              </li>
+              <li>
+                <strong>Linhas Duplicadas:</strong> "Uma relação relacional pura permite a existência de duas tuplas exatamente idênticas". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Como uma relação é um conjunto matemático (Set), ela <strong>NÃO</strong> possui tuplas duplicadas. (Nota: Sistemas SQL na prática
+                permitem se não houver Primary Key, mas na TEORIA RELACIONAL cobrada em prova, não pode!).
+              </li>
+              <li>
+                <strong>Seleção vs Projeção:</strong> Eles SEMPRE trocam os conceitos. Lembre-se:
+                <strong class="text-red-600 dark:text-red-400">P</strong>rojeção = <strong class="text-red-600 dark:text-red-400">P</strong>é direito
+                = Vertical (Colunas). Seleção = Horizontal (Linhas).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Gênese do Modelo Relacional
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Criado por <strong>Edgar F. Codd em 1970</strong>, o Modelo Relacional revolucionou o mundo dos bancos de dados. Antes dele, a navegação
+              de dados era feita por modelos em rede ou hierárquicos, onde os programadores tinham que saber os caminhos físicos no disco para achar
+              um dado.
+            </p>
+            <p>
+              A grande sacada de Codd foi usar a <strong>Teoria dos Conjuntos Matemáticos e a Lógica de Predicados</strong> para abstrair os dados.
+              Tudo é organizado em coleções chamadas de "Relações" (que hoje conhecemos popularmente como Tabelas).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Conceitos Chave (Dicionário de Prova)
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li><strong>Relação (Relation):</strong> Tabela bidimensional bidimensional composta por tuplas e atributos.</li>
+              <li><strong>Tupla (Tuple):</strong> Uma linha da relação. Representa uma instância ou entidade única.</li>
+              <li><strong>Atributo (Attribute):</strong> O cabeçalho de uma coluna da relação.</li>
+              <li>
+                <strong>Domínio (Domain):</strong> O conjunto de valores atômicos e indivisíveis permitidos para um atributo. (Ex: O domínio do
+                atributo "Idade" seria os números inteiros positivos).
+              </li>
+              <li><strong>Grau ou Aridade (Degree/Arity):</strong> O número de atributos (colunas) de uma relação.</li>
+              <li><strong>Cardinalidade (Cardinality):</strong> O número de tuplas (linhas) de uma relação no momento presente.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Propriedades de Ouro de uma Relação
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              As bancas de alto nível (como a FGV) não cobram apenas os nomes, mas cobram se você sabe as restrições teóricas que fazem de uma tabela
+              uma "Relação" matemática pura.
+            </p>
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <ul class="space-y-4 text-sm">
+                <li>
+                  <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">1. Não há tuplas duplicadas:</strong> Em um conjunto matemático,
+                  todos os elementos são distintos. Portanto, deve existir uma combinação de atributos que identifique a tupla (A Chave Primária).
+                </li>
+                <li>
+                  <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">2. Tuplas não são ordenadas:</strong> A ordem física em que as
+                  linhas (tuplas) estão inseridas na tabela não importa, nem logicamente nem semanticamente. O Banco de Dados exibe como preferir, a
+                  menos que se aplique um filtro (como o `ORDER BY` em SQL).
+                </li>
+                <li>
+                  <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">3. Atributos não são ordenados:</strong> Similar às tuplas, a ordem
+                  das colunas da esquerda para a direita não tem significado.
+                </li>
+                <li>
+                  <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">4. Valores Atômicos (Primeira Forma Normal intrínseca):</strong>
+                  Todo valor de cruzamento de Linha x Coluna deve ser escalar e indivisível. O modelo relacional puro
+                  <span class="hl-red">NÃO suporta valores multivalorados (ex: uma lista de telefones na mesma célula) nem atributos compostos.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Integridade e Chaves Relacionais
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Para garantir que o banco não se torne um depósito de lixo inconsistente, Codd definiu Restrições (Constraints).</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              A. Restrição de Entidade (A Chave Primária)
+            </h3>
+            <p>
+              A <strong>Restrição de Integridade de Entidade</strong> dita que
+              <span class="hl-red">NENHUM componente da Chave Primária (PK) de uma relação base pode aceitar valores NULOS</span> (NULL). O Nulo
+              significa "desconhecido", e se a PK serve para identificar a linha, ela não pode ser desconhecida.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              B. Restrição Referencial (A Chave Estrangeira)
+            </h3>
+            <p>
+              A <strong>Restrição de Integridade Referencial</strong> é a cola que une o banco relacional. Uma Chave Estrangeira (FK) é um atributo em
+              uma Relação 1 que se refere à Chave Primária (PK) da Relação 2.
+            </p>
+            <p>
+              A regra diz: O valor da Chave Estrangeira (FK)
+              <span class="hl-green">DEVE OBRIGATORIAMENTE coincidir com algum valor existente de PK na tabela de origem</span>, OU
+              <span class="hl-yellow">deve ser totalmente NULL</span> (se a participação for opcional). Você não pode cadastrar um funcionário no
+              "Departamento 99" se o departamento 99 não existir na tabela Departamentos.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">As Subdivisões das Chaves</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Superchave:</strong> Qualquer atributo ou combinação de atributos que identifica a tupla. (Ex: Nome + CPF + Email). Não
+                importa se tem "excesso de bagagem".
+              </li>
+              <li>
+                <strong>Chave Candidata:</strong> Uma superchave mínima. Se você tirar uma coluna dela, perde a unicidade. (Ex: O CPF sozinho, ou o
+                E-mail sozinho).
+              </li>
+              <li><strong>Chave Primária (PK):</strong> A chave candidata que foi "eleita/promovida" pelo DBA para ser o identificador principal.</li>
+              <li>
+                <strong>Chaves Alternativas:</strong> As chaves candidatas que "perderam a eleição" para a PK (ex: O Email sobrou, mas ainda garante
+                unicidade). O banco cria uma restrição <code>UNIQUE</code> para protegê-las.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. A Álgebra Relacional (Fundamentos Teóricos)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Antes do SQL existir como linguagem computacional, as consultas eram baseadas puramente nesta matemática. A Álgebra Relacional pega em
+              uma ou mais relações (tabelas) de entrada e produz uma <strong>nova relação</strong> como resultado (fechamento relacional).
+            </p>
+
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded mt-4">
+              <strong class="text-indigo-800 dark:text-indigo-300 block mb-3 text-lg">As 5 Operações Primitivas (Básicas):</strong>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <strong>1. Seleção (σ - Sigma):</strong> Operação unária (atua sobre 1 tabela). Retorna
+                  <span class="hl-yellow">LINHAS</span> baseadas num predicado (ex: salário > 5000). A Aridade (nº de colunas) do resultado é igual à
+                  da entrada, mas a Cardinalidade (nº de linhas) será menor ou igual.
+                </li>
+                <li>
+                  <strong>2. Projeção (π - Pi):</strong> Operação unária. Retorna <span class="hl-green">COLUNAS</span> específicas. Importante: a
+                  Projeção elimina automaticamente linhas duplicadas do resultado final.
+                </li>
+                <li><strong>3. Produto Cartesiano (×):</strong> Operação binária (2 tabelas). Combinação explosiva de tudo com tudo.</li>
+                <li>
+                  <strong>4. União (∪):</strong> Operação binária de conjuntos. Para unir duas tabelas, elas precisam ser
+                  <strong>"compatíveis para união"</strong> (ter o mesmo número de colunas e os mesmos domínios). Adiciona as linhas da Tabela B
+                  embaixo da Tabela A. Elimina duplicatas.
+                </li>
+                <li>
+                  <strong>5. Diferença de Conjuntos (-):</strong> Retorna as tuplas que estão na Tabela A, mas NÃO estão na Tabela B. Também exige
+                  compatibilidade de união.
+                </li>
+              </ul>
+            </div>
+
+            <p class="mt-4">A partir destas primitivas, derivam-se operações avançadas que usamos muito em SQL:</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Intersecção (∩):</strong> Retorna o que é comum às duas tabelas (O que está em A E em B).</li>
+              <li>
+                <strong>Junção (⨝ - Join):</strong> É a operação mais famosa. Junta duas tabelas quando há atributos em comum. Uma Junção Natural
+                (Natural Join) junta tabelas baseada em atributos com nomes idênticos nas duas pontas e remove a coluna duplicada no resultado final.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

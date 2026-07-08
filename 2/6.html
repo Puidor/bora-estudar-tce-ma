@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Integridade Referencial</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Indigo */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6366f1;
+        border-radius: 4px;
+      } /* Indigo-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4338ca;
+      } /* Indigo-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase mb-2">Engenharia de Dados</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-indigo-500 pb-2 inline-block">
+          6. Integridade Referencial
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ABA 1: RESUMO VISUAL -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-indigo-500 text-2xl">🔗</span> A Regra de Ouro ("Não Órfão")
+          </h2>
+          <div class="bg-indigo-50 dark:bg-indigo-900/20 border-l-4 border-indigo-500 p-4 rounded text-slate-700 dark:text-slate-300">
+            <p class="font-medium">A Integridade Referencial garante que os relacionamentos entre tabelas permaneçam consistentes.</p>
+            <p class="mt-2 text-sm">
+              Em termos práticos: O valor de uma <strong>Chave Estrangeira (FK)</strong> na Tabela "Filha"
+              <strong>DEVE OBRIGATORIAMENTE existir</strong> como um valor na Chave Primária (PK) da Tabela "Pai"...
+              <span class="bg-indigo-200 text-indigo-900 dark:bg-indigo-900/60 dark:text-indigo-200 font-bold px-1 rounded uppercase tracking-wide"
+                >Ou Ser Nulo (NULL)</span
+              >.
+            </p>
+          </div>
+        </section>
+
+        <!-- Ações em Exclusão / Atualização -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚠️ O que acontece se eu apagar o "Pai"?</h2>
+            <p class="text-sm text-slate-300 mt-1">Regras aplicadas com <code>ON DELETE</code> ou <code>ON UPDATE</code> na Chave Estrangeira.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-rose-600 dark:text-rose-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">RESTRICT (Default)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Bloqueia a ação.</strong> O banco de dados dá erro e <span class="font-bold text-rose-600 dark:text-rose-400">impede</span> a
+                exclusão do registro Pai se houver algum Filho apontando para ele. (Segurança máxima).
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">
+                CASCADE (Cascata)
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Efeito Dominó.</strong> Se apagar o Pai, o banco de dados
+                <span class="font-bold text-indigo-600 dark:text-indigo-400">apaga automaticamente todos os Filhos</span> associados. Útil para
+                entidades fracas (Ex: Apagar o "Pedido" apaga os "Itens do Pedido").
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 border-b border-slate-100 dark:border-slate-700 pb-1">SET NULL</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                <strong>Orfanato Seguro.</strong> Se apagar o Pai, o banco não apaga o Filho, mas sim
+                <span class="font-bold text-emerald-600 dark:text-emerald-400">transforma a FK do Filho em NULL</span>. (Atenção: A coluna da FK não
+                pode estar marcada como <code>NOT NULL</code>).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Top Pegadinhas de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Chave Estrangeira pode ser Nula (NULL)?</strong> <br />
+                A banca diz que é terminantemente proibido.
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A regra da Integridade Referencial <strong>permite valores nulos</strong> na FK. Exemplo: A tabela <code>Funcionário</code> tem a FK
+                <code>ID_Departamento</code>. Um funcionário recém-contratado pode ter o departamento como <code>NULL</code> até ser alocado.
+              </li>
+              <li>
+                <strong>Autorrelacionamento:</strong> <br />
+                "Uma Chave Estrangeira deve obrigatoriamente apontar para uma tabela diferente".
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A FK pode apontar para a <strong>PRÓPRIA tabela</strong>. Exemplo Clássico: Tabela <code>Funcionário</code> onde a FK
+                <code>ID_Chefe</code> aponta para o <code>ID_Funcionario</code> na mesma tabela.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ABA 2: TEORIA APROFUNDADA -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos da Integridade Relacional
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No Modelo Relacional (criado por Edgar F. Codd), a integridade dos dados é protegida por regras (restrições) garantidas pelo SGBD.
+              Existem três tipos principais de integridade:
+            </p>
+            <ul class="list-none space-y-3 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong>Integridade de Entidade:</strong> Nenhuma Chave Primária (PK) pode ser Nula. Garante que cada linha seja identificável de
+                forma única.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong>Integridade Semântica (Domínio):</strong> Os valores de uma coluna devem respeitar o tipo de dado e as restrições impostas.
+                (Ex: Idade não pode ser "-5").
+              </li>
+              <li class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded border-l-4 border-indigo-500">
+                <strong class="text-indigo-800 dark:text-indigo-300">Integridade Referencial:</strong> É o "cimento" que une o banco de dados. Garante
+                que as <strong>Chaves Estrangeiras (Foreign Keys)</strong> apontem sempre para uma referência válida ou apontem para "nada" (NULL).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Mecânica da Chave Estrangeira (FK)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Chave Estrangeira (FK) é um atributo (ou conjunto de atributos) de uma tabela cuja função é ser a referência para a Chave Primária
+              (PK) de outra tabela (ou da mesma).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">A Regra do Mapeamento</h3>
+            <p>
+              Segundo a teoria relacional estrita: <strong>Toda Chave Estrangeira deve referenciar uma Chave Primária (PK)</strong>. No entanto, é
+              importante saber para provas de SQL avançado que a maioria dos SGBDs comerciais permite que a FK referencie qualquer coluna que possua
+              uma restrição de <code>UNIQUE</code> (Chave Alternativa), garantindo a unicidade.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">
+              Tratamento de Inserções e Exclusões
+            </h3>
+            <p>A integridade referencial impõe barreiras nos Comandos DML (Insert, Update, Delete):</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Na Inserção (Tabela Filha):</strong> Você <strong>não pode</strong> inserir na
+                tabela filha (ex: Venda) um registro referenciando um <code>ID_Cliente = 99</code> se o cliente 99 não existir na tabela pai
+                (Cliente).
+              </li>
+              <li>
+                <strong class="text-rose-600 dark:text-rose-400">Na Exclusão (Tabela Pai):</strong> Você <strong>não pode</strong> deletar o
+                <code>Cliente 10</code> se ele já tiver compras cadastradas na tabela filha (Venda), <em>a menos</em> que você configure uma regra
+                especial de cascata.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Clausulas ON DELETE e ON UPDATE
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para resolver o problema da "Exclusão na Tabela Pai", os SGBDs oferecem modificadores ao criar a Chave Estrangeira no DDL. As bancas
+              exigem que você saiba o comportamento exato de cada um:
+            </p>
+
+            <div class="overflow-x-auto mt-4">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    <th class="p-3 border-b border-slate-200 dark:border-slate-700 font-bold">Comando DDL</th>
+                    <th class="p-3 border-b border-slate-200 dark:border-slate-700 font-bold">Ação do Banco de Dados</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                  <tr>
+                    <td class="p-3 font-mono font-bold text-rose-600 dark:text-rose-400">RESTRICT (ou NO ACTION)</td>
+                    <td class="p-3">
+                      O comportamento padrão. Rejeita a exclusão ou atualização do Pai se houverem referências no Filho. Dispara um erro de
+                      <em>Foreign Key Constraint</em>.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">CASCADE</td>
+                    <td class="p-3">
+                      Se o registro Pai for alterado ou deletado, a mudança propaga-se automaticamente para todos os registros Filhos que o
+                      referenciam.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">SET NULL</td>
+                    <td class="p-3">
+                      Exclui o registro Pai normalmente. Para não deixar os Filhos "órfãos apontando pro nada", ele troca o valor da Chave Estrangeira
+                      nos Filhos para <code>NULL</code>.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-mono font-bold text-slate-600 dark:text-slate-400">SET DEFAULT</td>
+                    <td class="p-3">
+                      Exclui o registro Pai. Os Filhos que apontavam para ele têm a sua Chave Estrangeira alterada para um valor Padrão (Default)
+                      previamente configurado na criação da tabela.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-indigo-600", "border-indigo-600", "dark:text-indigo-400", "dark:border-indigo-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
