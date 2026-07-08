@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="pt-PT" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Processo Iterativo e Incremental</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Processo Iterativo e Incremental
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: O Confronto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto Clássico de Provas</h2>
+            <p class="text-sm text-violet-200 mt-1">
+              Cuidado: Iterativo e Incremental <strong>não são sinónimos</strong>. Embora andem sempre juntos na metodologia Ágil, significam coisas
+              diferentes.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">🔄</div>
+              <h3 class="font-bold text-sky-600 dark:text-sky-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Processo Iterativo
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>🎯 <strong>A Palavra-Chave:</strong> <span class="font-bold">REFINAMENTO</span>.</li>
+                <li>🛠️ <strong>O que faz?</strong> Constrói o sistema através de ciclos repetitivos (iterações).</li>
+                <li>
+                  🎨 <strong>Analogia do Pintor:</strong> Desenha o esboço do quadro inteiro a lápis. Na segunda iteração, pinta as cores base. Na
+                  terceira, acrescenta o sombreado. Em cada volta, a imagem fica mais nítida.
+                </li>
+                <li>💡 <strong>Foco:</strong> Melhorar a <strong>qualidade</strong> e adaptar-se ao feedback a cada ciclo.</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">🧱</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Processo Incremental
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>🎯 <strong>A Palavra-Chave:</strong> <span class="font-bold">PARTES (PEDAÇOS)</span>.</li>
+                <li>🛠️ <strong>O que faz?</strong> Entrega o software em parcelas que já funcionam isoladamente.</li>
+                <li>
+                  🎨 <strong>Analogia do Pintor:</strong> Pinta a cabeça da Mona Lisa com perfeição e entrega. Depois pinta o tronco perfeitamente e
+                  entrega. O quadro é montado como um <em>puzzle</em>.
+                </li>
+                <li>💡 <strong>Foco:</strong> Antecipar <strong>valor (ROI)</strong> entregando funcionalidades utilizáveis mais cedo.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Oposição ao Cascata -->
+        <section class="bg-slate-50 dark:bg-slate-800/80 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 text-center">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Porquê usar o modelo Iterativo-Incremental?</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">Para resolver o grande problema do modelo Tradicional (Cascata/Waterfall).</p>
+
+          <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+            <!-- Cascata -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow border border-slate-200 dark:border-slate-700 w-full max-w-xs">
+              <div class="text-3xl mb-2">🌊</div>
+              <h3 class="font-bold text-rose-600 dark:text-rose-400 uppercase text-sm mb-2">Modelo em Cascata</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 text-left">
+                O cliente pede o software hoje e só vê a primeira tela funcional daqui a <strong>2 anos</strong>. Se o mercado mudar ou o cliente
+                mudar de ideias a meio, o projeto falha gravemente.
+              </p>
+              <span class="mt-2 block bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 px-2 py-1 rounded text-[10px] font-bold"
+                >RÍGIDO E PREVISÍVEL</span
+              >
+            </div>
+
+            <span class="text-xl font-bold text-slate-400">VS</span>
+
+            <!-- Ágil -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow border border-emerald-300 dark:border-emerald-700 w-full max-w-xs">
+              <div class="text-3xl mb-2">🚀</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-sm mb-2">Iterativo e Incremental</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 text-left">
+                Em <strong>2 semanas</strong> o cliente já recebe uma funcionalidade pronta a usar. Testa, dá feedback, e a equipa ajusta a rota na
+                próxima iteração.
+              </p>
+              <span
+                class="mt-2 block bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-1 rounded text-[10px] font-bold"
+                >ADAPTÁVEL E RÁPIDO</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova (FGV e CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Confusão Metodológica:</strong> A banca afirma: "Um processo iterativo é aquele que obrigatoriamente entrega módulos de
+                software prontos ao cliente a cada ciclo". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Quem entrega software aos pedaços funcionais (módulos prontos) é o processo <strong>INCREMENTAL</strong>. O Iterativo sozinho apenas
+                repete o ciclo para refinar o que existe, sem necessariamente entregar um "pedaço" novo utilizável.
+              </li>
+              <li>
+                <strong>A Prototipagem Rápida:</strong> Se a banca perguntar sobre o "Modelo de Prototipagem" (fazer um protótipo, o cliente avaliar,
+                e depois deitar o código fora ou refiná-lo), saiba que ele é considerado o exemplo clássico de um modelo
+                <strong class="underline decoration-red-500">Puramente Iterativo</strong>.
+              </li>
+              <li>
+                <strong>O Equilíbrio Perfeito:</strong> O <span class="font-bold text-emerald-600 dark:text-emerald-400">Scrum</span> e outras
+                metodologias Ágeis são a junção dos dois! Eles são <strong>Iterativos</strong> (têm Sprints repetitivas que refinam a qualidade) E
+                <strong>Incrementais</strong> (ao final de cada Sprint há um incremento de produto funcional).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Crise do Software e a Limitação do Cascata
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para entender profundamente o modelo iterativo e incremental, é preciso compreender por que é que ele nasceu. Durante as décadas de 70 e
+              80, a Engenharia de Software usava o <strong>Modelo em Cascata (Waterfall)</strong>, criado por Winston Royce.
+            </p>
+            <p>
+              No Cascata, o desenvolvimento flui de forma linear e sequencial:
+              <span class="bg-slate-100 dark:bg-slate-700 px-1 rounded font-mono text-sm"
+                >Requisitos ➔ Projeto ➔ Codificação ➔ Testes ➔ Implantação</span
+              >. Nunca se recua para a fase anterior.
+            </p>
+            <p>
+              <strong>O Problema:</strong> Num projeto de 2 anos, os requisitos (o que o cliente quer) congelam no primeiro mês. Quando o software é
+              finalmente entregue 24 meses depois, o negócio do cliente mudou, a lei mudou e o software
+              <span class="hl-red">já nasce obsoleto ou não atende ao que o cliente realmente imaginava</span>.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. O Desenvolvimento Incremental (Valor Antecipado)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A abordagem <strong>Incremental</strong> fatiou o grande "monstro" do software em pedaços menores (incrementos).</p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>Em vez de entregar o <em>Sistema Escolar</em> completo de uma vez, a equipa define prioridades.</li>
+              <li>
+                <strong>Incremento 1:</strong> Desenvolvem apenas o "Módulo de Matrícula" em 1 mês. Testam e instalam na escola. A escola já pode
+                começar a usar e faturar.
+              </li>
+              <li><strong>Incremento 2:</strong> No mês seguinte, entregam o "Módulo de Notas do Professor", que se liga ao primeiro.</li>
+              <li>
+                <strong>Vantagem (Foco de Prova):</strong> A grande vantagem do modelo incremental é a entrega rápida de
+                <strong class="text-emerald-600 dark:text-emerald-400">valor de negócio</strong>. O cliente não espera 2 anos para ter o Retorno sobre
+                o Investimento (ROI).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Desenvolvimento Iterativo (Feedback e Refinamento)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A abordagem <strong>Iterativa</strong> foca-se em lidar com a <em>incerteza</em>. Frequentemente, os clientes não sabem exatamente o que
+              querem até verem algo a funcionar na ecrã.
+            </p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>A equipa cria uma versão inicial básica do sistema inteiro (um esqueleto ou protótipo funcional).</li>
+              <li>Mostra ao cliente. O cliente usa e dá <strong>Feedback</strong>: "O botão está do lado errado e a pesquisa está lenta".</li>
+              <li>
+                A equipa inicia uma nova <span class="hl-yellow">iteração (ciclo de revisão)</span>: altera o botão, melhora o algoritmo e volta a
+                apresentar.
+              </li>
+              <li>
+                <strong>Vantagem (Foco de Prova):</strong> Mitigação de riscos. O projeto é constantemente ajustado para a realidade do utilizador,
+                evitando o efeito "construí a coisa errada perfeitamente".
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. O Casamento: Modelos Híbridos Modernos
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Hoje, ninguém usa o Incremental Puro ou o Iterativo Puro para software comercial. Usamos a sua combinação:
+              <strong class="text-violet-600 dark:text-violet-400">O Processo Ágil</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
+              O Modelo em Espiral (Barry Boehm)
+            </h3>
+            <p>
+              Um dos primeiros modelos a introduzir iterações formalmente. Ele roda em ciclos (como uma mola/espiral). A cada volta que a espiral dá,
+              é avaliado o <strong>Risco</strong> do projeto, e uma nova versão (mais completa e cara) é gerada. Cai nas provas quando a palavra-chave
+              é <span class="hl-red">"Análise de Risco"</span> acoplada a iterações.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">O Scrum (Agile)</h3>
+            <p>A manifestação moderna perfeita.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                Ele é <strong>Iterativo</strong> porque trabalha com Sprints (ciclos fixos de 1 a 4 semanas). No final da Sprint há uma "Review" para
+                recolher feedback e uma "Retrospectiva" para melhorar a qualidade do trabalho da equipa para o próximo ciclo.
+              </li>
+              <li>
+                Ele é <strong>Incremental</strong> porque, por regra do Scrum Guide, no final de toda a Sprint, a equipa TEM de entregar um
+                <span class="hl-green">Incremento de Produto Utilizável (Done)</span>.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

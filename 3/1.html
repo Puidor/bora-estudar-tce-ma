@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Conceitos e Técnicas do Projeto de Software</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Projeto de Software (Design)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">⚡</span> A Transição: Análise vs Projeto
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <div class="border-l-4 border-slate-400 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">Fase de Análise (Requisitos)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Foco no <strong>O QUÊ</strong> o sistema deve fazer. (Entender o problema do cliente, regras de negócio).
+              </p>
+            </div>
+            <div class="border-l-4 border-violet-500 bg-violet-50 dark:bg-violet-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-violet-800 dark:text-violet-400 mb-2">Fase de Projeto (Design)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Foco em <strong>COMO</strong> o sistema será construído tecnicamente. (Arquitetura, Banco de Dados, Interfaces, Padrões).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Regra de Ouro (Coesão x Acoplamento) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🏆 O Santo Graal do Design de Software</h2>
+            <p class="text-sm text-violet-200 mt-1">Se você decorar apenas uma coisa sobre este tópico, que seja isto:</p>
+          </div>
+          <div class="p-6 text-center">
+            <h3 class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white mb-4">
+              <span class="text-emerald-600 dark:text-emerald-400">ALTA</span> COESÃO <br /><span class="text-slate-400 text-lg">e</span><br />
+              <span class="text-emerald-600 dark:text-emerald-400">BAIXO</span> ACOPLAMENTO
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 text-left">
+              <div class="bg-slate-50 dark:bg-slate-800/80 p-5 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-2">Coesão (Força Interna)</h4>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                  Mede o quão focada uma classe/módulo é. Um módulo com <strong class="text-emerald-600">Alta Coesão</strong> faz
+                  <strong>apenas uma coisa</strong>, e faz muito bem (Princípio da Responsabilidade Única).
+                </p>
+                <span class="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-1 rounded font-bold"
+                  >Queremos ALTA!</span
+                >
+              </div>
+              <div class="bg-slate-50 dark:bg-slate-800/80 p-5 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-2">Acoplamento (Dependência Externa)</h4>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                  Mede o nível de dependência entre dois módulos. Um <strong class="text-emerald-600">Baixo Acoplamento</strong> significa que você
+                  pode alterar o Módulo A sem quebrar o Módulo B.
+                </p>
+                <span class="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-1 rounded font-bold"
+                  >Queremos BAIXO!</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Conceitos Essenciais -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">🧩</span> Conceitos Estruturais
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Abstração -->
+            <div class="border-t-4 border-sky-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Abstração</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                Focar nas características <strong>essenciais</strong> de um objeto, ignorando os detalhes complexos ou irrelevantes. (Ex: Para o
+                motorista, um carro é um volante e pedais; ele abstrai a injeção eletrônica).
+              </p>
+            </div>
+
+            <!-- Ocultação da Informação -->
+            <div class="border-t-4 border-violet-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Ocultação de Informação</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                Módulos devem esconder seus detalhes internos (algoritmos, dados) de outros módulos. Eles comunicam-se apenas através de
+                <strong>Interfaces bem definidas</strong>.
+              </p>
+            </div>
+
+            <!-- Refatoração -->
+            <div class="border-t-4 border-fuchsia-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Refatoração (Refactoring)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                Reorganizar a estrutura interna do código para torná-lo mais limpo e manutenível,
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400">SEM alterar o seu comportamento externo</strong> (o software continua a fazer a
+                mesma coisa).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Concurso</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Inversão Diabólica:</strong> A banca vai jurar que "O objetivo de um bom projeto de software é garantir o Baixo Acoplamento
+                e a Baixa Coesão". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A coesão (foco interno) deve ser sempre <strong>ALTA</strong>. O acoplamento (dependência externa) deve ser <strong>BAIXO</strong>.
+              </li>
+              <li>
+                <strong>Refatoração vs Reengenharia:</strong> "A refatoração altera a funcionalidade do software para adicionar novos requisitos."
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Refatoração é como arrumar o guarda-roupas: as roupas (funcionalidades) continuam lá e servem do mesmo jeito, só estão mais fáceis de
+                achar. Se mudar o comportamento, não é refatoração.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Importância do Projeto (Design)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Na Engenharia de Software clássica (como definida por Pressman ou Sommerville), a etapa de Projeto (Design) é o momento em que os
+              requisitos do negócio são traduzidos em uma representação técnica do software.
+            </p>
+            <p>
+              Se a fase de Engenharia de Requisitos descobre "o problema", a fase de Projeto é a <span class="hl-yellow">criação da solução</span>.
+              Sem um bom projeto, o sistema pode até funcionar no início, mas será um "código espaguete", impossível de atualizar, testar ou dar
+              manutenção no futuro.
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 border-l-4 border-violet-500 p-4 rounded mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">Os 4 Níveis do Projeto de Software:</strong>
+              <ul class="list-decimal pl-6 mt-2 space-y-1 text-sm">
+                <li>
+                  <strong>Projeto de Dados/Classes:</strong> Como os dados e as estruturas de classes serão moldados (ex: Modelagem de Banco de Dados,
+                  Diagrama de Classes).
+                </li>
+                <li>
+                  <strong>Projeto Arquitetural:</strong> A visão macro do sistema. Como os grandes módulos se relacionam (ex: Arquitetura MVC,
+                  Microsserviços).
+                </li>
+                <li><strong>Projeto de Interface:</strong> Como o software interage com os utilizadores (UI/UX) ou com outros sistemas (APIs).</li>
+                <li>
+                  <strong>Projeto de Componentes:</strong> A visão micro. A lógica interna (algoritmos) que cada módulo utilizará para funcionar.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Coesão e Acoplamento (A Fundo)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Estes são os dois indicadores absolutos de qualidade de um projeto arquitetural. As bancas gostam de cobrar os *tipos* (níveis) de
+              coesão e acoplamento.
+            </p>
+
+            <div>
+              <h3 class="text-xl font-bold text-violet-600 dark:text-violet-400 mb-2">A Escala de Coesão</h3>
+              <p>A coesão avalia se as funções dentro de um módulo têm a ver umas com as outras. Queremos a mais alta possível.</p>
+              <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+                <li>
+                  <strong class="text-emerald-600 dark:text-emerald-400">Funcional (A Melhor):</strong> O módulo realiza uma, e APENAS uma tarefa
+                  muito bem definida (ex: <code>CalcularImpostoDeRenda()</code>).
+                </li>
+                <li><strong>Sequencial:</strong> A saída de uma função do módulo serve como entrada para a próxima função dentro do mesmo módulo.</li>
+                <li><strong>Comunicacional:</strong> Todas as operações do módulo atuam sobre a mesma estrutura de dados (mesmo input).</li>
+                <li>
+                  <strong class="text-red-600 dark:text-red-400">Coincidente (A Pior):</strong> As funções estão no mesmo módulo por puro acaso. Não
+                  têm nenhuma relação umas com as outras (uma classe "Utils" mal feita que envia e-mail, calcula raiz quadrada e desliga o PC).
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-violet-600 dark:text-violet-400 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                A Escala de Acoplamento
+              </h3>
+              <p>O acoplamento avalia o quão "colado" um módulo está no outro. Queremos o mais baixo possível.</p>
+              <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+                <li>
+                  <strong class="text-emerald-600 dark:text-emerald-400">De Dados (O Melhor / Mais Fraco):</strong> Os módulos apenas trocam dados
+                  simples através de parâmetros bem definidos (ex: envio de um CPF como <code>String</code> para a função).
+                </li>
+                <li>
+                  <strong>De Controle:</strong> Um módulo passa uma "flag" (ex: um booleano) que controla o que o outro módulo vai executar
+                  internamente.
+                </li>
+                <li>
+                  <strong>De Conteúdo (O Pior / Mais Forte):</strong> Um módulo altera secretamente ou acessa diretamente os dados internos privados
+                  de outro módulo. Se o módulo A mudar a sua estrutura, o módulo B explode.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Modularidade e Ocultação da Informação
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Modularidade</h3>
+            <p>
+              "Dividir para conquistar". É a quebra do software em componentes (módulos) menores e separadamente nomeáveis, que são integrados para
+              satisfazer os requisitos. Atenção à teoria: <span class="hl-yellow">A modularidade tem um ponto de equilíbrio ótimo</span>. Se não
+              houver módulos (tudo num ficheiro gigante), é o caos. Mas se você quebrar um software em 10 mil módulos minúsculos de 1 linha de código,
+              o custo de integrá-los e chamá-los vai anular os benefícios, degradando a performance.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Information Hiding (Ocultação de Informação)</h3>
+            <p>
+              Princípio proposto por David Parnas. Estabelece que os módulos devem ser especificados de forma que a informação essencial (como um
+              algoritmo matemático específico ou a estrutura de uma tabela no banco de dados) contida num módulo
+              <strong>seja inacessível aos outros módulos</strong>.
+            </p>
+            <p>
+              <strong>Benefício Prático:</strong> Reduz o Acoplamento. Se a "Classe Pagamento" esconde como calcula a taxa, amanhã a taxa pode mudar
+              de 5% para 7% alterando o código *apenas* na Classe Pagamento, sem quebrar as outras 50 classes do sistema que a invocam.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Padrões de Projeto (Design Patterns - Menção Honrosa)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Dentro de técnicas de projeto de software, a banca costuma citar os <strong>Design Patterns</strong> da <em>Gang of Four (GoF)</em>. São
+              soluções já testadas e catalogadas para problemas recorrentes de design de software orientado a objetos.
+            </p>
+            <p>
+              Embora não exista um tópico exclusivo de Padrões GoF no seu edital, conhecer as três grandes categorias pode render pontos numa questão
+              mais difícil:
+            </p>
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Criacionais:</strong> Lidam com a melhor forma de <em>criar</em> objetos,
+                ocultando a lógica da instanciação. (Ex: <em>Singleton</em> - garante que a classe só tem uma instância na memória;
+                <em>Factory Method</em>).
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Estruturais:</strong> Lidam com a <em>composição</em> de classes e objetos,
+                usando herança e interfaces. (Ex: <em>Adapter</em> - faz uma interface velha funcionar num sistema novo; <em>Facade</em>).
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Comportamentais:</strong> Lidam com a <em>comunicação</em> e a atribuição de
+                responsabilidades entre os objetos. (Ex: <em>Observer</em> - avisa a todos os assinantes quando há uma mudança; <em>Strategy</em>).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

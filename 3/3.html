@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Práticas Ágeis de Desenvolvimento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Práticas Ágeis de Desenvolvimento
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Manifesto Ágil -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📜 Os 4 Valores do Manifesto Ágil (2001)</h2>
+            <p class="text-sm text-violet-200 mt-1">A base de TUDO. Memorize a estrutura: <strong>"Valorizamos MAIS X do que Y"</strong>.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700 text-sm">
+            <div class="bg-white dark:bg-slate-800 p-5 flex flex-col justify-between">
+              <p class="font-bold text-emerald-600 dark:text-emerald-400 text-base mb-2">1. Indivíduos e interações</p>
+              <p class="text-slate-500 dark:text-slate-400 italic">mais que</p>
+              <p class="text-slate-700 dark:text-slate-300 mt-1">Processos e ferramentas.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 flex flex-col justify-between">
+              <p class="font-bold text-emerald-600 dark:text-emerald-400 text-base mb-2">2. Software em funcionamento</p>
+              <p class="text-slate-500 dark:text-slate-400 italic">mais que</p>
+              <p class="text-slate-700 dark:text-slate-300 mt-1">Documentação abrangente.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 flex flex-col justify-between">
+              <p class="font-bold text-emerald-600 dark:text-emerald-400 text-base mb-2">3. Colaboração com o cliente</p>
+              <p class="text-slate-500 dark:text-slate-400 italic">mais que</p>
+              <p class="text-slate-700 dark:text-slate-300 mt-1">Negociação de contratos.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 flex flex-col justify-between">
+              <p class="font-bold text-emerald-600 dark:text-emerald-400 text-base mb-2">4. Responder a mudanças</p>
+              <p class="text-slate-500 dark:text-slate-400 italic">mais que</p>
+              <p class="text-slate-700 dark:text-slate-300 mt-1">Seguir um plano rígido.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Práticas do XP -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">👨‍💻</span> O Coração Técnico: Extreme Programming (XP)
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            Muitas das "Práticas Ágeis" modernas (inclusive TDD e BDD) nasceram ou ganharam força no XP. O Scrum foca na gestão; o XP foca em
+            <strong>como programar bem</strong>.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="border-t-4 border-sky-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1 text-sm">Programação em Par (Pair Programming)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                Duas pessoas, um teclado. O "Piloto" codifica, o "Navegador" revisa a lógica em tempo real. Disseminação de conhecimento imediata.
+              </p>
+            </div>
+            <div class="border-t-4 border-fuchsia-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1 text-sm">Refatoração (Refactoring)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                Melhorar a estrutura e a limpeza do código continuamente
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400">SEM alterar o seu comportamento externo</strong>.
+              </p>
+            </div>
+            <div class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1 text-sm">Integração Contínua (CI)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                Os programadores integram o código no repositório principal várias vezes ao dia. Evita o "inferno da integração" no final do mês.
+              </p>
+            </div>
+            <div class="border-t-4 border-orange-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1 text-sm">Desenvolvimento Guiado a Testes (TDD)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                A regra de ouro do XP: <strong class="text-orange-600 dark:text-orange-400">Escreva o teste PRIMEIRO</strong>. Só depois escreva o
+                código para fazer o teste passar.
+              </p>
+            </div>
+            <div class="border-t-4 border-indigo-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1 text-sm">Design Simples (KISS)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                "Keep It Simple, Stupid". Faça a coisa mais simples que possa funcionar agora. Não antecipe problemas futuros que talvez não existam
+                (YAGNI).
+              </p>
+            </div>
+            <div class="border-t-4 border-teal-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1 text-sm">Posse Coletiva do Código</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                Qualquer pessoa da equipa pode melhorar qualquer parte do código a qualquer momento. Não existe "código do João".
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 A Pegadinha Mais Famosa do Ágil (Cai Sempre!)
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Ágil = Zero Documentação?</strong> A banca vai afirmar: "No manifesto ágil, como o foco é o software a funcionar, as
+                metodologias ágeis abominam e proíbem a documentação". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso! Absolutamente Falso!</span
+                >
+                O próprio manifesto diz na sua base:
+                <em>"Mesmo havendo valor nos itens à direita [documentação, plano, processos], valorizamos mais os itens à esquerda."</em> A
+                documentação existe no Ágil, ela apenas deve ser <strong>"barely sufficient"</strong> (apenas o necessário e útil), sem a burocracia
+                inútil do modelo cascata.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Gênese das Práticas Ágeis
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Até ao final dos anos 90, o desenvolvimento de software era tratado como a construção civil: planeia tudo detalhadamente na fase de
+              arquitetura (Análise) e depois executa cegamente o plano (Codificação). O problema é que o "cimento" do software é maleável e o cliente
+              muda de ideias constantemente.
+            </p>
+            <p>
+              Em 2001, 17 grandes nomes da programação reuniram-se e assinaram o <strong>Manifesto Ágil</strong>. Eles declararam que o foco do
+              desenvolvimento deveria estar em <span class="hl-green">entregar valor contínuo e adaptar-se rapidamente à mudança</span>, e não em
+              seguir planos rígidos ou criar documentação exaustiva.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Os Princípios do Manifesto Ágil
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Além dos 4 Valores (vistos na Aba Visual), os criadores estabeleceram 12 princípios que norteiam qualquer prática ágil. Destaques para
+              provas:
+            </p>
+            <ul class="list-decimal pl-6 space-y-3 mt-4 text-sm font-medium">
+              <li>A nossa maior prioridade é <strong>satisfazer o cliente através da entrega contínua</strong> e adiantada de software com valor.</li>
+              <li>
+                <strong>Mudanças de requisitos são bem-vindas</strong>, mesmo tardiamente no desenvolvimento (o Ágil usa a mudança como vantagem
+                competitiva para o cliente).
+              </li>
+              <li>
+                Entregar software em funcionamento com frequência (semanas ou meses),
+                <strong class="text-violet-600 dark:text-violet-400">com preferência à menor escala de tempo</strong>.
+              </li>
+              <li>
+                Pessoas de negócio e desenvolvedores devem trabalhar juntos
+                <strong class="text-violet-600 dark:text-violet-400">diariamente</strong> durante todo o projeto.
+              </li>
+              <li>O método mais eficiente e eficaz de transmitir informações é a <strong>conversa face a face</strong>.</li>
+              <li><strong class="text-violet-600 dark:text-violet-400">Software a funcionar é a principal medida de progresso.</strong></li>
+              <li>Atenção contínua à excelência técnica e bom design aumenta a agilidade (Base para o XP/TDD).</li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Simplicidade:</strong> a arte de maximizar a quantidade de trabalho
+                <em>não realizado</em> é essencial.
+              </li>
+              <li>As melhores arquiteturas e designs emergem de <strong>equipas auto-organizadas</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Extreme Programming (XP): A Prática Pura
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Criado por Kent Beck, o XP leva as melhores práticas de engenharia de software ao "extremo". Enquanto métodos como o Scrum dizem "façam
+              reuniões diárias", o XP diz "<span class="hl-yellow">se testes são bons, vamos testar TUDO antes mesmo de programar</span>".
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
+              Os Valores do XP (Comunicação, Simplicidade, Feedback, Coragem, Respeito)
+            </h3>
+            <p>A banca costuma cobrar as <strong>Práticas</strong> do XP que influenciaram fortemente a indústria:</p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>
+                <strong class="text-slate-800 dark:text-white">Planning Game (Jogo do Planeamento):</strong> Reunião rápida onde o cliente (On-site
+                Customer) escolhe as "histórias" de maior valor para a próxima iteração.
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white">Small Releases (Entregas Pequenas):</strong> Entregar versões frequentemente em vez de
+                uma versão gigante anual.
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white">Metaphor (Metáfora):</strong> Usar um vocabulário comum e fácil que tanto a equipa
+                técnica quanto o cliente entendam (Ex: "Carrinho de Compras", em vez de "Array de Sessão").
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white">Sustainable Pace (Ritmo Sustentável):</strong> Trabalhar não mais de 40 horas por
+                semana. O excesso de horas-extras gera exaustão e bugs.
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400 font-bold border-b border-violet-200 dark:border-violet-800"
+                  >TDD (Test-Driven Development):</strong
+                >
+                O pilar central do XP. Nenhuma linha de código de produção é escrita antes de um teste automático falhar. (Exploraremos no tópico
+                3.2).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. A Passagem de Bastão: Do XP para as Práticas Modernas
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Apesar do XP ser incrivelmente eficaz tecnicamente, a indústria adotou o <strong>Scrum</strong> como modelo de gestão padrão por ser
+              mais fácil de "vender" para diretores e não exigir mudanças drásticas na forma como os programadores codificam.
+            </p>
+            <p>
+              No entanto, equipas de alta performance perceberam que
+              <span class="hl-red">usar o Scrum sem as práticas técnicas do XP gera um "Scrum Frágil"</span> (entrega-se software de duas em duas
+              semanas, mas o software está cheio de bugs).
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 border-l-4 border-violet-500 p-4 rounded mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">A Fusão Atual:</strong>
+              <p class="text-sm mt-2">
+                Hoje, a abordagem cobrada em concursos de ponta é a junção: O "invólucro" de gestão é o Scrum/Kanban, mas a "fábrica" (onde o código é
+                feito) utiliza o <strong>TDD (Test-Driven Development)</strong> para a garantia do código base, o
+                <strong>BDD (Behavior-Driven Development)</strong> para unificar a comunicação com a área de negócios e o <strong>CI/CD</strong> para
+                automação. Estes serão exatamente os focos dos próximos três subtópicos do edital!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
