@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Conteinerização e DevOps</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Blue */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      } /* Blue-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #1d4ed8;
+      } /* Blue-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-2">Infraestrutura de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-blue-500 pb-2 inline-block">
+          Conteinerização e DevOps
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>DevOps:</strong> União de <em>Development</em> (Desenvolvimento) e <em>Operations</em> (Operações). É uma
+              <strong>cultura/filosofia</strong> que visa quebrar os silos entre equipes, automatizando processos para entregar software de forma mais
+              rápida e segura.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Conteinerização:</strong> Empacotamento de uma aplicação com TODAS as suas dependências (bibliotecas, binários) para que rode de
+              forma idêntica em qualquer ambiente (portabilidade).
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-blue-500 before:rounded-full"
+            >
+              <strong>Pipeline CI/CD:</strong> O coração técnico do DevOps. É a esteira rolante automatizada que pega o código do desenvolvedor,
+              testa, constrói e coloca em produção.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Tabela Comparativa: VM vs Container -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Máquina Virtual vs Contêiner</h2>
+            <p class="text-sm text-slate-300 mt-1">A distinção arquitetural mais cobrada nas provas de Infraestrutura e Cloud.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">Máquina Virtual (VM)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-blue-600 dark:text-blue-400">
+                    Contêiner (Container)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Abstração base</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Virtualiza o <strong>Hardware</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">
+                    Virtualiza o <strong>Sistema Operacional</strong>.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Sistema Operacional
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Cada VM possui o seu próprio <strong>SO Convidado (Guest OS)</strong> completo.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">
+                    COMPARTILHA o Kernel do SO Anfitrião (Host OS).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Tamanho e Inicialização
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Pesada (Gigabytes). Demora <strong>minutos</strong> para iniciar.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Muito leve (Megabytes). Inicializa em <strong>segundos</strong>.
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Isolamento</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-500">
+                    Alto (Isolamento total por Hardware/Hypervisor).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">
+                    Baixo (Mais vulnerável, pois compartilham o mesmo Kernel).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- A Sopa de Letrinhas CI/CD -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-blue-500 text-2xl">🔄</span> A Diferença Crucial: CI / CD / CD
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-blue-400 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Continuous Integration (CI)</h3>
+              <p class="font-semibold text-blue-600 dark:text-blue-400 text-xs mb-2">Integração Contínua</p>
+              <p class="text-sm text-slate-600 dark:text-slate-400">
+                Os desenvolvedores enviam código (commits) para o repositório central várias vezes ao dia. O sistema
+                <strong>compila o código e executa testes automáticos</strong> de imediato para detectar erros cedo.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-indigo-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Continuous Delivery (CD)</h3>
+              <p class="font-semibold text-indigo-600 dark:text-indigo-400 text-xs mb-2">Entrega Contínua</p>
+              <p class="text-sm text-slate-600 dark:text-slate-400">
+                Após o CI, a aplicação é empacotada e fica <strong>pronta para ser lançada</strong> no ambiente de Produção. Mas atenção: o envio
+                final para produção exige <strong>um clique manual / aprovação humana</strong>.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg shadow-sm p-4 text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Continuous Deployment (CD)</h3>
+              <p class="font-semibold text-emerald-600 dark:text-emerald-400 text-xs mb-2">Implantação Contínua</p>
+              <p class="text-sm text-slate-600 dark:text-slate-400">
+                É o nível máximo. Se o código passar em todos os testes automáticos, ele é
+                <strong>enviado para os servidores de produção automaticamente</strong>, sem qualquer intervenção humana.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 relative overflow-hidden">
+          <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas de Prova</h2>
+          <ul class="space-y-3 text-slate-800 dark:text-slate-200 text-sm">
+            <li>
+              <strong>DevOps é uma Ferramenta?</strong> A banca afirma que "DevOps é um novo software da Microsoft para automatizar infraestrutura".
+              <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>.
+              DevOps é uma cultura, um movimento e um modelo de trabalho. Ferramentas (como Jenkins ou Docker) apenas apoiam essa cultura.
+            </li>
+            <li>
+              <strong>Docker vs Kubernetes:</strong> "O Docker é o orquestrador padrão do mercado".
+              <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Falso</span>. O
+              Docker é o "Motor" (engine) que roda um contêiner individual. Quem <strong>orquestra</strong> (gerencia milhares de contêineres,
+              reinicia os que caem, faz balanceamento) é o <strong>Kubernetes (K8s)</strong> ou o Docker Swarm.
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Cultura DevOps e o CAMS
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, existia o "Muro da Confusão" nas empresas de TI. O Desenvolvedor (Dev) queria lançar novidades rapidamente (mudança). O
+              Administrador de Sistemas (Ops) queria manter o servidor estável (imobilidade).
+            </p>
+            <p>
+              A filosofia DevOps surgiu para unir estas duas perspectivas. Para caracterizar o DevOps em provas teóricas, usamos o acrônimo
+              <strong class="text-blue-600 dark:text-blue-400">CAMS</strong> (ou CALMS):
+            </p>
+            <ul class="list-none space-y-3 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700 rounded">
+                <strong class="text-slate-800 dark:text-white">C - Culture (Cultura):</strong> Foco nas pessoas e comunicação. O problema principal
+                nunca é a ferramenta, é a cultura organizacional de "culpa".
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700 rounded">
+                <strong class="text-slate-800 dark:text-white">A - Automation (Automação):</strong> Eliminar o trabalho manual repetitivo. (Ex: CI/CD,
+                Infraestrutura como Código).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700 rounded">
+                <strong class="text-slate-800 dark:text-white">M - Measurement (Medição):</strong> Se não consegue medir, não consegue melhorar.
+                Coleta rigorosa de métricas (logs, performance).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700 rounded">
+                <strong class="text-slate-800 dark:text-white">S - Sharing (Compartilhamento):</strong> Compartilhamento de responsabilidades,
+                conhecimento e sucesso entre equipes.
+              </li>
+              <p class="text-xs text-slate-500 mt-2">
+                *Muitas bancas usam CALMS, adicionando o <strong>L (Lean)</strong> - foco em reduzir o desperdício.
+              </p>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Docker e os Fundamentos de Contêineres
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A frase de terror das equipes de TI sempre foi: <span class="hl-red">"Mas na minha máquina funciona!"</span>. O código funcionava no
+              notebook do desenvolvedor, mas quando ia para o servidor (com outra versão do Linux ou do Java), falhava.
+            </p>
+            <p>
+              A <strong>Conteinerização</strong> resolveu isso. Ela empacota o código junto com as bibliotecas, dependências e configurações
+              necessárias num "Contêiner" imutável. Esse contêiner vai rodar exatamente da mesma forma no PC do desenvolvedor, no servidor de testes
+              ou na Cloud.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              A Magia do Linux (Namespaces e cgroups)
+            </h3>
+            <p>Como é que os contêineres são tão leves e não precisam instalar um SO completo (como fazem as VMs)?</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                Eles baseiam-se em tecnologias do Kernel do Linux. O <strong>cgroups (Control Groups)</strong> limita os recursos de hardware (ex:
+                "Este contêiner só pode usar 500MB de RAM").
+              </li>
+              <li>
+                O <strong>Namespaces</strong> faz o isolamento lógico (ex: "Este contêiner acha que tem um disco próprio e não consegue ver os
+                arquivos do contêiner vizinho").
+              </li>
+              <li><span class="hl-green">Conclusão: Contêineres compartilham o mesmo Kernel da máquina anfitriã.</span> Por isso são ultraleves.</li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">Vocabulário Docker de Prova</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Dockerfile:</strong> É o "receituário" em formato de texto. Um arquivo com instruções passo-a-passo para construir uma imagem.
+              </li>
+              <li>
+                <strong>Imagem (Image):</strong> É o pacote final criado pelo Dockerfile. É <span class="hl-yellow">somente-leitura (imutável)</span>.
+                É o "molde" ou a "forma de bolo".
+              </li>
+              <li><strong>Contêiner (Container):</strong> É a <strong>instância em execução</strong> de uma imagem. É o "bolo" pronto.</li>
+              <li><strong>Registry:</strong> Onde as imagens são armazenadas e compartilhadas (ex: Docker Hub).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Kubernetes (K8s): A Orquestração
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Se tiver apenas 3 contêineres, gerencie o Docker manualmente. Mas empresas como a Netflix ou o Google rodam milhares de contêineres.
+              Como gerenciar se um falhar? Como garantir balanceamento de carga? O <strong>Kubernetes</strong> é o sistema *open-source* padrão
+              mundial para automatizar a implantação, dimensionamento e gestão de aplicações contêinerizadas.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A Arquitetura do Kubernetes</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400 text-lg">Cluster e Nodes</strong><br />
+                O K8s junta várias máquinas físicas ou virtuais num <strong>Cluster</strong>. Cada máquina desse cluster é chamada de
+                <strong>Node (Nó)</strong>. Existe o <em>Master Node</em> (o cérebro que controla tudo) e os <em>Worker Nodes</em> (os operários que
+                rodam as aplicações).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400 text-lg">O Pod (Conceito Crítico)</strong><br />
+                Em provas, lembre-se: <span class="hl-yellow">O Kubernetes NÃO interage diretamente com os contêineres</span>. A unidade atômica e
+                mais pequena que o Kubernetes gerencia é o <strong>Pod</strong>. Um Pod é um "casulo" que pode conter um ou mais contêineres que
+                compartilham o mesmo endereço IP e espaço de armazenamento.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-blue-600 dark:text-blue-400 text-lg">Kubelet</strong><br />
+                É o agente primário que roda em cada Worker Node. A sua função é garantir que os contêineres estão rodando de forma saudável dentro do
+                Pod e reportar ao Master Node.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. O Pipeline DevOps na Prática
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Uma esteira típica de CI/CD num ambiente DevOps corporativo flui através da seguinte cadeia de ferramentas (Toolchain):</p>
+
+            <ol class="list-decimal pl-6 space-y-3 mt-4">
+              <li>
+                <strong>Planejar & Codificar:</strong> O desenvolvedor escreve o código e faz o "Commit" num sistema de controle de versões
+                distribuído como o <span class="hl-green">Git</span> (GitHub, GitLab).
+              </li>
+              <li>
+                <strong>Build & Test (Integração Contínua):</strong> O repositório notifica um servidor de CI (como o
+                <span class="hl-green">Jenkins</span>). O Jenkins puxa o código, compila-o e executa os testes unitários de forma automática.
+              </li>
+              <li>
+                <strong>Empacotamento:</strong> O Jenkins chama o <span class="hl-green">Docker</span> para criar uma nova Imagem contendo a versão
+                aprovada do código e guarda essa imagem num <em>Registry</em>.
+              </li>
+              <li>
+                <strong>Deploy (Entrega/Implantação):</strong> O <span class="hl-green">Kubernetes</span> (ou ferramentas como o Terraform/Ansible)
+                puxa a nova imagem do Registry e atualiza a aplicação em ambiente de Teste ou Produção, muitas vezes usando estratégias como o
+                <em>Blue-Green Deployment</em> (Zero Downtime).
+              </li>
+              <li>
+                <strong>Monitoramento:</strong> A aplicação em produção é monitorada continuamente (com ferramentas como o Prometheus e Grafana) para
+                fechar o ciclo de feedback aos desenvolvedores.
+              </li>
+            </ol>
+
+            <div class="mt-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border-l-4 border-red-500 rounded text-sm">
+              <strong class="font-bold">Atenção ao termo IaC:</strong> <em>Infrastructure as Code</em> (Infraestrutura como Código) é a prática de
+              escrever scripts (usando Terraform ou Ansible) para criar e gerenciar servidores, em vez de um humano clicar manualmente em painéis de
+              controle na Cloud. <span class="underline">É a materialização da letra "A" (Automação) do CAMS.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-blue-600", "border-blue-600", "dark:text-blue-400", "dark:border-blue-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
