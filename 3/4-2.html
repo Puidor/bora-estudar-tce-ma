@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Histórias do Usuário</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Histórias do Usuário (User Stories)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto e Estrutura Clássica -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">📝</span> O Template Clássico
+          </h2>
+          <p class="text-sm text-slate-700 dark:text-slate-300 mb-6">
+            Uma História de Usuário é uma descrição curta e simples de uma funcionalidade, contada a partir da perspectiva de quem deseja a nova
+            capacidade (o usuário).
+          </p>
+
+          <div
+            class="bg-violet-50 dark:bg-violet-900/10 p-5 rounded-lg border border-violet-200 dark:border-violet-800 font-mono text-sm md:text-base space-y-3"
+          >
+            <p class="flex items-center gap-3">
+              <span class="font-bold text-violet-700 dark:text-violet-400 min-w-[100px]">Como um(a)</span>
+              <span
+                class="bg-white dark:bg-slate-800 px-3 py-1 rounded shadow-sm flex-1 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600"
+                >[ Ator / Perfil de Usuário ]</span
+              >
+            </p>
+            <p class="flex items-center gap-3">
+              <span class="font-bold text-violet-700 dark:text-violet-400 min-w-[100px]">Eu quero</span>
+              <span
+                class="bg-white dark:bg-slate-800 px-3 py-1 rounded shadow-sm flex-1 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600"
+                >[ Ação / Funcionalidade ]</span
+              >
+            </p>
+            <p class="flex items-center gap-3">
+              <span class="font-bold text-violet-700 dark:text-violet-400 min-w-[100px]">Para que</span>
+              <span
+                class="bg-white dark:bg-slate-800 px-3 py-1 rounded shadow-sm flex-1 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600"
+                >[ Valor de Negócio / Benefício ]</span
+              >
+            </p>
+          </div>
+        </section>
+
+        <!-- Os 3 C's e INVEST -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Os 3 Cs -->
+          <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+              <span class="text-sky-500 text-2xl">🃏</span> Os 3 C's (Ron Jeffries)
+            </h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Toda boa história de usuário é composta por 3 elementos fundamentais:</p>
+            <ul class="space-y-4">
+              <li class="flex gap-3">
+                <span class="bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300 font-bold px-2 py-1 rounded text-xs shrink-0 self-start"
+                  >Card</span
+                >
+                <div>
+                  <strong class="text-slate-800 dark:text-slate-200 text-sm">Cartão</strong>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    A história deve ser pequena o suficiente para caber num post-it. É um lembrete do requisito, não um documento detalhado.
+                  </p>
+                </div>
+              </li>
+              <li class="flex gap-3">
+                <span class="bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300 font-bold px-2 py-1 rounded text-xs shrink-0 self-start"
+                  >Conv.</span
+                >
+                <div>
+                  <strong class="text-slate-800 dark:text-slate-200 text-sm">Conversa</strong>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    Os detalhes técnicos e regras de negócio surgem da discussão entre desenvolvedores, PO e clientes. O cartão inicia a conversa.
+                  </p>
+                </div>
+              </li>
+              <li class="flex gap-3">
+                <span class="bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300 font-bold px-2 py-1 rounded text-xs shrink-0 self-start"
+                  >Conf.</span
+                >
+                <div>
+                  <strong class="text-slate-800 dark:text-slate-200 text-sm">Confirmação</strong>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    São os <strong class="text-sky-600 dark:text-sky-400">Critérios de Aceitação</strong>. Como sabemos que a história está pronta? Os
+                    testes automatizados ou manuais provam isso.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Acrônimo INVEST -->
+          <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+              <span class="text-emerald-500 text-2xl">✨</span> O Acrônimo INVEST
+            </h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Criado por Bill Wake, define as 6 características de uma boa história de usuário:
+            </p>
+            <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              <li><strong class="text-emerald-600 dark:text-emerald-400 text-lg">I</strong>ndependent (Independente)</li>
+              <li><strong class="text-emerald-600 dark:text-emerald-400 text-lg">N</strong>egotiable (Negociável)</li>
+              <li><strong class="text-emerald-600 dark:text-emerald-400 text-lg">V</strong>aluable (Valiosa para o Negócio)</li>
+              <li><strong class="text-emerald-600 dark:text-emerald-400 text-lg">E</strong>stimable (Estimável)</li>
+              <li><strong class="text-emerald-600 dark:text-emerald-400 text-lg">S</strong>mall (Pequena)</li>
+              <li><strong class="text-emerald-600 dark:text-emerald-400 text-lg">T</strong>estable (Testável)</li>
+            </ul>
+          </section>
+        </div>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>História de Usuário = Caso de Uso?</strong> A banca afirma que "Histórias de Usuário são a versão moderna e idêntica aos Casos
+                de Uso (UML)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                <strong class="underline decoration-red-500">Casos de Uso</strong> descrevem o comportamento do sistema de forma exaustiva, com fluxos
+                principais, alternativos e de exceção. <strong class="underline decoration-red-500">Histórias de Usuário</strong> são propositalmente
+                incompletas; são apenas "promessas para uma conversa". Elas não detalham o fluxo passo a passo no documento.
+              </li>
+              <li>
+                <strong>Pode ser Escrita pelo Programador?</strong> "Uma User Story deve ser escrita com detalhes técnicos, como nomes de tabelas,
+                para facilitar a vida do desenvolvedor". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Histórias de usuário focam no <strong>"O Quê"</strong> e no <strong>"Por que"</strong> (valor de negócio). Elas NÃO descrevem o
+                <strong>"Como"</strong> (tecnologia). Devem ser compreensíveis pelo cliente final.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Origem e Filosofia das User Stories
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A prática de usar <em>Histórias de Usuário</em> originou-se com a metodologia <strong>Extreme Programming (XP)</strong> em 1998, embora
+              hoje seja amplamente associada ao Scrum (que utiliza as histórias para preencher o Product Backlog).
+            </p>
+            <p>
+              No modelo tradicional em cascata, os requisitos eram congelados em documentos de 300 páginas ("Especificação de Requisitos do Sistema").
+              Ninguém os lia e, quando a equipe começava a programar, o documento já estava obsoleto.
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">A Mudança de Paradigma:</strong>
+              <p class="text-sm mt-2">
+                As histórias de usuário mudam o foco de <strong>escrever sobre os requisitos</strong> para <strong>conversar sobre eles</strong>. O
+                cartão escrito ("Como um cliente...") é o estopim para a colaboração. A equipe confia no entendimento compartilhado gerado pela
+                conversa diária, não num papel.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Desconstruindo o INVEST (Foco nas Bancas)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O acrônimo INVEST (cunhado por Bill Wake) é a régua pela qual o Product Owner (PO) e a equipe medem se uma história está pronta para ser
+              puxada para uma Sprint (se ela atende à <em>Definition of Ready</em>).
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Independent (Independente):</strong> As histórias devem ser tão
+                desvinculadas umas das outras quanto possível. Isso permite que a equipe puxe a História C para a Sprint sem ser obrigada a fazer a
+                História A e B primeiro.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Negotiable (Negociável):</strong> Uma história
+                <span class="hl-red">NÃO é um contrato fixo</span>. Os detalhes podem (e devem) ser alterados ou ajustados durante a conversa com a
+                equipe de desenvolvimento.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-violet-500">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Valuable (Valiosa):</strong> A história DEVE entregar valor para o
+                usuário final ou cliente. Uma história tipo "Configurar banco de dados Oracle" não tem valor explícito pro cliente; o valor real é
+                "Como cliente, quero buscar meus pedidos antigos para ver o histórico".
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Estimable (Estimável):</strong> A equipe técnica deve ter clareza
+                suficiente do escopo (através da Conversa) para conseguir estimar o tamanho/complexidade da história (usando Story Points, por
+                exemplo).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Small (Pequena):</strong> Deve caber dentro de uma iteração/Sprint. Se
+                a história leva 3 meses para ser feita, ela é grande demais e deve ser "fatiada" (Dividida).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">Testable (Testável):</strong> Se você não consegue dizer como a
+                história será testada, ela não está bem escrita. É aqui que entram os <em>Critérios de Aceitação</em>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Hierarquia Ágil: Épicos, Temas e Histórias
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Como gerenciar requisitos gigantescos que não cabem em uma Sprint? As metodologias ágeis resolvem isso estruturando os requisitos em
+              níveis de abstração.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <div class="border border-slate-200 dark:border-slate-700 rounded-lg p-5 bg-slate-50 dark:bg-slate-900/50">
+                <div class="text-3xl text-center mb-2">🏔️</div>
+                <h3 class="font-bold text-center text-slate-800 dark:text-white mb-2">1. Tema</h3>
+                <p class="text-sm text-center">
+                  É o nível mais alto. Um grupo de grandes iniciativas relacionadas ou uma área estratégica do produto. (Ex: "Segurança do Sistema").
+                </p>
+              </div>
+              <div class="border border-violet-200 dark:border-violet-800 rounded-lg p-5 bg-violet-50 dark:bg-violet-900/10">
+                <div class="text-3xl text-center mb-2">🐘</div>
+                <h3 class="font-bold text-center text-violet-800 dark:text-violet-300 mb-2">2. Épico (Epic)</h3>
+                <p class="text-sm text-center">
+                  Uma grande história de usuário que <strong>não cabe numa única Sprint</strong>. É um "monstro" que precisa ser fatiado antes de
+                  entrar no desenvolvimento. (Ex: "Como usuário, quero pagar minhas compras").
+                </p>
+              </div>
+              <div class="border border-sky-200 dark:border-sky-800 rounded-lg p-5 bg-sky-50 dark:bg-sky-900/10">
+                <div class="text-3xl text-center mb-2">📝</div>
+                <h3 class="font-bold text-center text-sky-800 dark:text-sky-300 mb-2">3. User Story</h3>
+                <p class="text-sm text-center">
+                  O Épico "Pagamento" é quebrado em Histórias Pequenas e INVESTíveis. (Ex: "Pagar com PIX", "Pagar com Cartão de Crédito"). Estas vão
+                  para a Sprint.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Critérios de Aceitação (O 3º 'C' - Confirmation)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A frase <em>"Como usuário, quero fazer login para ver meus dados"</em> é muito vaga por si só. Como a equipe sabe que a tarefa de
+              desenvolver o Login está pronta? Através dos <strong>Critérios de Aceitação</strong>.
+            </p>
+            <p>
+              Eles são os limites da história. São as regras de negócio escritas em forma de checklist ou no formato
+              <em>Dado-Quando-Então</em> (Gherkin/BDD).
+            </p>
+
+            <div class="bg-slate-100 dark:bg-slate-900/80 p-4 rounded mt-4 border border-slate-300 dark:border-slate-700 text-sm">
+              <strong class="text-slate-800 dark:text-white block mb-2">Exemplo de Critérios de Aceitação para a "História de Login":</strong>
+              <ul class="list-disc pl-6 space-y-1">
+                <li>O sistema não deve permitir senhas com menos de 8 caracteres.</li>
+                <li>Se a senha estiver errada 3 vezes, a conta deve ser bloqueada por 15 minutos.</li>
+                <li>A senha deve ser mascarada com asteriscos (***) durante a digitação.</li>
+              </ul>
+              <p class="mt-3 text-violet-600 dark:text-violet-400 font-bold italic">
+                Na prova: Se o software atende a todos os critérios de aceitação listados no verso do cartão, a história é considerada CONCLUÍDA
+                (Done).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

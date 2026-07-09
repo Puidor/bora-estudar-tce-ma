@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Scrum e Kanban</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
+          Engenharia de Software • Práticas Ágeis
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Métodos Ágeis: Scrum e Kanban
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: Scrum vs Kanban -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Scrum vs Kanban</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🏉</div>
+              <h3 class="font-bold text-indigo-700 dark:text-indigo-400 mb-2 text-xl">Scrum</h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Ritmo:</strong> Baseado em iterações fixas (<span
+                    class="font-bold text-indigo-600 dark:text-indigo-400"
+                    >Sprints</span
+                  >).
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Papéis:</strong> Possui 3 papéis <strong>obrigatórios</strong> (PO, Scrum Master,
+                  Developers).
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Controle de Fluxo:</strong> O fluxo é controlado não mudando a meta durante a Sprint.
+                </li>
+                <li><strong class="text-slate-900 dark:text-white">Estimativas:</strong> Fundamental (Planning Poker, Story Points).</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">📋</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-xl">Kanban</h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Ritmo:</strong> Baseado em
+                  <span class="font-bold text-emerald-600 dark:text-emerald-400">Fluxo Contínuo</span> (sem Sprints obrigatórias).
+                </li>
+                <li><strong class="text-slate-900 dark:text-white">Papéis:</strong> <strong>Não prescreve</strong> papéis formais obrigatórios.</li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Controle de Fluxo:</strong> A regra de ouro é o
+                  <strong class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 px-1 rounded">WIP Limit</strong> (Limite
+                  de Trabalho em Progresso).
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Estimativas:</strong> Opcional. Foca mais no <em>Lead Time</em> e
+                  <em>Cycle Time</em>.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Anatomia do Scrum (3, 5, 3) -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧩 A Anatomia do Scrum (Regra do 3-5-3)</h2>
+            <p class="text-sm text-slate-400 mt-1">O Scrum é leve e baseado no Empirismo (Transparência, Inspeção e Adaptação).</p>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- 3 Papéis -->
+              <div>
+                <h3 class="font-black text-sky-400 mb-3 uppercase tracking-wider text-sm border-b border-slate-700 pb-2">
+                  3 Papéis (Accountabilities)
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li><strong class="text-white">1. Product Owner (PO):</strong> Dono do produto. Maximiza o valor. Único dono do Backlog.</li>
+                  <li>
+                    <strong class="text-white">2. Scrum Master (SM):</strong> Verdadeiro líder que serve. Remove impedimentos. Guardião do framework.
+                  </li>
+                  <li><strong class="text-white">3. Developers:</strong> Os profissionais que criam o Incremento. Auto-gerenciáveis.</li>
+                </ul>
+              </div>
+
+              <!-- 5 Eventos -->
+              <div>
+                <h3 class="font-black text-rose-400 mb-3 uppercase tracking-wider text-sm border-b border-slate-700 pb-2">5 Eventos (Timeboxes)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li><strong class="text-white">1. A Sprint:</strong> O evento contêiner (<= 1 mês).</li>
+                  <li><strong class="text-white">2. Sprint Planning:</strong> Planeja o que e como fazer.</li>
+                  <li><strong class="text-white">3. Daily Scrum:</strong> 15 min. Apenas para os Devs sincronizarem as próximas 24h.</li>
+                  <li><strong class="text-white">4. Sprint Review:</strong> Mostra o resultado (Incremento) ao cliente.</li>
+                  <li><strong class="text-white">5. Sprint Retrospective:</strong> Lições aprendidas da equipe. Melhoria contínua.</li>
+                </ul>
+              </div>
+
+              <!-- 3 Artefatos & Compromissos -->
+              <div>
+                <h3 class="font-black text-emerald-400 mb-3 uppercase tracking-wider text-sm border-b border-slate-700 pb-2">
+                  3 Artefatos (+ Compromissos)
+                </h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li>
+                    <strong class="text-white">1. Product Backlog:</strong> Lista de tudo. <br /><span class="text-xs text-emerald-300"
+                      >↳ Compromisso: Meta do Produto.</span
+                    >
+                  </li>
+                  <li>
+                    <strong class="text-white">2. Sprint Backlog:</strong> O plano da Sprint. <br /><span class="text-xs text-emerald-300"
+                      >↳ Compromisso: Meta da Sprint.</span
+                    >
+                  </li>
+                  <li>
+                    <strong class="text-white">3. Incremento:</strong> A soma do trabalho pronto. <br /><span class="text-xs text-emerald-300"
+                      >↳ Compromisso: Definition of Done (DoD).</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais do Scrum Guide 2020</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Scrum Master NÃO é Gerente de Projeto:</strong> A banca vai jurar que o SM distribui as tarefas e manda na equipe. <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Scrum Team é <strong>Auto-gerenciável</strong>. Ninguém (nem o SM, nem o PO) diz aos Developers COMO transformar o Backlog em
+                Incremento.
+              </li>
+              <li>
+                <strong>A Daily Scrum NÃO é para Status Report:</strong> "O PO cobra o andamento das tarefas do time durante a Daily de 15 minutos".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A Daily é <strong>dos Developers para os Developers</strong>. O SM e o PO não são obrigados a participar (a menos que estejam
+                programando ativamente). O objetivo é inspecionar o progresso em direção à Meta da Sprint.
+              </li>
+              <li>
+                <strong>Cancelamento da Sprint:</strong> "A equipe de desenvolvimento pode cancelar a Sprint se não for conseguir terminar tudo".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                <strong>APENAS o Product Owner (PO)</strong> tem autoridade para cancelar uma Sprint, e isso só acontece se a Meta da Sprint se tornar
+                obsoleta.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência do Scrum
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Scrum não é um processo estruturado, nem uma metodologia rígida. Segundo os criadores (Ken Schwaber e Jeff Sutherland), ele é um
+              <strong>Framework leve</strong> que ajuda pessoas e organizações a gerar valor através de soluções adaptativas para problemas complexos.
+            </p>
+            <p>
+              O Scrum baseia-se no <strong>Empirismo</strong> (conhecimento vem da experiência) e no <strong>Pensamento Enxuto (Lean)</strong>. Seus
+              três pilares empíricos são sagrados para as bancas:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 font-medium">
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Transparência:</strong> O processo emergente e o trabalho devem ser visíveis para
+                quem os executa e quem os recebe. (Daí a importância do Quadro Scrum / Backlog visível).
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Inspeção:</strong> Os artefatos e o progresso devem ser inspecionados
+                frequentemente para detectar variações indesejadas.
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Adaptação:</strong> Se algum aspecto do processo desviar para fora dos limites
+                aceitáveis, o processo ou material sendo produzido deve ser ajustado o mais rápido possível.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Os Eventos Scrum (As Timeboxes)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Todo evento no Scrum tem uma duração máxima (Timebox). O evento contêiner de tudo é a <strong>Sprint</strong> (coração do Scrum), que
+              tem duração fixa de <strong class="text-rose-600 dark:text-rose-400">um mês ou menos</strong>. Uma nova Sprint começa imediatamente após
+              o término da anterior.
+            </p>
+
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">Sprint Planning (Planejamento da Sprint):</strong><br />
+                <em>Timebox: Max 8h para Sprint de 1 mês.</em><br />
+                A equipe define a Meta da Sprint (Por que esta Sprint tem valor?), O que pode ser feito (itens puxados do Product Backlog) e Como o
+                trabalho será realizado. O resultado é a criação do <strong>Sprint Backlog</strong>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-rose-500">
+                <strong class="text-violet-600 dark:text-violet-400">Daily Scrum (Reunião Diária):</strong><br />
+                <em>Timebox: Rigorosamente 15 minutos (sempre).</em><br />
+                Evento feito no mesmo horário e local todos os dias. Exclusivo para os Developers inspecionarem o progresso em direção à Meta da
+                Sprint e adaptarem o plano das próximas 24h.
+                <span class="hl-red">Não é uma reunião para resolver problemas profundos; problemas são resolvidos após a Daily.</span>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">Sprint Review (Revisão da Sprint):</strong><br />
+                <em>Timebox: Max 4h para Sprint de 1 mês.</em><br />
+                Ocorre no penúltimo passo da Sprint. A equipe apresenta o trabalho concluído (o Incremento) aos Stakeholders (clientes, diretores).
+                <span class="hl-green">Foco: Inspecionar o PRODUTO e adaptar o Product Backlog.</span>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-500">
+                <strong class="text-violet-600 dark:text-violet-400">Sprint Retrospective (Retrospectiva da Sprint):</strong><br />
+                <em>Timebox: Max 3h para Sprint de 1 mês.</em><br />
+                Encerra a Sprint. É uma reunião interna do Scrum Team. Eles discutem o que funcionou bem e o que deu errado em termos de indivíduos,
+                interações, processos e ferramentas. <span class="hl-green">Foco: Inspecionar a EQUIPE/PROCESSO e planejar a melhoria contínua.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Filosofia e Mecânica do Kanban
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Apesar de muitos acharem que Kanban é apenas "ter um quadro com post-its (To Do, Doing, Done)", ele é, na verdade, um método profundo de
+              <strong>Gestão de Fluxo de Trabalho (Workflow)</strong> baseado no Sistema Toyota de Produção (Lean).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">As Práticas Gerais do Kanban</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>1. Visualizar o Fluxo de Trabalho:</strong> Mapear como as coisas realmente funcionam no quadro.</li>
+              <li>
+                <strong>2. Limitar o Trabalho em Progresso (WIP):</strong> <span class="hl-yellow">A prática mais cobrada em provas!</span> Pare de
+                começar e comece a terminar. Se o limite da coluna "Em Testes" é 3, ninguém pode colocar o 4º item ali. Isso expõe imediatamente os
+                gargalos (bottlenecks) do processo.
+              </li>
+              <li><strong>3. Gerenciar o Fluxo:</strong> Analisar as métricas para garantir que os itens fluem de forma suave e previsível.</li>
+              <li>
+                <strong>4. Tornar as Políticas Explícitas:</strong> Escrever as regras do quadro de forma clara (ex: "Um item só sai de
+                <em>Doing</em> se o código tiver 80% de cobertura de teste").
+              </li>
+            </ul>
+
+            <div class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 p-4 border-l-4 border-emerald-500 rounded mt-4">
+              <strong class="font-bold">Lead Time vs Cycle Time (Métricas Essenciais)</strong>
+              <ul class="mt-2 text-sm space-y-1">
+                <li>
+                  👉 <strong>Lead Time (Tempo do Cliente):</strong> O relógio começa a rodar no exato momento em que o cliente faz o pedido, e só para
+                  quando ele recebe o produto final em mãos.
+                </li>
+                <li>
+                  👉 <strong>Cycle Time (Tempo da Equipe):</strong> O relógio só começa a rodar quando um desenvolvedor pega ativamente a tarefa para
+                  fazer ("Doing"), e para quando a tarefa é concluída.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Scrumban (A Mistura na Prática)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Nas empresas modernas e em provas mais contextuais, Scrum e Kanban não são inimigos. Eles são misturados na forma do
+              <strong>Scrumban</strong>.
+            </p>
+            <p>
+              O Kanban não prescreve nenhuma iteração de tempo. O seu sistema é de "Puxar" (Pull System): assim que o programador termina uma tarefa e
+              há espaço no limite de WIP, ele "puxa" a próxima tarefa imediatamente da fila, independentemente do dia do mês. Isso é excelente para
+              <span class="hl-green">Equipes de Suporte, Manutenção ou Infraestrutura</span>, que não podem esperar por um "Sprint Planning" na
+              próxima semana para corrigir um erro crítico no servidor hoje.
+            </p>
+            <p>
+              No entanto, usar o Quadro Kanban <em>dentro</em> da Sprint de 2 semanas do Scrum ajuda imensamente os <em>Developers</em> a visualizarem
+              o progresso rumo à Meta da Sprint na Daily Scrum. A combinação das Timeboxes organizacionais do Scrum com as métricas de otimização de
+              fluxo do Kanban gera o que há de melhor no mundo Ágil de desenvolvimento de software de alta performance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

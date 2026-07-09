@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo: BDD (Behavior-Driven Development)</title>
+    <title>Resumo: Minimum Viable Product (MVP)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -105,7 +105,7 @@
           Engenharia de Software • Práticas Ágeis
         </p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
-          BDD (Desenvolvimento Orientado por Comportamento)
+          Produto Mínimo Viável (MVP)
         </h1>
       </header>
 
@@ -129,7 +129,7 @@
              ABA 1: RESUMO VISUAL
              ========================================== -->
       <div id="tab-1" class="tab-content active space-y-8">
-        <!-- Definição Principal -->
+        <!-- Direto ao Ponto -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
             <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto
@@ -138,107 +138,107 @@
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              O <strong>BDD (Behavior-Driven Development)</strong> é uma técnica ágil de desenvolvimento que incentiva a colaboração entre
-              programadores, QAs (Testers) e os representantes do negócio (Product Owners/Clientes).
+              <strong>O que é?</strong> A versão mais simples de um novo produto que permite à equipe
+              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
+                >coletar a máxima quantidade de aprendizado validado</span
+              >
+              sobre os clientes com o menor esforço possível.
             </li>
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              <strong>Foco:</strong> Em vez de testar "como o código foi escrito" (foco técnico), o BDD foca no
-              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
-                >comportamento do sistema</span
-              >
-              (foco no negócio/valor esperado).
+              <strong>O Objetivo:</strong> Testar uma <strong>hipótese de negócio</strong>. Responder à pergunta:
+              <em>"As pessoas realmente querem pagar ou usar isso que estamos construindo?"</em> antes de gastar milhões.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>Lançamento Real:</strong> Diferente de um protótipo descartável de papel, o MVP é frequentemente um produto real, lançado para
+              um subconjunto restrito de usuários reais (early adopters).
             </li>
           </ul>
         </section>
 
-        <!-- A Estrutura Gherkin -->
+        <!-- A Analogia do Carro (Clássica de Prova) -->
         <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
           <div class="bg-slate-800 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🥒 A Linguagem Gherkin (Sintaxe de Prova)</h2>
-            <p class="text-sm text-slate-400 mt-1">
-              É a linguagem estruturada e natural usada para escrever os cenários de BDD. O computador consegue ler e executar isto como testes
-              automatizados!
-            </p>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🚗 Como construir um MVP? (A Analogia)</h2>
+            <p class="text-sm text-slate-400 mt-1">Se a necessidade do cliente é "ir do Ponto A ao Ponto B mais rápido", como você entrega valor?</p>
           </div>
           <div class="p-6">
-            <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-emerald-500">
-                <strong class="text-emerald-400">Funcionalidade:</strong> Saque bancário
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+              <div class="bg-slate-800/80 border border-red-500/50 p-4 rounded-lg relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-red-500"></div>
+                <h3 class="font-bold text-red-400 mb-2 uppercase tracking-wide">O jeito ERRADO (Cascata)</h3>
+                <div class="flex justify-center items-center gap-2 mb-3 text-2xl">
+                  <span>⚙️</span> <span class="text-slate-500 text-sm">➔</span> <span>🛞</span> <span class="text-slate-500 text-sm">➔</span>
+                  <span>🚘</span> <span class="text-slate-500 text-sm">➔</span>
+                  <span>🚙</span>
+                </div>
+                <p class="text-xs text-slate-400 text-left">
+                  Você entrega 1 roda, depois 2 rodas, depois a carcaça. O cliente <strong>não consegue usar nada</strong> até o final do projeto. Não
+                  há entrega antecipada de valor.
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-blue-500 ml-4">
-                <strong class="text-blue-400">Cenário:</strong> Saque bem-sucedido com saldo suficiente
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-yellow-500 ml-8">
-                <strong class="text-yellow-400">Dado (Given):</strong> que o saldo da minha conta é de R$ 100
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-violet-500 ml-8">
-                <strong class="text-violet-400">Quando (When):</strong> eu solicitar um saque de R$ 20
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-red-500 ml-8">
-                <strong class="text-red-400">Então (Then):</strong> o caixa eletrônico deve liberar as notas<br />
-                <strong class="text-red-400">E (And):</strong> o meu saldo final deve ser R$ 80
+
+              <div class="bg-slate-800/80 border border-emerald-500/50 p-4 rounded-lg relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+                <h3 class="font-bold text-emerald-400 mb-2 uppercase tracking-wide">O jeito CERTO (MVP)</h3>
+                <div class="flex justify-center items-center gap-2 mb-3 text-2xl">
+                  <span>🛹</span> <span class="text-slate-500 text-sm">➔</span> <span>🛴</span> <span class="text-slate-500 text-sm">➔</span>
+                  <span>🚲</span> <span class="text-slate-500 text-sm">➔</span>
+                  <span>🚙</span>
+                </div>
+                <p class="text-xs text-slate-400 text-left">
+                  Você entrega um Skate (MVP). Ele já resolve a dor de "ir do ponto A ao B" (é <strong>Viável</strong>). Com o feedback, você evolui
+                  para Patinete, Bicicleta e finalmente o Carro.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- O Confronto: TDD vs BDD -->
+        <!-- Tabela: PoC vs Protótipo vs MVP -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: TDD vs BDD</h2>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: PoC x Protótipo x MVP</h2>
+            <p class="text-sm text-slate-300 mt-1">Este é o ponto onde 90% dos candidatos erram.</p>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
-                    TDD (Test-Driven Development)
-                  </th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
-                    BDD (Behavior-Driven Development)
-                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Técnica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">O que valida? (A Pergunta)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Público-Alvo</th>
                 </tr>
               </thead>
               <tbody class="text-sm">
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">Foco TÉCNICO</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
-                    Foco no NEGÓCIO (Comportamento)
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    PoC (Prova de Conceito)
                   </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <em>"É tecnicamente possível fazer isso?"</em> Valida a tecnologia/viabilidade.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Equipe Técnica (Interno).</td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    A pergunta que responde
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Protótipo</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <em>"Como isso vai se parecer ou funcionar?"</em> Valida Design, Usabilidade e UX.
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa certa (sem bugs)?"
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa que o cliente quer?"
+                    Stakeholders ou Grupo pequeno de testes.
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Linguagem utilizada
-                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">MVP</td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    Código de programação (Java, Python, C#).
+                    <em>"Alguém vai comprar/usar isso?"</em> Valida a <strong>Hipótese de Negócio</strong>.
                   </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    <strong>Linguagem Natural (Inglês/Português)</strong>, legível para humanos não-técnicos.
-                  </td>
-                </tr>
-                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Público-alvo do teste
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Apenas Desenvolvedores.</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-800 dark:text-slate-200">
-                    A Equipa Inteira (Dev, QA, PO, Cliente).
+                    Usuários Finais reais (Early Adopters).
                   </td>
                 </tr>
               </tbody>
@@ -247,7 +247,7 @@
         </section>
 
         <!-- Alerta Pegadinha -->
-        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
           <svg
             class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
             fill="currentColor"
@@ -264,23 +264,25 @@
             <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
             <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
               <li>
-                <strong>Concorrência (BDD vs TDD):</strong> A banca afirma que "A adoção do BDD exige o abandono do TDD, pois ambos são
-                incompatíveis". <br />
+                <strong>MVP é software com defeito?</strong> A banca afirma que "Para garantir a velocidade de lançamento do MVP, a equipe deve
+                ignorar a qualidade do código, testes e a usabilidade (Mínimo)". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                Eles são <strong>COMPLEMENTARES</strong>. O BDD é usado num nível mais alto (testes de aceitação/integração guiados pelo negócio),
-                enquanto o TDD é usado no nível do método/classe pelos programadores (inside-out).
+                O MVP corta no <strong>Escopo/Funcionalidades</strong> (foca só na principal), mas NÃO corta na qualidade. O software lançado deve
+                funcionar bem, ser confiável e agradável para a funcionalidade restrita a que se propõe. (Lembre-se: é Mínimo, mas é <em>Viável</em>).
               </li>
               <li>
-                <strong>Ferramenta Automática?</strong> "O BDD é uma ferramenta de automação de testes de software". <br />
+                <strong>MVP é a primeira fase do projeto Cascata?</strong> "No modelo tradicional (Waterfall), o MVP corresponde à fase final de
+                testes de aceitação". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                O BDD é uma <strong>Metodologia/Prática Ágil</strong> de colaboração. A automação é apenas um efeito colateral valioso alcançado
-                através de ferramentas de apoio (como o Cucumber).
+                O MVP é um conceito indissociável de
+                <strong class="underline decoration-red-500">metodologias ágeis e iterativas</strong> (Lean/Scrum). No Cascata clássico, você constrói
+                o sistema 100% antes de ver se o cliente o quer.
               </li>
             </ul>
           </div>
@@ -293,120 +295,109 @@
       <div id="tab-2" class="tab-content space-y-8">
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            1. A Origem e o Propósito do BDD
+            1. A Origem: O Livro "A Startup Enxuta"
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              O BDD foi concebido por <strong>Dan North</strong> em 2003 como uma resposta à confusão generalizada sobre o TDD. Os programadores que
-              tentavam adotar o TDD tinham sempre a mesma dúvida: <em>"Por onde eu começo a testar? O que eu devo testar e o que não devo?"</em>
+              Para provas que envolvem gestão de produtos (Product Management), o termo MVP está intimamente ligado ao autor
+              <strong>Eric Ries</strong> e ao conceito de <em>Lean Startup</em>.
             </p>
             <p>
-              Dan North percebeu que o nome "Teste" assustava as pessoas de negócio. Ele sugeriu mudar o foco: em vez de escrever testes que
-              verifiquem a lógica interna do código, devíamos escrever especificações sobre o <strong>Comportamento (Behavior)</strong> que o sistema
-              deve apresentar.
+              A premissa é simples: as empresas gastam milhões e anos de desenvolvimento para criar o "produto perfeito" cheio de dezenas de
+              funcionalidades (features). Quando lançam o produto no mercado, descobrem que o cliente não se importa com a maioria daquelas
+              funcionalidades, e o projeto fracassa.
             </p>
-            <p>
-              Assim, o BDD visa <span class="hl-green">eliminar o fosso de comunicação entre os envolvidos (negócios e TI)</span>, garantindo que o
-              software construído seja exatamente o que trará valor ao cliente.
-            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">O Ciclo Construir-Medir-Aprender (Build-Measure-Learn)</strong>
+              <p class="text-sm mt-2">
+                O MVP existe para rodar esse ciclo o mais rápido possível:
+                <br />1. <strong>Construir</strong> a versão essencial do produto (o MVP). <br />2. Entregá-lo aos clientes e <strong>Medir</strong> o
+                seu comportamento real (dados, não "achismos"). <br />3. <strong>Aprender</strong> com os dados: o cliente realmente pagou por isso?
+                Se sim, a equipe itera e adiciona a funcionalidade 2. Se não, a equipe <em>Pivota</em> (muda radicalmente a estratégia de negócio).
+              </p>
+            </div>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            2. Os "Três Amigos" (The Three Amigos)
+            2. A "Fatia" Vertical de Qualidade
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Este é um conceito central da adoção de BDD em equipas Ágeis (muito cobrado). Refere-se à reunião essencial que deve acontecer
-              <strong>antes</strong> de uma linha de código ser escrita. Envolve três perspetivas cruciais:
+              Um conceito muito abordado por autores de Engenharia de Software é a "Pirâmide do Produto". Nela, um produto completo é dividido em
+              várias fatias horizontais de qualidade: <em>Funcional, Confiável, Utilizável (Usável) e Emocional (Agradável)</em>.
             </p>
 
-            <ul class="list-none space-y-4 mt-4">
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">👔</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz do Negócio (Product Owner / Cliente):</strong><br />
-                  Define <em>qual problema estamos a tentar resolver</em>. Qual é a regra de negócio e as exceções.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">💻</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Tecnologia (Developer):</strong><br />
-                  Propõe <em>como podemos construir isso</em> tecnicamente e aponta as limitações do sistema atual.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">🕵️</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Qualidade (QA / Tester):</strong><br />
-                  Traz o ceticismo. Pergunta <em>"E o que acontece se der errado?"</em>, explorando os casos extremos (Edge Cases) que o negócio e o
-                  desenvolvedor esqueceram.
-                </div>
-              </li>
-            </ul>
-            <p class="mt-2 text-sm font-semibold">
-              Juntos, estes "três amigos" escrevem os cenários em Gherkin, garantindo um entendimento perfeito e unificado do requisito antes do
-              desenvolvimento iniciar.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            3. Linguagem Ubíqua e Documentação Viva
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-violet-500 pl-3">
-              Linguagem Ubíqua (Ubiquitous Language)
-            </h3>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Abordagem Incorreta</h3>
             <p>
-              Conceito herdado do <em>Domain-Driven Design (DDD)</em>. É a prática de usar a <strong>mesma terminologia</strong> em todos os lugares:
-              nas conversas, nos documentos de requisitos e no código-fonte. Se a área de negócios fala em "Apólice", o programador não pode chamar a
-              classe no código de "Contrato_Seguro". O BDD força o uso da linguagem ubíqua nos testes Gherkin.
+              Muitas empresas acham que o MVP deve ser apenas "Funcional". Entregam um sistema feio, com bugs constantes, difícil de usar e que cai o
+              tempo todo.
             </p>
 
             <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
-              Documentação Viva (Living Documentation)
+              A Abordagem Correta (Fatia Vertical)
             </h3>
             <p>
-              No modelo tradicional em Cascata (Waterfall), a especificação do sistema fica num documento Word de 300 páginas que apodrece e fica
-              obsoleto no momento em que o software entra em produção, pois as mudanças feitas no código não são refletidas no documento.
-            </p>
-            <p>
-              No BDD, a especificação Gherkin (<span class="hl-yellow">Given / When / Then</span>) é executada diretamente pelo sistema de automação
-              (ex: Cucumber) toda vez que o código muda.
-              <span class="hl-green">Se o comportamento do código mudar e não atualizar o Gherkin, o sistema "parte" e bloqueia o deploy</span>.
-              Portanto, o documento Gherkin funciona como uma documentação do sistema 100% confiável, sempre atualizada e validada.
+              Um verdadeiro MVP deve entregar uma
+              <strong>pequena fatia funcional (menos funcionalidades), mas essa fatia deve englobar todas as camadas de qualidade</strong>. O "Skate"
+              da analogia não tem motor, mas ele deve ser perfeitamente pintado, ter as rodinhas ajeitadas e funcionar sem quebrar no meio da calçada.
+              Assim o cliente tem uma <span class="hl-green">boa experiência</span> com aquela única funcionalidade principal.
             </p>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            4. Ferramentas Típicas de BDD
+            3. Formatos Não-Codificados de MVP
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Para a prova, é útil reconhecer o nome das ferramentas de mercado que transformam o texto em inglês/português do Gherkin num teste
-              automatizado real:
+              Surpresa para muitos desenvolvedores: o MVP ideal às vezes
+              <strong class="text-violet-600 dark:text-violet-400">nem tem código de software desenvolvido</strong>! Se o objetivo é testar a hipótese
+              de negócio, você pode fazê-lo de outras formas:
             </p>
-            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+
+            <ul class="list-disc pl-6 space-y-4 mt-4">
               <li>
-                <strong class="text-emerald-600 dark:text-emerald-400">Cucumber:</strong> A mais famosa ferramenta de BDD do mundo, originada no Ruby
-                e suporta dezenas de linguagens (Java, JS).
+                <strong class="text-slate-800 dark:text-white">O MVP Concierge:</strong> A empresa finge que tem um software complexo. Você preenche
+                um formulário e no dia seguinte a empresa envia o resultado. Na verdade, por trás da tela, há
+                <em>seres humanos fazendo todo o trabalho manualmente</em> (em Excel) no lugar de uma Inteligência Artificial. Serve para ver se o
+                cliente vê valor no resultado antes de gastar 1 ano codificando a IA.
               </li>
               <li>
-                <strong class="text-blue-600 dark:text-blue-400">SpecFlow:</strong> A equivalente oficial do Cucumber para o ecossistema Microsoft
-                .NET (C#).
+                <strong class="text-slate-800 dark:text-white">O MVP Mágico de Oz:</strong> Semelhante ao Concierge, mas aqui o usuário realmente acha
+                que está lidando com um sistema 100% automatizado, enquanto a equipe humana trabalha freneticamente nos bastidores para "simular" o
+                software em tempo real (como o sapateiro escondido atrás da cortina no Mágico de Oz).
               </li>
-              <li><strong class="text-yellow-600 dark:text-yellow-500">Behave:</strong> Ferramenta popular para o ecossistema Python.</li>
               <li>
-                <strong class="text-violet-600 dark:text-violet-400">JBehave:</strong> Uma das primeiras frameworks BDD, criada pelo próprio Dan North
-                para o mundo Java.
+                <strong class="text-slate-800 dark:text-white">O MVP "Fumaça" (Smoke Test / Landing Page):</strong> A equipe cria um site de vendas
+                impecável para o software com um botão "Compre Agora". Quando o usuário clica, aparece a mensagem:
+                <em>"Ainda estamos em desenvolvimento. Deixe seu e-mail"</em>. O objetivo é medir a conversão: se 10.000 pessoas clicarem, a hipótese
+                está validada, a equipe pode começar a programar.
               </li>
             </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. O MVP no Scrum e Mapeamento de Produto
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No framework <strong>Scrum</strong>, o MVP é frequentemente o alvo de um dos primeiros "Releases" (lançamentos) de um produto
+              recém-criado.
+            </p>
+            <p>
+              O Product Owner (PO) olha para o <strong>Product Backlog</strong> (que pode ter 200 histórias de usuário) e traça uma linha horizontal
+              de corte. Tudo o que está acima da linha compõe o "Mínimo" necessário para testar o núcleo do negócio; esse será o escopo do MVP. O que
+              está abaixo da linha ficará para as próximas Sprints (versão 2.0).
+            </p>
+            <p class="font-semibold text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-900 p-3 rounded">
+              "O MVP não é o produto final com a maioria das funcionalidades cortadas. É o produto núcleo com todo o ruído de fundo removido para
+              garantir foco na validação de aprendizado."
+            </p>
           </div>
         </div>
       </div>

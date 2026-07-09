@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Testes de Software</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Tipos e Níveis de Teste
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- A Pirâmide de Testes (Mike Cohn) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">🔺</span> A Pirâmide de Testes
+          </h2>
+
+          <div class="flex flex-col gap-3 max-w-2xl mx-auto">
+            <!-- Topo: Aceitação / UI -->
+            <div class="bg-violet-600 text-white rounded-t-xl p-4 text-center shadow-md">
+              <h3 class="font-black tracking-widest text-lg">TESTES DE ACEITAÇÃO / UI</h3>
+              <p class="text-violet-100 text-sm mt-1">Lentos, Caros, Foco no Usuário Final (Ponta a Ponta / E2E).</p>
+              <p class="text-xs font-mono mt-2 bg-violet-800/50 inline-block px-2 py-1 rounded">Quantidade: Poucos</p>
+            </div>
+
+            <!-- Meio: Integração / Funcional -->
+            <div class="bg-violet-500 text-white p-4 text-center shadow-md">
+              <h3 class="font-black tracking-widest text-lg">TESTES DE INTEGRAÇÃO</h3>
+              <p class="text-violet-100 text-sm mt-1">Comunicação entre módulos, APIs, Banco de Dados.</p>
+              <p class="text-xs font-mono mt-2 bg-violet-700/50 inline-block px-2 py-1 rounded">Quantidade: Moderada</p>
+            </div>
+
+            <!-- Base: Unitário -->
+            <div class="bg-violet-400 text-white rounded-b-xl p-4 text-center shadow-md">
+              <h3 class="font-black tracking-widest text-lg">TESTES UNITÁRIOS</h3>
+              <p class="text-violet-50 text-sm mt-1">Rápidos, Baratos, Isolados. Foco no Código (Funções/Classes).</p>
+              <p class="text-xs font-mono mt-2 bg-violet-600/50 inline-block px-2 py-1 rounded">Quantidade: MUITOS (A Base de Tudo)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa (Níveis) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Níveis de Teste Funcional</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Nível</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">O que testa?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Quem faz?</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">1. Unitário</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A menor parte do software (um método ou função) <strong>de forma isolada</strong> (usando Mocks/Stubs). Caixa Branca.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-blue-600 dark:text-blue-400">Desenvolvedor</td>
+                </tr>
+                <tr class="bg-violet-50/50 dark:bg-violet-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">2. Integração</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A <strong>comunicação</strong> entre dois ou mais componentes que já passaram no teste unitário. Se as interfaces se "falam" bem.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-blue-600 dark:text-blue-400 font-bold">Dev / QA Automático</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    3. Funcional (Sistema)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    O sistema inteiro. Se ele cumpre os <strong>requisitos funcionais</strong> (O que ele deveria fazer). Caixa Preta.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">QA / Tester</td>
+                </tr>
+                <tr class="bg-violet-50/50 dark:bg-violet-900/10">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">4. Aceitação</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    A validação final. O sistema <strong>atende às necessidades reais do negócio?</strong> (UAT - User Acceptance Test).
+                  </td>
+                  <td class="p-4 font-bold text-orange-600 dark:text-orange-400">Cliente / Usuário</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Testes Não Funcionais -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">⚙️</span> Testes Não Funcionais (Atributos de Qualidade)
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-sky-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <div class="text-3xl mb-2">⏱️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Desempenho</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Mede a <strong>rapidez e a capacidade de resposta</strong> do sistema sob uma carga normal de trabalho. Quanto tempo a tela demora a
+                carregar?
+              </p>
+            </div>
+            <div class="border-t-4 border-amber-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <div class="text-3xl mb-2">🏋️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Carga (Load)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Testa o sistema no <strong>limite máximo ESPERADO</strong> de uso. Ex: O sistema foi feito para suportar 1.000 usuários simultâneos;
+                colocamos 1.000 usuários.
+              </p>
+            </div>
+            <div class="border-t-4 border-red-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <div class="text-3xl mb-2">🛡️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Vulnerabilidade</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Testa a segurança. Procura proativamente por brechas, portas abertas, injeção de SQL ou bibliotecas desatualizadas (SAST / DAST).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Validação vs Verificação (Sommerville/Pressman):</strong>
+                <br />👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Verificação</span
+                >: Estamos construindo o produto corretamente? O código está livre de bugs? (Testes Unitários / Integração). <br />👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Validação</span
+                >: Estamos construindo o <strong>produto certo</strong>? Atende ao que o cliente queria no mundo real? (Testes de Aceitação).
+              </li>
+              <li>
+                <strong>Teste de Carga vs Teste de Estresse:</strong> A banca vai jurar que são sinônimos. <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Carga vai até o máximo que foi <em>planejado</em> suportar. Estresse ultrapassa propositalmente esse limite (ex: envia 5.000 usuários
+                para um sistema feito para 1.000) para ver <strong>como</strong> o sistema cai e se ele se recupera graciosamente ou corrompe o banco
+                de dados.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Caixas de Teste (Visão Interna vs Externa)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A forma como o testador enxerga o sistema dita a abordagem do teste. As bancas usam o conceito de "Caixas" para classificar isso:</p>
+            <ul class="list-none space-y-3 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-slate-300 rounded">
+                <strong class="text-slate-800 dark:text-white">Caixa Branca (White Box / Estrutural):</strong> O testador
+                <strong>vê o código-fonte</strong> e conhece a lógica interna. Ele desenha testes para passar por todos os caminhos do código
+                (If/Else, Loops). <br /><em>Nível Típico: Teste Unitário. Quem faz: Desenvolvedor.</em>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-slate-800 dark:border-slate-400 rounded">
+                <strong class="text-slate-800 dark:text-white">Caixa Preta (Black Box / Funcional):</strong> O testador
+                <strong>NÃO vê o código</strong>. O software é uma caixa fechada. O teste foca nas Entradas e nas Saídas esperadas (Requisitos
+                Funcionais). O testador clica num botão e vê se a tela de sucesso aparece, não importa o SQL que rodou por trás. <br /><em
+                  >Nível Típico: Testes de Sistema e Aceitação.</em
+                >
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 border-l-4 border-slate-500 rounded">
+                <strong class="text-slate-800 dark:text-white">Caixa Cinza (Grey Box):</strong> Uma mistura. O testador não tem acesso total ao
+                código-fonte, mas conhece parte das estruturas de dados internas ou algoritmos (ex: ele sabe que os dados vão para uma tabela X e usa
+                scripts SQL para validar o resultado de um clique na tela).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Estratégias de Teste de Integração
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando temos vários módulos (já testados de forma unitária), precisamos juntá-los para ver se as "costuras" (interfaces) funcionam. A
+              forma como juntamos esses módulos gera questões teóricas clássicas:
+            </p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400 text-base">Big Bang:</strong> Todos os módulos são integrados de uma só vez e o
+                sistema inteiro é testado. É péssimo para sistemas grandes, porque se der erro, é extremamente difícil descobrir onde está a falha no
+                meio de todo aquele código.
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400 text-base">Top-Down (De Cima para Baixo):</strong> Começa testando o módulo
+                principal (a tela/interface de usuário) e vai descendo para as funções menores.
+                <span class="hl-yellow">Exige o uso de STUBS (Dublês)</span> para simular os módulos de baixo que ainda não foram integrados.
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400 text-base">Bottom-Up (De Baixo para Cima):</strong> Começa testando os módulos
+                mais básicos e fundamentais (ex: acesso a banco de dados) e vai subindo.
+                <span class="hl-yellow">Exige o uso de DRIVERS (Programas chamadores)</span> para simular a tela/módulo superior que ainda não existe,
+                chamando as funções de baixo.
+              </li>
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400 text-base">Sandwich (Híbrido):</strong> Combina Top-down e Bottom-up
+                simultaneamente, testando do topo e da base até se encontrarem no meio.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Testes de Aceitação: Alpha e Beta
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Teste de Aceitação é o momento da verdade. O software está pronto para ser entregue? Para softwares comerciais (de prateleira, como um
+              jogo ou sistema operacional), o Teste de Aceitação é geralmente dividido em duas fases, amplamente cobradas:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+              <div class="border border-slate-200 dark:border-slate-700 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                <strong class="block text-violet-700 dark:text-violet-400 text-lg mb-2">Teste Alpha (α)</strong>
+                <p class="text-sm">
+                  Realizado por um grupo restrito de potenciais usuários, mas
+                  <strong class="text-slate-900 dark:text-white">dentro do ambiente do desenvolvedor</strong>. O desenvolvedor "olha por cima do
+                  ombro" do usuário, anota as falhas e ajusta o software imediatamente no ambiente controlado.
+                </p>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                <strong class="block text-violet-700 dark:text-violet-400 text-lg mb-2">Teste Beta (β)</strong>
+                <p class="text-sm">
+                  Realizado por um grupo muito maior de usuários reais, no
+                  <strong class="text-slate-900 dark:text-white">próprio ambiente do cliente</strong>, sem a presença física do desenvolvedor. Se o
+                  sistema der falha lá, o usuário reporta (envia log de crash). O objetivo é expor o software à "selva" do mundo real e hardwares
+                  diversos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Testes Contínuos (Regressão e Fumaça)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No desenvolvimento Ágil e no DevOps, alterar o código é uma rotina diária. Mas como garantir que consertar um bug não quebrou outra
+              coisa que já funcionava?
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2 border-l-4 border-violet-500 pl-3">Teste de Regressão</h3>
+            <p>
+              Sempre que uma nova funcionalidade é adicionada ou um bug é corrigido, um conjunto de testes antigos é rodado novamente (geralmente de
+              forma automática via CI/CD). O objetivo é garantir que o software não "regrediu" (não quebrou o que estava funcionando).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">Teste de Fumaça (Smoke Test)</h3>
+            <p>
+              Originário da eletrônica ("se você ligar na tomada e não sair fumaça, o circuito base funciona"). É um subconjunto de testes muito
+              rápido que verifica apenas as <strong class="text-slate-900 dark:text-white">funcionalidades mais críticas</strong> da aplicação logo
+              após um novo Build. Se o Smoke Test falhar, a equipe rejeita a versão imediatamente, poupando tempo de testes profundos num código que
+              está fundamentalmente quebrado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

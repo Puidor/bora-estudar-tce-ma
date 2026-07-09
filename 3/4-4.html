@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo: BDD (Behavior-Driven Development)</title>
+    <title>Resumo: Prototipação</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -102,10 +102,10 @@
     <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
       <header>
         <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
-          Engenharia de Software • Práticas Ágeis
+          Engenharia de Software • Elicitação de Requisitos
         </p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
-          BDD (Desenvolvimento Orientado por Comportamento)
+          Prototipação
         </h1>
       </header>
 
@@ -129,7 +129,7 @@
              ABA 1: RESUMO VISUAL
              ========================================== -->
       <div id="tab-1" class="tab-content active space-y-8">
-        <!-- Definição Principal -->
+        <!-- Direto ao Ponto -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
             <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto
@@ -138,116 +138,112 @@
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              O <strong>BDD (Behavior-Driven Development)</strong> é uma técnica ágil de desenvolvimento que incentiva a colaboração entre
-              programadores, QAs (Testers) e os representantes do negócio (Product Owners/Clientes).
+              <strong>O que é?</strong> É a criação de um
+              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
+                >modelo inicial e simplificado</span
+              >
+              do software para que os usuários possam visualizá-lo e interagir com ele antes do desenvolvimento real.
             </li>
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              <strong>Foco:</strong> Em vez de testar "como o código foi escrito" (foco técnico), o BDD foca no
-              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
-                >comportamento do sistema</span
-              >
-              (foco no negócio/valor esperado).
+              <strong>Para que serve?</strong> Ajuda a resolver o grande problema da Engenharia de Requisitos: os clientes muitas vezes
+              <strong>não sabem o que querem</strong> até verem algo pronto. O protótipo tangibiliza a ideia.
             </li>
           </ul>
         </section>
 
-        <!-- A Estrutura Gherkin -->
-        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
-          <div class="bg-slate-800 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🥒 A Linguagem Gherkin (Sintaxe de Prova)</h2>
-            <p class="text-sm text-slate-400 mt-1">
-              É a linguagem estruturada e natural usada para escrever os cenários de BDD. O computador consegue ler e executar isto como testes
-              automatizados!
-            </p>
-          </div>
-          <div class="p-6">
-            <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-emerald-500">
-                <strong class="text-emerald-400">Funcionalidade:</strong> Saque bancário
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-blue-500 ml-4">
-                <strong class="text-blue-400">Cenário:</strong> Saque bem-sucedido com saldo suficiente
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-yellow-500 ml-8">
-                <strong class="text-yellow-400">Dado (Given):</strong> que o saldo da minha conta é de R$ 100
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-violet-500 ml-8">
-                <strong class="text-violet-400">Quando (When):</strong> eu solicitar um saque de R$ 20
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-red-500 ml-8">
-                <strong class="text-red-400">Então (Then):</strong> o caixa eletrônico deve liberar as notas<br />
-                <strong class="text-red-400">E (And):</strong> o meu saldo final deve ser R$ 80
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- O Confronto: TDD vs BDD -->
+        <!-- O Grande Confronto (Foco de Prova) -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: TDD vs BDD</h2>
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚔️ O Confronto: Descartável vs Evolutivo</h2>
+            <span class="bg-yellow-400 text-violet-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
                   <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
-                    TDD (Test-Driven Development)
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400">
+                    Descartável (Throwaway)
                   </th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
-                    BDD (Behavior-Driven Development)
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    Evolutivo (Evolutionary)
                   </th>
                 </tr>
               </thead>
               <tbody class="text-sm">
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">Foco TÉCNICO</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
-                    Foco no NEGÓCIO (Comportamento)
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Objetivo</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Descobrir ou validar requisitos mal compreendidos rapidamente.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Construir um núcleo sólido que será refinado até virar o software final.
                   </td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    A pergunta que responde
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa certa (sem bugs)?"
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa que o cliente quer?"
-                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Destino do Código</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-rose-600 dark:text-rose-400">É JOGADO NO LIXO.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">É APROVEITADO.</td>
                 </tr>
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Linguagem utilizada
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Qualidade Técnica</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Péssima. Ignora arquitetura, segurança e performance (foco é só a tela).
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    Código de programação (Java, Python, C#).
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    <strong>Linguagem Natural (Inglês/Português)</strong>, legível para humanos não-técnicos.
+                    Alta. Requer arquitetura robusta desde o primeiro dia.
                   </td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Público-alvo do teste
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Apenas Desenvolvedores.</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-800 dark:text-slate-200">
-                    A Equipa Inteira (Dev, QA, PO, Cliente).
-                  </td>
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Ferramentas</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Figma, Balsamiq, Papel e Caneta, HTML cru.</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Linguagem oficial do projeto (Java, C#, React).</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
 
+        <!-- Os 3 Níveis de Fidelidade -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-slate-500 text-2xl">📱</span> Os Níveis de Fidelidade
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm relative overflow-hidden">
+              <div class="absolute -right-2 -top-2 text-4xl opacity-20">✏️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">Baixa Fidelidade (Wireframe)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400">
+                Rascunho rápido. Esboço feito no papel ou quadro branco. Foco apenas na <strong>disposição das informações</strong> e fluxo de telas.
+                Sem cores, sem imagens reais.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-blue-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm relative overflow-hidden">
+              <div class="absolute -right-2 -top-2 text-4xl opacity-20">🎨</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">Média Fidelidade (Mockup)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400">
+                Feito no computador. Já tem o visual mais próximo do real (cores, botões). Pode permitir cliques simples para navegar entre as telas,
+                mas <strong>não tem lógica de negócio por trás</strong>.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-violet-600 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm relative overflow-hidden">
+              <div class="absolute -right-2 -top-2 text-4xl opacity-20">🚀</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">Alta Fidelidade</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400">
+                Muito próximo do software final. Responde a interações reais, validação de campos de formulário e muitas vezes tem algum banco de
+                dados falso rodando por trás. Demora muito para ser feito.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <!-- Alerta Pegadinha -->
-        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
           <svg
             class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
             fill="currentColor"
@@ -264,23 +260,25 @@
             <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
             <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
               <li>
-                <strong>Concorrência (BDD vs TDD):</strong> A banca afirma que "A adoção do BDD exige o abandono do TDD, pois ambos são
-                incompatíveis". <br />
+                <strong>A Ilusão da Substituição:</strong> A banca afirma: "A prototipação de alta fidelidade é tão eficaz que substitui completamente
+                a necessidade de se fazer a documentação e elicitação de requisitos". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                Eles são <strong>COMPLEMENTARES</strong>. O BDD é usado num nível mais alto (testes de aceitação/integração guiados pelo negócio),
-                enquanto o TDD é usado no nível do método/classe pelos programadores (inside-out).
+                A prototipação é uma <strong>técnica de apoio</strong> para ajudar a <em>descobrir</em> ou <em>validar</em> requisitos. Ela não
+                substitui as entrevistas, as histórias de usuário ou a engenharia de requisitos.
               </li>
               <li>
-                <strong>Ferramenta Automática?</strong> "O BDD é uma ferramenta de automação de testes de software". <br />
+                <strong>O "Golpe" do Protótipo Descartável:</strong> "Como o protótipo descartável já funciona bem visualmente, a equipe ágil deve
+                aproveitar o seu código para acelerar a entrega da Sprint." <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                O BDD é uma <strong>Metodologia/Prática Ágil</strong> de colaboração. A automação é apenas um efeito colateral valioso alcançado
-                através de ferramentas de apoio (como o Cucumber).
+                Esta é a armadilha número um! O código do protótipo descartável (Rapid Prototyping) é feito sem arquitetura, sem segurança e sem
+                testes (o famoso "código espaguete" rápido). Aproveitá-lo em produção é criar uma dívida técnica irreversível. Ele deve ser
+                estritamente jogado fora.
               </li>
             </ul>
           </div>
@@ -293,118 +291,93 @@
       <div id="tab-2" class="tab-content space-y-8">
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            1. A Origem e o Propósito do BDD
+            1. A Essência da Prototipação na Engenharia
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              O BDD foi concebido por <strong>Dan North</strong> em 2003 como uma resposta à confusão generalizada sobre o TDD. Os programadores que
-              tentavam adotar o TDD tinham sempre a mesma dúvida: <em>"Por onde eu começo a testar? O que eu devo testar e o que não devo?"</em>
+              Na Engenharia de Requisitos (conforme Sommerville e Pressman), descobrir o que o cliente realmente precisa é extremamente difícil. Se
+              você apenas perguntar, o cliente descreverá o sistema com base em uma percepção abstrata. Quando o sistema final é entregue,
+              frequentemente surge a clássica frase: <em>"Ficou igual ao que eu pedi, mas não era bem isso que eu queria"</em>.
             </p>
             <p>
-              Dan North percebeu que o nome "Teste" assustava as pessoas de negócio. Ele sugeriu mudar o foco: em vez de escrever testes que
-              verifiquem a lógica interna do código, devíamos escrever especificações sobre o <strong>Comportamento (Behavior)</strong> que o sistema
-              deve apresentar.
+              A <strong>prototipação</strong> resolve este abismo de comunicação. Ela fornece um artefato tangível com o qual o usuário pode interagir
+              precocemente.
             </p>
-            <p>
-              Assim, o BDD visa <span class="hl-green">eliminar o fosso de comunicação entre os envolvidos (negócios e TI)</span>, garantindo que o
-              software construído seja exatamente o que trará valor ao cliente.
-            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">Vantagens Essenciais:</strong>
+              <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                <li>Melhora massivamente a comunicação entre Desenvolvedores e Usuários.</li>
+                <li>Ajuda a descobrir requisitos ocultos (coisas que o usuário esqueceu de falar).</li>
+                <li>Previne que a equipe de TI gaste meses programando a coisa errada (redução de retrabalho).</li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            2. Os "Três Amigos" (The Three Amigos)
+            2. Ciclo de Vida: Descartável (Rapid) vs Evolutivo
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Em provas de alto nível, você precisa entender o ciclo de vida e os cenários ideais para o uso de cada modelo de protótipo.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Prototipação Descartável (Throwaway Prototyping)</h3>
+            <p>Foca-se nas partes do sistema que são mal compreendidas (alto risco).</p>
+            <ul class="list-[circle] pl-6 space-y-1 text-sm mb-4">
+              <li>
+                <strong>O Método:</strong> Construir rápido, mostrar ao usuário, anotar o feedback,
+                <strong class="text-rose-600 dark:text-rose-400">deletar o código</strong> e começar o projeto de verdade usando o conhecimento
+                adquirido.
+              </li>
+              <li>
+                <strong>O Perigo:</strong> O cliente vê a tela funcionando perfeitamente e diz: "Ótimo! Pode colocar em produção amanhã". O
+                desenvolvedor precisa explicar que aquilo é só uma "casca vazia" e terá que ser refeito do zero, causando frustração no cliente
+                inexperiente.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              Prototipação Evolutiva (Evolutionary Prototyping)
+            </h3>
+            <p>Foca-se em entregar partes funcionais do sistema desde o dia um.</p>
+            <ul class="list-[circle] pl-6 space-y-1 text-sm mt-2">
+              <li>
+                <strong>O Método:</strong> Começa pelos requisitos que já são bem compreendidos. A equipe cria um núcleo sólido de código. Ao
+                apresentar ao cliente, as melhorias não são feitas num documento, mas sim codificadas <em>em cima</em> do próprio protótipo, que vai
+                crescendo, evoluindo, até se transformar na versão final do sistema.
+              </li>
+              <li><strong>Cenário ideal:</strong> Extrema aderência aos modelos ágeis e iterativos-incrementais.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Wireframe, Mockup e Protótipo (A Escada de UX/UI)
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Este é um conceito central da adoção de BDD em equipas Ágeis (muito cobrado). Refere-se à reunião essencial que deve acontecer
-              <strong>antes</strong> de uma linha de código ser escrita. Envolve três perspetivas cruciais:
+              No mercado atual e nas questões mais modernas sobre Interface de Usuário (UI) e Design Centrado no Usuário, os termos "Wireframe",
+              "Mockup" e "Protótipo" ganharam distinções exatas:
             </p>
 
             <ul class="list-none space-y-4 mt-4">
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">👔</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz do Negócio (Product Owner / Cliente):</strong><br />
-                  Define <em>qual problema estamos a tentar resolver</em>. Qual é a regra de negócio e as exceções.
-                </div>
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-slate-800 dark:text-white">1. Wireframe (A Planta Baixa):</strong><br />
+                Baixa fidelidade. Foca apenas na estrutura, disposição do conteúdo e hierarquia da informação (onde vai ficar a imagem, onde vai ficar
+                o texto). Não há preocupação com cores, tipografia ou estilo. Usado logo nos primeiros dias de concepção.
               </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">💻</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Tecnologia (Developer):</strong><br />
-                  Propõe <em>como podemos construir isso</em> tecnicamente e aponta as limitações do sistema atual.
-                </div>
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-slate-800 dark:text-white">2. Mockup (A Maquete Visual):</strong><br />
+                Média/Alta fidelidade visual. É um modelo estático que demonstra o design real da aplicação. Aqui as cores, a fonte oficial, as
+                sombras e as imagens reais são aplicadas. Serve para aprovar a identidade visual com o cliente, mas geralmente
+                <em>não é clicável</em>.
               </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">🕵️</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Qualidade (QA / Tester):</strong><br />
-                  Traz o ceticismo. Pergunta <em>"E o que acontece se der errado?"</em>, explorando os casos extremos (Edge Cases) que o negócio e o
-                  desenvolvedor esqueceram.
-                </div>
-              </li>
-            </ul>
-            <p class="mt-2 text-sm font-semibold">
-              Juntos, estes "três amigos" escrevem os cenários em Gherkin, garantindo um entendimento perfeito e unificado do requisito antes do
-              desenvolvimento iniciar.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            3. Linguagem Ubíqua e Documentação Viva
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-violet-500 pl-3">
-              Linguagem Ubíqua (Ubiquitous Language)
-            </h3>
-            <p>
-              Conceito herdado do <em>Domain-Driven Design (DDD)</em>. É a prática de usar a <strong>mesma terminologia</strong> em todos os lugares:
-              nas conversas, nos documentos de requisitos e no código-fonte. Se a área de negócios fala em "Apólice", o programador não pode chamar a
-              classe no código de "Contrato_Seguro". O BDD força o uso da linguagem ubíqua nos testes Gherkin.
-            </p>
-
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
-              Documentação Viva (Living Documentation)
-            </h3>
-            <p>
-              No modelo tradicional em Cascata (Waterfall), a especificação do sistema fica num documento Word de 300 páginas que apodrece e fica
-              obsoleto no momento em que o software entra em produção, pois as mudanças feitas no código não são refletidas no documento.
-            </p>
-            <p>
-              No BDD, a especificação Gherkin (<span class="hl-yellow">Given / When / Then</span>) é executada diretamente pelo sistema de automação
-              (ex: Cucumber) toda vez que o código muda.
-              <span class="hl-green">Se o comportamento do código mudar e não atualizar o Gherkin, o sistema "parte" e bloqueia o deploy</span>.
-              Portanto, o documento Gherkin funciona como uma documentação do sistema 100% confiável, sempre atualizada e validada.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            4. Ferramentas Típicas de BDD
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <p>
-              Para a prova, é útil reconhecer o nome das ferramentas de mercado que transformam o texto em inglês/português do Gherkin num teste
-              automatizado real:
-            </p>
-            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
-              <li>
-                <strong class="text-emerald-600 dark:text-emerald-400">Cucumber:</strong> A mais famosa ferramenta de BDD do mundo, originada no Ruby
-                e suporta dezenas de linguagens (Java, JS).
-              </li>
-              <li>
-                <strong class="text-blue-600 dark:text-blue-400">SpecFlow:</strong> A equivalente oficial do Cucumber para o ecossistema Microsoft
-                .NET (C#).
-              </li>
-              <li><strong class="text-yellow-600 dark:text-yellow-500">Behave:</strong> Ferramenta popular para o ecossistema Python.</li>
-              <li>
-                <strong class="text-violet-600 dark:text-violet-400">JBehave:</strong> Uma das primeiras frameworks BDD, criada pelo próprio Dan North
-                para o mundo Java.
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg border-l-4 border-l-violet-500">
+                <strong class="text-violet-600 dark:text-violet-400">3. Protótipo (A Simulação Interativa):</strong><br />
+                Alta fidelidade interativa. É o Mockup ganhando vida. O usuário pode clicar nos botões, os menus se abrem, as transições de tela
+                funcionam. Serve para testar o fluxo de uso (Experiência do Usuário - UX) antes de programar de fato o Backend. (Ferramentas: Figma,
+                Adobe XD).
               </li>
             </ul>
           </div>

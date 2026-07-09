@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo: BDD (Behavior-Driven Development)</title>
+    <title>Resumo: ATDD (Acceptance Test-Driven Development)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -105,7 +105,7 @@
           Engenharia de Software • Práticas Ágeis
         </p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
-          BDD (Desenvolvimento Orientado por Comportamento)
+          ATDD (Desenvolvimento Guiado por Testes de Aceitação)
         </h1>
       </header>
 
@@ -138,111 +138,121 @@
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              O <strong>BDD (Behavior-Driven Development)</strong> é uma técnica ágil de desenvolvimento que incentiva a colaboração entre
-              programadores, QAs (Testers) e os representantes do negócio (Product Owners/Clientes).
+              <strong>O Conceito Central:</strong> O ATDD foca na <strong>colaboração e comunicação</strong>. Antes de os desenvolvedores começarem a
+              programar, toda a equipe (Negócios, Devs e QA) senta junto para definir os
+              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
+                >Critérios de Aceitação</span
+              >
+              exatos daquela funcionalidade.
             </li>
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              <strong>Foco:</strong> Em vez de testar "como o código foi escrito" (foco técnico), o BDD foca no
-              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
-                >comportamento do sistema</span
-              >
-              (foco no negócio/valor esperado).
+              <strong>Testes como Requisitos:</strong> Os critérios de aceitação discutidos pela equipe são transformados em
+              <strong>testes automatizados</strong> de alto nível. Se o código passar nesses testes, significa que o negócio "aceita" a
+              funcionalidade.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>O Foco:</strong> Prevenir defeitos de comunicação (construir a funcionalidade errada) em vez de apenas caçar bugs no código.
             </li>
           </ul>
         </section>
 
-        <!-- A Estrutura Gherkin -->
+        <!-- O Ciclo dos 4 D's -->
         <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
           <div class="bg-slate-800 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🥒 A Linguagem Gherkin (Sintaxe de Prova)</h2>
-            <p class="text-sm text-slate-400 mt-1">
-              É a linguagem estruturada e natural usada para escrever os cenários de BDD. O computador consegue ler e executar isto como testes
-              automatizados!
-            </p>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 O Ciclo do ATDD (Os 4 D's)</h2>
+            <p class="text-sm text-slate-400 mt-1">É a sequência metodológica oficial cobrada em provas mais exigentes.</p>
           </div>
           <div class="p-6">
-            <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-emerald-500">
-                <strong class="text-emerald-400">Funcionalidade:</strong> Saque bancário
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg text-center relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">1</div>
+                <h3 class="font-bold text-violet-400 mb-1">Discuss (Debater)</h3>
+                <p class="text-xs text-slate-400">
+                  Cliente, Dev e Tester (os 3 Amigos) reúnem-se para debater o que a funcionalidade deve fazer e tirar todas as dúvidas do negócio.
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-blue-500 ml-4">
-                <strong class="text-blue-400">Cenário:</strong> Saque bem-sucedido com saldo suficiente
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg text-center relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">2</div>
+                <h3 class="font-bold text-violet-400 mb-1">Distill (Destilar)</h3>
+                <p class="text-xs text-slate-400">
+                  A equipe extrai a essência do debate e escreve os testes de aceitação num formato que todos (humanos e máquinas) entendam.
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-yellow-500 ml-8">
-                <strong class="text-yellow-400">Dado (Given):</strong> que o saldo da minha conta é de R$ 100
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg text-center relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">3</div>
+                <h3 class="font-bold text-violet-400 mb-1">Develop (Desenvolver)</h3>
+                <p class="text-xs text-slate-400">
+                  O desenvolvedor escreve o código (podendo usar o TDD internamente) até que todos os testes de aceitação passem (fiquem verdes).
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-violet-500 ml-8">
-                <strong class="text-violet-400">Quando (When):</strong> eu solicitar um saque de R$ 20
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-red-500 ml-8">
-                <strong class="text-red-400">Então (Then):</strong> o caixa eletrônico deve liberar as notas<br />
-                <strong class="text-red-400">E (And):</strong> o meu saldo final deve ser R$ 80
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg text-center relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">4</div>
+                <h3 class="font-bold text-violet-400 mb-1">Demo (Demonstrar)</h3>
+                <p class="text-xs text-slate-400">
+                  A equipe faz uma demonstração ao cliente do software rodando e passando nos testes, garantindo que o requisito foi cumprido.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- O Confronto: TDD vs BDD -->
+        <!-- TDD vs BDD vs ATDD -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: TDD vs BDD</h2>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto Final: TDD x BDD x ATDD</h2>
+            <p class="text-sm text-slate-300 mt-1">Como distinguir as três "letrinhas" na hora da prova.</p>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
-                    TDD (Test-Driven Development)
-                  </th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
-                    BDD (Behavior-Driven Development)
-                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Prática</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Público-Alvo</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">A Pergunta que Responde</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Linguagem do Teste</th>
                 </tr>
               </thead>
               <tbody class="text-sm">
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">Foco TÉCNICO</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
-                    Foco no NEGÓCIO (Comportamento)
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">TDD</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Programadores</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <em>"Estamos construindo a coisa direito?"</em> (Sem bugs/Falhas)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Código da linguagem (Java, C#)
                   </td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    A pergunta que responde
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">BDD</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Toda a equipe</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <em>"Como o sistema deve se comportar nessa situação?"</em>
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa certa (sem bugs)?"
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa que o cliente quer?"
+                    Linguagem natural (Gherkin: Dado/Quando/Então)
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">ATDD</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Cliente, QA e Dev</td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Linguagem utilizada
+                    <em>"Estamos construindo a coisa certa?"</em> (Valor de negócio)
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    Código de programação (Java, Python, C#).
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    <strong>Linguagem Natural (Inglês/Português)</strong>, legível para humanos não-técnicos.
-                  </td>
-                </tr>
-                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Público-alvo do teste
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Apenas Desenvolvedores.</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-800 dark:text-slate-200">
-                    A Equipa Inteira (Dev, QA, PO, Cliente).
+                    Critérios de aceitação tabulares ou textuais (FitNesse, Robot)
                   </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="bg-violet-50 dark:bg-violet-900/10 p-3 text-xs text-violet-800 dark:text-violet-300 text-center font-medium">
+            *Nota: Na prática do dia a dia do mercado, BDD e ATDD se sobrepõem muito. Para a prova, lembre-se do ATDD muito atrelado ao conceito de
+            <strong>Critérios de Aceitação</strong> da História de Usuário.
           </div>
         </section>
 
@@ -264,23 +274,26 @@
             <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
             <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
               <li>
-                <strong>Concorrência (BDD vs TDD):</strong> A banca afirma que "A adoção do BDD exige o abandono do TDD, pois ambos são
-                incompatíveis". <br />
+                <strong>A Exclusividade do QA:</strong> A banca afirma: "No modelo ATDD, a equipe de QA (Testadores) é a única responsável por
+                escrever e aprovar os testes de aceitação". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                Eles são <strong>COMPLEMENTARES</strong>. O BDD é usado num nível mais alto (testes de aceitação/integração guiados pelo negócio),
-                enquanto o TDD é usado no nível do método/classe pelos programadores (inside-out).
+                A essência do ATDD é a <strong class="underline decoration-red-500">criação colaborativa</strong>. Os testes são derivados de uma
+                conversa conjunta entre Desenvolvedores, QA e Clientes/Negócios.
               </li>
               <li>
-                <strong>Ferramenta Automática?</strong> "O BDD é uma ferramenta de automação de testes de software". <br />
+                <strong>Substituição do TDD:</strong> "A adoção do ATDD substitui completamente a necessidade de aplicar o TDD no nível de código".
+                <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                O BDD é uma <strong>Metodologia/Prática Ágil</strong> de colaboração. A automação é apenas um efeito colateral valioso alcançado
-                através de ferramentas de apoio (como o Cucumber).
+                O ATDD garante que a funcionalidade cumpre a regra de negócio (visão externa). O TDD garante que as classes e funções internas estão
+                bem desenhadas e sem bugs (visão interna).
+                <strong class="text-slate-900 dark:text-white">Eles são perfeitamente complementares.</strong> O dev usa TDD para cumprir a meta do
+                ATDD.
               </li>
             </ul>
           </div>
@@ -293,118 +306,96 @@
       <div id="tab-2" class="tab-content space-y-8">
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            1. A Origem e o Propósito do BDD
+            1. A Origem: O Foco no "Quê" e não no "Como"
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              O BDD foi concebido por <strong>Dan North</strong> em 2003 como uma resposta à confusão generalizada sobre o TDD. Os programadores que
-              tentavam adotar o TDD tinham sempre a mesma dúvida: <em>"Por onde eu começo a testar? O que eu devo testar e o que não devo?"</em>
+              No desenvolvimento de software tradicional, muitas vezes o cliente diz: <em>"Eu quero um sistema de carrinho de compras"</em>. O
+              desenvolvedor vai para a sua mesa, escreve o código (usando TDD ou não) e 1 mês depois entrega o sistema. Quando o cliente vai usar
+              (Teste de Aceitação), ele descobre que faltou colocar o botão de descontos.
             </p>
             <p>
-              Dan North percebeu que o nome "Teste" assustava as pessoas de negócio. Ele sugeriu mudar o foco: em vez de escrever testes que
-              verifiquem a lógica interna do código, devíamos escrever especificações sobre o <strong>Comportamento (Behavior)</strong> que o sistema
-              deve apresentar.
-            </p>
-            <p>
-              Assim, o BDD visa <span class="hl-green">eliminar o fosso de comunicação entre os envolvidos (negócios e TI)</span>, garantindo que o
-              software construído seja exatamente o que trará valor ao cliente.
+              O <strong>ATDD (Acceptance Test-Driven Development)</strong> tenta matar esse problema pela raiz. Ele exige que as perguntas sejam
+              feitas <strong>antes da codificação começar</strong>. O cliente e o testador criam exemplos práticos:
+              <em>"E se o carrinho tiver R$ 100 e eu aplicar um cupom expirado?"</em>. Esse cenário exato vira um teste de aceitação automatizado.
             </p>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            2. Os "Três Amigos" (The Three Amigos)
+            2. Critérios de Aceitação como Especificações Executáveis
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Este é um conceito central da adoção de BDD em equipas Ágeis (muito cobrado). Refere-se à reunião essencial que deve acontecer
-              <strong>antes</strong> de uma linha de código ser escrita. Envolve três perspetivas cruciais:
+              No Ágil (como no Scrum), os requisitos vêm na forma de "Histórias de Usuário". Cada História deve ter um conjunto de
+              <strong>Critérios de Aceitação</strong>, que são a "check-list" que define se a história está pronta (Done).
             </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">A Magia do ATDD: Especificações Executáveis</strong>
+              <p class="text-sm mt-2">
+                A grande sacada do ATDD é não deixar os critérios de aceitação num papel esquecido. Eles são codificados em ferramentas especiais que
+                <span class="hl-green">rodam o critério de aceitação contra o código real</span>. Se o teste brilhar em "verde", a funcionalidade foi
+                aprovada pelo computador usando a regra de negócio do cliente.
+              </p>
+              <p class="text-sm mt-2 font-semibold text-slate-800 dark:text-slate-200">
+                Isso transforma a documentação (os requisitos) em algo VIVO, que é testado continuamente (Living Documentation).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Integração: ATDD + TDD na mesma Sprint
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Como funciona o dia a dia de um programador que aplica ambas as metodologias? Para a prova, visualize um "ciclo dentro do outro":</p>
 
             <ul class="list-none space-y-4 mt-4">
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">👔</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz do Negócio (Product Owner / Cliente):</strong><br />
-                  Define <em>qual problema estamos a tentar resolver</em>. Qual é a regra de negócio e as exceções.
-                </div>
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-violet-600 dark:text-violet-400">1. O Ciclo Macro (ATDD):</strong> O desenvolvedor recebe o Teste de Aceitação
+                automatizado. Ele roda e, obviamente, o teste <strong>Falha (Red)</strong>, pois não há código.
               </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">💻</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Tecnologia (Developer):</strong><br />
-                  Propõe <em>como podemos construir isso</em> tecnicamente e aponta as limitações do sistema atual.
-                </div>
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg ml-6">
+                <strong class="text-orange-600 dark:text-orange-400">2. O Ciclo Micro (TDD):</strong> Para fazer esse grande Teste de Aceitação
+                passar, o desenvolvedor precisa criar várias classes pequenas no código. Para cada classe, ele aplica o ciclo
+                <em>TDD (Red-Green-Refactor)</em> dezenas de vezes em Testes Unitários ultrarrápidos.
               </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">🕵️</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Qualidade (QA / Tester):</strong><br />
-                  Traz o ceticismo. Pergunta <em>"E o que acontece se der errado?"</em>, explorando os casos extremos (Edge Cases) que o negócio e o
-                  desenvolvedor esqueceram.
-                </div>
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-violet-600 dark:text-violet-400">3. O Fechamento Macro:</strong> Após horas fazendo TDD, o desenvolvedor
+                finalmente rodará o Teste de Aceitação (Macro) e ele passará a ficar <strong>Verde (Green)</strong>. A funcionalidade de negócio está
+                finalizada e testada de ponta a ponta.
               </li>
             </ul>
-            <p class="mt-2 text-sm font-semibold">
-              Juntos, estes "três amigos" escrevem os cenários em Gherkin, garantindo um entendimento perfeito e unificado do requisito antes do
-              desenvolvimento iniciar.
-            </p>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            3. Linguagem Ubíqua e Documentação Viva
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-violet-500 pl-3">
-              Linguagem Ubíqua (Ubiquitous Language)
-            </h3>
-            <p>
-              Conceito herdado do <em>Domain-Driven Design (DDD)</em>. É a prática de usar a <strong>mesma terminologia</strong> em todos os lugares:
-              nas conversas, nos documentos de requisitos e no código-fonte. Se a área de negócios fala em "Apólice", o programador não pode chamar a
-              classe no código de "Contrato_Seguro". O BDD força o uso da linguagem ubíqua nos testes Gherkin.
-            </p>
-
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
-              Documentação Viva (Living Documentation)
-            </h3>
-            <p>
-              No modelo tradicional em Cascata (Waterfall), a especificação do sistema fica num documento Word de 300 páginas que apodrece e fica
-              obsoleto no momento em que o software entra em produção, pois as mudanças feitas no código não são refletidas no documento.
-            </p>
-            <p>
-              No BDD, a especificação Gherkin (<span class="hl-yellow">Given / When / Then</span>) é executada diretamente pelo sistema de automação
-              (ex: Cucumber) toda vez que o código muda.
-              <span class="hl-green">Se o comportamento do código mudar e não atualizar o Gherkin, o sistema "parte" e bloqueia o deploy</span>.
-              Portanto, o documento Gherkin funciona como uma documentação do sistema 100% confiável, sempre atualizada e validada.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            4. Ferramentas Típicas de BDD
+            4. Ferramentas Típicas de ATDD (Foco de Prova)
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Para a prova, é útil reconhecer o nome das ferramentas de mercado que transformam o texto em inglês/português do Gherkin num teste
-              automatizado real:
+              Embora ferramentas de BDD como o Cucumber sejam muito usadas para ATDD devido à linguagem natural Gherkin, existem frameworks que
+              nasceram com um forte viés tabular/técnico (Keyword-driven) clássico do ATDD.
             </p>
-            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+
+            <ul class="list-disc pl-6 mt-4 space-y-3 text-sm font-medium">
               <li>
-                <strong class="text-emerald-600 dark:text-emerald-400">Cucumber:</strong> A mais famosa ferramenta de BDD do mundo, originada no Ruby
-                e suporta dezenas de linguagens (Java, JS).
+                <strong class="text-violet-600 dark:text-violet-400 text-base">FitNesse:</strong> Um wiki de colaboração na web e ferramenta de testes
+                de aceitação. Permite que os testadores e clientes insiram casos de teste em tabelas simples na web, e a ferramenta lê essas tabelas e
+                executa-as contra o código (usando uma interface chamada FIT ou SliM).
               </li>
               <li>
-                <strong class="text-blue-600 dark:text-blue-400">SpecFlow:</strong> A equivalente oficial do Cucumber para o ecossistema Microsoft
-                .NET (C#).
+                <strong class="text-violet-600 dark:text-violet-400 text-base">Robot Framework:</strong> Extremamente popular e cobrado em concursos.
+                Baseado em Python, utiliza uma abordagem <em>Keyword-Driven</em> (guiada por palavras-chave), permitindo criar testes de aceitação
+                através de tabelas bem fáceis de ler, sendo muito forte também para RPA (Robotic Process Automation).
               </li>
-              <li><strong class="text-yellow-600 dark:text-yellow-500">Behave:</strong> Ferramenta popular para o ecossistema Python.</li>
               <li>
-                <strong class="text-violet-600 dark:text-violet-400">JBehave:</strong> Uma das primeiras frameworks BDD, criada pelo próprio Dan North
-                para o mundo Java.
+                <strong class="text-violet-600 dark:text-violet-400 text-base">Selenium / Cypress (Automação UI):</strong> Muitas vezes o ATDD termina
+                testando a interface visual final que o cliente usa. Ferramentas de automação de navegadores (como Selenium) são usadas em conjunto
+                com frameworks ATDD/BDD para simular os cliques e digitações do usuário final.
               </li>
             </ul>
           </div>

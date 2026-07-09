@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo: BDD (Behavior-Driven Development)</title>
+    <title>Resumo: Storytelling</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -102,10 +102,10 @@
     <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
       <header>
         <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
-          Engenharia de Software • Práticas Ágeis
+          Engenharia de Software • Elicitação de Requisitos
         </p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
-          BDD (Desenvolvimento Orientado por Comportamento)
+          Storytelling
         </h1>
       </header>
 
@@ -129,7 +129,7 @@
              ABA 1: RESUMO VISUAL
              ========================================== -->
       <div id="tab-1" class="tab-content active space-y-8">
-        <!-- Definição Principal -->
+        <!-- Direto ao Ponto -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
             <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto
@@ -138,107 +138,113 @@
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              O <strong>BDD (Behavior-Driven Development)</strong> é uma técnica ágil de desenvolvimento que incentiva a colaboração entre
-              programadores, QAs (Testers) e os representantes do negócio (Product Owners/Clientes).
+              <strong>O que é?</strong> Na Engenharia de Software, <em>Storytelling</em> (Contação de Histórias) é o uso de técnicas narrativas para
+              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
+                >comunicar a visão do produto, engajar a equipe e dar contexto aos requisitos</span
+              >.
             </li>
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              <strong>Foco:</strong> Em vez de testar "como o código foi escrito" (foco técnico), o BDD foca no
-              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
-                >comportamento do sistema</span
-              >
-              (foco no negócio/valor esperado).
+              <strong>O Problema que Resolve:</strong> Documentos técnicos extensos e listas de requisitos (bullet points) são frios e difíceis de
+              memorizar. O cérebro humano processa e retém informações muito melhor quando estão no formato de uma história estruturada.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>O Protagonista:</strong> No desenvolvimento Ágil e UCD (User-Centered Design), o "herói" da história é sempre o
+              <strong class="text-slate-900 dark:text-white">Usuário Final (Persona)</strong>, e a "jornada" é a forma como ele resolve os seus
+              problemas através do software.
             </li>
           </ul>
         </section>
 
-        <!-- A Estrutura Gherkin -->
+        <!-- Os 4 Elementos da Narrativa -->
         <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
           <div class="bg-slate-800 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🥒 A Linguagem Gherkin (Sintaxe de Prova)</h2>
-            <p class="text-sm text-slate-400 mt-1">
-              É a linguagem estruturada e natural usada para escrever os cenários de BDD. O computador consegue ler e executar isto como testes
-              automatizados!
-            </p>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📖 Os 4 Elementos Clássicos aplicados a TI</h2>
+            <p class="text-sm text-slate-400 mt-1">Como transformar um "requisito do sistema" em uma narrativa envolvente.</p>
           </div>
           <div class="p-6">
-            <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-emerald-500">
-                <strong class="text-emerald-400">Funcionalidade:</strong> Saque bancário
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="text-3xl mb-2">👤</div>
+                <h3 class="font-bold text-violet-400 mb-1">Personagem</h3>
+                <p class="text-xs text-slate-400">
+                  A <strong>Persona</strong>. Ex: Maria, gestora de RH ocupada que precisa fechar a folha de pagamento.
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-blue-500 ml-4">
-                <strong class="text-blue-400">Cenário:</strong> Saque bem-sucedido com saldo suficiente
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="text-3xl mb-2">🏢</div>
+                <h3 class="font-bold text-violet-400 mb-1">Cenário</h3>
+                <p class="text-xs text-slate-400">
+                  O <strong>Contexto</strong>. Fim de mês, o sistema atual é lento, Maria está estressada e com pouco tempo.
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-yellow-500 ml-8">
-                <strong class="text-yellow-400">Dado (Given):</strong> que o saldo da minha conta é de R$ 100
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="text-3xl mb-2">💥</div>
+                <h3 class="font-bold text-rose-400 mb-1">Conflito</h3>
+                <p class="text-xs text-slate-400">
+                  O <strong>Pain Point</strong>. O software trava no meio do processo e Maria perde todo o trabalho feito.
+                </p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-violet-500 ml-8">
-                <strong class="text-violet-400">Quando (When):</strong> eu solicitar um saque de R$ 20
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-red-500 ml-8">
-                <strong class="text-red-400">Então (Then):</strong> o caixa eletrônico deve liberar as notas<br />
-                <strong class="text-red-400">E (And):</strong> o meu saldo final deve ser R$ 80
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="text-3xl mb-2">✨</div>
+                <h3 class="font-bold text-emerald-400 mb-1">Resolução</h3>
+                <p class="text-xs text-slate-400">
+                  A <strong>Funcionalidade (Feature)</strong>. Nosso novo sistema salva rascunhos em tempo real e processa em nuvem.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- O Confronto: TDD vs BDD -->
+        <!-- Tabela: Storytelling vs User Stories -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: TDD vs BDD</h2>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Storytelling vs Histórias de Usuário</h2>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
                   <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
-                    TDD (Test-Driven Development)
-                  </th>
                   <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
-                    BDD (Behavior-Driven Development)
+                    Storytelling (Narrativa Macro)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    User Story (Micro)
                   </th>
                 </tr>
               </thead>
               <tbody class="text-sm">
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">Foco TÉCNICO</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
-                    Foco no NEGÓCIO (Comportamento)
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Visão</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Ampla (Holística). Olha para a floresta.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Focada e atomizada. Olha para a árvore.
                   </td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    A pergunta que responde
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Objetivo Principal</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Engajar, dar sentido e contexto à equipe.
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa certa (sem bugs)?"
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa que o cliente quer?"
+                    Definir um requisito testável e estimável para o backlog.
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Linguagem utilizada
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Relação Prática</td>
+                  <td
+                    class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-violet-600 dark:text-violet-400"
+                  >
+                    É o pano de fundo (A "Épico" ou Jornada Inteira).
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    Código de programação (Java, Python, C#).
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    <strong>Linguagem Natural (Inglês/Português)</strong>, legível para humanos não-técnicos.
-                  </td>
-                </tr>
-                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Público-alvo do teste
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Apenas Desenvolvedores.</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-800 dark:text-slate-200">
-                    A Equipa Inteira (Dev, QA, PO, Cliente).
+                    São os "pedaços" que compõem a narrativa maior.
                   </td>
                 </tr>
               </tbody>
@@ -247,7 +253,7 @@
         </section>
 
         <!-- Alerta Pegadinha -->
-        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
           <svg
             class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
             fill="currentColor"
@@ -264,23 +270,24 @@
             <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
             <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
               <li>
-                <strong>Concorrência (BDD vs TDD):</strong> A banca afirma que "A adoção do BDD exige o abandono do TDD, pois ambos são
-                incompatíveis". <br />
+                <strong>Storytelling é Marketing?</strong> A banca afirma que "No contexto da Engenharia de Software, o Storytelling é uma técnica
+                restrita ao time de Marketing para vender o software pronto". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                Eles são <strong>COMPLEMENTARES</strong>. O BDD é usado num nível mais alto (testes de aceitação/integração guiados pelo negócio),
-                enquanto o TDD é usado no nível do método/classe pelos programadores (inside-out).
+                Ele é uma ferramenta de <strong>Elicitação e Comunicação de Requisitos</strong>. O Product Owner (PO) usa o storytelling durante as
+                reuniões de Sprint Planning para fazer os desenvolvedores sentirem "empatia" pela dor do usuário.
               </li>
               <li>
-                <strong>Ferramenta Automática?</strong> "O BDD é uma ferramenta de automação de testes de software". <br />
+                <strong>Substituição Total:</strong> "A adoção do Storytelling em projetos ágeis elimina totalmente a necessidade de documentar
+                critérios de aceitação e diagramas lógicos". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                O BDD é uma <strong>Metodologia/Prática Ágil</strong> de colaboração. A automação é apenas um efeito colateral valioso alcançado
-                através de ferramentas de apoio (como o Cucumber).
+                A história dá o <strong class="underline decoration-red-500">contexto</strong> e engaja a equipe. Mas a equipe técnica continuará
+                precisando de modelos, diagramas ou critérios de aceitação BDD/ATDD para programar de fato o software.
               </li>
             </ul>
           </div>
@@ -293,120 +300,106 @@
       <div id="tab-2" class="tab-content space-y-8">
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            1. A Origem e o Propósito do BDD
+            1. A Psicologia por Trás do Storytelling em TI
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              O BDD foi concebido por <strong>Dan North</strong> em 2003 como uma resposta à confusão generalizada sobre o TDD. Os programadores que
-              tentavam adotar o TDD tinham sempre a mesma dúvida: <em>"Por onde eu começo a testar? O que eu devo testar e o que não devo?"</em>
+              A Engenharia de Software há muito tempo sofre com o problema do "desenvolvedor alienado". Um desenvolvedor que recebe um documento
+              dizendo <em>"O sistema deve possuir um botão verde que dispara um request POST para a API X"</em> fará o botão verde. Se a API estiver
+              fora do ar, o botão quebra, e ele não se importará, pois cumpriu seu requisito.
             </p>
             <p>
-              Dan North percebeu que o nome "Teste" assustava as pessoas de negócio. Ele sugeriu mudar o foco: em vez de escrever testes que
-              verifiquem a lógica interna do código, devíamos escrever especificações sobre o <strong>Comportamento (Behavior)</strong> que o sistema
-              deve apresentar.
+              O <strong>Storytelling</strong> muda essa dinâmica. Quando o Product Owner narra a <em>Jornada do Usuário</em>, ele explica que o botão
+              verde é usado por paramédicos para acionar ambulâncias. O cérebro humano está programado evolutivamente para lembrar histórias. Ao
+              entender o <strong>Propósito (O Porquê)</strong>, o desenvolvedor naturalmente se sente responsável e engajado para criar um botão não
+              apenas verde, mas altamente disponível e resiliente a falhas de rede.
             </p>
-            <p>
-              Assim, o BDD visa <span class="hl-green">eliminar o fosso de comunicação entre os envolvidos (negócios e TI)</span>, garantindo que o
-              software construído seja exatamente o que trará valor ao cliente.
-            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4 text-sm font-medium">
+              Em provas, procure palavras-chave como:
+              <strong>Empatia, Entendimento Compartilhado (Shared Understanding), Foco no Problema do Usuário, e Alinhamento de Visão.</strong>
+            </div>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            2. Os "Três Amigos" (The Three Amigos)
+            2. User Story Mapping (Mapeamento de Histórias)
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Este é um conceito central da adoção de BDD em equipas Ágeis (muito cobrado). Refere-se à reunião essencial que deve acontecer
-              <strong>antes</strong> de uma linha de código ser escrita. Envolve três perspetivas cruciais:
+              Criado por <strong>Jeff Patton</strong>, o <em>User Story Mapping</em> é a aplicação suprema do Storytelling no gerenciamento do Backlog
+              em métodos Ágeis. As bancas adoram esse tópico!
+            </p>
+            <p>
+              O Backlog do Produto comum (Scrum) é uma lista plana e unidimensional (de cima para baixo), ordenada por prioridade. É difícil olhar
+              para uma lista de 200 itens e entender "a grande imagem" do software. O Story Mapping resolve isso criando um mapa visual
+              <strong>bidimensional</strong>.
             </p>
 
-            <ul class="list-none space-y-4 mt-4">
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">👔</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz do Negócio (Product Owner / Cliente):</strong><br />
-                  Define <em>qual problema estamos a tentar resolver</em>. Qual é a regra de negócio e as exceções.
-                </div>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Estrutura do Mapa</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong>O Eixo Horizontal (A Narrativa):</strong> Representa o <em>tempo</em> ou o fluxo lógico do usuário de ponta a ponta. É a
+                "Espinha Dorsal" (Backbone) do sistema. (Ex: Procurar Produto ➔ Colocar no Carrinho ➔ Pagar ➔ Rastrear Envio).
               </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">💻</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Tecnologia (Developer):</strong><br />
-                  Propõe <em>como podemos construir isso</em> tecnicamente e aponta as limitações do sistema atual.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">🕵️</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Qualidade (QA / Tester):</strong><br />
-                  Traz o ceticismo. Pergunta <em>"E o que acontece se der errado?"</em>, explorando os casos extremos (Edge Cases) que o negócio e o
-                  desenvolvedor esqueceram.
-                </div>
+              <li>
+                <strong>O Eixo Vertical (Os Detalhes/Prioridade):</strong> Sob cada passo da narrativa, as Histórias de Usuário reais são penduradas.
+                As de cima são vitais para o sistema funcionar (MVP). As mais para baixo são opcionais ou de luxo (ex: pagar com Pix é urgente, pagar
+                com Criptomoeda fica para o final do eixo).
               </li>
             </ul>
-            <p class="mt-2 text-sm font-semibold">
-              Juntos, estes "três amigos" escrevem os cenários em Gherkin, garantindo um entendimento perfeito e unificado do requisito antes do
-              desenvolvimento iniciar.
+            <p class="mt-4 font-semibold text-violet-700 dark:text-violet-400">
+              Vantagem para provas: Permite que a equipe veja a "floresta" (a história inteira) e as "árvores" (as histórias individuais) ao mesmo
+              tempo, facilitando o fatiamento de Releases e do Minimum Viable Product (MVP).
             </p>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            3. Linguagem Ubíqua e Documentação Viva
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-violet-500 pl-3">
-              Linguagem Ubíqua (Ubiquitous Language)
-            </h3>
-            <p>
-              Conceito herdado do <em>Domain-Driven Design (DDD)</em>. É a prática de usar a <strong>mesma terminologia</strong> em todos os lugares:
-              nas conversas, nos documentos de requisitos e no código-fonte. Se a área de negócios fala em "Apólice", o programador não pode chamar a
-              classe no código de "Contrato_Seguro". O BDD força o uso da linguagem ubíqua nos testes Gherkin.
-            </p>
-
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
-              Documentação Viva (Living Documentation)
-            </h3>
-            <p>
-              No modelo tradicional em Cascata (Waterfall), a especificação do sistema fica num documento Word de 300 páginas que apodrece e fica
-              obsoleto no momento em que o software entra em produção, pois as mudanças feitas no código não são refletidas no documento.
-            </p>
-            <p>
-              No BDD, a especificação Gherkin (<span class="hl-yellow">Given / When / Then</span>) é executada diretamente pelo sistema de automação
-              (ex: Cucumber) toda vez que o código muda.
-              <span class="hl-green">Se o comportamento do código mudar e não atualizar o Gherkin, o sistema "parte" e bloqueia o deploy</span>.
-              Portanto, o documento Gherkin funciona como uma documentação do sistema 100% confiável, sempre atualizada e validada.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            4. Ferramentas Típicas de BDD
+            3. Integrando Storytelling ao UCD e Personas
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Para a prova, é útil reconhecer o nome das ferramentas de mercado que transformam o texto em inglês/português do Gherkin num teste
-              automatizado real:
+              O Storytelling está intimamente ligado ao <strong>Projeto Centrado no Usuário (UCD)</strong>. Para que uma história tenha impacto sobre
+              os desenvolvedores, o protagonista da história não pode ser "o usuário genérico do sistema". Ele tem que ser uma
+              <strong>Persona</strong> bem definida.
             </p>
-            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
-              <li>
-                <strong class="text-emerald-600 dark:text-emerald-400">Cucumber:</strong> A mais famosa ferramenta de BDD do mundo, originada no Ruby
-                e suporta dezenas de linguagens (Java, JS).
+
+            <ul class="list-none space-y-3 mt-4">
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-slate-800 dark:text-white block mb-1">A técnica do "Dia na Vida" (A Day in the Life):</strong>
+                Muitas equipes de UX e Product Managers criam uma pequena história descrevendo um dia típico da Persona. "Roberto acorda às 6h, pega o
+                metrô lotado...". Ao descobrir os atritos do dia a dia do Roberto, a equipe tem <em>insights</em> orgânicos de novas funcionalidades
+                que poderiam facilitar a vida dele.
               </li>
-              <li>
-                <strong class="text-blue-600 dark:text-blue-400">SpecFlow:</strong> A equivalente oficial do Cucumber para o ecossistema Microsoft
-                .NET (C#).
-              </li>
-              <li><strong class="text-yellow-600 dark:text-yellow-500">Behave:</strong> Ferramenta popular para o ecossistema Python.</li>
-              <li>
-                <strong class="text-violet-600 dark:text-violet-400">JBehave:</strong> Uma das primeiras frameworks BDD, criada pelo próprio Dan North
-                para o mundo Java.
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-slate-800 dark:text-white block mb-1">Cenários vs Histórias:</strong>
+                No contexto técnico (como no BDD/Gherkin), o "Cenário" descreve o ambiente e o estado inicial. O Storytelling abraça esse cenário e
+                insere emoção e motivação de negócios por trás do porquê o cenário existe.
               </li>
             </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. As Histórias Épicas (Epics)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando uma narrativa é muito grande para caber numa única <em>User Story</em>, ela recebe o nome oficial de
+              <strong>Épico (Epic)</strong>.
+            </p>
+            <p>
+              O Épico é um grande requisito de negócio, uma funcionalidade massiva que levará vários meses para ser desenvolvida. Ex: "Reformular todo
+              o sistema de autenticação e segurança do banco".
+            </p>
+            <p>
+              O papel do Analista de Requisitos/PO é utilizar o Storytelling e técnicas de refinamento para
+              <span class="hl-yellow">quebrar essa grande narrativa Épica em capítulos menores e digeríveis</span> (as User Stories), para que caibam
+              no ciclo de uma Sprint (2 semanas).
+            </p>
           </div>
         </div>
       </div>

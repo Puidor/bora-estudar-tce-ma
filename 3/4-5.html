@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo: BDD (Behavior-Driven Development)</title>
+    <title>Resumo: Projeto Centrado no Usuário</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -102,10 +102,10 @@
     <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
       <header>
         <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
-          Engenharia de Software • Práticas Ágeis
+          Engenharia de Software • Elicitação de Requisitos
         </p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
-          BDD (Desenvolvimento Orientado por Comportamento)
+          Projeto Centrado no Usuário (UCD)
         </h1>
       </header>
 
@@ -129,7 +129,7 @@
              ABA 1: RESUMO VISUAL
              ========================================== -->
       <div id="tab-1" class="tab-content active space-y-8">
-        <!-- Definição Principal -->
+        <!-- Direto ao Ponto -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
             <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto
@@ -138,107 +138,106 @@
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              O <strong>BDD (Behavior-Driven Development)</strong> é uma técnica ágil de desenvolvimento que incentiva a colaboração entre
-              programadores, QAs (Testers) e os representantes do negócio (Product Owners/Clientes).
+              <strong>O que é?</strong> O Projeto Centrado no Usuário (UCD - <em>User-Centered Design</em>) é uma abordagem iterativa que foca no
+              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
+                >entendimento profundo de quem usará o produto</span
+              >
+              (suas necessidades, limitações, ambiente e tarefas).
             </li>
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              <strong>Foco:</strong> Em vez de testar "como o código foi escrito" (foco técnico), o BDD foca no
-              <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
-                >comportamento do sistema</span
-              >
-              (foco no negócio/valor esperado).
+              <strong>Não é só UI (Tela):</strong> Envolve entender o problema do usuário antes mesmo de pensar em como a tela será desenhada.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>O Pilar Mestre (Empatia):</strong> O princípio número um do UCD é a <strong>empatia</strong>. O desenvolvedor não é o usuário.
+              Você precisa sair do prédio e conversar com as pessoas reais que usarão o sistema.
             </li>
           </ul>
         </section>
 
-        <!-- A Estrutura Gherkin -->
+        <!-- O Ciclo UCD (ISO 9241-210) -->
         <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
           <div class="bg-slate-800 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🥒 A Linguagem Gherkin (Sintaxe de Prova)</h2>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 O Ciclo Iterativo (Norma ISO 9241-210)</h2>
             <p class="text-sm text-slate-400 mt-1">
-              É a linguagem estruturada e natural usada para escrever os cenários de BDD. O computador consegue ler e executar isto como testes
-              automatizados!
+              Este é o fluxo oficial cobrado nas provas. Ele se repete até que os requisitos do usuário sejam plenamente satisfeitos.
             </p>
           </div>
           <div class="p-6">
-            <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-emerald-500">
-                <strong class="text-emerald-400">Funcionalidade:</strong> Saque bancário
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">1</div>
+                <h3 class="font-bold text-violet-400 mb-1">Entender o Contexto</h3>
+                <p class="text-xs text-slate-400">Quem vai usar? Onde? Para quê? (Ex: Operários usando o sistema num galpão barulhento com luvas).</p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-blue-500 ml-4">
-                <strong class="text-blue-400">Cenário:</strong> Saque bem-sucedido com saldo suficiente
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">2</div>
+                <h3 class="font-bold text-violet-400 mb-1">Especificar Requisitos</h3>
+                <p class="text-xs text-slate-400">Identificar as necessidades do usuário e os objetivos de negócio que o sistema deve cumprir.</p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-yellow-500 ml-8">
-                <strong class="text-yellow-400">Dado (Given):</strong> que o saldo da minha conta é de R$ 100
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="bg-violet-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">3</div>
+                <h3 class="font-bold text-violet-400 mb-1">Criar Soluções (Design)</h3>
+                <p class="text-xs text-slate-400">Passar da teoria para a prática. Criar wireframes, mockups e protótipos interativos.</p>
               </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-violet-500 ml-8">
-                <strong class="text-violet-400">Quando (When):</strong> eu solicitar um saque de R$ 20
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-red-500 ml-8">
-                <strong class="text-red-400">Então (Then):</strong> o caixa eletrônico deve liberar as notas<br />
-                <strong class="text-red-400">E (And):</strong> o meu saldo final deve ser R$ 80
+              <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg relative overflow-hidden">
+                <div class="bg-emerald-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2">4</div>
+                <h3 class="font-bold text-emerald-400 mb-1">Avaliar o Design</h3>
+                <p class="text-xs text-slate-400">Testar o protótipo com os usuários reais. Se não estiver bom, o ciclo volta ao passo 1 ou 3.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- O Confronto: TDD vs BDD -->
+        <!-- Tabela Comparativa de Ferramentas de UCD -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: TDD vs BDD</h2>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛠️ Ferramentas Clássicas do UCD</h2>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
-                    TDD (Test-Driven Development)
-                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Ferramenta</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">O que é?</th>
                   <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
-                    BDD (Behavior-Driven Development)
+                    Objetivo / Quando usar
                   </th>
                 </tr>
               </thead>
               <tbody class="text-sm">
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">Foco TÉCNICO</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
-                    Foco no NEGÓCIO (Comportamento)
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Personas</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Personagens fictícios baseados em dados reais que representam os diferentes perfis de usuários.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Gerar empatia. Fazer a equipe pensar "Como o João usaria essa funcionalidade?".
                   </td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    A pergunta que responde
+                    Mapa da Jornada do Usuário
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa certa (sem bugs)?"
+                    Representação visual do caminho que o usuário percorre para alcançar um objetivo, incluindo emoções.
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa que o cliente quer?"
+                    Identificar "pontos de atrito" (pain points) ou frustrações no processo atual.
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Linguagem utilizada
+                    Testes de Usabilidade
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    Código de programação (Java, Python, C#).
+                    Observar usuários reais tentando realizar tarefas num protótipo ou sistema.
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    <strong>Linguagem Natural (Inglês/Português)</strong>, legível para humanos não-técnicos.
-                  </td>
-                </tr>
-                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Público-alvo do teste
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Apenas Desenvolvedores.</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-800 dark:text-slate-200">
-                    A Equipa Inteira (Dev, QA, PO, Cliente).
+                    Fase final do ciclo UCD. Validar se a solução criada é realmente fácil de usar.
                   </td>
                 </tr>
               </tbody>
@@ -247,7 +246,7 @@
         </section>
 
         <!-- Alerta Pegadinha -->
-        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
           <svg
             class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
             fill="currentColor"
@@ -264,23 +263,27 @@
             <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
             <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
               <li>
-                <strong>Concorrência (BDD vs TDD):</strong> A banca afirma que "A adoção do BDD exige o abandono do TDD, pois ambos são
-                incompatíveis". <br />
+                <strong>A Ilusão da Participação Final:</strong> A banca afirma que "No UCD, a participação do usuário restringe-se à fase de testes
+                de homologação, para garantir que o software funcione sem erros". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                Eles são <strong>COMPLEMENTARES</strong>. O BDD é usado num nível mais alto (testes de aceitação/integração guiados pelo negócio),
-                enquanto o TDD é usado no nível do método/classe pelos programadores (inside-out).
+                No Projeto Centrado no Usuário, o envolvimento do usuário é <strong>ativo e contínuo</strong> desde o primeiro dia (fase de concepção
+                e entendimento do contexto) até a última etapa.
               </li>
               <li>
-                <strong>Ferramenta Automática?</strong> "O BDD é uma ferramenta de automação de testes de software". <br />
-                <span
-                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
-                  >Falso!</span
+                <strong>Usabilidade x Acessibilidade:</strong> <br />
+                👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Usabilidade</span
+                >: Quão fácil e satisfatório é usar o sistema.<br />
+                👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Acessibilidade</span
+                >: Garantir que pessoas com deficiências (visuais, motoras, etc.) *consigam* usar o sistema. <br /><em
+                  >Pegadinha: Acessibilidade é um pré-requisito. Se o sistema não é acessível, a usabilidade para aquela pessoa é nula.</em
                 >
-                O BDD é uma <strong>Metodologia/Prática Ágil</strong> de colaboração. A automação é apenas um efeito colateral valioso alcançado
-                através de ferramentas de apoio (como o Cucumber).
               </li>
             </ul>
           </div>
@@ -293,118 +296,123 @@
       <div id="tab-2" class="tab-content space-y-8">
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            1. A Origem e o Propósito do BDD
+            1. A Filosofia do UCD (User-Centered Design)
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              O BDD foi concebido por <strong>Dan North</strong> em 2003 como uma resposta à confusão generalizada sobre o TDD. Os programadores que
-              tentavam adotar o TDD tinham sempre a mesma dúvida: <em>"Por onde eu começo a testar? O que eu devo testar e o que não devo?"</em>
+              A Engenharia de Software tradicionalmente focava-se no "Sistema" e na "Tecnologia". Os desenvolvedores criavam soluções geniais, mas os
+              sistemas muitas vezes fracassavam porque o usuário final não conseguia operá-los ou achava o processo demasiadamente complexo.
             </p>
             <p>
-              Dan North percebeu que o nome "Teste" assustava as pessoas de negócio. Ele sugeriu mudar o foco: em vez de escrever testes que
-              verifiquem a lógica interna do código, devíamos escrever especificações sobre o <strong>Comportamento (Behavior)</strong> que o sistema
-              deve apresentar.
+              O <strong>UCD (Projeto Centrado no Usuário)</strong> inverte a lógica. O foco primário não é a tecnologia de ponta, mas sim o ser humano
+              que irá utilizar a tecnologia. É uma filosofia multidisciplinar que engloba a psicologia cognitiva, o design de interação (IxD) e a
+              ergonomia.
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">Os Três Pilares da Usabilidade (ISO 9241-11)</strong>
+              <p class="text-sm mt-2 mb-2">
+                Para a norma internacional, um sistema possui usabilidade se atingir três objetivos em um contexto específico de uso:
+              </p>
+              <ul class="list-disc pl-6 space-y-1 text-sm">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Eficácia (Effectiveness):</strong> O usuário consegue atingir o objetivo? (Ex:
+                  Conseguiu finalizar a compra?)
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Eficiência (Efficiency):</strong> O usuário atinge o objetivo com o menor gasto de
+                  recursos/esforço possível? (Ex: Precisou de 2 cliques ou de 15 cliques?)
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Satisfação (Satisfaction):</strong> O usuário sentiu-se confortável e teve atitudes
+                  positivas ao usar o sistema?
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Ferramentas de Empatia: Personas
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              "Projetar para todos é não projetar para ninguém". O conceito de <strong>Personas</strong>, popularizado por Alan Cooper, é uma técnica
+              poderosa de elicitação de requisitos.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">O que é uma Persona?</h3>
+            <p>
+              Não é um "público-alvo" genérico (ex: "Homens de 20 a 30 anos"). A persona é a personificação de uma pesquisa. Você cria um perfil
+              específico (ex: "Roberto, 28 anos, ansioso, acessa o app de pé no ônibus usando 4G ruim").
             </p>
             <p>
-              Assim, o BDD visa <span class="hl-green">eliminar o fosso de comunicação entre os envolvidos (negócios e TI)</span>, garantindo que o
-              software construído seja exatamente o que trará valor ao cliente.
+              <strong>Objetivo (Foco de Prova):</strong> A persona tira o desenvolvimento do campo do "achismo". Quando a equipe discute uma
+              funcionalidade, a pergunta deixa de ser <em>"Eu gostei deste botão?"</em> e passa a ser
+              <span class="hl-green">"O Roberto conseguiria clicar neste botão enquanto está em pé no ônibus?"</span>. Aumenta drasticamente a empatia
+              da equipe.
             </p>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            2. Os "Três Amigos" (The Three Amigos)
+            3. A Jornada do Usuário (Customer Journey Map)
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Este é um conceito central da adoção de BDD em equipas Ágeis (muito cobrado). Refere-se à reunião essencial que deve acontecer
-              <strong>antes</strong> de uma linha de código ser escrita. Envolve três perspetivas cruciais:
-            </p>
-
-            <ul class="list-none space-y-4 mt-4">
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">👔</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz do Negócio (Product Owner / Cliente):</strong><br />
-                  Define <em>qual problema estamos a tentar resolver</em>. Qual é a regra de negócio e as exceções.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">💻</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Tecnologia (Developer):</strong><br />
-                  Propõe <em>como podemos construir isso</em> tecnicamente e aponta as limitações do sistema atual.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">🕵️</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Qualidade (QA / Tester):</strong><br />
-                  Traz o ceticismo. Pergunta <em>"E o que acontece se der errado?"</em>, explorando os casos extremos (Edge Cases) que o negócio e o
-                  desenvolvedor esqueceram.
-                </div>
-              </li>
-            </ul>
-            <p class="mt-2 text-sm font-semibold">
-              Juntos, estes "três amigos" escrevem os cenários em Gherkin, garantindo um entendimento perfeito e unificado do requisito antes do
-              desenvolvimento iniciar.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            3. Linguagem Ubíqua e Documentação Viva
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-violet-500 pl-3">
-              Linguagem Ubíqua (Ubiquitous Language)
-            </h3>
-            <p>
-              Conceito herdado do <em>Domain-Driven Design (DDD)</em>. É a prática de usar a <strong>mesma terminologia</strong> em todos os lugares:
-              nas conversas, nos documentos de requisitos e no código-fonte. Se a área de negócios fala em "Apólice", o programador não pode chamar a
-              classe no código de "Contrato_Seguro". O BDD força o uso da linguagem ubíqua nos testes Gherkin.
+              Muitos sistemas falham não porque a tela é feia, mas porque o <em>processo/fluxo</em> é longo e doloroso. O Mapa da Jornada do Usuário é
+              uma técnica narrativa que mapeia, passo a passo, a experiência do usuário <strong>ao longo do tempo</strong>, desde o momento em que ele
+              descobre a sua necessidade até a sua resolução.
             </p>
 
             <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
-              Documentação Viva (Living Documentation)
+              Pontos Críticos (Touchpoints e Pain Points)
             </h3>
-            <p>
-              No modelo tradicional em Cascata (Waterfall), a especificação do sistema fica num documento Word de 300 páginas que apodrece e fica
-              obsoleto no momento em que o software entra em produção, pois as mudanças feitas no código não são refletidas no documento.
-            </p>
-            <p>
-              No BDD, a especificação Gherkin (<span class="hl-yellow">Given / When / Then</span>) é executada diretamente pelo sistema de automação
-              (ex: Cucumber) toda vez que o código muda.
-              <span class="hl-green">Se o comportamento do código mudar e não atualizar o Gherkin, o sistema "parte" e bloqueia o deploy</span>.
-              Portanto, o documento Gherkin funciona como uma documentação do sistema 100% confiável, sempre atualizada e validada.
-            </p>
+            <ul class="list-[circle] pl-6 space-y-2 mt-2">
+              <li>
+                <strong>Touchpoints (Pontos de Contato):</strong> Qualquer momento em que o usuário interage com o sistema ou com a empresa (ex:
+                receber um e-mail, clicar num anúncio, usar a barra de busca do site).
+              </li>
+              <li>
+                <strong>Pain Points (Pontos de Dor):</strong> São as quebras de expectativa. Os momentos de frustração, demora ou confusão. A
+                engenharia de requisitos moderna foca-se nestes pontos de dor para criar <em>Histórias de Usuário</em> que proponham soluções para
+                aliviá-los.
+              </li>
+            </ul>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            4. Ferramentas Típicas de BDD
+            4. Heurísticas de Jakob Nielsen
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Para a prova, é útil reconhecer o nome das ferramentas de mercado que transformam o texto em inglês/português do Gherkin num teste
-              automatizado real:
+              Em provas de alto nível, quando o tema aborda <strong>Avaliação Heurística</strong> ou Usabilidade, as 10 Heurísticas de Nielsen são a
+              base teórica. Você não precisa decorar as dez palavras exatas, mas precisa entender a sua lógica. Destacam-se para concursos:
             </p>
-            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+
+            <ul class="list-disc pl-6 mt-4 space-y-3 text-sm">
               <li>
-                <strong class="text-emerald-600 dark:text-emerald-400">Cucumber:</strong> A mais famosa ferramenta de BDD do mundo, originada no Ruby
-                e suporta dezenas de linguagens (Java, JS).
+                <strong class="text-slate-800 dark:text-white text-base">1. Visibilidade do status do sistema:</strong> O usuário sempre deve saber o
+                que está acontecendo (ex: barra de progresso durante o download).
               </li>
               <li>
-                <strong class="text-blue-600 dark:text-blue-400">SpecFlow:</strong> A equivalente oficial do Cucumber para o ecossistema Microsoft
-                .NET (C#).
+                <strong class="text-slate-800 dark:text-white text-base">3. Controle e Liberdade do Usuário:</strong> O usuário frequentemente clica
+                em botões por engano. Deve haver sempre uma "saída de emergência" clara (ex: botões "Desfazer / Ctrl+Z").
               </li>
-              <li><strong class="text-yellow-600 dark:text-yellow-500">Behave:</strong> Ferramenta popular para o ecossistema Python.</li>
               <li>
-                <strong class="text-violet-600 dark:text-violet-400">JBehave:</strong> Uma das primeiras frameworks BDD, criada pelo próprio Dan North
-                para o mundo Java.
+                <strong class="text-slate-800 dark:text-white text-base">5. Prevenção de Erros:</strong> Melhor que mensagens de erro bonitas, é o
+                design que impede o erro de ocorrer (ex: desativar o botão de "Enviar" até que o e-mail tenha o formato correto).
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white text-base">6. Reconhecimento em vez de Recordação:</strong> Minimizar a carga de memória
+                do usuário. Interfaces boas sugerem opções, o usuário não deve precisar decorar códigos.
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white text-base">8. Estética e Design Minimalista:</strong> Diálogos não devem conter
+                informações irrelevantes. Menos é mais (Redução do ruído visual).
               </li>
             </ul>
           </div>

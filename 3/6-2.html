@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Ferramentas de Automação de Testes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
+          Engenharia de Software • Testes
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Ferramentas para Automatização
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Ferramentas Principais (O Quarteto de Prova) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧰 O Quarteto de Ouro das Bancas</h2>
+            <p class="text-sm text-violet-200 mt-1">Conecte o nome da ferramenta ao NÍVEL de teste que ela executa.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 dark:bg-slate-700">
+            <!-- Selenium -->
+            <div class="bg-white dark:bg-slate-800 p-5 text-center flex flex-col items-center">
+              <div
+                class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-2xl mb-3 shadow-sm border border-emerald-200 dark:border-emerald-800"
+              >
+                🌐
+              </div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Selenium</h3>
+              <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mt-1 mb-2">Testes Web / UI</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Automatiza navegadores web. Simula cliques de usuários, preenchimento de formulários e navegação em sites reais.
+              </p>
+            </div>
+
+            <!-- JUnit -->
+            <div class="bg-white dark:bg-slate-800 p-5 text-center flex flex-col items-center">
+              <div
+                class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-2xl mb-3 shadow-sm border border-blue-200 dark:border-blue-800"
+              >
+                ☕
+              </div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">JUnit</h3>
+              <p class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mt-1 mb-2">Testes Unitários</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Framework padrão para testes de unidade na linguagem Java. O coração da prática do TDD no ecossistema Java.
+              </p>
+            </div>
+
+            <!-- Cucumber -->
+            <div class="bg-white dark:bg-slate-800 p-5 text-center flex flex-col items-center">
+              <div
+                class="w-14 h-14 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-2xl mb-3 shadow-sm border border-green-200 dark:border-green-800"
+              >
+                🥒
+              </div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Cucumber</h3>
+              <p class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-widest mt-1 mb-2">BDD / Aceitação</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Lê especificações escritas em linguagem natural (Gherkin: Dado/Quando/Então) e converte em testes automatizados.
+              </p>
+            </div>
+
+            <!-- JMeter -->
+            <div class="bg-white dark:bg-slate-800 p-5 text-center flex flex-col items-center">
+              <div
+                class="w-14 h-14 bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center text-2xl mb-3 shadow-sm border border-rose-200 dark:border-rose-800"
+              >
+                🔥
+              </div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">JMeter</h3>
+              <p class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest mt-1 mb-2">Carga e Desempenho</p>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Aplicativo Java da Apache feito para simular carga pesada (milhares de usuários simultâneos) em servidores, redes e bancos de dados.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela: Automatizar ou Não? -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Regra de Ouro: O que automatizar?</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-emerald-50/50 dark:bg-emerald-900/10 p-5">
+              <h3 class="font-bold text-emerald-700 dark:text-emerald-400 mb-3 flex items-center gap-2"><span>✅</span> IDEAL PARA AUTOMAÇÃO</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li><strong>Testes de Regressão:</strong> Aqueles que rodam toda vez que uma linha de código muda (CI/CD).</li>
+                <li>
+                  <strong>Testes Repetitivos:</strong> Tarefas tediosas e propensas a erro humano (ex: preencher o mesmo formulário 50 vezes com dados
+                  diferentes).
+                </li>
+                <li><strong>Testes de Carga/Estresse:</strong> É impossível simular 5.000 usuários clicando ao mesmo tempo manualmente.</li>
+              </ul>
+            </div>
+            <div class="bg-rose-50/50 dark:bg-rose-900/10 p-5">
+              <h3 class="font-bold text-rose-700 dark:text-rose-400 mb-3 flex items-center gap-2"><span>❌</span> NÃO DEVE SER AUTOMATIZADO</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong>Testes de Usabilidade (UX):</strong> A máquina não sabe se o botão vermelho "causa uma sensação de alerta" ou se a interface
+                  é "amigável". Exige humano.
+                </li>
+                <li>
+                  <strong>Testes Exploratórios:</strong> Quando o testador age como um "hacker", clicando em lugares aleatórios para descobrir falhas
+                  imprevistas. A máquina só testa o script fixo.
+                </li>
+                <li>
+                  <strong>Requisitos instáveis:</strong> Telas que mudam de layout todos os dias (o custo de manutenção do teste seria maior que o
+                  benefício).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do "100% Automatizado":</strong> A banca afirma que "No desenvolvimento Ágil e DevOps, a meta é atingir 100% de
+                automação, abolindo o teste manual". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Testes exploratórios, testes de UX e auditorias de segurança criativas <strong>sempre</strong> exigirão validação manual humana.
+              </li>
+              <li>
+                <strong>Selenium testa Banco de Dados?</strong> "O Selenium é uma ferramenta completa que permite testar a consistência de tabelas SQL
+                no banco de dados e APIs REST". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Selenium atua <strong class="underline decoration-red-500">exclusivamente no navegador (Web UI)</strong>. Para testar API usaríamos
+                o <em>Postman</em> ou <em>RestAssured</em>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência da Automação e o ROI
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Por que não testar tudo à mão? Porque o teste manual não escala. Se um sistema tem 500 funcionalidades e um desenvolvedor altera uma
+              linha de código, o testador manual teria que repassar horas testando as outras 499 para garantir que nada foi "quebrado" (Teste de
+              Regressão).
+            </p>
+            <p>
+              A <strong>Automação de Testes</strong> é o uso de software (separado do software sendo testado) para controlar a execução de testes,
+              comparar os resultados reais com os esperados e gerar relatórios.
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">O Paradoxo do ROI (Return on Investment)</strong>
+              <p class="text-sm mt-2">
+                Criar um teste automatizado <strong>custa muito mais caro e demora muito mais tempo</strong> do que executar o teste manualmente a
+                primeira vez. O ROI da automação só se justifica pela <span class="hl-green">repetição contínua ao longo do tempo</span>. Se uma tela
+                for ser usada (e testada) apenas uma vez e for descartada, não vale a pena automatizá-la.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Selenium (O Rei da UI Web)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Se a prova falar sobre "Testes de Interface (UI)", "Automatizar cliques no navegador", "Testes ponta-a-ponta (E2E) web", a resposta em
+              99% dos casos é o <strong>Selenium</strong>.
+            </p>
+            <p>
+              Ele não é apenas uma ferramenta, mas uma suíte. O componente mais famoso e cobrado é o
+              <strong class="text-violet-600 dark:text-violet-400">Selenium WebDriver</strong>. Ele aceita comandos em várias linguagens (Java,
+              Python, C#) e as traduz em ações diretas no navegador (Chrome, Firefox), exatamente como um humano faria (clicar, rolar a tela, ler um
+              texto, preencher input).
+            </p>
+            <p class="text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded">
+              <strong>Nota Moderna (Cypress):</strong> Bancas mais atualizadas podem cobrar o
+              <span class="font-bold text-emerald-600 dark:text-emerald-400">Cypress</span> como a principal alternativa moderna ao Selenium. O
+              Cypress roda <em>dentro</em> do próprio navegador junto com a aplicação web, oferecendo testes de frontend muito mais rápidos e
+              estáveis, mas é focado estritamente em JavaScript/TypeScript.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Ferramentas Unitárias e a Família xUnit
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para suportar a prática do TDD, surgiram os frameworks <strong>xUnit</strong>. Eles formam a base da pirâmide de testes. O mais cobrado
+              é o <strong class="text-violet-600 dark:text-violet-400">JUnit</strong> (para Java).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Anotaçoes Críticas do JUnit</h3>
+            <p class="text-sm mb-2">
+              As bancas adoram colocar trechos de código e perguntar o que as anotações (annotations) fazem na ordem de execução:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm font-mono">
+              <li>
+                <span class="text-blue-600 dark:text-blue-400 font-bold">@Test</span>: Indica que aquele método é efetivamente um caso de teste que
+                deve ser rodado.
+              </li>
+              <li>
+                <span class="text-blue-600 dark:text-blue-400 font-bold">@BeforeEach / @Before</span>: Roda <strong>antes de cada</strong> método
+                <code>@Test</code>. Usado para "limpar a mesa" e preparar os dados (setup).
+              </li>
+              <li>
+                <span class="text-blue-600 dark:text-blue-400 font-bold">@AfterEach / @After</span>: Roda <strong>após cada</strong> teste, geralmente
+                para fechar conexões ou apagar dados sujos de teste (teardown).
+              </li>
+              <li>
+                <span class="text-blue-600 dark:text-blue-400 font-bold">@BeforeAll / @BeforeClass</span>: Roda apenas UMA vez no início de tudo
+                (antes do primeiro teste iniciar).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              Asserções (Assertions)
+            </h3>
+            <p>
+              O coração do teste automatizado é o <code>Assert</code>. É ele quem faz a máquina comparar o resultado que a função devolveu com o
+              resultado que esperávamos. (Ex: <code>assertEquals(4, calculadora.somar(2, 2))</code>). Se o resultado for 5, a asserção falha e o teste
+              fica vermelho.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Testes Não Funcionais e Integração Contínua
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-rose-500 pl-3">JMeter (Teste de Carga)</h3>
+            <p>
+              O <strong>Apache JMeter</strong> não testa "se" o botão funciona, ele testa se o botão <em>continua funcionando</em> quando 10.000
+              pessoas clicam nele. Ele usa o conceito de <span class="hl-yellow">Thread Groups</span>, onde cada thread simula um usuário virtual
+              (VU). Ele consegue disparar milhares de requisições HTTP, consultas JDBC (Banco de Dados) e chamadas SOAP/REST simultaneamente, medindo
+              o <em>Tempo de Resposta</em> e a <em>Vazão (Throughput)</em>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">
+              Postman / SoapUI (Teste de APIs)
+            </h3>
+            <p>
+              Encaixam-se no nível de "Testes de Integração". As arquiteturas modernas são feitas de Microsserviços e APIs REST. O
+              <strong>Postman</strong> permite disparar requisições automatizadas (GET, POST) contra os servidores e validar se o JSON retornado tem o
+              status HTTP 200 (OK) e os dados corretos, muito antes de existir uma tela visual pronta.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-emerald-500 pl-3">
+              A Orquestração Final: CI (Continuous Integration)
+            </h3>
+            <p>
+              Ter testes automatizados na máquina do desenvolvedor não serve de muito para o projeto todo. As ferramentas de automação (JUnit,
+              Selenium) são engatadas num orquestrador de CI, como o
+              <strong class="text-emerald-600 dark:text-emerald-400">Jenkins ou GitLab CI</strong>.
+            </p>
+            <p>
+              A regra ágil é: sempre que um desenvolvedor enviar código para o repositório, o Jenkins "acorda", compila o sistema, roda 100% dos
+              testes do JUnit e do Selenium automaticamente. Se 1 único teste falhar, o Jenkins bloqueia a atualização (<em>Build Broken</em>) e avisa
+              a equipe. Isso garante a qualidade inabalável do código na esteira DevOps.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

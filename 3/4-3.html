@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo: BDD (Behavior-Driven Development)</title>
+    <title>Resumo: Critérios de Aceitação</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -101,11 +101,9 @@
 
     <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
       <header>
-        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
-          Engenharia de Software • Práticas Ágeis
-        </p>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
-          BDD (Desenvolvimento Orientado por Comportamento)
+          Critérios de Aceitação
         </h1>
       </header>
 
@@ -125,129 +123,125 @@
         </button>
       </div>
 
-      <!-- ==========================================
-             ABA 1: RESUMO VISUAL
-             ========================================== -->
       <div id="tab-1" class="tab-content active space-y-8">
-        <!-- Definição Principal -->
+        <!-- Direto ao Ponto -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
-            <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto
+            <span class="text-violet-500 text-2xl">⚡</span> O que são?
           </h2>
           <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              O <strong>BDD (Behavior-Driven Development)</strong> é uma técnica ágil de desenvolvimento que incentiva a colaboração entre
-              programadores, QAs (Testers) e os representantes do negócio (Product Owners/Clientes).
+              São as <strong>condições específicas</strong> que um produto de software (ou História de Usuário) deve cumprir para ser aceito por um
+              usuário, cliente ou sistema.
             </li>
             <li
               class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
             >
-              <strong>Foco:</strong> Em vez de testar "como o código foi escrito" (foco técnico), o BDD foca no
+              <strong>A Fronteira:</strong> Eles definem os
               <span class="bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300 font-bold px-1.5 py-0.5 rounded"
-                >comportamento do sistema</span
-              >
-              (foco no negócio/valor esperado).
+                >limites do requisito</span
+              >. Respondem à pergunta: <em>"Como sabemos quando a equipe terminou de desenvolver esta funcionalidade?"</em>.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>Formato Binário:</strong> Um critério de aceitação não pode ser ambíguo. Ele tem que ser
+              <strong>Passou ou Falhou (Pass/Fail)</strong>.
             </li>
           </ul>
         </section>
 
-        <!-- A Estrutura Gherkin -->
-        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
-          <div class="bg-slate-800 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🥒 A Linguagem Gherkin (Sintaxe de Prova)</h2>
-            <p class="text-sm text-slate-400 mt-1">
-              É a linguagem estruturada e natural usada para escrever os cenários de BDD. O computador consegue ler e executar isto como testes
-              automatizados!
-            </p>
-          </div>
-          <div class="p-6">
-            <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-emerald-500">
-                <strong class="text-emerald-400">Funcionalidade:</strong> Saque bancário
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-blue-500 ml-4">
-                <strong class="text-blue-400">Cenário:</strong> Saque bem-sucedido com saldo suficiente
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-yellow-500 ml-8">
-                <strong class="text-yellow-400">Dado (Given):</strong> que o saldo da minha conta é de R$ 100
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-violet-500 ml-8">
-                <strong class="text-violet-400">Quando (When):</strong> eu solicitar um saque de R$ 20
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border-l-4 border-red-500 ml-8">
-                <strong class="text-red-400">Então (Then):</strong> o caixa eletrônico deve liberar as notas<br />
-                <strong class="text-red-400">E (And):</strong> o meu saldo final deve ser R$ 80
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- O Confronto: TDD vs BDD -->
+        <!-- O Grande Confronto (Foco de Prova) -->
         <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: TDD vs BDD</h2>
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚔️ O Confronto: Acceptance Criteria vs Definition of Done (DoD)</h2>
+            <span class="bg-yellow-400 text-violet-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
                   <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">
-                    TDD (Test-Driven Development)
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    Critérios de Aceitação (AC)
                   </th>
-                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
-                    BDD (Behavior-Driven Development)
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">
+                    Definition of Done (DoD)
                   </th>
                 </tr>
               </thead>
               <tbody class="text-sm">
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco Principal</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">Foco TÉCNICO</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
-                    Foco no NEGÓCIO (Comportamento)
-                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Âmbito (Escopo)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">ESPECÍFICO</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-sky-600 dark:text-sky-400">GLOBAL / UNIVERSAL</td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    A pergunta que responde
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">A que se aplica?</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A <strong>uma única</strong> História de Usuário.
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa certa (sem bugs)?"
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    "Estamos a construir a coisa que o cliente quer?"
+                    A <strong>todas</strong> as Histórias e tarefas da Sprint.
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Linguagem utilizada
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Exemplo Típico</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    "A senha deve ter 8 caracteres."
                   </td>
                   <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    Código de programação (Java, Python, C#).
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                    <strong>Linguagem Natural (Inglês/Português)</strong>, legível para humanos não-técnicos.
+                    "O código passou no SonarQube e foi revisado."
                   </td>
                 </tr>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
-                    Público-alvo do teste
-                  </td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Apenas Desenvolvedores.</td>
-                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-800 dark:text-slate-200">
-                    A Equipa Inteira (Dev, QA, PO, Cliente).
-                  </td>
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Foco</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Regras de Negócio e Funcionalidade.</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Qualidade Técnica e Processos da Equipe.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
 
+        <!-- Formatos Comuns -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-slate-500 text-2xl">📝</span> Formatos de Escrita
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">1. Formato de Regras (Checklist)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                Mais simples. Uma lista de pontos (bullet points) que devem ser verificados.
+              </p>
+              <div
+                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 p-2 rounded text-xs space-y-1 text-slate-700 dark:text-slate-300"
+              >
+                <p>☑ O usuário não pode enviar o campo E-mail vazio.</p>
+                <p>☑ O sistema deve enviar um e-mail de confirmação.</p>
+                <p>☑ Se o e-mail for inválido, exibir mensagem vermelha.</p>
+              </div>
+            </div>
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">2. Formato de Cenário (Gherkin / BDD)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">Padrão da indústria Ágil moderna. Facilita a automação de testes.</p>
+              <div
+                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 p-2 rounded text-xs space-y-1 text-slate-700 dark:text-slate-300 font-mono"
+              >
+                <p><strong class="text-emerald-600 dark:text-emerald-400">Dado</strong> que estou na página de login</p>
+                <p><strong class="text-blue-600 dark:text-blue-400">Quando</strong> preencho um e-mail sem '@'</p>
+                <p><strong class="text-rose-600 dark:text-rose-400">Então</strong> o sistema exibe "E-mail inválido"</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Alerta Pegadinha -->
-        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
           <svg
             class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
             fill="currentColor"
@@ -264,147 +258,134 @@
             <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
             <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
               <li>
-                <strong>Concorrência (BDD vs TDD):</strong> A banca afirma que "A adoção do BDD exige o abandono do TDD, pois ambos são
-                incompatíveis". <br />
+                <strong>A Responsabilidade Exclusiva:</strong> A banca afirma: "A escrita dos critérios de aceitação é uma responsabilidade exclusiva
+                do Product Owner (PO), não cabendo à equipe de desenvolvimento interferir". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                Eles são <strong>COMPLEMENTARES</strong>. O BDD é usado num nível mais alto (testes de aceitação/integração guiados pelo negócio),
-                enquanto o TDD é usado no nível do método/classe pelos programadores (inside-out).
+                Embora o PO seja o principal responsável por garantir que eles existam e representem o negócio, os critérios devem ser debatidos e
+                criados <strong class="underline decoration-red-500">colaborativamente</strong> (lembre-se da regra dos Três Amigos: PO, Dev, QA)
+                durante o Refinamento do Backlog.
               </li>
               <li>
-                <strong>Ferramenta Automática?</strong> "O BDD é uma ferramenta de automação de testes de software". <br />
+                <strong>Detalhes Técnicos:</strong> "Os critérios de aceitação devem incluir o nome da tabela do banco de dados e a linguagem de
+                programação a ser utilizada". <br />
                 <span
                   class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
                   >Falso!</span
                 >
-                O BDD é uma <strong>Metodologia/Prática Ágil</strong> de colaboração. A automação é apenas um efeito colateral valioso alcançado
-                através de ferramentas de apoio (como o Cucumber).
+                Os critérios devem focar na <strong>intenção do usuário</strong> e no comportamento do sistema (O Quê). Não devem ditar o design
+                técnico interno (O Como).
               </li>
             </ul>
           </div>
         </section>
       </div>
 
-      <!-- ==========================================
-             ABA 2: TEORIA APROFUNDADA
-             ========================================== -->
       <div id="tab-2" class="tab-content space-y-8">
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            1. A Origem e o Propósito do BDD
+            1. A Importância na Engenharia de Requisitos
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              O BDD foi concebido por <strong>Dan North</strong> em 2003 como uma resposta à confusão generalizada sobre o TDD. Os programadores que
-              tentavam adotar o TDD tinham sempre a mesma dúvida: <em>"Por onde eu começo a testar? O que eu devo testar e o que não devo?"</em>
+              Na Engenharia de Software Tradicional, a validação do software era feita no final do ciclo de vida, comparando o produto com um
+              documento de requisitos de 500 páginas. Nas metodologias ágeis (Scrum, XP), os requisitos são ágeis e conversacionais (Histórias de
+              Usuário).
             </p>
             <p>
-              Dan North percebeu que o nome "Teste" assustava as pessoas de negócio. Ele sugeriu mudar o foco: em vez de escrever testes que
-              verifiquem a lógica interna do código, devíamos escrever especificações sobre o <strong>Comportamento (Behavior)</strong> que o sistema
-              deve apresentar.
+              No entanto, uma História de Usuário (ex: <em>"Como cliente, quero pagar com cartão"</em>) é propositalmente vaga. É apenas uma "promessa
+              de conversa". Como o programador sabe se deve aceitar Visa, Mastercard ou American Express? É aqui que entram os
+              <strong>Critérios de Aceitação</strong>.
             </p>
-            <p>
-              Assim, o BDD visa <span class="hl-green">eliminar o fosso de comunicação entre os envolvidos (negócios e TI)</span>, garantindo que o
-              software construído seja exatamente o que trará valor ao cliente.
-            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 rounded border-l-4 border-violet-500 mt-4">
+              <strong class="text-violet-800 dark:text-violet-300">Benefícios Primários:</strong>
+              <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                <li>
+                  <strong>Remover Ambiguidade:</strong> Garantem que o cliente e o desenvolvedor têm exatamente a mesma visão sobre a funcionalidade.
+                </li>
+                <li>
+                  <strong>Definir Limites:</strong> Evitam o <em>Scope Creep</em> (aumento de escopo descontrolado). O programador não fará mais do
+                  que o estritamente definido nos critérios.
+                </li>
+                <li>
+                  <strong>Base para Testes:</strong> Formam o alicerce para a equipe de QA (Quality Assurance) criar os seus scripts/roteiros de
+                  testes manuais ou automatizados (ATDD).
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            2. Os "Três Amigos" (The Three Amigos)
+            2. Definition of Done (DoD) vs Acceptance Criteria (AC)
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <p>
-              Este é um conceito central da adoção de BDD em equipas Ágeis (muito cobrado). Refere-se à reunião essencial que deve acontecer
-              <strong>antes</strong> de uma linha de código ser escrita. Envolve três perspetivas cruciais:
-            </p>
+            <p>Este é o tópico teórico mais explorado nos concursos de TI. É essencial entender a natureza hierárquica e a abrangência de cada um.</p>
 
-            <ul class="list-none space-y-4 mt-4">
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">👔</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz do Negócio (Product Owner / Cliente):</strong><br />
-                  Define <em>qual problema estamos a tentar resolver</em>. Qual é a regra de negócio e as exceções.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">💻</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Tecnologia (Developer):</strong><br />
-                  Propõe <em>como podemos construir isso</em> tecnicamente e aponta as limitações do sistema atual.
-                </div>
-              </li>
-              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 flex items-start gap-4">
-                <span class="text-3xl">🕵️</span>
-                <div>
-                  <strong class="text-violet-600 dark:text-violet-400">A Voz da Qualidade (QA / Tester):</strong><br />
-                  Traz o ceticismo. Pergunta <em>"E o que acontece se der errado?"</em>, explorando os casos extremos (Edge Cases) que o negócio e o
-                  desenvolvedor esqueceram.
-                </div>
-              </li>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Definition of Done (DoD) - A Qualidade Global</h3>
+            <p>
+              A "Definição de Pronto" é um acordo compartilhado por toda a equipe Scrum sobre o que significa um trabalho estar finalizado com
+              qualidade. Ela é <span class="hl-green">universal para a Sprint</span>. Quer a equipe esteja desenvolvendo a funcionalidade de Login ou
+              a funcionalidade de Carrinho de Compras, as regras do DoD aplicam-se a ambas.
+            </p>
+            <ul class="list-[circle] pl-6 space-y-1 text-sm mt-2 mb-4">
+              <li>Ex: "Todo o código tem que ter testes unitários com 80% de cobertura."</li>
+              <li>Ex: "O código tem que passar no pipeline de CI/CD sem erros."</li>
+              <li>Ex: "A documentação da API tem que ser atualizada no Swagger."</li>
             </ul>
-            <p class="mt-2 text-sm font-semibold">
-              Juntos, estes "três amigos" escrevem os cenários em Gherkin, garantindo um entendimento perfeito e unificado do requisito antes do
-              desenvolvimento iniciar.
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              Acceptance Criteria (AC) - O Escopo Local
+            </h3>
+            <p>
+              Os Critérios de Aceitação são os requisitos de negócio inerentes a
+              <span class="hl-yellow">uma única História de Usuário específica</span>. Eles não se aplicam a outras histórias.
+            </p>
+            <ul class="list-[circle] pl-6 space-y-1 text-sm mt-2">
+              <li>Para a História de Login: "A senha deve ter letras maiúsculas e minúsculas."</li>
+              <li>Para a História de Carrinho: "O carrinho deve esvaziar automaticamente após 24 horas de inatividade."</li>
+            </ul>
+
+            <p class="font-bold text-violet-700 dark:text-violet-400 mt-4 text-center bg-slate-50 dark:bg-slate-900 p-3 rounded">
+              "Para uma História ser considerada DONE, ela tem que cumprir todos os seus Critérios de Aceitação E também cumprir a Definition of Done
+              da equipe."
             </p>
           </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            3. Linguagem Ubíqua e Documentação Viva
-          </h2>
-          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-violet-500 pl-3">
-              Linguagem Ubíqua (Ubiquitous Language)
-            </h3>
-            <p>
-              Conceito herdado do <em>Domain-Driven Design (DDD)</em>. É a prática de usar a <strong>mesma terminologia</strong> em todos os lugares:
-              nas conversas, nos documentos de requisitos e no código-fonte. Se a área de negócios fala em "Apólice", o programador não pode chamar a
-              classe no código de "Contrato_Seguro". O BDD força o uso da linguagem ubíqua nos testes Gherkin.
-            </p>
-
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
-              Documentação Viva (Living Documentation)
-            </h3>
-            <p>
-              No modelo tradicional em Cascata (Waterfall), a especificação do sistema fica num documento Word de 300 páginas que apodrece e fica
-              obsoleto no momento em que o software entra em produção, pois as mudanças feitas no código não são refletidas no documento.
-            </p>
-            <p>
-              No BDD, a especificação Gherkin (<span class="hl-yellow">Given / When / Then</span>) é executada diretamente pelo sistema de automação
-              (ex: Cucumber) toda vez que o código muda.
-              <span class="hl-green">Se o comportamento do código mudar e não atualizar o Gherkin, o sistema "parte" e bloqueia o deploy</span>.
-              Portanto, o documento Gherkin funciona como uma documentação do sistema 100% confiável, sempre atualizada e validada.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
-            4. Ferramentas Típicas de BDD
+            3. Características de um Bom Critério de Aceitação
           </h2>
           <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>
-              Para a prova, é útil reconhecer o nome das ferramentas de mercado que transformam o texto em inglês/português do Gherkin num teste
-              automatizado real:
+              As bancas de concurso podem avaliar se um determinado cenário apresentado na prova seria considerado um bom critério de aceitação.
+              Lembre-se destas regras:
             </p>
-            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
               <li>
-                <strong class="text-emerald-600 dark:text-emerald-400">Cucumber:</strong> A mais famosa ferramenta de BDD do mundo, originada no Ruby
-                e suporta dezenas de linguagens (Java, JS).
+                <strong class="text-slate-800 dark:text-white">Não ambíguo e Testável:</strong> Um critério como
+                <em>"O sistema tem que ser rápido"</em> é péssimo (o que é rápido?). Um bom critério diz:
+                <em>"A pesquisa de produtos tem que retornar o resultado em menos de 2 segundos"</em>. Tem que poder ser testado como Verdadeiro ou
+                Falso.
               </li>
               <li>
-                <strong class="text-blue-600 dark:text-blue-400">SpecFlow:</strong> A equivalente oficial do Cucumber para o ecossistema Microsoft
-                .NET (C#).
+                <strong class="text-slate-800 dark:text-white">Perspectiva do Usuário:</strong> Deve ser focado no resultado esperado por quem usa o
+                software, e não em como o código foi implementado.
               </li>
-              <li><strong class="text-yellow-600 dark:text-yellow-500">Behave:</strong> Ferramenta popular para o ecossistema Python.</li>
               <li>
-                <strong class="text-violet-600 dark:text-violet-400">JBehave:</strong> Uma das primeiras frameworks BDD, criada pelo próprio Dan North
-                para o mundo Java.
+                <strong class="text-slate-800 dark:text-white">Cobre Casos Positivos e Negativos:</strong> Não deve focar apenas no "Caminho Feliz".
+                Deve incluir cenários de erro (Ex:
+                <em>"Se o usuário inserir um cartão de crédito expirado, o sistema exibe a mensagem de Erro X"</em>).
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white">Escrito Antes do Desenvolvimento:</strong> Tal como nas práticas TDD e ATDD, os
+                critérios de aceitação devem estar claramente definidos <strong>antes</strong> do desenvolvedor escrever a primeira linha de código
+                (geralmente definidos na reunião de Planejamento da Sprint ou no Refinamento).
               </li>
             </ul>
           </div>
