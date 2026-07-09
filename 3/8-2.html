@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Build, Testes e Deploy Automatizados</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
+          Engenharia de Software • DevOps
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Build, Testes e Deploy Automatizados
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">⚡</span> A Tríade da Automação (O Fim do "Na minha máquina funciona")
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <div class="border-t-4 border-sky-500 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-b-lg shadow-sm text-center">
+              <div class="text-3xl mb-2">🔨</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">1. Build</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Pega no código-fonte, descarrega as bibliotecas externas (dependências), compila tudo e gera um pacote executável fechado (ex: .JAR ou
+                imagem Docker).
+              </p>
+            </div>
+            <div class="border-t-4 border-fuchsia-500 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-b-lg shadow-sm text-center">
+              <div class="text-3xl mb-2">🧪</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">2. Teste</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Executa as rotinas de verificação sem cliques humanos. Avalia regras de negócio, performance e segurança. Se 1 falhar, todo o processo
+                é abortado.
+              </p>
+            </div>
+            <div class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-b-lg shadow-sm text-center">
+              <div class="text-3xl mb-2">🚀</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">3. Deploy</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Pega no pacote aprovado (Build) e instala-o nos servidores, banco de dados ou nuvem, substituindo a versão antiga de forma automática
+                e silenciosa.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela de Ferramentas -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧰 Sopa de Letrinhas das Bancas (Mapeamento de Ferramentas)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Fase da Esteira</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-violet-600 dark:text-violet-400">
+                    Ferramentas de Mercado
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Objetivo Técnico</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Automação de Build</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
+                    Maven, Gradle, npm, Webpack, MSBuild
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Resolver dependências, compilar e empacotar (JAR, WAR).
+                  </td>
+                </tr>
+                <tr class="bg-violet-50/50 dark:bg-violet-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Automação de Testes
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
+                    JUnit, Selenium, Jest, SonarQube
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Verificar unidade, integração, UI e análise estática (SAST).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Orquestração (O "Chefe")
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-violet-600 dark:text-violet-400">
+                    Jenkins, GitLab CI, GitHub Actions, Bamboo
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Ligar as fases. Chama o Maven, depois o JUnit, depois faz o Deploy.
+                  </td>
+                </tr>
+                <tr class="bg-violet-50/50 dark:bg-violet-900/10">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Automação de Infra/Deploy</td>
+                  <td class="p-4 font-bold text-violet-600 dark:text-violet-400">Ansible, Terraform, Docker, Kubernetes</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">Infraestrutura como Código (IaC) e orquestração de containers.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Build é apenas Compilar o Código?</strong> A banca afirma: "A fase de build consiste unicamente na compilação do código-fonte
+                para binário, não incluindo bibliotecas externas". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Ferramentas de automação de Build (como o <strong>Maven</strong>) fazem muito mais. Elas resolvem e baixam dependências (bibliotecas
+                na internet), limpam pastas antigas, compilam, e geram o empacotamento final (artefato), como um arquivo `.jar`.
+              </li>
+              <li>
+                <strong>Deploy manual evita falhas?</strong> "O deploy manual é recomendado em ambientes críticos bancários, pois o analista pode
+                inspecionar o servidor, o que torna o processo menos propenso a erros do que scripts cegos". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                É exatamente o contrário! O <strong>erro humano</strong> é a maior causa de quedas de sistemas (esquecer de rodar um script de banco,
+                copiar a pasta errada). O deploy automatizado garante 100% de repetibilidade e previsibilidade. A máquina não esquece passos.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Automação de Build e Imutabilidade
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No passado, a geração da versão do software dependia da máquina do desenvolvedor ("Na minha máquina compila!"). O desenvolvedor
+              compilava o código na sua IDE (Eclipse/Visual Studio), gerava o pacote e mandava por e-mail para o administrador do servidor. Isso
+              gerava o famoso problema de diferenças de ambiente (versão do Java diferente, bibliotecas diferentes).
+            </p>
+            <p>
+              A <strong>Automação de Build</strong> centraliza este processo usando arquivos de configuração como o <code>pom.xml</code> (Maven) ou
+              <code>package.json</code> (NPM). O servidor de CI (Jenkins) baixa o código "puro" do Git, lê esse arquivo e baixa exatamente as mesmas
+              dependências sempre, gerando um <strong class="text-violet-600 dark:text-violet-400">Artefato Imutável</strong>.
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 border border-violet-200 dark:border-violet-800 rounded mt-4 text-sm">
+              <strong>Princípio de Prova (Imutabilidade):</strong> O artefato (ex: a imagem Docker) gerado na fase de Build é único. É exatamente o
+              mesmo artefato físico que passará pela fase de Testes, de Homologação e de Produção. Você nunca deve compilar o código de novo no meio
+              do pipeline, pois isso poderia gerar um binário diferente.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Automação de Testes na Esteira (Fail Fast)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando automatizamos testes dentro do pipeline CI/CD, o objetivo primário é o <strong>Feedback Loop Curto</strong>. A filosofia DevOps
+              utiliza o conceito de <span class="hl-red">Fail Fast</span> (Falhe Rápido).
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-4">
+              <li>Se um desenvolvedor introduziu um bug crítico, não queremos descobrir isso daqui a uma semana no Teste de Aceitação manual.</li>
+              <li>A automação roda milhares de testes unitários (JUnit) nos <strong>primeiros 2 minutos</strong> após o envio do código.</li>
+              <li>
+                Se houver falha, a automação para imediatamente a esteira (conhecido como <em>Andon Cord</em> na cultura Lean), impedindo que um
+                software quebrado avance para a fase de empacotamento ou deploy.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Estratégias de Deploy Automatizado (Foco FGV/CEBRASPE)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Automatizar o Deploy (a implantação) é o ato de colocar o software no servidor sem intervenção manual, usando scripts ou ferramentas
+              como <strong>Ansible, Terraform ou Kubernetes</strong>. No entanto, as bancas adoram cobrar as <em>Estratégias Avançadas</em> que
+              permitem lançar uma versão nova sem que o usuário perceba que o servidor foi reiniciado (Zero Downtime).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A. Blue-Green Deployment</h3>
+            <p>
+              A equipe mantém <strong>dois ambientes de produção idênticos</strong>. O ambiente Azul (ativo, com os usuários) e o Verde (ocioso). O
+              deploy automatizado joga a versão nova no ambiente Verde. Após testar tudo lá dentro, um "Roteador" (Load Balancer) apenas redireciona o
+              tráfego de usuários do Azul para o Verde. Se der problema crítico, basta virar a chave de volta para o Azul imediatamente (Rollback
+              instantâneo).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">B. Canary Release (Deploy Canário)</h3>
+            <p>
+              Baseado na prática dos mineradores de levar um canário para as minas de carvão. Em vez de mudar 100% dos usuários para a versão nova de
+              uma vez, o deploy automatizado <strong>direciona apenas 5% do tráfego</strong> para os servidores com a versão nova. Se não houver erros
+              na monitoração durante algumas horas, o sistema aumenta automaticamente para 20%, 50% e finalmente 100%. Reduz o "raio de explosão" caso
+              haja um bug oculto.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. O Grande Confronto Teórico: Deploy vs Release
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Embora sejam sinônimos no dia a dia, para as provas de Engenharia de Software Moderna (DevOps), existe uma fronteira clara que deve ser
+              respeitada:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+                <h3 class="font-bold text-violet-700 dark:text-violet-400 mb-2">Deploy (Implantação)</h3>
+                <p class="text-sm">
+                  É um ato <strong>Técnico</strong>. É o processo automatizado de colocar o código/binário no servidor de Produção para que ele rode
+                  na memória. No entanto, esse código pode estar "invisível" para o usuário final.
+                </p>
+              </div>
+              <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+                <h3 class="font-bold text-emerald-700 dark:text-emerald-400 mb-2">Release (Lançamento)</h3>
+                <p class="text-sm">
+                  É um ato de <strong>Negócio</strong>. É o momento em que a funcionalidade é ativada e disponibilizada ao público alvo, gerando
+                  valor. É quando a campanha de marketing acontece.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 border-l-4 border-violet-500 rounded mt-4">
+              <strong class="text-violet-800 dark:text-violet-300 block mb-2">A Mágica do Feature Toggle (Feature Flags)</strong>
+              <p class="text-sm">
+                As empresas conseguem separar o Deploy do Release usando "Feature Toggles". A automação de Deploy joga o código do "Novo Botão de Pix"
+                em produção na segunda-feira. Porém, o código tem um "IF" associado a um painel de controle. O botão fica invisível (apagado). Na
+                sexta-feira, o Diretor de Marketing clica num botão e a funcionalidade acende para todos os usuários (Release).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
+```

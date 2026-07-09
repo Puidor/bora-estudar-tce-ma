@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Métricas de Software</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">Engenharia de Software</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Métricas de Software
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">⚡</span> A Tríade da Medição (Cai muito!)
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            Em provas, as bancas adoram testar se você sabe a diferença exata entre estes três conceitos de Pressman:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+              <h3 class="font-black text-slate-800 dark:text-white mb-1">Medida (Measure)</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">É o valor bruto quantitativo. Uma indicação quantitativa simples.</p>
+              <p class="text-xs font-mono mt-2 bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded inline-block text-slate-600 dark:text-slate-300">
+                Ex: 5.000 linhas de código.
+              </p>
+            </div>
+            <div class="border-t-4 border-t-violet-500 bg-violet-50 dark:bg-violet-900/10 shadow-sm rounded-b-lg p-4">
+              <h3 class="font-black text-violet-800 dark:text-violet-300 mb-1">Métrica (Metric)</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">A relação matemática entre duas medidas. Avalia um atributo do sistema.</p>
+              <p
+                class="text-xs font-mono mt-2 bg-violet-100 dark:bg-violet-900/40 px-1 py-0.5 rounded inline-block text-violet-700 dark:text-violet-300"
+              >
+                Ex: 5 erros por cada mil linhas.
+              </p>
+            </div>
+            <div class="border-t-4 border-t-emerald-500 bg-emerald-50 dark:bg-emerald-900/10 shadow-sm rounded-b-lg p-4">
+              <h3 class="font-black text-emerald-800 dark:text-emerald-300 mb-1">Indicador (Indicator)</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                É uma métrica projetada para <strong>tomada de decisão</strong>. Diz se a meta foi atingida.
+              </p>
+              <p
+                class="text-xs font-mono mt-2 bg-emerald-100 dark:bg-emerald-900/40 px-1 py-0.5 rounded inline-block text-emerald-700 dark:text-emerald-300"
+              >
+                Ex: A qualidade do software caiu.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Análise de Pontos de Função (APF) -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📐 Análise de Pontos de Função (APF)</h2>
+            <p class="text-sm text-slate-400 mt-1">
+              O método oficial do Governo Federal para medir tamanho de software. Baseia-se na <strong>visão do usuário</strong>, e não nas linhas de
+              código (LOC).
+            </p>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-violet-400 uppercase tracking-widest text-xs mb-3 text-center">Os 5 Elementos da APF</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Dados -->
+              <div class="border border-slate-700 p-4 rounded-lg bg-slate-800/50">
+                <h4 class="font-bold text-white mb-2 text-center border-b border-slate-600 pb-1">Funções de DADOS (Armazenamento)</h4>
+                <ul class="space-y-3 text-sm">
+                  <li>
+                    <strong class="text-sky-400">ALI (Arquivo Lógico Interno):</strong> Mantido <strong>dentro</strong> da fronteira da aplicação (Ex:
+                    Tabela de Clientes do seu próprio banco de dados).
+                  </li>
+                  <li>
+                    <strong class="text-sky-400">AIE (Arquivo de Interface Externa):</strong> Apenas lido/referenciado pela aplicação, mas mantido por
+                    um <strong>sistema externo</strong> (Ex: Consultar tabela de CEP dos Correios).
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Transação -->
+              <div class="border border-slate-700 p-4 rounded-lg bg-slate-800/50">
+                <h4 class="font-bold text-white mb-2 text-center border-b border-slate-600 pb-1">Funções de TRANSAÇÃO (Movimento)</h4>
+                <ul class="space-y-3 text-sm">
+                  <li>
+                    <strong class="text-emerald-400">EE (Entrada Externa):</strong> Processa dados vindos de fora para
+                    <strong>alterar/inserir</strong> algo dentro (Ex: Tela de cadastro de produto).
+                  </li>
+                  <li>
+                    <strong class="text-emerald-400">SE (Saída Externa):</strong> Envia dados para fora com
+                    <strong>cálculo ou lógica extra</strong> (Ex: Relatório mensal com somatórios).
+                  </li>
+                  <li>
+                    <strong class="text-emerald-400">CE (Consulta Externa):</strong> Envia dados para fora <strong>sem cálculo</strong> (recuperação
+                    simples). (Ex: Pesquisar nome de um cliente).
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: LOC vs APF -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: LOC vs Pontos de Função</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400">
+                    LOC (Linhas de Código)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    APF (Pontos de Função)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Dependência de Linguagem
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-rose-600 dark:text-rose-400">
+                    Totalmente dependente
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Independente da tecnologia
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Momento de Medição</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Só pode ser medida com precisão no <strong>final</strong> (após codificar).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Pode ser medida no <strong>início</strong> (fase de requisitos).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Visão do Desenvolvedor.</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Visão do Usuário (Valor de negócio).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>LOC (Lines of Code) é boa para comparar equipes?</strong> A banca afirma: "A métrica LOC é ideal para comparar a produtividade
+                entre uma equipe que programa em Assembly e outra em Python". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Uma tela feita em Python pode exigir 20 linhas, enquanto em Assembly exigirá 2.000 linhas. A equipe de Assembly não é 100x mais
+                produtiva. A métrica LOC <strong>penaliza linguagens modernas de alto nível</strong>.
+              </li>
+              <li>
+                <strong>Pontos de Função Complexos?</strong> "Os Pontos de Função avaliam a complexidade algorítmica interna do sistema (ex: cálculos
+                matemáticos avançados no backend)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                APF foca no que o <strong>usuário vê e faz</strong> (Entradas, Saídas, Consultas). Um botão que faz um cálculo matemático assustador
+                de 10 mil linhas, mas que só gera uma saída simples na tela, pode gerar poucos pontos de função, pois a APF ignora complexidade
+                puramente interna de código.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Necessidade das Métricas
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              "Você não pode gerenciar o que não pode medir". As métricas de software servem para estimar custos de projetos, medir a produtividade da
+              equipe, avaliar a qualidade do código e prever prazos de entrega.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
+              Métricas Diretas vs Indiretas
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Métricas Diretas:</strong> Podem ser medidas imediatamente e sem subjetividade. <br /><em
+                  >Exemplos: Linhas de código (LOC), velocidade de execução, tamanho do arquivo executável, número de defeitos relatados.</em
+                >
+              </li>
+              <li>
+                <strong>Métricas Indiretas:</strong> Medem atributos intangíveis da qualidade do software. São derivadas e calculadas. <br /><em
+                  >Exemplos: Usabilidade, confiabilidade, manutenibilidade, complexidade, Pontos de Função.</em
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Complexidade Ciclomática (McCabe)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Criada por Thomas McCabe, a <strong>Complexidade Ciclomática</strong> é uma métrica de software que fornece uma medida quantitativa da
+              complexidade lógica de um programa. As bancas cobram a sua aplicação e a sua fórmula.
+            </p>
+            <p>
+              Ela mede o número de <strong>caminhos lógicos independentes</strong> através de um programa. Quanto maior a complexidade, mais difícil é
+              manter o código e mais testes unitários serão necessários para garantir 100% de cobertura.
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-violet-700 dark:text-violet-400 block mb-2 text-lg">A Fórmula Matemática: V(G) = E - N + 2</strong>
+              <p class="text-sm mb-3">Baseado na Teoria dos Grafos:</p>
+              <ul class="space-y-1 text-sm font-mono bg-white dark:bg-slate-800 p-3 border border-slate-200 dark:border-slate-700 rounded">
+                <li><strong>V(G):</strong> Complexidade Ciclomática do Grafo.</li>
+                <li><strong>E (Edges):</strong> Número de arestas (as setas/ligações).</li>
+                <li><strong>N (Nodes):</strong> Número de nós (os blocos de comando/condições).</li>
+                <li><strong>+ 2:</strong> Constante padrão da fórmula.</li>
+              </ul>
+              <p class="text-xs text-slate-500 italic mt-3">
+                *Macete de Prova: Se houver apenas 1 única estrutura de controle `IF/ELSE` (um nó condicional) no código, a complexidade será 2 (um
+                caminho para o IF, um caminho para o ELSE).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Métricas Orientadas a Objetos (CK Metrics)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Chidamber e Kemerer (CK) propuseram a suíte de métricas mais famosa para avaliar o design de sistemas Orientados a Objetos (OO). Em
+              concursos de alto nível, os nomes das siglas e o que indicam se estiverem "altas" são cobrados.
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="p-3 border-b border-slate-100 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">WMC (Weighted Methods per Class):</strong> Soma da complexidade dos métodos de
+                uma classe. Se o WMC for alto, a classe é complexa, mais propensa a falhas e fere o princípio da responsabilidade única.
+              </li>
+              <li class="p-3 border-b border-slate-100 dark:border-slate-700 bg-red-50 dark:bg-red-900/10 border-l-4 border-l-red-500">
+                <strong class="text-red-700 dark:text-red-400">CBO (Coupling Between Object classes):</strong> Mede o número de outras classes a que
+                uma classe está acoplada (depende). <span class="font-bold uppercase text-xs">Cai muito!</span>
+                <strong>Um CBO alto é péssimo</strong> (alta dependência, difícil de reusar e testar). Lembre-se: queremos sempre
+                <em>Baixo Acoplamento</em>.
+              </li>
+              <li class="p-3 border-b border-slate-100 dark:border-slate-700">
+                <strong class="text-violet-600 dark:text-violet-400">DIT (Depth of Inheritance Tree):</strong> A profundidade da árvore de herança. Se
+                for muito alta, há maior reuso de código, mas o sistema fica super complexo para entender ("quem herdou de quem?").
+              </li>
+              <li class="p-3">
+                <strong class="text-violet-600 dark:text-violet-400">LCOM (Lack of Cohesion in Methods):</strong> Falta de Coesão. Mede quão
+                independentes são os métodos dentro de uma mesma classe. Se o LCOM for alto, a classe não é coesa e provavelmente deveria ser dividida
+                em duas.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Aprofundando em Pontos de Função (APF)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A APF é a métrica padrão para contratos de software no governo. O processo de medição (definido pelo IFPUG) é complexo, mas as provas
+              focam nas definições dos Tipos de Função.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A. Funções de Dados (Arquivos lógicos)</h3>
+            <ul class="list-disc pl-6 space-y-2 text-sm">
+              <li>
+                <strong>ALI (Arquivo Lógico Interno):</strong> Grupo lógico de dados mantido por dentro da fronteira da aplicação. (Ex: A tabela de
+                "Funcionários" onde o seu sistema faz Insert/Update/Delete).
+              </li>
+              <li>
+                <strong>AIE (Arquivo de Interface Externa):</strong> Grupo lógico de dados referenciado pela sua aplicação, mas
+                <em>mantido dentro da fronteira de outra aplicação externa</em>. (Ex: O seu sistema consulta a cotação do Dólar no sistema do Banco
+                Central).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">B. Funções de Transação (O que o usuário faz)</h3>
+            <ul class="list-disc pl-6 space-y-2 text-sm mb-4">
+              <li>
+                <strong>EE (Entrada Externa):</strong> Processa dados que vêm de fora para dentro. O objetivo primário é
+                <strong>manter um ALI</strong> (fazer Insert, Update ou Delete) ou alterar o comportamento do sistema.
+              </li>
+              <li>
+                <strong>SE (Saída Externa):</strong> Envia dados para fora. O objetivo primário é apresentar informações ao usuário,
+                <strong>contendo obrigatoriamente lógica de processamento extra</strong> ou cálculos matemáticos (ex: Um relatório financeiro com
+                totais e subtotais).
+              </li>
+              <li>
+                <strong>CE (Consulta Externa):</strong> Envia dados para fora, mas <strong>SEM conter lógica de processamento extra</strong>. O
+                objetivo primário é a simples recuperação (SELECT) de dados que já estão guardados. (Ex: Digitar um nome e a tela mostrar os dados do
+                cliente).
+              </li>
+            </ul>
+
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 border border-violet-200 dark:border-violet-800 rounded mt-4 text-sm font-medium">
+              <strong>Passo Final da Contagem:</strong> Depois de identificar as funções, analisa-se a complexidade de cada uma delas (Baixa, Média ou
+              Alta) com base na quantidade de campos (DER) e arquivos referenciados (ALR). Cada nível de complexidade atribui um peso numérico. A soma
+              gera os <em>Pontos de Função Não Ajustados</em>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

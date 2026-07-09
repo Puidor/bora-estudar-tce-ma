@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Pipelines de CI/CD</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
+          Engenharia de Software • DevOps
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Pipelines de CI/CD
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>O Pipeline:</strong> É uma "esteira de montagem" virtual. Uma sequência de scripts e ferramentas automatizadas que pegam o
+              código-fonte escrito pelo desenvolvedor e o transportam, passo a passo, até os servidores de produção.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-violet-500 before:rounded-full"
+            >
+              <strong>O Objetivo:</strong> Eliminar o erro humano, reduzir o tempo entre a criação de uma funcionalidade e sua disponibilização ao
+              cliente (<i>Time to Market</i>) e permitir lançamentos frequentes e seguros.
+            </li>
+          </ul>
+        </section>
+
+        <!-- O Grande Confronto (Foco de Prova) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-violet-800 dark:bg-violet-900 p-4 border-b border-violet-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚔️ O Confronto: CI vs CD vs CD</h2>
+            <span class="bg-yellow-400 text-violet-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-1/4">Sigla / Nome</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-2/4">O que faz no Pipeline?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-1/4">Gatilho (Trigger)</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-sky-600 dark:text-sky-400">
+                    CI<br /><span class="text-xs text-slate-500 font-normal">Continuous Integration</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Desenvolvedores enviam o código para o repositório central várias vezes ao dia. O servidor
+                    <strong>compila (Build) e roda Testes Unitários</strong> automaticamente.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Automático a cada Commit
+                  </td>
+                </tr>
+                <tr class="bg-violet-50/50 dark:bg-violet-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    CD<br /><span class="text-xs text-slate-500 font-normal">Continuous Delivery</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    O código testado é empacotado e fica "pronto para produção" num ambiente de homologação. Mas a ida para Produção
+                    <strong>exige aprovação humana</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-amber-600 dark:text-amber-500">
+                    Manual (Aprovação / Clique)
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    CD<br /><span class="text-xs text-slate-500 font-normal">Continuous Deployment</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    O nível máximo. Se passar em todos os testes, o código vai para o servidor de Produção (para o cliente final)
+                    <strong>sem nenhuma intervenção humana</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    100% Automático
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Representação Gráfica do Pipeline -->
+        <section class="bg-slate-50 dark:bg-slate-900/50 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 overflow-hidden">
+          <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-6 text-center">A Esteira CI/CD Típica</h2>
+
+          <div class="flex flex-col md:flex-row items-center md:items-stretch justify-center gap-2">
+            <!-- FASE CI -->
+            <div
+              class="flex flex-col items-center flex-1 bg-sky-100 dark:bg-sky-900/30 p-4 rounded-lg border border-sky-200 dark:border-sky-800 w-full md:w-auto"
+            >
+              <span class="font-black text-sky-800 dark:text-sky-300 text-sm mb-3 uppercase tracking-wider">Fase CI</span>
+              <div class="flex flex-wrap justify-center gap-2">
+                <div class="bg-white dark:bg-slate-800 px-3 py-2 rounded shadow-sm text-xs font-bold text-slate-700 dark:text-slate-200">
+                  Commit (Git)
+                </div>
+                <div class="text-sky-400 mt-2">➔</div>
+                <div class="bg-white dark:bg-slate-800 px-3 py-2 rounded shadow-sm text-xs font-bold text-slate-700 dark:text-slate-200">Build</div>
+                <div class="text-sky-400 mt-2">➔</div>
+                <div class="bg-white dark:bg-slate-800 px-3 py-2 rounded shadow-sm text-xs font-bold text-slate-700 dark:text-slate-200">
+                  Testes Unit.
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:flex text-slate-400 font-bold text-xl mt-8">➔</div>
+
+            <!-- FASE CD (Delivery) -->
+            <div
+              class="flex flex-col items-center flex-1 bg-indigo-100 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 w-full md:w-auto"
+            >
+              <span class="font-black text-indigo-800 dark:text-indigo-300 text-sm mb-3 uppercase tracking-wider">Fase CD (Delivery)</span>
+              <div class="flex flex-wrap justify-center gap-2">
+                <div class="bg-white dark:bg-slate-800 px-3 py-2 rounded shadow-sm text-xs font-bold text-slate-700 dark:text-slate-200">
+                  Testes Aceitação
+                </div>
+                <div class="text-indigo-400 mt-2">➔</div>
+                <div class="bg-white dark:bg-slate-800 px-3 py-2 rounded shadow-sm text-xs font-bold text-slate-700 dark:text-slate-200">
+                  Staging (HML)
+                </div>
+                <div class="text-indigo-400 mt-2">➔</div>
+                <div
+                  class="bg-amber-100 dark:bg-amber-900/50 px-3 py-2 rounded shadow-sm text-xs font-bold text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-600"
+                >
+                  Aprovação Manual
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:flex text-slate-400 font-bold text-xl mt-8">➔</div>
+
+            <!-- FASE CD (Deployment) -->
+            <div
+              class="flex flex-col items-center bg-emerald-100 dark:bg-emerald-900/30 p-4 rounded-lg border border-emerald-200 dark:border-emerald-800 w-full md:w-auto"
+            >
+              <span class="font-black text-emerald-800 dark:text-emerald-300 text-sm mb-3 uppercase tracking-wider">Fase CD (Deployment)</span>
+              <div
+                class="bg-white dark:bg-slate-800 px-4 py-3 rounded shadow-sm text-sm font-bold text-emerald-600 dark:text-emerald-400 border-l-4 border-emerald-500"
+              >
+                Produção (Live)
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Confusão da Ferramenta:</strong> A banca vai jurar que "O CI/CD é um framework de software vendido por fornecedores Cloud
+                que substitui o Agile". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                CI/CD não é um software, é uma <strong>PRÁTICA</strong> (ou conjunto de práticas) da cultura DevOps. Ele se <em>apoia</em> em
+                ferramentas (como Jenkins, GitLab CI), mas é essencialmente um método de trabalho.
+              </li>
+              <li>
+                <strong>Deployment Anula Delivery?</strong> "A Implantação Contínua (Continuous Deployment) substitui a Entrega Contínua (Continuous
+                Delivery)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A Implantação Contínua é uma <strong>extensão natural</strong> da Entrega Contínua. Para você ter o *Deployment* (automatizar até o
+                final), você *precisa* ter o *Delivery* funcionando (ter os pacotes sempre prontos e testados). Uma engloba a outra.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Gênese: Integração Contínua (CI)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente (no modelo Cascata), a "fase de integração" era o pior momento do projeto ("Integration Hell"). O Desenvolvedor A
+              trabalhava isolado por 3 meses, o Desenvolvedor B também. Quando juntavam os códigos, nada funcionava.
+            </p>
+            <p>
+              A <strong>Integração Contínua (CI)</strong> é a prática ágil (nascida no <em>Extreme Programming - XP</em>) onde os desenvolvedores
+              submetem seus códigos para um repositório central (ex: Git) frequentemente (várias vezes ao dia).
+            </p>
+            <div class="bg-violet-50 dark:bg-violet-900/10 p-4 border border-violet-200 dark:border-violet-800 rounded mt-4">
+              <strong class="text-violet-800 dark:text-violet-300 block mb-2">A Mágica da Automação (O Build Server):</strong>
+              <p class="text-sm">
+                Sempre que um desenvolvedor faz um "push" (envia o código), um servidor de CI (como Jenkins ou GitHub Actions) "acorda". Ele faz o
+                download desse código, <strong>compila (Build)</strong> para ver se há erros de sintaxe, e imediatamente roda uma bateria de
+                <strong>Testes Unitários Automatizados</strong>. Se um único teste falhar, o servidor "quebra a esteira" (Build Failed) e notifica o
+                desenvolvedor na hora.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Entrega Contínua (Continuous Delivery - CD)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A Entrega Contínua (Delivery) começa exatamente onde a Integração Contínua (CI) termina.</p>
+            <p>
+              O CI garantiu que o código compila e passa nos testes básicos. O *Continuous Delivery* pega esse código, empacota e realiza o deploy
+              dele em <strong>ambientes de homologação ou teste de aceite (Staging)</strong>. Ali rodam os testes mais pesados (Integração,
+              Segurança/SonarQube, Carga, Aceitação do Usuário).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-violet-500 pl-3">
+              A Palavra-Chave para Provas: Aprovação Humana
+            </h3>
+            <p>
+              No *Continuous Delivery*, a aplicação está 100% testada e tecnicamente pronta para ir para as mãos do cliente (Produção).
+              <span class="hl-red">Mas ela NÃO vai automaticamente</span>.
+            </p>
+            <p>
+              Existe uma decisão de negócios envolvida. O Gerente de TI ou o Product Owner avalia e dá um
+              <strong>clique manual (Aprovação)</strong> para liberar a versão para o público. A equipe pode liberar várias vezes por dia, ou segurar
+              para lançar apenas na sexta-feira.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Implantação Contínua (Continuous Deployment - CD)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Este é o "Nirvana" do DevOps (praticado por empresas como Amazon, Netflix e Google).</p>
+            <p>
+              O <em>Continuous Deployment</em> (Implantação Contínua) remove completamente a necessidade de aprovação humana do pipeline. A regra é
+              puramente cibernética:
+              <span class="hl-green"
+                >Se o código que o desenvolvedor enviou (commit) passar limpo por 100% da bateria de testes automatizados, ele é publicado nos
+                servidores de Produção reais instantaneamente</span
+              >.
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-slate-800 dark:text-white block mb-2">Por que fazer isso?</strong>
+              <ul class="list-disc pl-6 text-sm space-y-2">
+                <li>
+                  <strong>Feedback Imediato:</strong> O desenvolvedor faz a feature de manhã e na hora do almoço clientes reais já estão usando e
+                  gerando métricas.
+                </li>
+                <li>
+                  <strong>Risco Menor:</strong> Parece contraintuitivo, mas enviar 10 pequenas alterações para produção por dia é muito menos
+                  arriscado do que juntar tudo e enviar 300 alterações gigantescas num único fim de semana (onde, se quebrar, ninguém sabe qual das
+                  300 causou o erro).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Benefícios e Desafios (Visão da Banca)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>As provas não cobram apenas o "O Quê", mas também os "Porquês". Fique atento a estas justificativas teóricas:</p>
+
+            <ul class="list-none space-y-4 mt-4 text-sm">
+              <li class="p-3 border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/10 rounded">
+                <strong class="text-emerald-800 dark:text-emerald-400 text-base">Vantagem: Redução do MTTR (Mean Time To Recovery)</strong><br />
+                Em ambientes de CD rigoroso, se um bug grave entra em produção, a esteira é tão rápida e automatizada que a equipe consegue codificar
+                a correção (patch) e enviá-la para produção em minutos, e não em semanas.
+              </li>
+              <li class="p-3 border-l-4 border-rose-500 bg-rose-50 dark:bg-rose-900/10 rounded">
+                <strong class="text-rose-800 dark:text-rose-400 text-base">Desafio: Cultura de Testes Inabalável</strong><br />
+                Você não pode ter <em>Continuous Deployment</em> (automático) se os seus testes automatizados não forem perfeitos. Se o teste não pega
+                o bug, a esteira envia o bug diretamente para o cliente. A maturidade exigida (como o uso forte do TDD abordado no item 3.2 do seu
+                edital) é o maior obstáculo para as empresas.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

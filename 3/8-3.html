@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Docker e Kubernetes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Violet */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8b5cf6;
+        border-radius: 4px;
+      } /* Violet-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #5b21b6;
+      } /* Violet-800 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 tracking-wider uppercase mb-2">
+          Engenharia de Software • DevOps
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-violet-500 pb-2 inline-block">
+          Docker e Orquestração com Kubernetes
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-violet-600 border-b-2 border-violet-600 dark:text-violet-400 dark:border-violet-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">⚡</span> Direto ao Ponto: O Motor vs O Maestro
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-2">
+                <span class="text-xl">🐳</span> Docker (O Motor)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Foca no <strong>empacotamento e execução individual</strong>. Ele cria a imagem e roda o contêiner numa única máquina.
+              </p>
+            </div>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-indigo-800 dark:text-indigo-300 mb-2 flex items-center gap-2">
+                <span class="text-xl">☸️</span> Kubernetes (O Maestro)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Foca na <strong>orquestração em cluster</strong>. Ele espalha, escala, reinicia e monitora milhares de contêineres através de
+                múltiplas máquinas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Arquitetura do Kubernetes -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧠 Arquitetura do Kubernetes (K8s)</h2>
+            <p class="text-sm text-slate-400 mt-1">Sempre dividido em duas grandes áreas físicas/lógicas.</p>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Control Plane -->
+              <div class="border border-violet-500/50 bg-violet-900/20 p-4 rounded-lg">
+                <h3 class="font-black text-violet-400 mb-3 border-b border-violet-500/30 pb-2 uppercase tracking-wide">1. Control Plane (Master)</h3>
+                <p class="text-xs text-slate-400 mb-3">O Cérebro. Toma as decisões globais sobre o cluster.</p>
+                <ul class="space-y-2 text-sm">
+                  <li><strong class="text-white">kube-apiserver:</strong> A "porta da frente". Todos os comandos passam por ele.</li>
+                  <li><strong class="text-white">etcd:</strong> O banco de dados chave-valor que guarda o "estado desejado" do cluster.</li>
+                  <li><strong class="text-white">kube-scheduler:</strong> Decide em qual "Nó" um novo Pod deve rodar.</li>
+                  <li>
+                    <strong class="text-white">kube-controller-manager:</strong> Fiscaliza se o estado atual é igual ao estado desejado (ex: mantendo
+                    as 3 réplicas exigidas).
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Data Plane -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-4 rounded-lg">
+                <h3 class="font-black text-emerald-400 mb-3 border-b border-emerald-500/30 pb-2 uppercase tracking-wide">
+                  2. Worker Nodes (Nós Operários)
+                </h3>
+                <p class="text-xs text-slate-400 mb-3">As máquinas onde as aplicações realmente rodam.</p>
+                <ul class="space-y-2 text-sm">
+                  <li>
+                    <strong class="text-white">kubelet:</strong> O agente/capataz. Garante que os contêineres estão rodando corretamente dentro de um
+                    Pod e avisa o Master.
+                  </li>
+                  <li>
+                    <strong class="text-white">kube-proxy:</strong> Gerencia as regras de rede (networking) e roteamento de tráfego para os Pods.
+                  </li>
+                  <li><strong class="text-white">Container Runtime:</strong> O motor de execução de fato (ex: Docker, containerd).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Objetos do Kubernetes -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-violet-500 text-2xl">📦</span> Objetos do Kubernetes (Core Decoreba)
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="border-t-4 border-rose-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">1. Pod</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                A <strong class="text-rose-600 dark:text-rose-400">menor unidade</strong> criável no K8s. É uma "capsula" que empacota um ou mais
+                contêineres. Compartilham o mesmo IP interno.
+              </p>
+            </div>
+            <div class="border-t-4 border-amber-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">2. ReplicaSet</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Garante que um <strong class="text-amber-600 dark:text-amber-500">número fixo de cópias</strong> (réplicas) de um Pod esteja sempre
+                rodando. Se um cair, ele levanta outro.
+              </p>
+            </div>
+            <div class="border-t-4 border-indigo-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">3. Deployment</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Objeto superior que gerencia ReplicaSets. Permite fazer
+                <strong class="text-indigo-600 dark:text-indigo-400">atualizações seguras (Rolling Updates)</strong> de uma versão velha para uma
+                nova.
+              </p>
+            </div>
+            <div class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm text-center">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">4. Service</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Um IP estático e roteador interno. Serve como "Porta de entrada" fixa,
+                <strong class="text-emerald-600 dark:text-emerald-400">distribuindo o tráfego</strong> para os Pods (que nascem e morrem com IPs
+                dinâmicos o tempo todo).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Unidade Básica do K8s:</strong> A banca vai jurar que "A menor unidade gerenciável dentro do Kubernetes é o Contêiner
+                Docker". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso! Absolutamente Falso!</span
+                >
+                O Kubernetes <strong>NÃO</strong> gerencia contêineres diretamente. A sua menor unidade de controle é o <strong>POD</strong>. O K8s
+                cria um Pod, e o contêiner roda lá dentro.
+              </li>
+              <li>
+                <strong>Docker vs Virtual Machine:</strong> "Contêineres Docker são máquinas virtuais completas, por isso precisam ter um Sistema
+                Operacional próprio instalado (Guest OS)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Diferente das VMs, os contêineres <strong class="underline decoration-red-500">compartilham o mesmo Kernel (núcleo)</strong> do
+                sistema operacional hospedeiro. Eles não possuem SO próprio emulado, o que os torna muito mais leves e rápidos que as VMs
+                tradicionais.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos do Docker
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A frase de terror das equipes de desenvolvimento sempre foi: <span class="hl-red">"Mas na minha máquina funciona!"</span>. O código
+              funcionava no notebook do desenvolvedor porque ele tinha as versões exatas do Java e de bibliotecas específicas, mas quando ia para o
+              servidor, quebrava.
+            </p>
+            <p>
+              O <strong>Docker</strong> resolveu isso criando a <strong>Conteinerização</strong>. Ele empacota o código junto com todas as
+              bibliotecas, dependências e configurações necessárias num pacote isolado. A promessa é a portabilidade: se rodar no Docker do
+              desenvolvedor, vai rodar exatamente da mesma forma no servidor de produção.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              A Mágica do Isolamento no Linux
+            </h3>
+            <p>Como os contêineres não instalam um SO completo, como eles ficam isolados uns dos outros?</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <strong>cgroups (Control Groups):</strong> Limita os recursos físicos. O Docker diz ao Kernel: "Este contêiner só pode usar 500MB de
+                RAM e 10% da CPU".
+              </li>
+              <li>
+                <strong>Namespaces:</strong> Cria o isolamento lógico. Engana o contêiner fazendo-o acreditar que ele tem o seu próprio disco rígido,
+                sua própria rede e seus próprios processos, impedindo-o de enxergar arquivos de outros contêineres na mesma máquina.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-blue-500 pl-3">
+              Vocabulário Docker (Core Decoreba)
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Dockerfile:</strong> É o arquivo de texto (receita de bolo) que contém os comandos para criar uma imagem.</li>
+              <li>
+                <strong>Image (Imagem):</strong> É o pacote final gerado. Possui uma arquitetura de "Camadas" (Layers) e é
+                <span class="hl-yellow">somente-leitura (imutável)</span>.
+              </li>
+              <li>
+                <strong>Container:</strong> É a imagem quando colocada em <strong>execução</strong> na memória. Ele recebe uma camada extra de
+                gravação temporária.
+              </li>
+              <li><strong>Registry:</strong> Repositório central onde armazenamos e baixamos imagens (ex: Docker Hub).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Necessidade da Orquestração
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Gerenciar 5 contêineres num servidor usando o comando `docker run` é fácil. Mas num cenário de Big Data ou Microsserviços de um
+              e-commerce, você precisa gerenciar 5.000 contêineres espalhados em 50 servidores diferentes.
+            </p>
+            <p>
+              Se o Servidor 10 queimar, quem reinicia automaticamente os 100 contêineres que estavam nele, movendo-os para o Servidor 11? Quem cria o
+              balanceamento de carga entre eles? A resposta é o <strong>Orquestrador</strong>. O mercado tinha o <em>Docker Swarm</em> e o
+              <em>Apache Mesos</em>, mas o <strong>Kubernetes (K8s)</strong> (criado pelo Google e doado à CNCF) venceu a guerra e tornou-se o padrão
+              absoluto.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Detalhando a Arquitetura do Kubernetes
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Kubernetes é baseado numa arquitetura declarativa de Estado Desejado. Você não dá comandos passo a passo. Você diz:
+              <span class="hl-green">"Quero 3 instâncias do site rodando sempre"</span>. O K8s se encarrega de monitorar a realidade e consertá-la
+              caso algum nó caia.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Control Plane (Master Node)</h3>
+            <p>O coração do sistema. As bancas cobram os seus componentes essenciais:</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Kube-APIServer:</strong> O único componente com o qual você (ou outros componentes) fala diretamente (via CLI
+                <code>kubectl</code> ou REST API). Valida e encaminha solicitações.
+              </li>
+              <li>
+                <strong>etcd:</strong> Um banco de dados chave-valor altamente disponível e confiável. É a
+                <span class="hl-yellow">única fonte da verdade</span> (Source of Truth) de todo o cluster. Todo o estado do K8s fica guardado aqui.
+              </li>
+              <li>
+                <strong>Kube-Scheduler:</strong> Observa a criação de novos Pods (que ainda não têm um nó assinalado) e decide em qual máquina
+                operária (Node) ele deverá rodar, analisando CPU e RAM disponíveis.
+              </li>
+              <li>
+                <strong>Kube-Controller-Manager:</strong> Contém os loops de controle que vigiam o estado do cluster, comparando o "estado atual" com
+                o "estado desejado" e tomando ações corretivas.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Data Plane (Worker Nodes)</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Kubelet:</strong> O agente instalado em cada máquina. Ele se comunica com o Master, recebe as instruções ("rode estes
+                contêineres") e usa o Docker/containerd para iniciá-los, monitorando a saúde deles.
+              </li>
+              <li>
+                <strong>Kube-Proxy:</strong> Regras de rede. É ele quem permite que as regras de balanceamento de carga e IPs dos "Services" funcionem
+                fisicamente no sistema operacional Linux.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Objetos e Escalabilidade
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A interação com o K8s ocorre através da declaração de arquivos YAML que descrevem "Objetos".</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Tríade Produtiva</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded">
+                <strong class="text-indigo-800 dark:text-indigo-300 block mb-1 text-base">A. Deployment (A Regra)</strong>
+                Descreve o aplicativo. Ex: "Rode a Imagem v1.0 do meu site com 5 réplicas". O Deployment cria automaticamente um
+                <em>ReplicaSet</em> para garantir as 5 cópias vivas (Pods). Se você alterar o YAML para "v2.0", o Deployment gerencia uma
+                <span class="hl-green">atualização progressiva (Rolling Update)</span>, matando os pods velhos um a um sem tirar o site do ar.
+              </li>
+              <li class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded">
+                <strong class="text-indigo-800 dark:text-indigo-300 block mb-1 text-base">B. Pods (A Execução)</strong>
+                Os 5 Pods nascem e começam a processar os dados. Se um der erro fatal de memória, o K8s mata-o e levanta outro num segundo, com
+                <strong>um endereço IP Interno completamente novo</strong>.
+              </li>
+              <li class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded">
+                <strong class="text-indigo-800 dark:text-indigo-300 block mb-1 text-base">C. Service (A Porta de Entrada)</strong>
+                Como o usuário acessa o sistema se o IP dos Pods muda a toda hora? O <em>Service</em> cria um Endereço Fixo e um Balanceador de Carga
+                nativo. O usuário bate no "Service", e o Service distribui o tráfego para os Pods atuais, ignorando os antigos. É o escudo da
+                abstração de rede.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-violet-600", "border-violet-600", "dark:text-violet-400", "dark:border-violet-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
