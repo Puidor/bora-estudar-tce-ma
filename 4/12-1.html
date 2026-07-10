@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Criptografia - Conceitos Básicos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Criptografia: Conceitos Básicos
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O que é?</strong> A Criptografia é a ciência/arte de transformar uma mensagem legível (<span
+                class="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-1 rounded"
+                >Texto Claro / Plaintext</span
+              >) em uma mensagem ininteligível (<span class="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-1 rounded"
+                >Texto Cifrado / Ciphertext</span
+              >) para ocultar o seu significado.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Principal Objetivo:</strong> Garantir a
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded">Confidencialidade</span>
+              (sigilo) da informação.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Natureza Reversível:</strong> Diferente da função Hash, a criptografia DEVE ser <strong>reversível</strong> (duas vias). Quem
+              tem a "chave" certa consegue trazer a mensagem de volta à sua forma original.
+            </li>
+          </ul>
+        </section>
+
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-red-400 flex items-center gap-2">🔑 O Princípio de Kerckhoffs (Core Decoreba)</h2>
+          </div>
+          <div class="p-6 text-center">
+            <p class="italic text-lg mb-4 opacity-90">
+              "Um sistema criptográfico deve ser seguro MESMO que tudo sobre ele seja público, EXCETO a chave."
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div class="bg-slate-800/80 p-4 rounded-lg border border-emerald-500/50">
+                <h3 class="font-bold text-emerald-400 mb-2">O Algoritmo é PÚBLICO ✅</h3>
+                <p class="text-sm text-slate-400">
+                  A matemática (ex: AES, RSA) é aberta, testada e validada mundialmente por cientistas e hackers. Tentar esconder o algoritmo chama-se
+                  "Segurança por Obscuridade" e é uma péssima prática.
+                </p>
+              </div>
+              <div class="bg-slate-800/80 p-4 rounded-lg border border-red-500/50">
+                <h3 class="font-bold text-red-400 mb-2">A Chave é SECRETA ❌</h3>
+                <p class="text-sm text-slate-400">
+                  A segurança de todo o sistema repousa unicamente no sigilo e no tamanho da <strong>Chave Criptográfica</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Tipos de Cifras (Simétricas)</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🧊</div>
+              <h3 class="font-bold text-sky-600 dark:text-sky-400 mb-2 text-lg border-b border-slate-100 dark:border-slate-700 pb-2">
+                Cifra de Bloco (Block Cipher)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+                Pega a mensagem inteira e "fatia" em pedaços de <strong>tamanho fixo</strong> (ex: blocos de 128 bits). Criptografa cada bloco de uma
+                vez.
+              </p>
+              <ul class="text-xs space-y-1 text-slate-600 dark:text-slate-400 font-medium">
+                <li>✔️ Requer <em>Padding</em> (enchimento) se o último bloco for pequeno.</li>
+                <li>✔️ Mais lenta que o fluxo, porém mais robusta e paralelizável.</li>
+                <li>✔️ Exemplos Reais: <strong class="text-sky-600 dark:text-sky-400">AES, DES, 3DES, Blowfish</strong>.</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🌊</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-lg border-b border-slate-100 dark:border-slate-700 pb-2">
+                Cifra de Fluxo (Stream Cipher)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+                Criptografa a mensagem continuamente, <strong>bit a bit (ou byte a byte)</strong>, em tempo real, assim que eles chegam.
+              </p>
+              <ul class="text-xs space-y-1 text-slate-600 dark:text-slate-400 font-medium">
+                <li>✔️ Usa uma operação XOR contínua com uma <i>Keystream</i> infinita.</li>
+                <li>✔️ Extremamente rápida. Ideal para chamadas de áudio/vídeo e IoT.</li>
+                <li>✔️ Exemplos Reais: <strong class="text-emerald-600 dark:text-emerald-400">RC4, ChaCha20</strong>.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do Base64:</strong> A banca afirma que "Para garantir a confidencialidade de um e-mail em trânsito, a empresa aplicou
+                a criptografia Base64". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Base64 <strong>NÃO É CRIPTOGRAFIA</strong>, não tem chave secreta. É apenas uma
+                <strong class="underline decoration-red-500">Codificação (Encoding)</strong> (transforma arquivos binários em caracteres para
+                facilitar o envio). Qualquer pessoa na internet reverte um Base64 instantaneamente.
+              </li>
+              <li>
+                <strong>Criptografia vs Esteganografia:</strong> "A criptografia é a técnica utilizada para esconder a existência de uma mensagem
+                dentro de uma imagem". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A Criptografia esconde o <em>significado</em> da mensagem (você vê que a mensagem existe, mas não entende: <code>Xk9$!</code>).
+                Esconder o arquivo em si (a <em>existência</em> da mensagem) dentro de um JPEG ou MP3 é a arte da
+                <strong class="underline decoration-red-500">Esteganografia</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Gênese e o Vocabulário Criptográfico
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>Criptologia</strong> é o estudo da escrita secreta. Ela divide-se em dois ramos que vivem em guerra constante: a
+              <strong class="text-red-600 dark:text-red-400">Criptografia</strong> (os que fazem as fechaduras e tentam proteger a informação) e a
+              <strong class="text-red-600 dark:text-red-400">Criptoanálise</strong> (os hackers e matemáticos que tentam quebrar os códigos sem
+              conhecer a chave).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">O Dicionário Básico:</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Texto Claro (Plaintext):</strong> A mensagem original, legível (Ex: "Ataque ao amanhecer").</li>
+              <li>
+                <strong>Texto Cifrado (Ciphertext):</strong> O resultado após o processo de encriptação. Completamente ininteligível (Ex: "G8$#kLp!").
+              </li>
+              <li>
+                <strong>Cifrar / Encriptar:</strong> O processo de transformar o Texto Claro em Texto Cifrado. Exige o uso de um Algoritmo + Uma
+                Chave.
+              </li>
+              <li>
+                <strong>Decifrar / Desencriptar:</strong> O processo legítimo de reversão. Quem possui a Chave aplica a função inversa do Algoritmo e
+                recupera o texto.
+              </li>
+              <li><strong>Algoritmo (Cifra):</strong> As regras matemáticas e os passos utilizados para embaralhar a mensagem (Ex: AES, RSA).</li>
+              <li>
+                <strong>Chave (Key):</strong> Um valor secreto (uma sequência de bits enorme) que é inserido no Algoritmo. A chave é o que dita a
+                saída final.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Máxima da Segurança (Princípio de Kerckhoffs)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No século XIX, Auguste Kerckhoffs postulou a regra que até hoje domina a segurança da informação moderna:
+              <span class="hl-yellow">"Um criptossistema deve ser seguro mesmo que tudo sobre ele, exceto a chave, seja de conhecimento público"</span
+              >.
+            </p>
+            <p>
+              <strong>Por que isso é tão importante?</strong><br />
+              Muitos programadores inexperientes tentam inventar a sua própria lógica de misturar letras, mantendo o código-fonte em segredo. Isso é
+              chamado de <strong class="text-red-600 dark:text-red-400">Segurança por Obscuridade (Security by Obscurity)</strong>. Assim que um
+              hacker ou um funcionário mal intencionado rouba o código-fonte, o sistema perde toda a segurança para sempre.
+            </p>
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-slate-800 dark:text-white block mb-2">A Abordagem Moderna:</strong>
+              <p class="text-sm">
+                Os algoritmos modernos (AES, RSA) são públicos. O código deles está no Google para qualquer um ler. Matemáticos do mundo todo tentam
+                quebrá-los 24 horas por dia. Se eles continuam de pé, é porque a matemática é sólida. Se a "Chave" do utilizador vazar, o sistema
+                continua seguro; basta trocar a chave!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Como as Cifras Simétricas Operam
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando usamos a Criptografia Simétrica (veremos detalhadamente no item 12.2), onde uma única chave é usada para tudo, o sistema pode
+              aplicar a cifra de duas maneiras arquiteturais distintas:
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              A. Cifras de Bloco (Block Ciphers)
+            </h3>
+            <p>O algoritmo agrupa o arquivo numa matriz (ex: blocos de 128 bits ou 16 letras de cada vez) e encripta o bloco completo.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                Se a mensagem final tiver apenas 120 bits (não enche o bloco), o algoritmo tem que fazer o
+                <strong class="text-red-600 dark:text-red-400">Padding (Enchimento)</strong>, adicionando zeros inúteis para fechar o bloco perfeito.
+              </li>
+              <li>
+                <strong>Modos de Operação:</strong> Existem formas de fazer os blocos "conversarem". O modo
+                <strong>ECB (Electronic Codebook)</strong> encripta cada bloco de forma isolada (muito perigoso, deixa padrões visíveis). O modo
+                <strong>CBC (Cipher Block Chaining)</strong> pega o resultado do primeiro bloco e mistura com o segundo (via XOR), tornando a
+                criptografia caótica e super segura.
+              </li>
+              <li>Ideal para encriptar ficheiros, discos rígidos e bases de dados (Data at Rest).</li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              B. Cifras de Fluxo (Stream Ciphers)
+            </h3>
+            <p>
+              Não agrupam nada. Eles geram um "jato" infinito de letras aleatórias (Keystream) a partir da chave. A máquina vai recebendo a mensagem
+              da internet e aplicando uma operação binária (XOR) em cada letra individualmente, em tempo real.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>Não existe problema de "Padding" (enchimento), pois funciona bit a bit.</li>
+              <li><span class="hl-green">É incrivelmente mais rápido</span> e exige menos memória RAM.</li>
+              <li>
+                Ideal para tráfego ao vivo, ligações telefónicas via rádio militar, chamadas de VoIP e dispositivos IoT muito fracos. O algoritmo mais
+                famoso foi o <strong>RC4</strong> (hoje obsoleto) e o atual <strong>ChaCha20</strong>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Aplicação Prática: Os Três Estados do Dado
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A segurança da informação moderna exige que a criptografia seja aplicada conforme o "estado" em que a informação se encontra. É um
+              clássico de múltipla escolha:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-red-50 dark:bg-red-900/10 p-4 rounded border border-red-200 dark:border-red-800">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-1 block">1. Data in Transit (Dados em Trânsito / Movimento)</strong>
+                <p class="text-sm">
+                  Ocorre quando a informação está a viajar pelos cabos ou pelo Wi-Fi. O objetivo é evitar o <em>Sniffing</em> e a Interceção.
+                  <br /><span class="font-bold">Aplicações práticas:</span> Uso de VPNs (IPSec), navegação em sites seguros (SSL/TLS / HTTPS) e
+                  comunicação SSH.
+                </p>
+              </li>
+              <li class="bg-red-50 dark:bg-red-900/10 p-4 rounded border border-red-200 dark:border-red-800">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-1 block">2. Data at Rest (Dados em Repouso / Descanso)</strong>
+                <p class="text-sm">
+                  A informação está desligada ou gravada fisicamente num suporte de memória persistente. O objetivo é evitar o roubo físico do HD ou
+                  de cópias de segurança.<br /><span class="font-bold">Aplicações práticas:</span> Encriptação Total de Disco (Full Disk Encryption
+                  como o BitLocker), encriptação de bases de dados (TDE) e arquivos em pendrives.
+                </p>
+              </li>
+              <li class="bg-red-50 dark:bg-red-900/10 p-4 rounded border border-red-200 dark:border-red-800">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-1 block">3. Data in Use (Dados em Uso / Processamento)</strong>
+                <p class="text-sm">
+                  O cenário mais difícil. A informação está desencriptada ativamente na <strong>Memória RAM</strong> e na CPU para ser calculada. O
+                  risco aqui são os <em>Trojans / Memory Scrapers</em> que leem a memória ram para roubar o dado decifrado.<br /><span
+                    class="font-bold"
+                    >Aplicações práticas:</span
+                  >
+                  Novas tecnologias de hardware como <em>Confidential Computing</em> (Encraves Seguros / Intel SGX) e Criptografia Homomórfica (fazer
+                  cálculos matemáticos complexos sem nunca desencriptar a informação).
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

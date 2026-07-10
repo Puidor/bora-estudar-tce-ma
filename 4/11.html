@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Análise de Tráfego</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Análise de Tráfego de Rede
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O que é?</strong> É o processo de interceptar, examinar e interpretar os pacotes de dados que trafegam através de uma rede de
+              computadores.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Objetivo:</strong> Usado por administradores para
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded"
+                >diagnóstico de falhas (troubleshooting)</span
+              >, otimização de desempenho e auditoria de segurança (detecção de malwares/invasões).
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O Lado Sombrio:</strong> Quando usada por atacantes, a análise de tráfego é chamada de
+              <strong class="text-red-600 dark:text-red-400">Sniffing (Farejamento)</strong>, ferindo o princípio da Confidencialidade.
+            </li>
+          </ul>
+        </section>
+
+        <!-- O Modo Promíscuo e SPAN -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">👁️ Como Capturar o Tráfego?</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-700">
+            <div class="bg-slate-800/80 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🤫</div>
+              <h3 class="font-bold text-red-400 mb-2 text-lg">O Modo Promíscuo</h3>
+              <p class="text-sm text-slate-300 mb-3">
+                Normalmente, uma placa de rede descarta pacotes que não sejam destinados ao seu endereço MAC. No <strong>Modo Promíscuo</strong>, a
+                placa de rede passa a aceitar e ler <strong class="text-white">TODOS</strong> os pacotes que passam pelo cabo/ar, mesmo os dos
+                vizinhos.
+              </p>
+            </div>
+            <div class="bg-slate-800/80 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🪞</div>
+              <h3 class="font-bold text-sky-400 mb-2 text-lg">Port Mirroring (SPAN)</h3>
+              <p class="text-sm text-slate-300 mb-3">
+                Em redes modernas com Switches, o tráfego de João não passa pela porta de Maria. Para analisar a rede, configura-se o Switch para
+                criar uma <strong>porta de espelhamento (SPAN Port)</strong>, enviando uma cópia invisível de todo o tráfego para a máquina do
+                analista/IDS.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: PCAP vs NetFlow -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ PCAP (Full Capture) vs NetFlow (Metadados)</h2>
+            <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">CAI SEMPRE</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    NetFlow / sFlow (Estatísticas)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400">
+                    PCAP (Full Packet Capture)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">O que captura?</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Apenas os <strong>Cabeçalhos (Metadados)</strong>: IP origem, IP destino, porta, quantidade de bytes.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">
+                    Captura o PACOTE INTEIRO, incluindo o Payload (conteúdo real).
+                  </td>
+                </tr>
+                <tr class="bg-red-50/50 dark:bg-red-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Analogia em Provas</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    É a "Conta de Telefone" (mostra quem ligou para quem e por quanto tempo).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    É o "Grampo Telefônico" (grava a conversa inteira).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Custo e Armazenamento</td>
+                  <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold">
+                    Muito Leve. Ideal para monitorar a rede corporativa inteira por meses.
+                  </td>
+                  <td class="p-4 text-red-600 dark:text-red-400 font-bold">
+                    Pesadíssimo. Esgota Terabytes rapidamente. Usado para investigações cirúrgicas.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Barreira da Criptografia:</strong> A banca diz que "A adoção do protocolo HTTPS impede totalmente a análise de tráfego de
+                rede, tornando o NetFlow inútil". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A criptografia (como VPN ou HTTPS) esconde <strong>apenas o PAYLOAD</strong> (o conteúdo). Os cabeçalhos de rede (IP de Origem, IP de
+                Destino e Portas de comunicação) <strong class="underline decoration-red-500">continuam visíveis</strong> para os roteadores
+                entregarem o pacote. Portanto, o NetFlow e a análise de tráfego volumétrico continuam a funcionar perfeitamente!
+              </li>
+              <li>
+                <strong>DPI (Deep Packet Inspection):</strong> "O DPI atua unicamente na camada de Rede analisando os endereços IP em tempo real".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A inspeção "Profunda" (DPI) chama-se assim porque vai muito além do IP. Ela sobe o modelo OSI até à
+                <strong>Camada 7 (Aplicação)</strong> para ler o conteúdo real da mensagem. O DPI consegue bloquear um download específico de
+                BitTorrent ou uma mensagem do Skype.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos da Análise de Tráfego
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A análise de tráfego (ou *Packet Sniffing* / *Network Analysis*) é o processo de interceptação do tráfego bruto que circula através de
+              enlaces (com fio ou sem fio) de uma rede.
+            </p>
+            <p>
+              No modelo OSI, as placas de rede (NICs) operam na Camada 2 (Enlace) e recebem <i>Frames</i> (Quadros). Por padrão de fábrica (Modo
+              Normal), a placa de rede de um computador processa <strong>apenas</strong> os quadros cujo MAC Address de destino seja exatamente igual
+              ao MAC da própria placa (ou caso seja um endereço de <i>Broadcast</i>). Todos os outros pacotes que passam pelo cabo são
+              instantaneamente descartados pelo hardware.
+            </p>
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 border border-red-200 dark:border-red-800 rounded mt-4 text-sm font-medium">
+              <strong>A Mágica do Modo Promíscuo:</strong><br />
+              Para o analista de segurança (ou para o hacker) fazer o <i>sniffing</i>, ele instrui o software a colocar a placa de rede em
+              <span class="hl-red">Modo Promíscuo (Promiscuous Mode)</span>. Neste estado, o filtro de hardware é desligado, e o computador passará a
+              "engolir" todos os pacotes que trafegam na rede física e repassá-los para o software de análise (como o Wireshark). Em redes sem fio
+              (Wi-Fi), isso é chamado de <strong>Monitor Mode</strong>.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Ferramentas Clássicas (Cobrança Direta)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div>
+              <h3 class="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Wireshark</h3>
+              <p>
+                O padrão ouro mundial e com interface gráfica (GUI). É um <strong>Analisador de Protocolos</strong>. Ele captura os dados brutos e
+                "decodifica-os", permitindo ao analista ler as transações (ex: ver o "3-Way Handshake" do TCP) de forma legível e colorida. Baseia-se
+                na biblioteca `libpcap` (Linux) ou `Npcap` (Windows).
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-red-600 dark:text-red-400 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">tcpdump</h3>
+              <p>
+                A ferramenta de captura mais famosa via <strong>Linha de Comando (CLI)</strong> no mundo Linux. Muito usada por administradores de
+                servidores porque não exige interface gráfica.
+              </p>
+              <p class="mt-2 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded font-mono">
+                Exemplo de prova: <code class="text-blue-500">tcpdump -i eth0 port 80</code> (Captura todo o tráfego HTTP na interface eth0).
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-red-600 dark:text-red-400 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                Network Taps (Hardware)
+              </h3>
+              <p>
+                Quando a empresa não pode depender do Switch para espelhar o tráfego (SPAN Port gera peso na CPU do switch e pode omitir erros físicos
+                de cabo), utiliza-se um <strong>Tap de Rede</strong>. É um pequeno dispositivo de <em>hardware</em> inserido fisicamente entre o cabo
+                de dois aparelhos. <span class="hl-green">Ele divide passivamente o sinal da luz ou eletricidade</span> e manda uma cópia idêntica e
+                sem atraso para o IDS, sendo à prova de detecção por hackers.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. DPI e a Análise Comportamental
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Firewall clássico faz <strong>SPI (Stateful Packet Inspection)</strong>: ele lê apenas o envelope externo da carta (Porta e IP). Para
+              deter ameaças modernas, precisamos do <strong>DPI (Deep Packet Inspection)</strong>.
+            </p>
+            <p>
+              O DPI "abre a carta" (inspeciona o Payload). Ele não pergunta apenas "De onde vem esse pacote TCP na porta 80?", mas sim "O que tem
+              DENTRO dessa conexão na porta 80? É uma página HTML inocente ou é um vírus malicioso mascarado de tráfego web?".
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              O Desafio do "Dark Data" e Criptografia
+            </h3>
+            <p>
+              Hoje, cerca de 90% do tráfego da internet é criptografado via TLS/SSL (HTTPS). O DPI "cego" fica inútil contra tráfego cifrado. A
+              análise de tráfego moderna teve de adaptar-se com as seguintes estratégias:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm font-medium">
+              <li>
+                <strong>SSL Inspection (MITM Controlado):</strong> A empresa instala um certificado próprio nas máquinas dos funcionários. O Firewall
+                atua como <em>Man-in-the-Middle</em> (Homem-no-meio): ele decifra a conexão do funcionário, examina o pacote com o DPI para ver se há
+                vírus, e cifra novamente para enviar à internet.
+              </li>
+              <li>
+                <strong>Análise de Metadados e ML:</strong> Mesmo não vendo a carta, sabemos o tamanho e a frequência com que elas chegam. Modelos de
+                Inteligência Artificial avaliam a <em>Duração, Volume e Frequência</em> dos pacotes criptografados e conseguem identificar se é um
+                padrão normal de YouTube ou um malware escondido extraindo dados da empresa.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. A Diferença Estratégica: PCAP x NetFlow
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Na resposta a incidentes de segurança, as bancas adoram cobrar qual método deve ser usado e quando.</p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-red-600 dark:text-red-400 block mb-2 text-lg">PCAP (Packet Capture)</strong>
+              <p class="text-sm">
+                É o formato gerado pelo Wireshark ou tcpdump. Captura absolutamente cada bit que passa pela rede.
+                <br /><strong>Uso ideal:</strong> Análise Forense detalhada após um incidente, ou captura de tráfego de um servidor de isca (Honeypot)
+                para análise de <em>malware</em>. <br /><span class="hl-red"
+                  >Problema: Inviável para redes grandes. Armazenar 10Gbps de tráfego geraria Petabytes de disco em dias.</span
+                >
+              </p>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-emerald-600 dark:text-emerald-400 block mb-2 text-lg">NetFlow (IPFIX / sFlow)</strong>
+              <p class="text-sm">
+                Protocolo criado pela Cisco (hoje padronizado como IPFIX). Ele age no roteador. Em vez de salvar o pacote inteiro, ele cria um
+                registro de fluxo (Flow Record) sempre que uma conexão encerra.
+                <br />Ele diz:
+                <em>"O IP A conversou com o IP B na porta 443, enviou 500 pacotes totalizando 2 Megabytes num espaço de tempo de 1 minuto."</em> E
+                descarta os pacotes reais. <br /><strong>Uso ideal:</strong> Base essencial para sistemas SIEM de monitoramento macro da rede, geração
+                de gráficos, faturamento e detecção de ataques de negação de serviço (DDoS). É leve e escalável.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

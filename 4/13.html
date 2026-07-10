@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Infraestrutura de Chave Pública (PKI)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Infraestrutura de Chave Pública (PKI/ICP)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- A Base da Confiança -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> A Base da Confiança
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O Problema:</strong> Na criptografia assimétrica, a chave pública é distribuída livremente. Como garantir que a chave pública
+              "João.pub" pertence <em>mesmo</em> ao João e não a um hacker fingindo ser ele?
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>A Solução (PKI):</strong> A <em>Public Key Infrastructure</em> (ou ICP em português) é o conjunto de hardware, software, pessoas
+              e políticas responsáveis por criar, gerenciar, distribuir e revogar <strong>Certificados Digitais</strong>.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O Certificado Digital:</strong> É o "RG Eletrônico". Ele
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded"
+                >amarra (vincula) uma Chave Pública à identidade</span
+              >
+              verdadeira do seu dono, com o selo de garantia de um "cartório digital" de confiança.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Os Componentes (O Cartório Digital) -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🏛️ Os Componentes da PKI (Decoreba Pura)</h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- AC -->
+              <div class="flex flex-col items-center text-center p-4 border border-emerald-500/30 bg-emerald-500/10 rounded-lg">
+                <div class="bg-emerald-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl mb-3">🔏</div>
+                <h3 class="font-black text-emerald-400 text-lg mb-2">Autoridade Certificadora (AC)</h3>
+                <p class="text-sm text-slate-300">
+                  O Cartório em si. Entidade máxima de confiança. É quem <strong>Gera, Assina Digitalmente e Revoga</strong> os certificados. É a dona
+                  da "Caneta".
+                </p>
+                <span class="text-xs font-mono bg-emerald-900/50 px-2 py-1 mt-3 rounded text-emerald-200">Ex: Serasa, Caixa, Serpro</span>
+              </div>
+
+              <!-- AR -->
+              <div class="flex flex-col items-center text-center p-4 border border-sky-500/30 bg-sky-500/10 rounded-lg">
+                <div class="bg-sky-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl mb-3">🕵️‍♂️</div>
+                <h3 class="font-black text-sky-400 text-lg mb-2">Autoridade de Registro (AR)</h3>
+                <p class="text-sm text-slate-300">
+                  O Balcão de Atendimento. Você vai até ela presencialmente (ou vídeo). Ela pede sua CNH e sua biometria.
+                  <strong>Ela VALIDA a identidade</strong>, mas não emite certificado.
+                </p>
+                <span class="text-xs font-mono bg-sky-900/50 px-2 py-1 mt-3 rounded text-sky-200">Interface com o Usuário</span>
+              </div>
+
+              <!-- Repositório/LCR -->
+              <div class="flex flex-col items-center text-center p-4 border border-rose-500/30 bg-rose-500/10 rounded-lg">
+                <div class="bg-rose-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl mb-3">🚫</div>
+                <h3 class="font-black text-rose-400 text-lg mb-2">Repositório & LCR</h3>
+                <p class="text-sm text-slate-300">
+                  Banco de dados público. Contém certificados válidos e, criticamente, a <strong>LCR (Lista de Certificados Revogados)</strong> - a
+                  lista negra dos certificados cancelados antes do prazo.
+                </p>
+                <span class="text-xs font-mono bg-rose-900/50 px-2 py-1 mt-3 rounded text-rose-200">Também usa OCSP (Online)</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Anatomia do X.509 -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📜 Anatomia do Certificado Digital (Padrão X.509)</h2>
+          </div>
+          <div class="p-6">
+            <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+              Um certificado X.509 (versão 3) não é um arquivo criptografado e ilegível. Ele é público! O que o torna seguro é a
+              <strong>assinatura da AC</strong>. Campos principais cobrados em prova:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-600 dark:text-red-400">Titular (Subject):</strong> O dono (João).
+              </div>
+              <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-600 dark:text-red-400">Emissor (Issuer):</strong> Quem emitiu (Ex: AC Serasa).
+              </div>
+              <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-600 dark:text-red-400">Validade:</strong> Data de início e data de expiração.
+              </div>
+              <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded border-l-4 border-l-emerald-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400">Chave Pública do Titular:</strong> O coração do certificado.
+              </div>
+              <div
+                class="bg-slate-50 dark:bg-slate-900 p-3 rounded border-l-4 border-l-fuchsia-500 border border-slate-200 dark:border-slate-700 sm:col-span-2"
+              >
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400">Assinatura Digital da AC:</strong> O hash de todos os dados acima criptografado
+                com a <strong class="underline decoration-fuchsia-500">Chave Privada da AC</strong>. É isso que garante a integridade e autenticidade
+                do certificado inteiro.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão da Autoridade de Registro (AR):</strong> A banca afirma: "A AR é a entidade subordinada responsável por assinar e
+                emitir o certificado digital para o usuário após validar seus documentos". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A AR <strong>NUNCA</strong> emite ou assina certificados. Ela apenas confere os documentos, tira a foto e encaminha o pedido. Quem tem
+                a "máquina de assinar" é unicamente a <strong>Autoridade Certificadora (AC)</strong>.
+              </li>
+              <li>
+                <strong>A Chave Privada no Certificado:</strong> "O certificado digital contém um par de chaves composto pela chave pública e pela
+                chave privada do usuário titular". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O certificado digital (X.509) é um arquivo público. Ele <strong class="underline decoration-red-500">JAMAIS</strong> conterá a chave
+                privada do usuário. A chave privada fica guardada na máquina do usuário, num Smartcard ou Token USB físico.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Necessidade da PKI
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A criptografia assimétrica (que vimos no tópico anterior) funciona maravilhosamente bem com o par de chaves (Pública e Privada). Se você
+              quer me enviar uma mensagem segura, basta você usar a minha chave pública.
+            </p>
+            <p>
+              <strong>Mas como você tem certeza de que a chave pública que achou na internet pertence realmente a mim?</strong> Um atacante (Ataque
+              Man-in-the-Middle) poderia criar um par de chaves falsas, colocar o meu nome na chave pública e enviá-la para você. Você cifraria a
+              mensagem achando que é para mim, mas o atacante a abriria com a chave privada falsa dele.
+            </p>
+            <p>
+              A PKI (Infraestrutura de Chave Pública) existe exclusivamente para resolver esse problema de
+              <strong class="text-red-600 dark:text-red-400">Autenticidade</strong> e distribuição. Ela atua como um terceiro de confiança (Trusted
+              Third Party - TTP).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Hierarquia de Confiança (Modelo ICP-Brasil)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para que o modelo funcione em escala global (ou nacional), não pode haver apenas um "cartório". A PKI adota uma estrutura em árvore
+              (hierárquica). No Brasil, o padrão exigido em provas é a <strong>ICP-Brasil</strong> (Infraestrutura de Chaves Públicas Brasileira).
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-blue-500">
+                <strong class="text-blue-800 dark:text-blue-400 text-lg">Comitê Gestor (CG da ICP-Brasil)</strong><br />
+                É o órgão normativo e de formulação política. Não emite certificados. Ele apenas dita as regras do jogo.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-500">
+                <strong class="text-emerald-700 dark:text-emerald-400 text-lg">AC Raiz (Autoridade Certificadora Raiz)</strong><br />
+                É a primeira entidade da cadeia de certificação. No Brasil, esse papel é executado <strong>exclusivamente pelo ITI</strong> (Instituto
+                Nacional de Tecnologia da Informação). <br />
+                <span class="text-sm font-semibold"
+                  >Pegadinha: A AC Raiz NÃO emite certificados para o usuário final (cidadão comum). A única função da AC Raiz é emitir certificados e
+                  auditar as ACs de nível inferior (ACs de 1º Nível).</span
+                >
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-400">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg">ACs Subsequentes (Nível 1, 2...)</strong><br />
+                São as entidades públicas ou privadas (Ex: Receita Federal, Serasa, Certisign). Elas recebem a "bênção" da AC Raiz. São elas que
+                emitem, renovam e revogam os certificados do usuário final (e-CPF, e-CNPJ).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-sky-500">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg">AR (Autoridade de Registro)</strong><br />
+                Elas não fazem operações de criptografia. Elas existem por capilaridade. Como não dá para ter uma AC em cada bairro, as ARs são as
+                "franquias" onde o cidadão vai mostrar o rosto, comprovar documentos e pedir a emissão, que será executada remotamente pela AC.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A LCR e a Verificação (OCSP)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um certificado digital tem prazo de validade (ex: 1 ano ou 3 anos). O que acontece se o usuário perder o token USB ou for demitido da
+              empresa antes da data de expiração? A AC precisa de o revogar/cancelar.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">LCR (Lista de Certificados Revogados / CRL)</h3>
+            <p>
+              É um arquivo mantido pela AC contendo o número de série de todos os certificados que foram invalidados antes do tempo. Quando você
+              acessa um site de banco (HTTPS), o <strong>seu navegador (cliente)</strong> faz o download da LCR e procura o número do certificado do
+              banco lá dentro. Se estiver na lista, o navegador avisa: "O certificado é inválido". <br /><span class="hl-red text-sm"
+                >Desvantagem: A lista pode demorar horas a ser atualizada e ficar gigantesca (pesada para download).</span
+              >
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">OCSP (Online Certificate Status Protocol)</h3>
+            <p>
+              É o padrão moderno que resolve o problema do tamanho da LCR. Em vez de descarregar a lista inteira, o navegador do usuário faz uma
+              <strong>consulta em tempo real</strong> ao servidor da AC perguntando apenas por aquele certificado específico:
+              <em>"O certificado número 12345 está válido?"</em>. O servidor responde apenas "Sim" ou "Não" (Good, Revoked, Unknown).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. DPC e PC (Documentação de Base)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Nas provas mais conceituais (CEBRASPE e FGV), os documentos que regem o comportamento da AC são muito exigidos:</p>
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>
+                <strong class="text-red-600 dark:text-red-400 text-base">PC (Política de Certificado):</strong> É um documento de alto nível que
+                define as regras e o propósito de uma "família" de certificados. Ele responde ao <strong>O QUE</strong> o certificado deve cobrir e
+                para que serve (ex: a PC do certificado e-CPF foca na pessoa física).
+              </li>
+              <li>
+                <strong class="text-red-600 dark:text-red-400 text-base">DPC (Declaração de Práticas de Certificação):</strong> É o manual técnico
+                detalhado. Ele diz o <strong>COMO</strong> a AC implementa a Política de Certificado. Como a AC garante a segurança física dos
+                servidores? Como a AR confere a biometria? É o documento de auditoria por excelência.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

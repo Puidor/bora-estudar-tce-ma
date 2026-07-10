@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Dispositivos de Segurança (Firewalls, IDS, IPS, Proxies)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Dispositivos de Segurança: Firewalls, IDS, IPS, Proxies
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> O Quarteto Fantástico da Defesa
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-red-800 dark:text-red-300 flex items-center gap-2 text-lg">🧱 Firewall</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">
+                O Porteiro. Permite ou bloqueia pacotes baseado em regras (IP, Porta, Estado). Não analisa vírus.
+              </p>
+            </div>
+            <div class="border-l-4 border-sky-500 bg-sky-50 dark:bg-sky-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-sky-800 dark:text-sky-300 flex items-center gap-2 text-lg">🎭 Proxy</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">
+                O Intermediário (Camada 7). Faz requisições em nome do usuário. Filtra conteúdo web (URLs) e faz cache.
+              </p>
+            </div>
+            <div class="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-orange-800 dark:text-orange-300 flex items-center gap-2 text-lg">👁️ IDS (Intrusion Detection System)</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">
+                A Câmera/Alarme. <strong class="text-orange-600 dark:text-orange-400">Somente Passivo</strong>. Analisa cópias do tráfego e grita se
+                vir algo suspeito. Não bloqueia.
+              </p>
+            </div>
+            <div class="border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2 text-lg">🛑 IPS (Intrusion Prevention System)</h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">
+                O Segurança Armado. <strong class="text-emerald-600 dark:text-emerald-400">Ativo</strong>. Fica "in-line" no cabo. Se detectar um
+                ataque, descarta o pacote na hora.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela: Gerações de Firewall -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔥 Gerações de Firewalls (Muito Cobrado!)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-700">Geração / Tipo</th>
+                  <th class="p-4 font-bold border-b border-slate-700 text-red-400">Como atua?</th>
+                  <th class="p-4 font-bold border-b border-slate-700">Ponto Fraco / Característica</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-700 font-bold text-slate-200">1ª Gen: Filtro de Pacotes (Stateless)</td>
+                  <td class="p-4 border-b border-slate-700 text-slate-300">Avalia IPs e Portas (Camadas 3 e 4). Analisa cada pacote isoladamente.</td>
+                  <td class="p-4 border-b border-slate-700 text-rose-400">Não tem memória. Muito fácil de ser enganado por <i>IP Spoofing</i>.</td>
+                </tr>
+                <tr class="bg-slate-800/30">
+                  <td class="p-4 border-b border-slate-700 font-bold text-slate-200">2ª Gen: Inspeção de Estado (Stateful)</td>
+                  <td class="p-4 border-b border-slate-700 text-slate-300">
+                    Mantém uma <strong class="text-emerald-400">Tabela de Estado</strong>. Lembra quais conexões TCP já foram estabelecidas.
+                  </td>
+                  <td class="p-4 border-b border-slate-700 text-slate-300">
+                    Padrão do mercado atual. Se o tráfego não pertencer a uma conexão ativa, é descartado.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-700 font-bold text-slate-200">3ª Gen: Firewall de Aplicação (Proxy)</td>
+                  <td class="p-4 border-b border-slate-700 text-slate-300">
+                    Atua na <strong class="text-sky-400">Camada 7</strong>. Compreende protocolos como HTTP/FTP.
+                  </td>
+                  <td class="p-4 border-b border-slate-700 text-rose-400">Alto processamento (Lento). Quebra a conexão direta cliente-servidor.</td>
+                </tr>
+                <tr class="bg-slate-800/30">
+                  <td class="p-4 font-bold text-slate-200">WAF (Web Application Firewall)</td>
+                  <td class="p-4 text-slate-300">Focado exclusivamente em tráfego Web (HTTP/S).</td>
+                  <td class="p-4 font-bold text-emerald-400">Bloqueia ataques OWASP (SQL Injection, XSS).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tabela: IDS vs IPS -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: IDS vs IPS</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400">IDS (Detecção)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400">
+                    IPS (Prevenção)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Posicionamento na Rede
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Out-of-band</strong> (Fora de banda). Ligado a uma porta de espelhamento (Port Mirroring/SPAN) do Switch.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>In-line</strong> (Em linha). O cabo de rede entra nele e sai dele.
+                  </td>
+                </tr>
+                <tr class="bg-red-50/50 dark:bg-red-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Ação contra Ataques
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-orange-600 dark:text-orange-400">
+                    Apenas Alerta (Gera log e notifica o admin).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">
+                    Bloqueia ativamente (Descarta o pacote / <i>Drop</i>).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Se o equipamento falhar...
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A rede continua funcionando perfeitamente (mas cega).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-red-600 dark:text-red-400 font-bold">
+                    A rede cai! (Pois ele é uma ponte física no cabo).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Firewall bloqueia Vírus?</strong> A banca diz que "A instalação de um Firewall de Filtro de Pacotes protege a rede corporativa
+                contra infecções por malwares, lendo o conteúdo dos arquivos baixados". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Firewall "Stateless" atua apenas nas camadas de Rede (IP) e Transporte (Portas). Ele
+                <strong class="underline decoration-red-500">não olha o conteúdo/payload</strong>. Quem examina conteúdo é o Antivírus, o IPS ou um
+                WAF.
+              </li>
+              <li>
+                <strong>O Mito da Assinatura:</strong> "O IDS baseado em Assinatura é a melhor defesa contra ataques Zero-Day (desconhecidos)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Se o ataque é desconhecido, ele <em>não tem assinatura</em> no banco de dados do IDS. Para detectar ataques Zero-Day, usa-se o IDS/IPS
+                baseado em <strong>Anomalia / Comportamento (Heurística)</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Política de Firewalls (A Porta da Frente)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um Firewall é um sistema (hardware e/ou software) que monitora e controla o tráfego de rede que entra e sai, com base em regras de
+              segurança predefinidas (ACLs). Ele estabelece uma barreira entre uma rede interna confiável e uma rede externa não confiável (Internet).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">As Políticas Padrão</h3>
+            <ul class="list-none space-y-4 mt-2 text-sm">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-600 dark:text-red-400 text-base">Default Deny (Padrão Negar):</strong>
+                Tudo o que não é explicitamente permitido está proibido. <span class="hl-green">É a política mais segura e a recomendada.</span> Se a
+                regra não constar na lista, o pacote é descartado (Drop).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-600 dark:text-red-400 text-base">Default Allow (Padrão Permitir):</strong>
+                Tudo o que não é explicitamente proibido está permitido. <span class="hl-red">É extremamente insegura</span> e só é usada em ambientes
+                muito abertos ou laboratórios acadêmicos.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              A Arquitetura Dual-Homed vs Screened Subnet
+            </h3>
+            <p>
+              Em provas avançadas, a banca fala de arquiteturas de DMZ usando firewalls. Um <strong>Dual-Homed Host</strong> é um computador/firewall
+              com duas placas de rede (uma para internet, uma para rede local). Se a banca falar em
+              <strong>Screened Subnet (Sub-rede Blindada)</strong>, refere-se à topologia que usa DOIS firewalls (um externo/borda e um interno)
+              criando uma DMZ ultra-segura no meio deles (Arquitetura <i>Back-to-Back</i>).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. IDS e IPS (A Inspeção Profunda)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Diferente do Firewall Clássico que olha apenas os "envelopes" (IP e Porta), o IDS (Intrusion Detection System) e o IPS (Intrusion
+              Prevention System) abrem as cartas e leem o conteúdo. Eles fazem <strong>DPI (Deep Packet Inspection)</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Métodos de Detecção (Cai sempre)</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong class="text-slate-900 dark:text-white">Baseado em Assinatura (Conhecimento):</strong> Compara o tráfego de rede com um banco
+                de dados de ataques conhecidos. <br /><span class="text-emerald-600 dark:text-emerald-400 font-semibold">Vantagem:</span> Baixíssima
+                taxa de Falsos Positivos (se ele acusar, quase certeza que é ataque). <br /><span class="text-red-600 dark:text-red-400 font-semibold"
+                  >Desvantagem:</span
+                >
+                Cego contra ameaças novas (Zero-Day).
+              </li>
+              <li>
+                <strong class="text-slate-900 dark:text-white">Baseado em Anomalia (Comportamento/Heurística):</strong> O sistema "aprende" o que é o
+                tráfego normal da empresa durante algumas semanas (Baseline). Se num feriado de madrugada ocorrer um tráfego de 10GB/s para a Rússia,
+                ele bloqueia por ser "anômalo", mesmo sem conhecer o vírus específico. <br /><span
+                  class="text-emerald-600 dark:text-emerald-400 font-semibold"
+                  >Vantagem:</span
+                >
+                Bloqueia ameaças Zero-Day e vazamento de dados. <br /><span class="text-red-600 dark:text-red-400 font-semibold">Desvantagem:</span>
+                Alto índice de <strong class="underline">Falsos Positivos</strong> (bloquear tráfego legítimo só porque foi um pico fora do padrão).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              Tipos de Localização (NIDS vs HIDS)
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+              <div class="bg-orange-50 dark:bg-orange-900/10 p-3 rounded border border-orange-200 dark:border-orange-800 text-sm">
+                <strong class="text-orange-800 dark:text-orange-400">NIDS (Network-based):</strong> Analisa o tráfego de
+                <strong>toda a rede</strong> num ponto central. Fica "escutando" os switches no modo promíscuo.
+              </div>
+              <div class="bg-orange-50 dark:bg-orange-900/10 p-3 rounded border border-orange-200 dark:border-orange-800 text-sm">
+                <strong class="text-orange-800 dark:text-orange-400">HIDS (Host-based):</strong> Software instalado num
+                <strong>servidor/máquina específica</strong>. Analisa logs locais, arquivos do sistema e atividade suspeita daquela máquina isolada.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Proxy Server (O Intermediário Oculto)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Um Proxy é um servidor que age como intermediário para solicitações de clientes que procuram recursos em outros servidores. O seu
+              propósito inicial não era segurança, mas sim economia de banda através de
+              <strong class="text-sky-600 dark:text-sky-400">Caching</strong> (guardar sites mais visitados localmente).
+            </p>
+            <p>
+              Hoje, é uma arma vital de segurança, pois atua na <strong>Camada de Aplicação (Camada 7)</strong>, conseguindo filtrar URLs (bloquear
+              sites adultos/sociais), remover código Java/ActiveX malicioso e esconder os IPs da rede interna.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">Proxy Direto vs Proxy Reverso</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg mb-1 block">Forward Proxy (Proxy Direto):</strong>
+                <p class="text-sm">
+                  Protege os <strong>CLIENTES (Rede Interna)</strong> da Internet. A pessoa no escritório digita <code>www.google.com</code>. O pedido
+                  vai pro Proxy. O Proxy vai até o Google. O Google acha que foi o Proxy quem pediu, e não o funcionário (esconde a identidade
+                  interna).
+                </p>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-sky-500">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg mb-1 block">Reverse Proxy (Proxy Reverso):</strong>
+                <p class="text-sm">
+                  Protege os <strong>SERVIDORES (Empresa)</strong> da Internet. A pessoa em casa digita <code>www.site-do-governo.com</code>. O
+                  tráfego bate no Proxy Reverso. O Proxy Reverso é que contacta o verdadeiro servidor Web que está escondido atrás do firewall.
+                  <span class="hl-green">Ele atua como escudo contra ataques DDoS, faz balanceamento de carga e criptografia SSL.</span>
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. UTM (A Fusão Moderna)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Nas redes modernas, não se compra um equipamento físico de Firewall, outro de IPS e outro servidor de Proxy. A solução unificada adotada
+              pela indústria é o <strong>UTM (Unified Threat Management)</strong> ou NGFW (Next-Generation Firewall).
+            </p>
+            <p>
+              Um UTM é uma única "caixa" (appliance) que junta todas as funções num único sistema operacional. Ele faz: Firewall Stateful, IPS,
+              Anti-Malware de rede, Filtro de Conteúdo Web (Proxy), VPN e Controle de Aplicação.
+            </p>
+            <div
+              class="bg-red-50 dark:bg-red-900/10 p-4 border border-red-200 dark:border-red-800 rounded mt-4 text-sm font-medium text-red-800 dark:text-red-300 text-center"
+            >
+              Apesar de ser maravilhoso para gerenciar, o conceito de UTM fere o princípio da "Descentralização do Risco", pois cria um
+              <strong>Ponto Único de Falha (Single Point of Failure)</strong>. Se a caixa do UTM travar, a empresa inteira fica sem internet e
+              totalmente desprotegida simultaneamente.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

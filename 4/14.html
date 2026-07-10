@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Honeypots e Honeynets</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Honeypots e Honeynets
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">🍯</span> Direto ao Ponto: O Pote de Mel
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O que é?</strong> É um sistema de computação ou recurso de rede que atua como um <strong>chamariz (isca)</strong>. Ele é
+              projetado propositalmente para ser atacado e comprometido por hackers ou malwares.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Objetivo Principal:</strong> Observar. Ele coleta informações sobre os métodos do atacante, atrasa o ataque aos sistemas reais
+              da empresa e ajuda a descobrir novas vulnerabilidades (<i>Zero-days</i>).
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>A Regra de Tráfego:</strong> Um Honeypot não tem nenhum valor de produção. Nenhum usuário legítimo tem motivos para se conectar
+              a ele. Portanto,
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded"
+                >QUALQUER TRÁFEGO que chegue ao Honeypot é suspeito por natureza</span
+              >.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Honeypot vs Honeynet -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🕸️ Diferença: Honeypot vs Honeynet</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-700">
+            <div class="bg-slate-800/80 p-6">
+              <h3 class="font-bold text-rose-400 mb-2 text-xl">Honeypot</h3>
+              <p class="text-sm text-slate-300">
+                É o sistema individual (uma máquina virtual, um serviço isolado ou uma pasta de arquivos) que serve de isca.
+              </p>
+            </div>
+            <div class="bg-slate-800/80 p-6">
+              <h3 class="font-bold text-fuchsia-400 mb-2 text-xl">Honeynet</h3>
+              <p class="text-sm text-slate-300">
+                É uma <strong>REDE INTEIRA</strong> arquitetada para ser invadida. Contém múltiplos honeypots, firewalls falsos, roteadores e
+                servidores, simulando o ambiente completo de uma empresa. O objetivo é ver como o hacker "viaja" pela rede após a invasão inicial.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa de Níveis de Interatividade -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Níveis de Interatividade</h2>
+            <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Classificação</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400">Baixa Interatividade</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400">Alta Interatividade</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">O que é?</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Apenas um script que <strong>emula (finge ser)</strong> um sistema ou porta (ex: finge que é um servidor FTP). Não há SO real ali.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    É um <strong>Sistema Operacional REAL</strong> e completo, com serviços reais rodando (ex: um Windows Server vulnerável de
+                    verdade).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Risco para a Empresa
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-sky-600 dark:text-sky-400">MUITO BAIXO</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-rose-600 dark:text-rose-400">MUITO ALTO</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Porquê desse risco?
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Como é só uma simulação, o hacker não tem acesso a um sistema real para lançar ataques a partir dele.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Se o hacker assumir o controle do SO real, ele pode usar a sua máquina para atacar a sua rede interna. (Exige alto isolamento).
+                  </td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Qualidade dos Dados</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    Captura pouca informação (ex: só regista qual IP tentou o login e qual senha testou).
+                  </td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300 font-bold">
+                    Captura rica. Monitoriza os comandos digitados, as táticas e malwares novos (zero-days).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do Bloqueio:</strong> A banca vai jurar que "O Honeypot é um dispositivo ativo de defesa que bloqueia invasões e
+                protege diretamente a rede contra vírus, substituindo a necessidade do uso de um Firewall em alguns casos". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso! Absolutamente Falso!</span
+                >
+                Honeypots <strong>NÃO</strong> são mecanismos de prevenção. Eles não bloqueiam ataques nem limpam vírus. Eles são mecanismos passivos
+                de <strong class="underline decoration-red-500">detecção e coleta de informações</strong>.
+              </li>
+              <li>
+                <strong>Corrigir falhas de segurança:</strong> "A principal utilidade de um Honeypot é corrigir vulnerabilidades automaticamente".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Ele apenas fornece *dados/logs* para que o Administrador da Rede saiba como os ataques estão a ser feitos, permitindo que a equipe
+                humana fortaleça o Firewall.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Filosofia do Pote de Mel (Deception)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A segurança tradicional foca-se em manter os atacantes fora da rede (Firewall, IPS). No entanto, quando um hacker muito avançado
+              consegue contornar o firewall, ele navega pela rede invisível aos olhos do administrador.
+            </p>
+            <p>
+              O <strong>Honeypot</strong> baseia-se no conceito de <em>Deception</em> (Engano/Decepção). É um sistema vulnerável por design. Ele é
+              configurado para parecer um servidor valioso e fracamente protegido (ex: um servidor de Banco de Dados sem senha forte).
+            </p>
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 border border-red-200 dark:border-red-800 rounded mt-4 text-sm">
+              <strong>O Valor do Silêncio:</strong> Em um servidor real, há milhares de requisições de usuários legítimos por segundo. É muito difícil
+              achar o hacker no meio desse ruído. Como o Honeypot não tem função oficial, ele produz zero "ruído legítimo". Se ocorrer sequer
+              <span class="hl-red"
+                >UM ping, UM acesso ou UMA tentativa de login no Honeypot, você tem 100% de certeza de que é um evento anômalo ou malicioso</span
+              >
+              (falso positivo quase nulo).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Classificação por Propósito (O Objetivo)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Para provas teóricas mais profundas, deve saber distinguir por que o honeypot foi instalado:</p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-sky-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-800 dark:text-sky-400 text-lg">Honeypots de Produção</strong><br />
+                São aqueles instalados dentro da rede corporativa da empresa (junto com os servidores reais). <br />
+                <em>Objetivo:</em> Detetar ataques imediatos à rede interna. Distrair e desviar a atenção do atacante do servidor de banco de dados
+                real para o servidor "isca", dando tempo à equipe de segurança para reagir. Normalmente são de
+                <strong>baixa interatividade</strong> (por segurança).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-rose-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-rose-800 dark:text-rose-400 text-lg">Honeypots de Pesquisa (Research)</strong><br />
+                Utilizados por empresas de segurança (como a Kaspersky ou a Kaspersky), investigadores e meios académicos. <br />
+                <em>Objetivo:</em> Não protegem uma rede específica. Ficam expostos propositalmente à internet aberta para estudar as tendências
+                globais do cibercrime, descobrir novos tipos de <em>malware</em> em circulação e aprender táticas, técnicas e procedimentos (TTPs) dos
+                hackers. Geralmente são de <strong>alta interatividade</strong>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Interatividade e o Risco de Retaliação
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A interatividade é o nível de "liberdade" que você dá ao hacker para explorar a máquina.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A. Baixa Interatividade (Emuladores)</h3>
+            <p>
+              O honeypot apenas imita serviços (ex: um script em Python que abre a porta 22 e finge ser um servidor SSH). Se o atacante tentar digitar
+              um comando do sistema operacional, não vai funcionar, porque o SO real não está lá. É seguro, mas o hacker percebe rápido que é uma
+              armadilha e vai embora.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">B. Alta Interatividade (Máquinas Reais)</h3>
+            <p>
+              Você disponibiliza uma Máquina Virtual Windows com portas abertas e serviços reais. O hacker entra, sente-se em casa, e começa a
+              descarregar as suas ferramentas (rootkits) e a digitar os seus comandos maliciosos. Toda a atividade é gravada pelo Honeypot de forma
+              invisível.
+            </p>
+            <div class="bg-rose-50 dark:bg-rose-900/10 p-4 border border-rose-200 dark:border-rose-800 rounded mt-2">
+              <strong class="text-rose-800 dark:text-rose-300">O Paradoxo do Risco (Foco FGV/CESPE):</strong>
+              <p class="text-sm mt-2">
+                Ao dar uma máquina real ao hacker, ele assume o controle total do sistema operacional. Se esse honeypot não estiver perfeitamente
+                isolado fisicamente e logicamente do resto do mundo, o hacker
+                <span class="hl-red"
+                  >usará a sua "isca" como plataforma base para lançar ataques destruidores contra outros computadores da sua empresa ou da internet
+                  (ataque em cadeia)</span
+                >. O caçador vira a caça.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Honeytokens (A Isca de Dados)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Uma variante muito moderna e que pode ser cobrada como conceito avançado.</p>
+            <p>
+              Em vez de criar um computador/servidor falso (Honeypot), criamos um
+              <strong class="text-violet-600 dark:text-violet-400">dado falso</strong> (Honeytoken).
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Exemplo Prático:</strong> O DBA cria um registo de cliente na base de dados chamado "João Fictício", com um e-mail falso
+                monitorizado e um cartão de crédito inválido, mas muito apetecível.
+              </li>
+              <li>
+                Nenhum sistema legítimo da empresa interage com esse registo. Se alguém aceder à linha do "João Fictício", ou se o e-mail falso
+                começar a receber Spam, a empresa sabe instantaneamente que o seu banco de dados interno foi acedido indevidamente por um hacker ou
+                por um funcionário malicioso (Insider Threat).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
