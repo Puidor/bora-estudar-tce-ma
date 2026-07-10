@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Principais Ataques na Internet</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Principais Ataques na Internet
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Tabela Resumo dos Ataques e Impacto na Tríade CID -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Mapa de Batalha: Ataque vs. Princípio Ferido</h2>
+            <p class="text-sm text-slate-300 mt-1">
+              Conecte o ataque ao princípio da Tríade CID (Confidencialidade, Integridade, Disponibilidade) que ele viola.
+            </p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Nome do Ataque</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400">O que faz? (Resumo)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Fere Principalmente...</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-blue-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Scan (Varredura)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Sonda a rede para descobrir IPs ativos e portas abertas. <strong>(Fase de Preparação)</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-500"><em>Nenhum (ainda). É mapeamento.</em></td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-indigo-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    Sniffing (Farejamento)
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Intercepta e "escuta" o tráfego da rede. Captura senhas em texto claro (passivo).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    Confidencialidade
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Defacement</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    A "pichação" digital. Altera a página principal do site da vítima (vandalismo).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">Integridade</td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-rose-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">DoS / DDoS</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Negação de Serviço. Inunda o servidor com requisições falsas até ele travar/cair.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-rose-600 dark:text-rose-400">Disponibilidade</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-amber-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Spoofing</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Falsificação/Mascaramento de origem (falsificar o remetente de um e-mail ou o IP).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-amber-600 dark:text-amber-500">Autenticidade</td>
+                </tr>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/20 border-l-4 border-purple-500">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">SQL Injection</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    Injeta código SQL malicioso em campos de texto (formulários) para manipular o Banco de Dados.
+                  </td>
+                  <td class="p-4 font-bold text-purple-600 dark:text-purple-400">Confidencialidade e Integridade</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Prevenção em Cards -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">🛡️</span> Como Prevenir? (O Antídoto)
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="border-t-4 border-indigo-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Contra Sniffing</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Use <strong>Criptografia</strong> de ponta a ponta (HTTPS, SSH, IPsec). Se o hacker interceptar, só verá lixo (texto cifrado).
+              </p>
+            </div>
+            <div class="border-t-4 border-rose-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Contra DDoS</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Implemente <strong>Filtros e Blackholes</strong> no roteador de borda, use Firewalls modernos e contrate serviços de mitigação em
+                Nuvem (Anti-DDoS).
+              </p>
+            </div>
+            <div class="border-t-4 border-amber-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Contra Força Bruta</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Bloqueio de conta após 'X' tentativas erradas (Account Lockout), exigir senhas complexas e adotar
+                <strong>MFA (Múltiplos Fatores)</strong>.
+              </p>
+            </div>
+            <div class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Contra E-mail Spoofing</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Configure os registros de autenticação no servidor DNS da empresa: <strong>SPF, DKIM e DMARC</strong>.
+              </p>
+            </div>
+            <div class="border-t-4 border-purple-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Contra SQL Injection</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Apenas UMA resposta correta em prova: Uso de
+                <strong class="text-purple-600 dark:text-purple-400">Consultas Parametrizadas (Prepared Statements)</strong> no código e WAF na rede.
+              </p>
+            </div>
+            <div class="border-t-4 border-cyan-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Contra Buffer Overflow</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Manter o software atualizado (Patching) e o programador deve fazer a <strong>verificação de limites (Bound Checking)</strong> nas
+                variáveis de memória.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Scan é crime?</strong> A banca diz que: "Fazer uma varredura (Scan) nas portas de um servidor é classificado como um ataque
+                destrutivo que fere a integridade do sistema". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Scan (ex: Nmap) apenas "bate na porta" para ver se está aberta. É uma técnica de
+                <strong>Reconhecimento (Footprinting)</strong> preparatória. Não altera nem destrói dados.
+              </li>
+              <li>
+                <strong>A Confusão do Sniffing:</strong> "O Sniffing consiste em alterar os dados enquanto eles viajam pela rede (Man-in-the-Middle)".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O <em>Sniffing</em> puro é <strong>Passivo</strong>. Ele apenas lê/captura (fere confidencialidade). Se o atacante alterar a mensagem
+                no meio do caminho, passa a ser um ataque <strong>Ativo</strong> de Interceptação/Modificação.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Falsificação e Acesso Indevido
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2 border-l-4 border-amber-500 pl-3">Spoofing (Mascaramento)</h3>
+            <p>
+              A palavra "Spoof" significa falsificar ou mascarar. É quando o atacante forja os seus dados de origem para se fazer passar por uma
+              entidade de confiança.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>E-mail Spoofing:</strong> Altera o campo "De:" (From) do e-mail. Você recebe um e-mail que <em>parece</em> ter sido enviado
+                pelo seu próprio chefe (ex: <code>chefe@suaempresa.com</code>), pedindo uma transferência urgente. É a base do Phishing.
+              </li>
+              <li>
+                <strong>IP Spoofing:</strong> O atacante altera o cabeçalho do pacote IP para colocar um "IP de Origem" falso, conseguindo passar por
+                firewalls que confiam naquele IP interno.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-amber-500 pl-3">Força Bruta (Brute Force)</h3>
+            <p>
+              É o ataque mais rudimentar contra a autenticação. O atacante usa um software automatizado que testa todas as combinações possíveis de
+              letras, números e símbolos até acertar a senha.
+            </p>
+            <p>
+              <strong>Ataque de Dicionário (Variação Inteligente):</strong> Em vez de testar sequencialmente ("aaa", "aab"), o software testa uma
+              lista gigantesca contendo as milhões de senhas mais vazadas da internet ("123456", "password", "futebol"). É muito mais letal e rápido.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Queda e Vandalismo (Disponibilidade e Integridade)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2 border-l-4 border-rose-500 pl-3">
+              Negação de Serviço (DoS e DDoS)
+            </h3>
+            <p>
+              O objetivo aqui <strong>não é roubar dados nem invadir</strong>, mas sim impedir que os usuários legítimos usem o sistema (ferindo a
+              Disponibilidade).
+            </p>
+            <ul class="list-none space-y-3 mt-2 text-sm">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>DoS (Denial of Service):</strong> Um ataque partindo de <span class="hl-red">uma única origem</span>. O atacante envia uma
+                avalanche de tráfego para a vítima. Fácil de bloquear (basta o firewall bloquear aquele IP).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded">
+                <strong>DDoS (Distributed Denial of Service):</strong> A evolução mortal. O atacante usa milhares de máquinas de utilizadores comuns
+                que foram previamente infetadas (formando uma <strong>Botnet</strong> ou "rede zumbi") para atacarem o alvo todas ao mesmo tempo. Como
+                a origem são IPs variados e legítimos do mundo todo, é extremamente difícil distinguir o tráfego bom do mau.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-emerald-500 pl-3">Defacement (A Pichação)</h3>
+            <p>
+              Ataque que fere a <strong>Integridade</strong> e a imagem da empresa. Ocorre quando o atacante consegue acesso ao servidor web (ex:
+              explorando falhas no WordPress) e altera o ficheiro <code>index.html</code> (a página principal). Quando o cliente entra no site do
+              Governo, vê uma imagem de protesto ou insultos deixados pelo grupo hacker.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Ataques Focados em Aplicação e Memória
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Estes são os ataques mais sofisticados e que exploram falhas de programação, e não problemas na rede física.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">
+              SQL Injection (Injeção de SQL)
+            </h3>
+            <p>
+              Ocorre quando uma aplicação web não "higieniza" o que o utilizador digita. Se há um campo de "Pesquisar Cliente", o usuário deveria
+              digitar "João".
+            </p>
+            <p>
+              Em vez disso, o hacker digita <code>' OR '1'='1</code>. Se o código da aplicação concatenar (juntar) esse texto diretamente no código
+              SQL (ex: <code>SELECT * FROM clientes WHERE nome = '' OR '1'='1'</code>), o banco de dados interpretará isso como uma ordem verdadeira e
+              <span class="hl-red">devolverá a base de dados inteira (todos os clientes) na ecrã do atacante</span>. Pode também ser usado com
+              <code>DROP TABLE</code> para destruir o banco.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-cyan-500 pl-3">
+              Buffer Overflow (Estouro de Memória)
+            </h3>
+            <p>
+              Erro clássico de linguagens como C e C++. O "Buffer" é o espaço na memória RAM reservado para guardar um dado (ex: uma variável
+              projetada para guardar 10 letras).
+            </p>
+            <p>
+              Se a aplicação não verificar o limite, o atacante propositalmente envia um texto com 500 letras. As 10 primeiras enchem a variável, e as
+              outras 490 "transbordam" (Overflow) e sobrescrevem áreas vizinhas críticas da memória do computador. O atacante aproveita esse
+              transbordo para <span class="hl-red">injetar um código executável na memória e assumir o controlo total do sistema</span>.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Preparação e Interceptação Passiva
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 border-l-4 border-blue-500 pl-3">Varredura em Redes (Port Scan)</h3>
+            <p>
+              Um hacker nunca ataca às cegas. Ele precisa saber quais são as portas que a vítima deixou abertas para a Internet (Footprinting).
+              Ferramentas de Scan (como o <strong>Nmap</strong>) testam as 65.535 portas do servidor.
+            </p>
+            <p class="text-sm bg-blue-50 dark:bg-blue-900/10 p-3 rounded mt-2">
+              Se o Scan descobrir que a porta TCP 22 (SSH) está aberta, ele sabe que pode tentar um ataque de força bruta nela. Por isso, a defesa
+              (Hardening) manda <span class="font-bold">fechar todas as portas que não estejam em uso</span>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-indigo-500 pl-3">Sniffing</h3>
+            <p>
+              Os dados viajam pelos cabos e redes Wi-Fi em pacotes. Um "Sniffer" (como o <strong>Wireshark</strong>) coloca a placa de rede em
+              <em>Modo Promíscuo</em>, o que permite que o computador capture e leia TODOS os pacotes que passam no ar, mesmo aqueles que não eram
+              destinados a ele.
+            </p>
+            <p class="text-sm bg-indigo-50 dark:bg-indigo-900/10 p-3 rounded mt-2 border border-indigo-200 dark:border-indigo-800">
+              <strong>Prevenção em Prova:</strong> O Sniffing não pode ser evitado completamente num Wi-Fi público de aeroporto, pois as ondas de
+              rádio estão no ar. A única defesa eficaz e exigida é a
+              <strong class="text-indigo-700 dark:text-indigo-400">Criptografia Forte (ex: acessar apenas sites HTTPS ou usar VPN)</strong>. O hacker
+              capturará o pacote, mas só verá caracteres embaralhados inúteis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

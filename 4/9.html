@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: VPN (Virtual Private Network)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          VPN (Virtual Private Network)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Conceito:</strong> Uma Rede Privada Virtual (VPN) usa uma rede pública (a Internet) para estabelecer uma
+              <strong>conexão segura e encriptada</strong> (Tunelamento) entre pontos distantes.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Tríade CIA:</strong> O objetivo principal da VPN é garantir a
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded">Confidencialidade</span>
+              (Criptografia) e a
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded"
+                >Integridade e Autenticidade</span
+              >
+              (Assinaturas/Hashes) dos dados em trânsito.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Tipos de VPN -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🏢 Topologias (Tipos) de VPN</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-700">
+            <div class="bg-slate-800/80 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">💻 ➔ 🏢</div>
+              <h3 class="font-bold text-sky-400 mb-2 text-lg">Client-to-Site (Acesso Remoto)</h3>
+              <p class="text-sm text-slate-300 mb-3">Conecta um usuário individual (ex: home office) à rede da empresa.</p>
+              <ul class="text-sm space-y-2">
+                <li>✔️ Requer um software cliente no PC do usuário (geralmente).</li>
+                <li>✔️ Protocolos comuns: SSL/TLS (OpenVPN) ou IPSec cliente.</li>
+              </ul>
+            </div>
+            <div class="bg-slate-800/80 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🏢 ➔ 🏢</div>
+              <h3 class="font-bold text-emerald-400 mb-2 text-lg">Site-to-Site (LAN-to-LAN)</h3>
+              <p class="text-sm text-slate-300 mb-3">Conecta duas redes inteiras (ex: Matriz SP ligada à Filial RJ).</p>
+              <ul class="text-sm space-y-2">
+                <li>✔️ Transparente para o usuário (quem faz o túnel são os roteadores de borda).</li>
+                <li>✔️ Protocolo quase exclusivo: <strong>IPSec</strong>.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa IPSec (A Alma da Prova) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛡️ O Protocolo Rei: IPSec (AH vs ESP)</h2>
+            <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">DECOREBA CRÍTICA</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Sub-Protocolo</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Garante Autenticidade e Integridade?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400">
+                    Garante CONFIDENCIALIDADE (Criptografia)?
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-lg">
+                    AH <br /><span class="text-xs font-normal text-slate-500">Authentication Header</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">SIM ✅</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400 text-lg">NÃO ❌</td>
+                </tr>
+                <tr class="bg-red-50/50 dark:bg-red-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 text-lg">
+                    ESP <br /><span class="text-xs font-normal text-slate-500">Encapsulating Sec. Payload</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">SIM ✅</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400 text-lg">SIM ✅</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300 text-xs border-t border-amber-200 dark:border-amber-800 text-center font-medium"
+          >
+            Regra Mnemônica: "AH" = Apenas Assina. "ESP" = Esconde e Protege.
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A VPN evita que a rede caia?</strong> A banca diz que "O uso de VPN garante a confidencialidade e a alta disponibilidade
+                (proteção contra DDoS) da rede corporativa". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A VPN <strong>NÃO</strong> protege contra ataques de Negação de Serviço (DoS/DDoS) e não garante a Disponibilidade do link de
+                internet. Ela só protege o dado em trânsito.
+              </li>
+              <li>
+                <strong>O Mito da Rede Segura:</strong> "Uma vez estabelecido o túnel VPN, não é necessário o uso de Firewalls ou Antivírus nas
+                extremidades". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A VPN apenas cria um tubo seguro na internet. Se a máquina do funcionário em <em>home office</em> estiver com um vírus, o túnel VPN
+                servirá como uma "via expressa segura" para o vírus infectar o servidor da empresa!
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos e Necessidade da VPN
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, se uma empresa no Rio de Janeiro quisesse acessar o servidor de São Paulo com segurança, ela precisava alugar um
+              <strong>Link Dedicado</strong> físico (um cabo de fibra ótica exclusivo). Isso era extremamente caro.
+            </p>
+            <p>
+              A <strong>VPN</strong> surge para resolver esse custo usando a <strong class="text-red-600 dark:text-red-400">Internet pública</strong>.
+              Através do conceito de <em>Tunelamento</em> e uso massivo de Criptografia, a VPN emula as características de um link privado dedicado
+              sobre uma rede insegura. O pacote de dados viaja encapsulado dentro de outro pacote, escondendo seu conteúdo e até sua origem real dos
+              roteadores intermediários.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Dissecando o IPSec (Internet Protocol Security)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>IPSec</strong> é uma suíte de protocolos que atua na <span class="hl-yellow">Camada 3 (Rede)</span> do modelo OSI. Diferente
+              do SSL (que protege um aplicativo por vez no navegador), o IPSec protege <strong>TUDO</strong> o que viaja entre os dois roteadores em
+              nível de rede (IP).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              Os Protocolos de Proteção (AH vs ESP)
+            </h3>
+            <p>Como visto na tabela do resumo, o IPSec possui dois protocolos que fazem o trabalho pesado:</p>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>AH (Authentication Header):</strong> Pega no pacote inteiro (inclusive o cabeçalho IP) e aplica uma função Hash (ex: SHA-256)
+                assinada. Ele <strong>evita o Spoofing (mascaramento de IP)</strong>, mas o dado viaja em texto claro.
+                <span class="hl-red">O AH quase não é mais usado sozinho hoje em dia.</span>
+              </li>
+              <li>
+                <strong>ESP (Encapsulating Security Payload):</strong> Criptografa o corpo (payload) da mensagem com algoritmos fortes (ex: AES),
+                garantindo que ninguém que intercepte consiga ler o dado (Confidencialidade).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">O Gerenciamento de Chaves (IKE)</h3>
+            <p>
+              Para a criptografia funcionar, as duas pontas precisam concordar sobre qual chave secreta usar. O protocolo
+              <strong>IKE (Internet Key Exchange)</strong> é o responsável por isso no IPSec. Ele usa as trocas matemáticas de Diffie-Hellman para
+              estabelecer a <em>Security Association (SA)</em> antes dos dados começarem a fluir.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Os Dois Modos do IPSec (Transporte vs Túnel)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Este é o ponto de maior confusão em provas de TI. Dependendo de quem está fechando a VPN, o IPSec se comporta de forma diferente.</p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-1 block">Modo Transporte (Transport Mode)</strong>
+                <p class="text-sm">
+                  Usado na comunicação direta Computador a Computador (Host-to-Host). Neste modo,
+                  <strong>apenas o corpo do pacote (Payload) é criptografado</strong>. O Cabeçalho IP original é mantido intacto para que os
+                  roteadores da internet saibam ler o IP de destino.
+                </p>
+                <span
+                  class="inline-block mt-2 font-mono text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 px-2 py-1 rounded"
+                  >Estrutura: [Cabeçalho IP Original] + [Criptografia IPSec] + [Dados Criptografados]</span
+                >
+              </li>
+
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-red-500">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-1 block">Modo Túnel (Tunnel Mode)</strong>
+                <span
+                  class="bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200 px-1 rounded text-xs font-bold uppercase tracking-wide float-right"
+                  >Mais Seguro / Cobrado</span
+                >
+                <p class="text-sm">
+                  Usado na comunicação Roteador a Roteador (Gateway-to-Gateway) em VPNs Site-to-Site. Neste modo,
+                  <strong>o pacote IP ORIGINAL INTEIRO é encriptado</strong> e escondido como se fosse apenas "carga". O roteador de borda cria um
+                  <strong>NOVO Cabeçalho IP</strong> "falso" apenas para atravessar a internet.
+                </p>
+                <span
+                  class="inline-block mt-2 font-mono text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 px-2 py-1 rounded"
+                  >Estrutura: [Novo Cabeçalho IP Público] + [Criptografia IPSec] + [(Cab. IP Original Oculto) + (Dados)]</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Alternativas de Mercado (SSL/TLS VPN)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Apesar do IPSec ser o padrão ouro corporativo para ligar filiais, configurar o cliente IPSec no notebook do funcionário que trabalha em
+              casa dá muitas dores de cabeça ao setor de TI (Firewalls de hotéis ou roteadores caseiros bloqueiam o tráfego IPSec - portas 500 UDP e
+              protocolos nativos ESP 50).
+            </p>
+            <p>A solução moderna e extremamente cobrada é a <strong>VPN SSL/TLS (ex: OpenVPN ou Clientless VPN)</strong>.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Vantagens da VPN baseada em SSL/TLS</h3>
+            <ul class="list-disc pl-6 space-y-2 text-sm mt-2">
+              <li><strong>Camada Superior:</strong> Atua na Camada 4 (Transporte) ou 7 (Aplicação).</li>
+              <li>
+                <strong>Passa por Firewalls Inocentes:</strong> A grande jogada das VPNs SSL é que elas encapsulam o tráfego usando a
+                <strong>porta 443 (HTTPS)</strong>. Todo hotel, aeroporto ou roteador caseiro permite tráfego na porta 443, logo a VPN conecta-se
+                sempre!
+              </li>
+              <li>
+                <strong>Clientless (Sem Cliente Opcional):</strong> Em algumas implementações, o funcionário não precisa instalar nenhum software. Ele
+                abre o navegador web, digita o endereço da empresa, entra na VPN e acede aos sistemas web internos usando apenas a criptografia nativa
+                do Chrome/Firefox.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
