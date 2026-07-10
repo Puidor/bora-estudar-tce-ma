@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Prevenção e Combate a Golpes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Prevenção e Combate de Golpes
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Definição Essencial -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">🧠</span> O que é um Golpe? (A Raiz do Mal)
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              Diferente do <em>Malware</em> (que é um código projetado para invadir máquinas), o <strong>Golpe (Scam/Fraude)</strong> ataca a
+              <strong>mente humana</strong>. O objetivo é induzir a vítima ao erro para que ela mesma entregue os dados ou transfira o dinheiro.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>A Base: Engenharia Social.</strong> É a técnica de manipulação psicológica que explora sentimentos como
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded"
+                >Medo, Ganância, Urgência ou Confiança</span
+              >.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Prevenção vs Combate -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Prevenção vs Combate</h2>
+            <p class="text-sm text-slate-300 mt-1">Como lidar com os golpes antes e depois deles acontecerem.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <!-- PREVENÇÃO -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">🛡️</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-4 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Prevenção (Proativo)
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Ações tomadas <strong>antes</strong> do golpe ser consumado para evitar que a vítima caia na armadilha.
+              </p>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Conscientização:</strong> Treinamento de usuários. O "Desconfie sempre" é o melhor
+                  antivírus.
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Filtros Técnicos:</strong> Uso de Anti-Spam e bloqueadores de URLs maliciosas no
+                  navegador (ex: Safe Browsing).
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">MFA (Duplo Fator):</strong> Ter a verificação em duas etapas ativa evita que o
+                  golpista acesse a conta mesmo se descobrir a senha.
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Out-of-Band Verification:</strong> Confirmar o pedido suspeito
+                  <em>por outro canal</em> (ex: mãe pede dinheiro no WhatsApp? Ligue para ela pelo telefone comum).
+                </li>
+              </ul>
+            </div>
+            <!-- COMBATE -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">⚔️</div>
+              <h3 class="font-bold text-rose-600 dark:text-rose-400 mb-4 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Combate (Reativo)
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Ações tomadas <strong>durante ou após</strong> a constatação do golpe para mitigar danos.
+              </p>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Ação Rápida Financeira:</strong> Bloqueio imediato de cartões, senhas bancárias e
+                  comunicação ao banco (ex: bloqueio cautelar do PIX).
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Aviso a Terceiros:</strong> Informar os contatos que seu WhatsApp/Rede Social foi
+                  clonado para evitar o <em>Efeito Dominó</em> (golpista pedir dinheiro aos seus amigos).
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Preservação de Evidências:</strong> Tirar prints (capturas de tela) de conversas,
+                  URLs e e-mails ANTES de apagar.
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Boletim de Ocorrência:</strong> Denunciar formalmente para isenção de
+                  responsabilidade futura e investigação.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão Tecnológica:</strong> A banca diz que "A instalação de um antivírus atualizado e um firewall de última geração
+                garante imunidade total contra golpes financeiros na internet". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A maioria dos golpes usa <strong class="underline decoration-red-500">Engenharia Social pura</strong>. Se um golpista te liga fingindo
+                ser do gerente do seu banco e você dita a senha no telefone,
+                <span class="hl-yellow">nenhum firewall no mundo conseguirá te proteger</span>, pois a falha foi humana.
+              </li>
+              <li>
+                <strong>Fraude vs Malware:</strong> A banca tentará misturar os conceitos. Um golpe pode <em>usar</em> um malware como meio (ex: te
+                induzir a baixar um trojan bancário), mas muitos golpes (como fraude do PIX no WhatsApp)
+                <strong class="text-slate-900 dark:text-white">não instalam nenhum vírus na sua máquina</strong>. Ocorrência puramente social.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência: Engenharia Social
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>Engenharia Social</strong> é o pilar de quase todos os golpes na internet. É definida como a prática de obter informações
+              confidenciais ou financeiras através de manipulação psicológica e enganação.
+            </p>
+            <p>Golpistas exploram as emoções humanas e os instintos básicos para contornar defesas lógicas de computadores.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">Os Gatilhos Mentais Explorados:</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Autoridade / Intimidação:</strong> O golpista finge ser a Receita Federal, o suporte técnico de TI ou a Polícia, ameaçando de
+                multa se a vítima não agir imediatamente.
+              </li>
+              <li>
+                <strong>Urgência:</strong> "Sua conta será bloqueada em 5 minutos!". Cria pânico para que a vítima não tenha tempo de raciocinar ou
+                checar os dados.
+              </li>
+              <li>
+                <strong>Ganância / Oportunidade:</strong> O famoso bilhete premiado, heranças perdidas ou ofertas imperdíveis de produtos muito abaixo
+                do preço ("Fraude de Antecipação de Recursos").
+              </li>
+              <li>
+                <strong>Solidariedade / Confiança:</strong> Clonam o WhatsApp do filho da vítima e pedem dinheiro emprestado para "pagar uma conta de
+                emergência porque o app do banco bloqueou".
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Estratégias de Prevenção (O Antes)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Como a ameaça é voltada ao fator humano, a prevenção passa primordialmente por <strong>processos e pessoas</strong> (Treinamento e
+              Conscientização), aliados a tecnologias de segurança complementares.
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg">A Regra da Desconfiança (Ceticismo Saudável)</strong><br />
+                A principal diretriz de cartilhas de segurança (como o CERT.br): Desconfie de mensagens não solicitadas. Bancos e instituições sérias
+                <span class="hl-yellow">NUNCA pedem sua senha</span>, código de confirmação (SMS) ou solicitam que você instale aplicativos de
+                segurança com urgência.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg">Verificação Out-of-Band (Fora da Banda)</strong><br />
+                Se receber um pedido estranho por E-mail, confirme por Telefone. Se receber no WhatsApp, ligue em chamada de voz. A premissa é
+                <span class="hl-green">usar um canal diferente</span> daquele onde o ataque está acontecendo para confirmar a veracidade.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg">Controles Técnicos Básicos</strong><br />
+                Uso de <strong>Autenticação de Múltiplos Fatores (MFA)</strong> em todos os serviços. Caso você caia num golpe de Phishing e digite
+                sua senha na página falsa, o golpista ainda vai ser barrado no segundo fator.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Resposta e Combate (O Depois)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A vítima caiu no golpe e clicou no link ou transferiu o dinheiro. E agora? As diretrizes de prova focam em
+              <strong>mitigação de danos e auditoria</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Protocolo Rápido Pós-Golpe:</h3>
+            <ul class="list-decimal pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>Preservação de Cenário:</strong> O instinto da vítima é deletar as mensagens de raiva/vergonha.
+                <span class="hl-red">ERRO!</span> A primeira ação é tirar capturas de tela (prints), anotar URLs, telefones e contas de transferência
+                envolvidas. A polícia e o banco precisam de materialidade.
+              </li>
+              <li>
+                <strong>Isolamento Lógico:</strong> Mudar as senhas <strong>imediatamente</strong>. Se o golpe foi no banco X, mudar a senha do banco
+                X. Se você usava a mesma senha para o seu e-mail, <span class="hl-yellow">mudar a senha do e-mail também</span> (pois o golpista
+                testará essa senha em outros serviços).
+              </li>
+              <li>
+                <strong>Comunicação à Instituição:</strong> Ligar imediatamente (em até 30 minutos é o ideal em fraudes de PIX/Cartão) para solicitar
+                o <em>Mecanismo Especial de Devolução (MED)</em> ou contestação da compra, bloqueando as vias de escoamento do dinheiro.
+              </li>
+              <li>
+                <strong>Aviso Circular:</strong> Se o seu WhatsApp foi sequestrado, avise familiares e amigos por outras vias (Instagram, ligações)
+                para impedir o lucro do criminoso ("Efeito Cascata").
+              </li>
+              <li>
+                <strong>Registro Legal:</strong> Realizar o Boletim de Ocorrência (presencial ou eletrônico). É vital para isentar a vítima de
+                responsabilidade sobre crimes que o golpista possa cometer usando os dados roubados.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

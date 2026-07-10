@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Golpes Específicos (Phishing, Pharming, etc.)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Golpes Específicos na Internet
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: O Confronto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto Rei: Phishing vs Pharming</h2>
+            <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">CAI SEMPRE!</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">🎣</div>
+              <h3 class="font-bold text-sky-600 dark:text-sky-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Phishing (Pescaria)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  🎯 <strong>Ação da Vítima:</strong> A vítima é enganada por uma mensagem e
+                  <strong class="text-sky-600 dark:text-sky-400">CLICA num link falso</strong>.
+                </li>
+                <li>🛠️ <strong>Mecanismo:</strong> Engenharia social clássica (e-mails falsos de bancos, mensagens de recadastramento).</li>
+                <li>
+                  🔍 <strong>Como detectar?</strong> A URL no navegador <strong>NÃO</strong> é a original (ex:
+                  <code>www.bancodobrazil.com.ru</code> em vez de <code>.com.br</code>).
+                </li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">☠️</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Pharming (Redirecionamento)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  🎯 <strong>Ação da Vítima:</strong> A vítima
+                  <strong class="text-emerald-600 dark:text-emerald-400">DIGITA o endereço correto</strong> no navegador, mas é sequestrada e levada
+                  para um site falso.
+                </li>
+                <li>
+                  🛠️ <strong>Mecanismo:</strong> Corrupção técnica do sistema de resolução de nomes (<strong>Envenenamento de DNS</strong> ou arquivo
+                  <code>hosts</code> malicioso).
+                </li>
+                <li>🔍 <strong>Como detectar?</strong> Muito difícil. A URL parece 100% correta. Geralmente falta o cadeado (HTTPS válido).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Outros Golpes -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚠️</span> Mais Golpes Cobrados
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-amber-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <div class="text-2xl mb-2">🎭</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Furto de Identidade</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Ato de obter dados pessoais (CPF, nome, documentos) de alguém e <strong>fazer-se passar por essa pessoa</strong> para obter vantagens
+                (abrir contas, fazer empréstimos).
+              </p>
+            </div>
+
+            <div class="border-t-4 border-rose-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <div class="text-2xl mb-2">💸</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Antecipação de Recursos</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Promessa de ganhar uma grande fortuna, herança ou empréstimo. Mas para liberar o dinheiro, a vítima precisa
+                <strong>pagar uma pequena taxa antecipada</strong> (o golpe real).
+              </p>
+            </div>
+
+            <div class="border-t-4 border-indigo-500 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-4 shadow-sm">
+              <div class="text-2xl mb-2">📰</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Boato (Hoax)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Mensagens alarmantes ou correntes falsas. Seu objetivo é causar pânico, desinformação ou
+                <strong>coletar endereços de e-mail válidos</strong> de quem repassa a mensagem.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 Subtipos de Phishing (Pegadinhas Frequentes)
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Spear Phishing vs Whaling:</strong><br />
+                👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Spear Phishing</span
+                >: O Phishing tem um alvo focado/específico (ex: "Prezado João da Silva, RH da Empresa X"). Ele tem dados da vítima.<br />
+                👉
+                <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]"
+                  >Whaling (Pesca à Baleia)</span
+                >: É um Spear Phishing onde o alvo é um "Peixe Grande" (um CEO, Presidente ou Diretor Financeiro da empresa).
+              </li>
+              <li>
+                <strong>O Canal do Ataque muda o Nome:</strong> Se o phishing chegar por <strong>Voz/Telefone</strong>, chama-se
+                <strong class="underline decoration-red-500">Vishing</strong>. Se chegar por <strong>SMS</strong>, chama-se
+                <strong class="underline decoration-red-500">Smishing</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Phishing (O Golpe Mais Comum)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A palavra vem de <em>"fishing"</em> (pescar), pois o criminoso lança uma "isca" eletrônica e espera que algum utilizador morda. É uma
+              técnica de <strong>Engenharia Social</strong> pura, não sendo necessário um software malicioso (vírus) para que o golpe tenha sucesso.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Mecânica:</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                O atacante falsifica o remetente de um e-mail (técnica chamada de <em>E-mail Spoofing</em>) para que pareça ser do banco da vítima.
+              </li>
+              <li>Usa o senso de urgência ("O seu token expira hoje! Clique aqui ou a conta será bloqueada").</li>
+              <li>
+                O usuário clica, é levado para uma <strong>página falsa (clone visual)</strong> e digita voluntariamente a sua senha. O golpista
+                guarda a senha na sua base de dados e redireciona o usuário para o site real para ele não desconfiar.
+              </li>
+            </ul>
+
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 border border-red-200 dark:border-red-800 rounded mt-4 text-sm">
+              <strong>Como a banca cobra prevenção de Phishing:</strong> Uso de filtros anti-spam, treinamento dos funcionários para sempre checar o
+              domínio (URL) no navegador e desconfiar de saudações genéricas ("Prezado Cliente") e erros de ortografia. Nunca clicar em links diretos
+              de e-mails para páginas de login bancárias.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Pharming (A Evolução Letal)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Pharming (junção de <em>Phishing</em> com <em>Farming</em> - criar/cultivar) é muito mais sofisticado. Aqui o usuário não precisa ser
+              "burro" ou clicar num link de e-mail. <strong>Ele abre o navegador e digita corretamente <code>www.banco.com.br</code>.</strong> Mesmo
+              assim, cai no site do criminoso!
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              Como a mágica acontece? (Corrupção de Resolução de Nomes)
+            </h3>
+            <p>O ataque ocorre nas infraestruturas técnicas que traduzem o nome do site para o número IP do servidor:</p>
+            <ul class="list-none space-y-3 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong>1. Envenenamento de DNS (DNS Cache Poisoning):</strong> O atacante consegue invadir ou corromper o servidor de DNS do provedor
+                de internet. Ele altera a tabela interna: quando alguém perguntar pelo IP do Banco, o DNS responde com o IP do servidor pirata da
+                Rússia.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                <strong>2. Alteração do arquivo `hosts`:</strong> Um pequeno malware infecta o PC da vítima e altera o arquivo <code>hosts</code> do
+                Windows/Linux. O sistema operacional da vítima não precisa nem perguntar ao DNS da internet; ele lê o arquivo local e vai direto para
+                a página falsa.
+              </li>
+            </ul>
+            <p class="font-medium text-red-700 dark:text-red-400 mt-3">
+              <strong>Como as bancas cobram a prevenção ao Pharming:</strong> Para o usuário, a única defesa é a verificação do
+              <strong>Certificado Digital (HTTPS/Cadeado)</strong>. Mesmo que a página falsa seja idêntica, ela não terá o certificado oficial emitido
+              para o domínio do banco. Para os administradores, usar DNSSEC para proteger os servidores de DNS.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Fraudes de Rotina: Antecipação e Identidade
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Fraude de Antecipação de Recursos (Advance-fee fraud)</h3>
+            <p>
+              Golpe famosíssimo e histórico (conhecido mundialmente como o Golpe 419 da Nigéria). Alguém entra em contato dizendo que a vítima tem
+              direito a uma fortuna gigantesca (uma herança perdida de um parente estrangeiro, um prêmio de loteria que nem jogou, um empréstimo
+              espetacular).
+            </p>
+            <p>
+              Para "liberar" essa bolada imaginária, a vítima é persuadida a <strong>pagar taxas antecipadas</strong> (como custos de cartório,
+              impostos, honorários de advogado). O golpista continua inventando novas taxas até a vítima perceber que a fortuna nunca existiu e perdeu
+              o dinheiro que adiantou.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Furto de Identidade (Identity Theft)</h3>
+            <p>
+              Ato no qual uma pessoa tenta se passar por outra usando os dados pessoais dela (nome, documentos, fotos). Não confunda com o roubo
+              <em>físico</em> de documentos. É o <strong>uso indevido</strong> dessas informações (geralmente obtidas via vazamentos de banco de
+              dados, phishing ou lixo físico não triturado).
+            </p>
+            <p>
+              <strong>Objetivos típicos (Em prova):</strong> Abrir contas bancárias fraudulentas para tomar empréstimos, criar perfis falsos em redes
+              sociais para aplicar golpes de estelionato na família da vítima (O "Golpe do WhatsApp").
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Boatos e Correntes (Hoax)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O termo "Hoax" significa embuste, boato ou farsa. São as famosas "Fake News" em formato de corrente de e-mail ou mensagens de WhatsApp
+              que pedem encarecidamente para você repassar para todos os seus contatos.
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <strong class="text-slate-800 dark:text-white block mb-2 text-lg">Os Perigos Reais de um Hoax (O que a banca cobra):</strong>
+              <ul class="space-y-3 text-sm mt-2">
+                <li>
+                  <strong>Coleta de E-mails:</strong> Quando 50 pessoas repassam o e-mail umas para as outras sem usar o Cópia Oculta (BCC/CCO), o
+                  e-mail cria uma lista gigantesca de endereços válidos no corpo da mensagem. Os spammers coletam esses endereços para enviar vírus
+                  depois.
+                </li>
+                <li><strong>Desinformação Perigosa:</strong> Conselhos médicos absurdos ou calúnias contra a reputação de empresas e pessoas.</li>
+                <li>
+                  <strong>Uso de Recursos (Negação de Serviço Brandão):</strong> Em infraestruturas antigas ou corporativas, uma corrente pesada de
+                  vídeo enviada para 10.000 funcionários pode congestionar os servidores de e-mail da empresa.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

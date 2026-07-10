@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Prevenção e Combate a Malwares</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Prevenção e Combate a Malwares
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Definição Essencial -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">🦠</span> O que é um Malware?
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <em>Malware</em> (Software Malicioso) é o <strong>termo guarda-chuva</strong> que engloba qualquer programa, código ou script
+              desenvolvido com a
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded">INTENÇÃO</span> de causar
+              danos, roubar dados ou comprometer a operação de um sistema.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Bug NÃO é Malware:</strong> Um erro de programação que formata o seu computador acidentalmente é apenas um bug. O que define o
+              malware é a malícia do seu autor.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Prevenção vs Combate -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Prevenção vs Combate</h2>
+            <p class="text-sm text-slate-300 mt-1">As bancas avaliam se o candidato sabe separar as medidas proativas das reativas.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <!-- PREVENÇÃO -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">🛡️</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-4 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Prevenção (Antes do Ataque)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li><strong>Antivírus (Atualizado):</strong> Varredura em tempo real para impedir a execução do arquivo.</li>
+                <li>
+                  <strong>Patch Management:</strong> Manter o Windows e aplicativos atualizados para fechar vulnerabilidades que os
+                  <em>Worms</em> exploram.
+                </li>
+                <li>
+                  <strong>Princípio do Menor Privilégio:</strong> Não deixar os usuários operarem com contas de "Administrador". Se o vírus entrar,
+                  ele terá privilégios limitados e fará menos estragos.
+                </li>
+                <li><strong>Conscientização:</strong> Treinar o funcionário para não clicar em links falsos (Phishing).</li>
+              </ul>
+            </div>
+            <!-- COMBATE -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">⚔️</div>
+              <h3 class="font-bold text-rose-600 dark:text-rose-400 mb-4 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Combate (Durante/Após o Ataque)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong>Isolamento (Quarentena):</strong> Desconectar imediatamente o computador infectado da rede/Wi-Fi para que o malware não se
+                  propague para os outros.
+                </li>
+                <li><strong>Erradicação:</strong> O Antivírus atua "limpando" o arquivo infectado ou deletando-o do disco.</li>
+                <li>
+                  <strong>Análise Forense:</strong> Analisar a máquina para descobrir *como* o vírus entrou (foi um pen drive? um e-mail?) para evitar
+                  repetição.
+                </li>
+                <li>
+                  <strong>Recuperação:</strong> Restaurar os dados perdidos a partir do
+                  <strong class="text-emerald-600 dark:text-emerald-400">Backup Seguro (Offline)</strong>.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Evolução dos Antivírus -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">🔍</span> Como o Antivírus detecta a ameaça? (MUITO COBRADO)
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border-t-4 border-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg p-5 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">1. Detecção por Assinatura</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                Compara o arquivo com um banco de dados de vírus conhecidos (lista de CPFs de bandidos).
+              </p>
+              <p class="text-xs font-bold text-red-600 dark:text-red-400">
+                Ponto Fraco: Inútil contra vírus novos (Zero-Day) que ainda não estão na lista.
+              </p>
+            </div>
+
+            <div class="border-t-4 border-amber-500 bg-amber-50 dark:bg-amber-900/10 rounded-b-lg p-5 shadow-sm">
+              <h3 class="font-bold text-amber-800 dark:text-amber-400 mb-2">2. Detecção Heurística</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                Avalia o <strong>código</strong> do arquivo. Se o programa tem "cara de vírus" (ex: tem código para se auto-ocultar ou formatar HD),
+                ele bloqueia, mesmo sem conhecer o vírus.
+              </p>
+              <p class="text-xs font-bold text-amber-600 dark:text-amber-500">
+                Ponto Fraco: Gera Falsos Positivos (pode bloquear programas legítimos).
+              </p>
+            </div>
+
+            <div class="border-t-4 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10 rounded-b-lg p-5 shadow-sm">
+              <h3 class="font-bold text-indigo-800 dark:text-indigo-400 mb-2">3. Sandboxing (Caixa de Areia)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                Isola o arquivo suspeito num ambiente virtual fechado e seguro e manda-o rodar. Fica assistindo ao seu comportamento. Se tentar
+                destruir a máquina virtual, é vírus.
+              </p>
+              <p class="text-xs font-bold text-indigo-600 dark:text-indigo-400">Vantagem: A técnica mais segura contra malwares novos e complexos.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do Firewall:</strong> A banca diz que "A instalação de um Firewall protege o computador completamente contra a
+                entrada de todos os tipos de vírus". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Firewall (clássico) fecha portas. Se a porta 80 (HTTP/Web) está aberta, e você baixa um cavalo-de-troia pelo navegador,
+                <strong class="underline decoration-red-500">o firewall vai deixar ele passar rindo</strong>. Quem foca em parar código malicioso é o
+                Antivírus, o IPS e o EDR.
+              </li>
+              <li>
+                <strong>Conhecimento do Vírus vs Heurística:</strong> "A técnica de heurística só consegue bloquear vírus que já estejam devidamente
+                catalogados no banco de dados do fabricante". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                É o exato oposto. A detecção por <em>Assinatura</em> exige o catálogo. A técnica <strong>Heurística</strong> foi criada justamente
+                para bloquear as ameaças DESCONHECIDAS, avaliando o comportamento e os padrões estruturais do código.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Evolução do Combate (Do AV ao EDR)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A defesa contra malwares evoluiu para acompanhar a sofisticação dos atacantes. Nas provas atuais, o conceito tradicional de "Antivírus"
+              costuma aparecer ao lado do moderno <strong>EDR (Endpoint Detection and Response)</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              O Antivírus Tradicional (EPP - Endpoint Protection Platform)
+            </h3>
+            <p>
+              Focado estritamente na <strong>Prevenção</strong>. Ele atua "na porta". Quando você faz o download do arquivo ou tenta abri-lo, ele
+              checa a assinatura (Hash) e o comportamento básico (Heurística). Se ele não reconhecer o malware ali, o vírus entra, a máquina é
+              infectada e o antivírus "lava as mãos".
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">A Resposta Ativa: EDR</h3>
+            <p>
+              O <em>Endpoint Detection and Response</em> parte da premissa sombria de que:
+              <span class="hl-red">O malware moderno vai conseguir passar pelo antivírus</span>. O EDR foca no <strong>Combate/Resposta</strong>. Ele
+              funciona como a "caixa preta" de um avião gravando tudo o que acontece no computador do usuário.
+            </p>
+            <p>
+              Se o EDR notar que, subitamente, o <code>Word.exe</code> começou a criptografar arquivos da pasta Documentos (comportamento de
+              Ransomware), o EDR <strong>age imediatamente e sozinho</strong>: ele "mata" o processo do Word e isola a máquina da rede da empresa,
+              além de enviar um alerta crítico (Log) para a equipe de segurança (SOC).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Sandboxing e Análise Dinâmica
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Muitos malwares modernos são <strong>Polimórficos</strong> (mudam o seu próprio código a cada infecção para fugir da assinatura) ou são
+              empacotados/encriptados, de modo que a "Análise Estática Heurística" não consegue entender o que o código faz só de olhar para ele.
+            </p>
+            <p>
+              A prevenção avançada exige a <strong>Análise Dinâmica (Sandboxing)</strong>. O Sandbox é uma Máquina Virtual altamente controlada. O
+              sistema de segurança pega no arquivo suspeito, solta-o dentro do Sandbox e clica nele.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-4">
+              <li>Ele tenta deletar o registro do Windows?</li>
+              <li>Ele tenta comunicar com um servidor estrangeiro na Rússia?</li>
+              <li>Ele tenta se injetar num processo legítimo (Code Injection)?</li>
+            </ul>
+            <p class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4 text-sm font-medium">
+              <strong>Nota de Prova:</strong> Os malwares de alto nível desenvolveram capacidades de "Evasão de Sandbox". Se o vírus detetar que está
+              dentro de uma máquina virtual (ex: percebe que o rato não se mexe, ou que não há histórico de navegação),
+              <span class="hl-red">ele comporta-se como um programa inocente</span> para passar no teste. Ao chegar na máquina real do utilizador
+              final, ele desperta e ataca.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Resposta a Incidentes (Combate Prático)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Apesar de todas as prevenções, um clique num e-mail de Phishing iniciou a execução de um malware na rede da empresa. Como se combate? A
+              doutrina de Resposta a Incidentes (SANS / NIST) define etapas claras que são frequentemente alvo de perguntas discursivas:
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Ordem do Combate:</h3>
+            <ol class="list-decimal pl-6 space-y-4 mt-2">
+              <li>
+                <strong>Identificação:</strong> Confirmar se realmente é um incidente verdadeiro e não um falso positivo, e analisar a sua gravidade e
+                escopo.
+              </li>
+              <li>
+                <strong class="text-rose-600 dark:text-rose-400">Contenção (Isolamento):</strong> É o passo <strong>crítico imediato</strong>. O
+                objetivo é estancar o "sangramento". Puxar o cabo de rede do PC infetado, desligar a porta do switch ou colocar a máquina numa VLAN de
+                quarentena.
+                <span class="hl-yellow"
+                  >Cuidado: Raramente se recomenda desligar o computador da energia imediatamente, pois as provas na memória RAM (malwares Fileless)
+                  evaporariam.</span
+                >
+              </li>
+              <li><strong>Erradicação:</strong> Remover de facto as causas e o malware em si. Atualizar antivírus e limpar a máquina.</li>
+              <li>
+                <strong>Recuperação:</strong> Restaurar os dados a partir de um backup e recolocar a máquina gradualmente em produção, com forte
+                monitoramento.
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Práticas Preventivas Gerais
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A tecnologia sozinha não basta. O combate eficaz aos malwares depende de um tripé:</p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-red-600 dark:text-red-400">Educação e Pessoas:</strong> A maioria das infeções não ocorre porque um hacker invadiu
+                o firewall como nos filmes. Ocorre porque um funcionário descarregou e executou voluntariamente o anexo
+                <code>"NF_Atrasada.exe"</code>. O treino (Anti-phishing) é a primeira barreira de defesa.
+              </li>
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-red-600 dark:text-red-400">Princípio do Menor Privilégio:</strong> Quando um funcionário executa um malware sem
+                querer, o malware assume e utiliza <em>os mesmos poderes/privilégios que o funcionário tem na máquina</em>. Se o funcionário usar uma
+                conta comum sem direitos de instalar programas ou alterar o sistema de arquivos base do Windows, a eficácia do malware é mitigada
+                drasticamente.
+              </li>
+              <li class="p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <strong class="text-red-600 dark:text-red-400">Patch Management (Gestão de Correções):</strong> Como vimos, os <em>Worms</em> (e
+                algumas variantes do Ransomware WannaCry) espalham-se pela rede sem a ajuda do utilizador, explorando falhas do próprio sistema
+                operativo (ex: porta SMB desatualizada). Manter os sistemas críticos com as atualizações em dia neutraliza quase por completo estas
+                pragas.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

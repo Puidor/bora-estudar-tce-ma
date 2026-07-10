@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Prevenção e Combate a Ataques</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Prevenção e Combate a Ataques na Internet
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Vocabulário Crítico -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">📖</span> A Fórmula do Ataque
+          </h2>
+          <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-center font-bold text-sm md:text-base">
+            <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-lg shadow-sm border border-slate-300 dark:border-slate-600 flex-1 w-full">
+              <span class="block text-red-600 dark:text-red-400 text-lg mb-1">Ameaça</span>
+              <span class="text-slate-600 dark:text-slate-400 font-normal text-xs">(O hacker, o vírus, o raio)</span>
+            </div>
+            <div class="text-slate-400 text-2xl">+</div>
+            <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-lg shadow-sm border border-slate-300 dark:border-slate-600 flex-1 w-full">
+              <span class="block text-orange-600 dark:text-orange-400 text-lg mb-1">Vulnerabilidade</span>
+              <span class="text-slate-600 dark:text-slate-400 font-normal text-xs">(A porta aberta, o bug no Windows)</span>
+            </div>
+            <div class="text-slate-400 text-2xl">=</div>
+            <div class="bg-red-600 text-white p-4 rounded-lg shadow-md flex-1 w-full transform scale-105">
+              <span class="block text-xl mb-1">Ataque (Incidente)</span>
+              <span class="text-red-100 font-normal text-xs">Ocorre a perda de CID</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Prevenção vs Combate -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Prevenção vs Combate (Resposta)</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <!-- PREVENÇÃO -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">🛡️</div>
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-4 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Prevenção (O Antes)
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Medidas proativas tomadas para <strong>reduzir a superfície de ataque</strong> e fechar as vulnerabilidades antes que o hacker as
+                encontre.
+              </p>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Hardening:</strong> Endurecimento dos servidores (desativar portas e serviços
+                  inúteis).
+                </li>
+                <li><strong class="text-slate-900 dark:text-white">Gestão de Patches:</strong> Manter o software atualizado.</li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Segmentação de Rede:</strong> Usar VLANs e Firewalls para que a invasão num setor não
+                  alcance o outro.
+                </li>
+              </ul>
+            </div>
+            <!-- COMBATE -->
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-2xl opacity-20">⚔️</div>
+              <h3 class="font-bold text-rose-600 dark:text-rose-400 mb-4 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Combate (O Durante/Depois)
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Ações tomadas <strong>quando o ataque está ocorrendo</strong> ou acabou de ocorrer, visando mitigar o dano imediato.
+              </p>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                <li><strong class="text-slate-900 dark:text-white">Isolamento:</strong> Desconectar o servidor comprometido da rede.</li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Filtro de Tráfego:</strong> Ativar regras de "Blackhole" no roteador para descartar
+                  tráfego DDoS.
+                </li>
+                <li><strong class="text-slate-900 dark:text-white">Fail-over:</strong> Mudar o tráfego rapidamente para o Datacenter de Backup.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Evento vs Incidente:</strong> A banca diz: "Qualquer evento anômalo registrado nos logs do Firewall deve ser tratado
+                imediatamente como um Incidente de Segurança". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Um <strong class="text-slate-900 dark:text-white">Evento</strong> é apenas uma ocorrência (ex: um erro de login). Um
+                <strong class="text-rose-600 dark:text-rose-400">Incidente</strong> é um evento que resultou em violação ou risco real de violação da
+                política de segurança (ex: 50 erros de login seguidos de um acesso com sucesso). Todo incidente é um evento, mas nem todo evento é um
+                incidente!
+              </li>
+              <li>
+                <strong>Vulnerabilidades Zero-Day (Dia Zero):</strong> "A aplicação rigorosa de patches de segurança e antivírus atualizados garante a
+                imunidade do sistema contra ataques Zero-Day". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Ataques <em>Zero-Day</em> exploram vulnerabilidades que
+                <strong class="underline decoration-red-500">ainda são desconhecidas pelos próprios fabricantes do software</strong>. Como não há
+                patch disponível, a prevenção baseada em assinatura falha. Combate-se com análise comportamental, segmentação e isolamento.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Teoria do Ataque Cibernético
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Para a Engenharia de Segurança, um ataque não é aleatório; ele é a materialização de um Risco.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm">
+              <li>
+                <strong>Vulnerabilidade:</strong> É a fraqueza interna. Pode ser um erro no código (Buffer Overflow), uma porta aberta
+                desnecessariamente no firewall ou um funcionário mal treinado.
+              </li>
+              <li><strong>Ameaça:</strong> É o agente externo (ou interno) malicioso que tem a intenção e a capacidade de causar dano.</li>
+              <li>
+                <strong>Ataque (Exploitation):</strong> É o exato momento em que a Ameaça se aproveita da Vulnerabilidade para comprometer a
+                Confidencialidade, Integridade ou Disponibilidade do sistema.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Estratégias de Prevenção (Defesa em Profundidade)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A melhor forma de lidar com um ataque é evitar que ele aconteça. A prevenção na internet não se baseia em uma "parede de aço", mas sim
+              na <strong>Defesa em Profundidade (Defense-in-Depth)</strong>, o uso de múltiplas camadas sobrepostas de segurança.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">A. Hardening (Endurecimento)</h3>
+            <p>
+              É o processo de mapear e <strong>reduzir a superfície de ataque</strong> de um sistema. Se você compra um servidor Windows, ele vem com
+              dezenas de serviços inúteis ligados por padrão. O <em>Hardening</em> consiste em desativar tudo o que não é estritamente necessário
+              (fechar portas, desinstalar softwares padrão, aplicar senhas complexas locais).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">B. Defesa de Perímetro</h3>
+            <p>
+              Uso de <strong>Firewalls Next-Gen (NGFW)</strong>, que não olham apenas para o IP, mas inspecionam o aplicativo e o usuário. Uso de
+              <strong>IPS (Intrusion Prevention Systems)</strong> para dropar pacotes conhecidos por serem maliciosos, e a criação da
+              <strong>DMZ (Zona Desmilitarizada)</strong> para isolar servidores web da rede interna.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              C. Gestão de Identidade e Acesso (IAM)
+            </h3>
+            <p>
+              Aplicação estrita do <strong>Princípio do Menor Privilégio</strong> (cada usuário e cada sistema deve ter apenas os direitos mínimos
+              necessários para realizar o seu trabalho) e adoção do <strong>MFA (Múltiplos Fatores de Autenticação)</strong> para mitigar ataques de
+              força bruta e phishing de credenciais.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Combate: Resposta a Incidentes
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Apesar da melhor prevenção, incidentes ocorrem. A fase de "Combate" é tecnicamente chamada de
+              <strong>Plano de Resposta a Incidentes</strong> (geralmente executado pelo CSIRT - *Computer Security Incident Response Team*). As
+              bancas cobram o ciclo padrão do SANS/NIST:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4 text-sm">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg">1. Preparação:</strong> Fase que ocorre antes do ataque (treinamento da equipe,
+                configuração de backups, ferramentas prontas).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-amber-500">
+                <strong class="text-amber-700 dark:text-amber-400 text-lg">2. Identificação / Detecção:</strong> O alarme tocou no SIEM. Analisar logs
+                para confirmar: "Isso é um ataque real de negação de serviço ou o sistema só está sobrecarregado porque lançamos uma promoção?".
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-rose-500">
+                <strong class="text-rose-700 dark:text-rose-400 text-lg">3. Contenção (Isolamento):</strong>
+                <span class="bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200 font-bold px-1 rounded uppercase text-xs"
+                  >O Combate Imediato</span
+                >. O objetivo primário não é achar o culpado, é <strong>PARAR O SANGRAMENTO</strong>. Desconectar o servidor da internet, colocar o IP
+                do atacante na "Blacklist" do Roteador, desviar tráfego para a nuvem de contingência.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg">4. Erradicação:</strong> Eliminar a causa raiz. Apagar o malware do servidor,
+                fechar a vulnerabilidade no código, alterar todas as senhas que vazaram.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-500">
+                <strong class="text-emerald-700 dark:text-emerald-400 text-lg">5. Recuperação:</strong> Trazer os sistemas de volta ao ar
+                cuidadosamente, a partir dos backups confiáveis, testando se a ameaça realmente desapareceu.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-red-700 dark:text-red-400 text-lg">6. Lições Aprendidas:</strong> Reunião final. "Como o hacker entrou? O que o
+                nosso firewall falhou em detectar? Como melhoramos a prevenção amanhã?".
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

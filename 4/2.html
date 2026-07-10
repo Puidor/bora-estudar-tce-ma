@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo: Segurança Física e Lógica</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom scrollbar Red */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 4px; } /* Red-500 */
+        .dark ::-webkit-scrollbar-thumb { background: #b91c1c; } /* Red-700 */
+        
+        /* Tab transition */
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Marca-texto CSS para Aba 2 */
+        .hl-yellow { @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium; }
+        .hl-red { @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium; }
+        .hl-green { @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Voltar ao Edital
+            </a>
+            
+            <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+        
+        <header>
+            <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+                Segurança Física e Lógica
+            </h1>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+            <button id="btn-tab-1" class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors">
+                🎯 Resumo Visual
+            </button>
+            <button id="btn-tab-2" class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors">
+                📖 Teoria Aprofundada
+            </button>
+        </div>
+
+        <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+        <div id="tab-1" class="tab-content active space-y-8">
+            
+            <!-- Direto ao Ponto -->
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="text-red-500 text-2xl">⚡</span> A Regra de Ouro
+                </h2>
+                <div class="bg-red-50 dark:bg-red-900/10 border-l-4 border-red-500 p-4 rounded text-slate-700 dark:text-slate-300 text-sm md:text-base">
+                    "A segurança cibernética mais avançada do mundo (Lógica) é totalmente inútil se alguém puder simplesmente entrar na sala, pegar o servidor com as mãos e levá-lo embora (Física)." 
+                    <br><br><strong>Elas são complementares e interdependentes!</strong>
+                </div>
+            </div>
+
+            <!-- O Confronto: Física vs Lógica -->
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        ⚖️ O Confronto de Prova
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+                    <div class="bg-white dark:bg-slate-800 p-6 relative">
+                        <div class="absolute top-2 right-2 text-3xl opacity-20">🏢</div>
+                        <h3 class="font-black text-amber-600 dark:text-amber-500 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">Segurança Física</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+                            Protege as instalações, os equipamentos (hardware) e as pessoas contra ameaças tangíveis e ambientais.
+                        </p>
+                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wider mb-2">Exemplos de Controles</h4>
+                        <ul class="text-sm space-y-2 text-slate-600 dark:text-slate-400">
+                            <li>🚪 Catracas, portas com fechadura e guardas.</li>
+                            <li>📹 CFTV (Câmeras de segurança).</li>
+                            <li>🔥 Extintores, detectores de fumaça, controle de temperatura/umidade.</li>
+                            <li>⚡ No-breaks (UPS) e geradores.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-800 p-6 relative">
+                        <div class="absolute top-2 right-2 text-3xl opacity-20">💻</div>
+                        <h3 class="font-black text-sky-600 dark:text-sky-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">Segurança Lógica</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+                            Protege a informação em si (dados) e os sistemas (software/rede) contra acesso não autorizado e ataques virtuais.
+                        </p>
+                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wider mb-2">Exemplos de Controles</h4>
+                        <ul class="text-sm space-y-2 text-slate-600 dark:text-slate-400">
+                            <li>🔑 Senhas, Tokens (MFA) e listas de controle de acesso (ACLs).</li>
+                            <li>🧱 Firewalls, IDS e IPS.</li>
+                            <li>🔐 Criptografia de discos e VPNs.</li>
+                            <li>🦠 Software Antivírus e Anti-malware.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ameaças e Sinistros -->
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+                    <span class="text-red-500 text-2xl">⚠️</span> Classificação de Ameaças
+                </h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                    <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                        <div class="text-3xl mb-2">🌪️</div>
+                        <h3 class="font-bold text-slate-800 dark:text-white text-base">Naturais / Ambientais</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">Terremotos, enchentes, raios, calor extremo, poeira.</p>
+                        <p class="text-[10px] font-bold mt-2 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-1 py-0.5 rounded uppercase">Combate: Seg. Física</p>
+                    </div>
+                    
+                    <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                        <div class="text-3xl mb-2">🚶</div>
+                        <h3 class="font-bold text-slate-800 dark:text-white text-base">Humanas (Físicas)</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">Roubo de notebooks, vandalismo de cabos, entrada forçada na sala de servidores, <em>Tailgating</em>.</p>
+                        <p class="text-[10px] font-bold mt-2 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-1 py-0.5 rounded uppercase">Combate: Seg. Física</p>
+                    </div>
+
+                    <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                        <div class="text-3xl mb-2">🥷</div>
+                        <h3 class="font-bold text-slate-800 dark:text-white text-base">Cibernéticas (Lógicas)</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">Malwares, Phishing, ataques de Negação de Serviço (DDoS), injeção de código.</p>
+                        <p class="text-[10px] font-bold mt-2 bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300 px-1 py-0.5 rounded uppercase">Combate: Seg. Lógica</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerta Pegadinha -->
+            <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-5 md:p-6 relative overflow-hidden">
+                <svg class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                
+                <div class="relative z-10">
+                    <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+                        🚨 Pegadinhas Mortais de Prova
+                    </h2>
+                    <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+                        <li>
+                            <strong>O Duplo Papel da Biometria:</strong> A banca afirma: "A impressão digital (biometria) é um controle exclusivamente lógico de segurança". <br>
+                            <span class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide">Falso!</span> A biometria pode ser usada tanto como controle <strong class="underline decoration-red-500">LÓGICO</strong> (ex: desbloquear a tela do Windows) quanto como controle <strong class="underline decoration-red-500">FÍSICO</strong> (ex: liberar a catraca do refeitório ou a porta de vidro do Datacenter).
+                        </li>
+                        <li>
+                            <strong>Tokens e Crachás:</strong> Mesma lógica! Um <em>Smartcard</em> (crachá com chip) pode abrir a porta da empresa (Segurança Física) e depois ser inserido no teclado para logar no sistema financeiro (Segurança Lógica). O controle depende de <strong class="text-slate-900 dark:text-white">ONDE ele está sendo aplicado</strong>.
+                        </li>
+                        <li>
+                            <strong>A Engenharia Social:</strong> A engenharia social (ex: telefonar para a secretária fingindo ser do TI para pedir a senha) quebra a barreira <strong>Lógica</strong> explorando uma fraqueza <strong>Humana</strong>. Muitas vezes é classificada como uma violação aos controles administrativos.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+        <div id="tab-2" class="tab-content space-y-8">
+            
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    1. Camadas de Proteção (Defense in Depth)
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A segurança da informação baseia-se no princípio da <strong>Defesa em Profundidade (Defense in Depth)</strong>. Se um atacante passar pelo portão principal, haverá outra porta trancada, e dentro dessa porta, o servidor terá uma senha, e dentro do servidor os dados estarão criptografados.
+                    </p>
+                    <p>
+                        A <span class="hl-red">Segurança Física</span> atua nas camadas mais externas (O Perímetro, o Edifício, a Sala Segura). A <span class="hl-red">Segurança Lógica</span> atua nas camadas internas (A Rede, o Sistema Operacional, a Aplicação, os Dados).
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    2. Segurança Física (ISO 27002)
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A Norma ABNT NBR ISO/IEC 27002 traz uma seção inteira (Controles Físicos e do Ambiente) dedicada a isso. As provas costumam focar em quatro ameaças principais:
+                    </p>
+                    
+                    <ul class="list-none space-y-4 mt-4">
+                        <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                            <strong class="text-amber-700 dark:text-amber-400 text-lg mb-1 block">A. Controle de Acesso Físico e Perímetro</strong>
+                            <p class="text-sm">Garantir que apenas pessoas autorizadas entrem nas instalações. Usa <strong>Zonas Seguras</strong> (anéis de cebola). A receção é a zona pública; os escritórios são a zona restrita; o Data Center é a zona de alta segurança. Usa crachás, guardas, portas com biometria e alarmes contra intrusão. Combate o <em>Tailgating</em> (pegar carona na porta que alguém abriu).</p>
+                        </li>
+                        <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                            <strong class="text-amber-700 dark:text-amber-400 text-lg mb-1 block">B. Energia e Condicionamento (Disponibilidade Física)</strong>
+                            <p class="text-sm">Os computadores odeiam calor e falta de energia. Controles exigidos: Sistemas de ar condicionado de precisão (HVAC), controle de umidade (muito seco gera eletricidade estática, muito úmido oxida placas), <strong class="text-slate-900 dark:text-white">No-breaks (UPS) e Geradores a Diesel</strong> para garantir que os servidores não desliguem.</p>
+                        </li>
+                        <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                            <strong class="text-amber-700 dark:text-amber-400 text-lg mb-1 block">C. Ameaças Ambientais e Incêndio</strong>
+                            <p class="text-sm">Uso de extintores apropriados (geralmente CO2 ou gases limpos como FM-200 que não estragam eletrônicos, jamais água para computadores), detectores de fumaça, piso elevado (para esconder cabos e evitar poças d'água de inundações) e proteção contra raios.</p>
+                        </li>
+                        <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                            <strong class="text-amber-700 dark:text-amber-400 text-lg mb-1 block">D. Descarte Seguro de Equipamentos</strong>
+                            <p class="text-sm">Não basta "deletar" arquivos. Na segurança física, os discos rígidos velhos que vão para o lixo devem sofrer desmagnetização (<em>Degaussing</em>) ou destruição mecânica completa (trituração física) para evitar a recuperação de dados em lixões.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    3. Segurança Lógica
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        Se a segurança física protege o "container" de metal, a segurança lógica protege a "alma" da informação. Engloba softwares, protocolos e regras de sistema. As áreas principais são:
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">A. Controle de Acesso Lógico e Autenticação</h3>
+                    <p>
+                        Garantir que a pessoa digitando no teclado é realmente ela. 
+                        Usa-se <strong class="text-sky-600 dark:text-sky-400">Autenticação de Múltiplos Fatores (MFA)</strong> (algo que você sabe + algo que você tem + algo que você é). Depois que o usuário prova quem é, entram as <strong>Listas de Controle de Acesso (ACLs)</strong> para dizer quais pastas e sistemas ele tem permissão para ler ou alterar (Princípio do Menor Privilégio).
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">B. Segurança de Rede e Perímetro</h3>
+                    <p>
+                        Proteção dos canais de comunicação. Configuração de <strong>Firewalls</strong> para bloquear portas indesejadas, <strong>IDS/IPS</strong> para caçar tráfego de hackers, segmentação de redes (VLANs) para que o departamento de RH não enxergue as máquinas do departamento Financeiro, e <strong>VPNs</strong> para encriptar o tráfego que viaja pela internet pública.
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-sky-500 pl-3">C. Segurança de Endpoint e Dados (Data at Rest)</h3>
+                    <p>
+                        Proteger a máquina do usuário final (Endpoint). Instalação de software <strong>Antivírus / EDR</strong>, políticas de bloqueio de pendrives (USB), atualizações de segurança (Patch Management) e, o mais importante, <strong>Criptografia de Disco Inteiro (BitLocker)</strong>. 
+                        <br><span class="hl-yellow">Se um notebook for roubado (falha de seg. física), a criptografia lógica do disco impede que o ladrão acesse a informação (sucesso da seg. lógica).</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    4. Revisão: O Triângulo CID em ambos os mundos
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A Tríade da Segurança da Informação (Confidencialidade, Integridade e Disponibilidade) se aplica tanto ao mundo físico quanto ao lógico. As bancas exigem essa correlação:
+                    </p>
+                    
+                    <ul class="list-disc pl-6 space-y-3 mt-4 text-sm font-medium">
+                        <li>
+                            <strong>Confidencialidade Física:</strong> Trancar pastas de arquivos de papel num cofre; usar telas de privacidade (película escura) nos monitores do RH para que as pessoas não leiam os salários ao passar pelo corredor.
+                        </li>
+                        <li>
+                            <strong>Confidencialidade Lógica:</strong> Criptografar um arquivo PDF antes de mandar por e-mail; exigir senha para abrir o sistema de folha de pagamento.
+                        </li>
+                        <li>
+                            <strong>Disponibilidade Física:</strong> Ligar o servidor a um Gerador a Diesel para que ele não desligue durante um blecaute da cidade.
+                        </li>
+                        <li>
+                            <strong>Disponibilidade Lógica:</strong> Implementar balanceamento de carga (Load Balancers) e um sistema anti-DDoS para que o site continue no ar durante um ataque hacker.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Tab switching logic
+        const btnTab1 = document.getElementById('btn-tab-1');
+        const btnTab2 = document.getElementById('btn-tab-2');
+        const tab1 = document.getElementById('tab-1');
+        const tab2 = document.getElementById('tab-2');
+
+        function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+            // Update Buttons
+            activeBtn.classList.add('text-red-600', 'border-red-600', 'dark:text-red-400', 'dark:border-red-400', 'font-bold');
+            activeBtn.classList.remove('text-slate-500', 'border-transparent', 'font-medium');
+            
+            inactiveBtn.classList.remove('text-red-600', 'border-red-600', 'dark:text-red-400', 'dark:border-red-400', 'font-bold');
+            inactiveBtn.classList.add('text-slate-500', 'border-transparent', 'font-medium');
+
+            // Update Tabs
+            activeTab.classList.add('active');
+            inactiveTab.classList.remove('active');
+        }
+
+        btnTab1.addEventListener('click', () => switchTab(btnTab1, btnTab2, tab1, tab2));
+        btnTab2.addEventListener('click', () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+        // Theme switching logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

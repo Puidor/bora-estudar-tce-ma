@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Softwares Maliciosos (Malwares)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Tipos de Malwares
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: O Confronto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> O Confronto Mestre: Vírus vs Worm vs Trojan
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-5 relative overflow-hidden">
+              <div class="absolute -right-2 -top-2 text-5xl opacity-10">🦠</div>
+              <h3 class="font-bold text-red-700 dark:text-red-400 mb-2 border-b border-slate-200 dark:border-slate-600 pb-1">Vírus</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li><strong class="text-slate-900 dark:text-white">Propagação:</strong> Insere cópias de si mesmo noutros arquivos (Infecta).</li>
+                <li><strong class="text-slate-900 dark:text-white">Hospedeiro:</strong> SIM. Precisa de um ficheiro/programa "hospedeiro".</li>
+                <li><strong class="text-slate-900 dark:text-white">Execução:</strong> Depende do utilizador (clicar no ficheiro infetado).</li>
+              </ul>
+            </div>
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-5 relative overflow-hidden">
+              <div class="absolute -right-2 -top-2 text-5xl opacity-10">🪱</div>
+              <h3 class="font-bold text-emerald-700 dark:text-emerald-400 mb-2 border-b border-slate-200 dark:border-slate-600 pb-1">Worm (Verme)</h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Propagação:</strong> Explora vulnerabilidades em redes para se copiar de máquina em
+                  máquina.
+                </li>
+                <li><strong class="text-slate-900 dark:text-white">Hospedeiro:</strong> NÃO. É um programa autónomo.</li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Execução:</strong> Automática (Não precisa de cliques).
+                  <em>Gera muito tráfego de rede!</em>
+                </li>
+              </ul>
+            </div>
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-5 relative overflow-hidden">
+              <div class="absolute -right-2 -top-2 text-5xl opacity-10">🐎</div>
+              <h3 class="font-bold text-amber-700 dark:text-amber-400 mb-2 border-b border-slate-200 dark:border-slate-600 pb-1">
+                Trojan (Cavalo-de-Troia)
+              </h3>
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Natureza:</strong> Parece um programa legítimo e inofensivo (um jogo, um PDF), mas
+                  contém um "presente" oculto.
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Replicação:</strong>
+                  <span class="font-bold text-red-600 dark:text-red-400">NÃO se replica sozinho!</span>
+                </li>
+                <li>
+                  <strong class="text-slate-900 dark:text-white">Ação:</strong> Executa a função que promete, mas instala um vírus ou backdoor
+                  secretamente.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa de Outros Malwares -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🗂️ O Zoológico de Malwares (Outros Tipos)</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Tipo</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400">
+                    Ação / Palavra-Chave em Provas
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Bot / Botnet</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Transforma o PC em um "Zumbi". Controlado remotamente por um servidor C&C (Comando e Controle). Uma rede de zumbis (Botnet) é
+                    usada para <strong>Ataques DDoS e envio massivo de Spam</strong>.
+                  </td>
+                </tr>
+                <tr class="bg-red-50/50 dark:bg-red-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Rootkit</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Conjunto de programas focado em <strong>ESCONDER</strong> e assegurar a presença do invasor na máquina. Ele subverte o Sistema
+                    Operacional para que o Antivírus não o consiga "ver".
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Spyware</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Programa Espião. Monitoriza os hábitos do utilizador e envia os dados a terceiros de forma oculta. Inclui
+                    <strong>Keyloggers</strong> (teclas) e <strong>Screenloggers</strong> (ecrã). Fere a Confidencialidade.
+                  </td>
+                </tr>
+                <tr class="bg-red-50/50 dark:bg-red-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Adware</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Exibe de forma constante <strong>Propagandas e Anúncios</strong> sem a autorização do utilizador. Frequentemente empacotado em
+                    downloads "gratuitos".
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-red-500">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">Backdoor</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">
+                    Cria uma "Porta dos Fundos" que permite ao invasor <strong>retornar futuramente</strong> à máquina comprometida sem precisar usar
+                    a vulnerabilidade original ou passar pelo login normal.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Trojan é um Vírus?</strong> A banca afirma que "O Cavalo-de-Troia é um tipo de vírus que se multiplica rapidamente inserindo
+                cópias de si em programas legítimos". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Trojan <strong>NÃO</strong> é um tipo de vírus e
+                <strong class="underline decoration-red-500">NÃO se replica ou injeta cópias de si mesmo</strong>. Ele baseia-se na Engenharia Social
+                para o utilizador o instalar achando que é algo útil.
+              </li>
+              <li>
+                <strong>A Confusão Bot vs Worm:</strong> Ambos podem propagar-se de forma autónoma. Mas a palavra-chave que os distingue em provas é o
+                <strong class="text-slate-900 dark:text-white">Controle Remoto</strong>. O Worm atua sozinho criando caos na rede e reproduzindo-se. O
+                Bot fica escondido, em silêncio, apenas esperando "uma ordem" do servidor do Hacker (C&C) para realizar um ataque massivo e coordenado
+                (DDoS).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Anatomia do Vírus de Computador
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A característica central do Vírus é a <strong>Infecção</strong>. Ele procura programas legítimos (o hospedeiro) e "injetam" o seu código
+              dentro deles. Quando o usuário executa o programa hospedeiro (ex: o Microsoft Word), o código do vírus é executado silenciosamente
+              primeiro, infecta outras coisas na memória, e só depois abre o Word normalmente.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              Tipos de Vírus que caem em Concursos:
+            </h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>Vírus de Boot:</strong> Um dos mais antigos. Em vez de infetar arquivos .exe, ele esconde-se no setor de inicialização do
+                disco rígido (MBR). É executado antes mesmo de o Windows ou Linux arrancar, controlando a máquina toda. (Hoje mitigado pelo Secure
+                Boot da UEFI).
+              </li>
+              <li>
+                <strong>Vírus de Macro:</strong> Muito cobrado! É escrito em linguagens de script de aplicações de escritório (como o VBA do Office).
+                Ele não infeta programas .exe, ele infeta arquivos de <strong>documentos e planilhas (.doc, .xls)</strong>.
+              </li>
+              <li>
+                <strong>Time Bomb (Bomba Relógio):</strong> Fica inativo no sistema, apenas à espera de uma data/hora específica, ou do cruzamento de
+                uma condição, para "detonar" o seu código malicioso.
+              </li>
+              <li>
+                <strong>Vírus Polimórfico:</strong> Para fugir dos antivírus, este vírus
+                <strong>altera a sua própria assinatura (código binário)</strong> cada vez que se replica, mas mantém a sua função original. A
+                detecção por assinatura do antivírus falha contra ele, exigindo Análise Heurística.
+              </li>
+              <li>
+                <strong>Vírus Metamórfico:</strong> Mais poderoso que o polimórfico. Ele não altera apenas a assinatura, ele
+                <strong>reestrutura completamente o seu código</strong>, reconstruindo-se a cada iteração.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Worm (Verme) e a Sobrecarga de Redes
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A banca CEBRASPE adora comparar o Worm com o Vírus. O Worm é um programa completo. Ele
+              <strong>não injeta o seu código dentro de outros arquivos</strong>; ele deixa o seu arquivo principal solto no sistema.
+            </p>
+            <p>
+              A sua forma de atuação é cibernética e automática. Ele "fareja" a rede local (LAN) ou a Internet à procura de outros computadores que
+              tenham alguma <span class="hl-red">Vulnerabilidade (falha de segurança/software desatualizado)</span>. Ao encontrar, ele envia uma cópia
+              de si mesmo para a outra máquina através da rede.
+            </p>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 border border-emerald-200 dark:border-emerald-800 rounded mt-4 text-sm font-medium">
+              <strong>Efeito Colateral (Prova):</strong> Como a principal atividade do Worm é ficar digitalizando e enviando cópias de si mesmo para
+              outras centenas de máquinas, o sintoma número um de um ataque de Worm é o
+              <strong>consumo excessivo de largura de banda e lentidão generalizada da rede</strong> (congestionamento), mesmo antes de ele fazer
+              qualquer dano real aos arquivos.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Cavalos-de-Troia (Trojans) e seus Subtipos
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Cavalo de Troia da mitologia grega era um presente que escondia soldados. Em computação, é exatamente igual. Um programa "útil" (como
+              um protetor de tela, um ativador pirata de software, ou um anexo de "fatura em atraso.pdf") que, quando executado, faz o que promete,
+              mas <strong>em segundo plano</strong> realiza tarefas perigosas e indesejadas.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-amber-500 pl-3">
+              A Cartilha do CERT.br para Trojans:
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Trojan Downloader:</strong> O programa em si é minúsculo e inofensivo. A sua única função é entrar na máquina, ligar-se à
+                internet furtivamente e fazer o "download" do malware real (pesado) para dentro do PC.
+              </li>
+              <li>
+                <strong>Trojan Dropper:</strong> O malware real já vem embutido dentro dele. A sua função é apenas "descarregá-lo" (drop) no disco
+                rígido do usuário.
+              </li>
+              <li>
+                <strong>Trojan Banker (Bancário):</strong> O mais cobrado. Foca no roubo de credenciais financeiras. Ele usa técnicas de
+                <em>Phishing</em>, injetando telas falsas por cima do site legítimo do banco para capturar o utilizador, o PIN e o token.
+              </li>
+              <li><strong>Trojan Spy:</strong> Um cavalo de troia desenhado para instalar programas espiões (Spyware / Keylogger).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Rootkit e Spyware (Invisibilidade e Espionagem)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Rootkit (A Arte do Esconderijo)</h3>
+            <p>
+              "Root" (Administrador/Base do sistema) + "Kit" (Ferramentas). Não é um vírus para apagar arquivos. É uma técnica para
+              <strong>Manter e Ocultar a Presença</strong> do invasor.
+            </p>
+            <p>
+              Se o Antivírus pedir ao Windows: <em>"Lista-me os processos a rodar"</em>, o Rootkit já infetou o núcleo (kernel) do Windows. O Windows
+              mente para o Antivírus e não exibe o processo do Hacker. Remover um Rootkit avançado muitas vezes só é possível formatando o disco por
+              completo, pois ele apodera-se do anel de segurança mais baixo do sistema operacional.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+              Spyware (O Espião)
+            </h3>
+            <p>
+              Sua missão é monitorar e capturar o comportamento do usuário e as suas informações sensíveis, enviando os dados para a internet sem
+              consentimento. Atenta contra a <strong>Confidencialidade</strong>.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Keylogger:</strong> O mais clássico. Um programa minúsculo que grava num arquivo de texto
+                <strong>absolutamente todas as teclas que você digita no teclado</strong>.
+              </li>
+              <li>
+                <strong>Screenlogger:</strong> Mais avançado. O keylogger falhou quando os bancos criaram o "Teclado Virtual" no ecrã que muda os
+                números de lugar. O Screenlogger combate isso tirando "prints" (capturas de tela) nos exatos momentos em que o rato clica em cima do
+                teclado virtual, gravando a área em que houve o clique para descobrir a senha.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

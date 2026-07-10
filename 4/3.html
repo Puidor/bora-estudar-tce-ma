@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Métodos de Autenticação</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Métodos de Autenticação
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: Os 3 Fatores -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> Os 3 Fatores de Autenticação
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-5">
+              <div class="text-3xl mb-2">🧠</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Algo que você SABE</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase mb-2">Fator de Conhecimento</p>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                A base histórica. É o mais barato, porém o mais frágil, sujeito a esquecimento e força bruta.
+              </p>
+              <p class="text-xs font-mono mt-3 bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 py-1 px-2 rounded">
+                Ex: Senhas, PINs, Padrão de bloqueio da tela, Perguntas Secretas.
+              </p>
+            </div>
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-5">
+              <div class="text-3xl mb-2">📱</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Algo que você TEM</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase mb-2">Fator de Posse</p>
+              <p class="text-sm text-slate-700 dark:text-slate-300">Exige a posse física ou digital de um dispositivo para provar quem você é.</p>
+              <p class="text-xs font-mono mt-3 bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 py-1 px-2 rounded">
+                Ex: Smartcards (com Certificado Digital), Token Físico, SMS, App Authenticator (TOTP).
+              </p>
+            </div>
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-5">
+              <div class="text-3xl mb-2">👁️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white mb-1">Algo que você É</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase mb-2">Fator de Inerência</p>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Forte e intransferível. Avalia <strong>características físicas</strong> (estáticas) ou <strong>comportamentais</strong> (dinâmicas).
+              </p>
+              <p class="text-xs font-mono mt-3 bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 py-1 px-2 rounded">
+                Ex: Digital, Íris, Face, Padrão de digitação, Assinatura manual.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa de Erros Biométricos (CAI SEMPRE) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Calcanhar de Aquiles da Biometria (Taxas de Erro)</h2>
+            <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Métrica (Sigla)</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400">O que significa?</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Risco / Impacto</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    FRR<br /><span class="text-xs text-slate-500 font-normal">False Rejection Rate (Tipo I)</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    O sistema <strong>REJEITA</strong> um usuário legítimo (Não reconhece a sua própria digital).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Causa muita <strong>Frustração</strong>, mas o nível de segurança da empresa se mantém intacto.
+                  </td>
+                </tr>
+                <tr class="bg-red-50/50 dark:bg-red-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    FAR<br /><span class="text-xs text-slate-500 font-normal">False Acceptance Rate (Tipo II)</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">
+                    O sistema <strong>ACEITA</strong> um impostor (Abre a porta para um desconhecido).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-red-600 dark:text-red-400">
+                    É o <strong>Pior Risco</strong>. Ocorre uma violação fatal de segurança.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-l-4 border-emerald-500">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                    CER / EER<br /><span class="text-xs text-slate-500 font-normal">Crossover / Equal Error Rate</span>
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    É o ponto de equilíbrio matemático no gráfico onde o valor do <strong>FRR é igual ao FAR</strong>.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Mede a precisão global do aparelho.
+                    <strong class="text-emerald-600 dark:text-emerald-400">Quanto MENOR o CER, MELHOR o equipamento.</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 Pegadinhas Mortais de Prova (Autenticação Multi-fator)
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão do MFA Falso:</strong> A banca cria um cenário: "Para aumentar a segurança do banco, o cliente agora tem que digitar
+                a sua Senha Web (8 dígitos) e, em seguida, digitar um PIN numérico (4 dígitos). Como usou dois métodos, implementou com sucesso o MFA
+                (Autenticação de 2 Fatores)." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Para ser MFA de verdade, as categorias TÊM que ser diferentes (ex: Algo que você sabe + Algo que você tem). Usar Senha e PIN é exigir
+                "Algo que você sabe" duas vezes. O nível de segurança subiu pouco, e é classificado apenas como
+                <strong>Autenticação de Fator Único (SFA)</strong> em dobro.
+              </li>
+              <li>
+                <strong>Precisão Biométrica (CER):</strong> "Entre um leitor de íris com CER de 2% e um leitor digital com CER de 5%, o leitor digital
+                é mais seguro por ter uma taxa maior". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Na taxa CER (Crossover Error Rate), <strong class="underline decoration-red-500">MENOS É MAIS</strong>. O leitor com CER de 2% é o
+                mais preciso e seguro.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Autenticação por Senhas (Conhecimento)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Apesar de serem o método mais antigo e frágil, as senhas ainda são a base da internet. O problema da senha é que ela pode ser
+              descoberta, roubada, anotada em papel ou adivinhada.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              Técnicas de Ataque a Senhas (Cobrados em Prova)
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Força Bruta (Brute Force):</strong> O atacante testa de forma automatizada e sequencial TODAS as combinações possíveis de
+                letras, números e símbolos até acertar (ex: aaaa, aaab, aaac).
+              </li>
+              <li>
+                <strong>Ataque de Dicionário:</strong> Em vez de tentar combinações aleatórias, o atacante usa uma lista gigantesca de palavras reais
+                (ex: "senha123", "futebol", "deus") baixada da internet. É infinitamente mais rápido que a força bruta clássica.
+              </li>
+              <li>
+                <strong>Rainbow Tables:</strong> Tabelas pré-computadas contendo os Hashes das senhas mais comuns, usadas para quebrar bancos de dados
+                vazados instantaneamente.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">Defesas do Administrador</h3>
+            <p>Como a empresa protege o banco de senhas?</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Política de Senhas:</strong> Exigir complexidade (maiúsculas, símbolos, > 8 caracteres), bloquear as últimas 5 senhas usadas
+                (histórico), forçar a troca a cada 90 dias e aplicar bloqueio de conta (Account Lockout) após 3 erros consecutivos.
+              </li>
+              <li>
+                <strong>Uso de SALT:</strong> Ao gravar a senha no banco de dados, o desenvolvedor NÃO pode guardá-la em texto claro. Ele aplica um
+                <em>Hash</em> (ex: SHA-256). Porém, para evitar ataques de <em>Rainbow Tables</em>, ele deve adicionar o <strong>SALT</strong> (um
+                pequeno texto aleatório) à senha ANTES de aplicar o hash. Isso garante que dois usuários com a senha "123456" tenham hashes totalmente
+                diferentes no banco de dados.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Autenticação por Tokens e Certificados (Posse)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para mitigar a fragilidade das senhas, adicionamos a Posse. Se um atacante russo roubar a sua senha, ele não poderá acessar o sistema
+              bancário se não possuir o seu telemóvel na mão.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">Tokens OTP (One-Time Password)</h3>
+            <p>
+              O Token gera senhas de uso único (que expiram e não podem ser interceptadas e reutilizadas - ataques de <em>Replay</em>). Existem dois
+              protocolos abertos e famosos:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>HOTP (Hash-based / Event-based):</strong> O Token gera um número com base em um <em>contador de eventos</em>. Ex: A cada vez
+                que você aperta o botão do chaveirinho, o contador avança e gera um novo número. Não depende de relógio.
+              </li>
+              <li>
+                <strong>TOTP (Time-based):</strong> É o padrão atual de mercado (usado no Google Authenticator). A senha de 6 dígitos baseia-se num
+                Hash que envolve uma semente secreta e o <strong class="text-red-600 dark:text-red-400">relógio do sistema</strong>. A senha muda
+                sozinha a cada 30 segundos, sem você apertar nenhum botão.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">
+              Autenticação via Certificados (Smartcards/PKI)
+            </h3>
+            <p>
+              Usar um Crachá Eletrônico (Smartcard) com chip é o exemplo clássico corporativo. Dentro do chip está um Certificado Digital e uma
+              <strong>Chave Privada</strong>.
+            </p>
+            <p>
+              <strong>Como funciona na prática?</strong>
+              O servidor envia um "Desafio" numérico aleatório para o usuário. O Smartcard exige que o usuário digite o PIN (Conhecimento). Se o PIN
+              estiver certo, o chip usa a Chave Privada (Posse) para assinar o Desafio e devolver ao servidor. O servidor testa com a Chave Pública do
+              usuário. É impossível o hacker falsificar essa resposta.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Autenticação Biométrica (Inerência)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              É a medição de uma característica física ou de comportamento exclusiva daquele ser humano, tornando-a, teoricamente, impossível de
+              perder ou repassar para um colega.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Classificação de Mercado</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Biometria Fisiológica (Estática):</strong> Impressão Digital, Geometria da Mão, Retina (vasos sanguíneos no fundo do olho,
+                altíssima precisão e custo), Íris, Geometria Facial. Elas não mudam dia após dia.
+              </li>
+              <li>
+                <strong>Biometria Comportamental (Dinâmica):</strong> Dinâmica de Digitação (velocidade e ritmo ao digitar a senha no teclado),
+                Assinatura Manuscrita (não analisa só o desenho da firma, mas a pressão e a aceleração da caneta), Reconhecimento de Voz. Elas podem
+                variar se você estiver doente, cansado ou estressado (causando muitos Falsos Rejeites - FRR).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-red-500 pl-3">O Calibramento (FAR vs FRR)</h3>
+            <p>
+              Sistemas biométricos são equipamentos analógicos sujeitos a ruído (dedo molhado, sensor sujo). Ao contrário de uma senha que é 100%
+              igual ou errada, a biometria atua por <strong class="text-red-600 dark:text-red-400">Semelhança Estatística</strong>. O sistema precisa
+              ser "calibrado".
+            </p>
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 rounded border border-red-200 dark:border-red-800 mt-2 text-sm">
+              <ul class="space-y-2">
+                <li>
+                  Se calibrarmos a biometria para ser <strong>MUITO RESTrita/Sensível</strong> (exigir 99,99% de perfeição): O sistema não deixará
+                  nenhum hacker entrar (O FAR cai para perto de Zero). Porém, como as pessoas têm dedos secos, o sistema começará a proibir a entrada
+                  dos próprios funcionários no prédio (O FRR dispara).
+                </li>
+                <li>
+                  Se calibrarmos para ser <strong>MUITO PERMISSIVO</strong>: Todos os funcionários entrarão com facilidade (o FRR cai para zero). No
+                  entanto, um impostor com dedo levemente parecido será aceito (O FAR dispara perigosamente).
+                </li>
+                <li>
+                  <strong class="text-red-700 dark:text-red-400">O Ponto CER (Crossover):</strong> É o ponto exato no gráfico em que a curva do FAR e
+                  do FRR se cruzam. É onde o equipamento entrega o seu equilíbrio máximo. Por isso, a banca cobra a regra:
+                  <em>O melhor equipamento é aquele que possui o menor CER</em>.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

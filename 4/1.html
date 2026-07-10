@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Política de Segurança da Informação (PSI)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Red */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444;
+        border-radius: 4px;
+      } /* Red-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #b91c1c;
+      } /* Red-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-red-600 dark:text-red-400 tracking-wider uppercase mb-2">Segurança da Informação</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-red-500 pb-2 inline-block">
+          Política de Segurança da Informação (PSI)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-red-600 border-b-2 border-red-600 dark:text-red-400 dark:border-red-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-red-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>O que é?</strong> A PSI é um documento formal (escrito) que estabelece as diretrizes, responsabilidades e o comprometimento da
+              organização em proteger os seus ativos de informação.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Nível de Abstração:</strong> A PSI é um documento de
+              <span class="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 font-bold px-1.5 py-0.5 rounded"
+                >ALTO NÍVEL (Estratégico)</span
+              >. Ela dita "o que" deve ser feito (ex: a rede deve ser segura), mas <strong>NÃO</strong> dita "como" fazer (não descreve qual marca de
+              firewall comprar).
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-red-500 before:rounded-full"
+            >
+              <strong>Apoio Vital:</strong> Para ter validade e ser respeitada, a PSI deve obrigatoriamente ser elaborada, revisada e
+              <strong class="text-red-600 dark:text-red-400">aprovada pela ALTA DIREÇÃO</strong> da empresa.
+            </li>
+          </ul>
+        </section>
+
+        <!-- A Pirâmide Documental -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-red-800 dark:bg-red-900 p-4 border-b border-red-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔺 A Hierarquia Documental</h2>
+            <span class="bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO!</span>
+          </div>
+          <div class="p-6 flex flex-col items-center">
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 text-center">
+              As bancas tentam te confundir invertendo as definições de Política, Norma e Procedimento. Memorize a estrutura da pirâmide:
+            </p>
+
+            <div class="w-full max-w-md space-y-2">
+              <!-- Topo -->
+              <div class="bg-red-600 text-white rounded-t-xl p-4 text-center shadow-md">
+                <h3 class="font-black tracking-widest text-lg uppercase">1. Políticas (Policies)</h3>
+                <p class="text-red-100 text-xs mt-1 font-medium">Nível Estratégico | O que fazer | Obrigatórias</p>
+                <p class="text-sm mt-2">
+                  Declaração formal da Alta Direção. Ex: <em>"Todas as estações de trabalho devem ter controle de acesso."</em>
+                </p>
+              </div>
+
+              <!-- Meio -->
+              <div class="bg-red-500 text-white p-4 text-center shadow-md">
+                <h3 class="font-black tracking-widest text-lg uppercase">2. Normas (Standards)</h3>
+                <p class="text-red-100 text-xs mt-1 font-medium">Nível Tático | Regras específicas | Obrigatórias</p>
+                <p class="text-sm mt-2">
+                  Traduzem a política em regras mensuráveis. Ex: <em>"A senha deve ter 8 caracteres e expirar a cada 90 dias."</em>
+                </p>
+              </div>
+
+              <!-- Base -->
+              <div class="bg-red-400 text-white p-4 text-center shadow-md">
+                <h3 class="font-black tracking-widest text-lg uppercase">3. Procedimentos (Procedures)</h3>
+                <p class="text-red-50 text-xs mt-1 font-medium">Nível Operacional | O passo a passo (Como fazer) | Obrigatórios</p>
+                <p class="text-sm mt-2">O manual técnico. Ex: <em>"1. Abra o Active Directory. 2. Clique com o botão direito no usuário..."</em></p>
+              </div>
+
+              <!-- Opcional -->
+              <div
+                class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-b-xl p-4 text-center border-t-2 border-slate-300 dark:border-slate-600 border-dashed"
+              >
+                <h3 class="font-bold tracking-widest text-sm uppercase">4. Diretrizes (Guidelines)</h3>
+                <p class="text-xs mt-1 font-medium">Recomendações <strong class="text-red-500 dark:text-red-400">NÃO Obrigatórias</strong></p>
+                <p class="text-xs mt-2">
+                  Conselhos e melhores práticas para ajudar os usuários. Ex: <em>"É recomendável não usar o nome do cachorro na senha."</em>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A PSI é um manual de TI?</strong> A banca diz: "A PSI deve conter os scripts de firewall e a arquitetura detalhada dos
+                servidores para garantir a proteção." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A PSI é feita para ser lida e assinada por <strong>todos os funcionários</strong> (inclusive os que não são de TI, como o RH e os
+                terceirizados). Ela precisa de ser clara, concisa e livre de jargões técnicos excessivos. Quem cuida dos scripts são os
+                <em>Procedimentos</em> (que ficam restritos à TI).
+              </li>
+              <li>
+                <strong>PSI Estática:</strong> "Após ser aprovada pela alta administração, a PSI torna-se um documento definitivo e imutável para não
+                gerar instabilidade jurídica na empresa". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A PSI é um documento <strong>VIVO</strong>. Ela deve sofrer <em>revisões periódicas</em> (no mínimo anuais) ou sempre que houver
+                mudanças significativas no negócio ou no ambiente tecnológico (novos riscos).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Essência e Importância da PSI
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Não adianta gastar milhões em firewalls de última geração se o funcionário cola a senha do sistema num Post-it no monitor. A
+              <strong>Política de Segurança da Informação (PSI)</strong> existe para cobrir o elo mais fraco da segurança: o fator humano.
+            </p>
+            <p>
+              A importância primordial da PSI é servir como o <strong>alicerce jurídico e disciplinar</strong> da empresa. É impossível punir ou
+              demitir por justa causa um funcionário que acessou pornografia na rede da empresa se não houver um documento formal assinado por ele
+              dizendo que isso era proibido. A PSI elimina o argumento do <em>"Eu não sabia que não podia fazer isso"</em>.
+            </p>
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 border-l-4 border-red-500 rounded mt-4 text-sm">
+              <strong>Obrigatoriedade ISO:</strong> A norma internacional ISO/IEC 27001 exige a existência de uma política de segurança documentada,
+              aprovada pela direção, publicada e comunicada a todos os funcionários e partes externas relevantes.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Ciclo de Vida da Política
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A criação de uma PSI não é um evento único, mas um ciclo contínuo. As provas costumam abordar estas fases:</p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-900">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-2 block">1. Elaboração</strong>
+                Não deve ser copiada da internet ("Ctrl+C / Ctrl+V"). Deve ser <strong>alinhada aos objetivos do negócio</strong> e elaborada
+                preferencialmente por um comitê multidisciplinar (TI, RH, Jurídico, Diretoria).
+              </li>
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-900 border-l-4 border-l-red-500">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-2 block">2. Aprovação</strong>
+                A parte mais cobrada! Um gerente de TI não tem autoridade legal ou corporativa para ditar o que o departamento Financeiro deve fazer.
+                O documento <strong>DEVE ser aprovado e assinado pela Alta Direção (Sponsor/Patrocinador)</strong>, que é quem assume os riscos do
+                negócio.
+              </li>
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-900">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-2 block">3. Divulgação e Conscientização</strong>
+                A política deve ser acessível. Todos os funcionários precisam ser treinados e assinar um Termo de Aceite ou de Responsabilidade.
+              </li>
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-900">
+                <strong class="text-red-700 dark:text-red-400 text-lg mb-2 block">4. Revisão e Atualização</strong>
+                Deve possuir um "dono" (owner) responsável por mantê-la atualizada. A revisão deve ser feita a intervalos planejados ou se ocorrerem
+                mudanças significativas (ex: adoção de home-office massivo).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Conteúdo Típico de uma PSI
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Segundo a norma ISO/IEC 27002, o documento da política de segurança da informação deve conter:</p>
+
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+              <li>Uma definição de segurança da informação, seus objetivos gerais e abrangência (quem está submetido à política).</li>
+              <li>Uma declaração do comprometimento da direção.</li>
+              <li>
+                Uma breve explicação das políticas, princípios, normas e requisitos de conformidade de maior importância (ex: conformidade legal com a
+                LGPD, gestão de incidentes, controle de acesso).
+              </li>
+              <li>Definição das responsabilidades gerais e específicas pela gestão da segurança da informação.</li>
+              <li>Referências a documentos que apoiem a política (Normas e Procedimentos).</li>
+              <li>As consequências e punições em caso de violação da política (Ações disciplinares).</li>
+            </ul>
+
+            <div
+              class="mt-6 p-4 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-600 dark:text-slate-300 italic"
+            >
+              <strong>O formato do texto:</strong> A PSI deve usar linguagem afirmativa e imperativa (deve, é proibido, é obrigatório), evitando
+              ambiguidades. Deve ser escrita no idioma local da organização, evitando siglas muito técnicas (ou então conter um glossário).
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-red-600", "border-red-600", "dark:text-red-400", "dark:border-red-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
