@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gestão de Serviços de TI (ITIL v4)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Purple */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #9333ea;
+        border-radius: 4px;
+      } /* Purple-600 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #7e22ce;
+      } /* Purple-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-purple {
+        @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+          Gestão de Serviços de TI (ITIL v4)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">⚡</span> Direto ao Ponto: O que mudou?
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="border-l-4 border-slate-400 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2 line-through decoration-red-500 decoration-2">ITIL v3 (Antigo)</h3>
+              <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                <li>Foco no <strong>Ciclo de Vida do Serviço</strong>.</li>
+                <li>Tinha 26 <strong>Processos</strong> e 4 <strong>Funções</strong>.</li>
+                <li>A TI "entregava" valor ao cliente passivo.</li>
+              </ul>
+            </div>
+            <div class="border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-purple-800 dark:text-purple-300 mb-2">ITIL 4 (Atual e Cobrado)</h3>
+              <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-1">
+                <li>Foco no <strong>Sistema de Valor de Serviço (SVS)</strong>.</li>
+                <li>Tem 34 <strong class="text-purple-600 dark:text-purple-400">Práticas</strong> de gestão (o termo função sumiu).</li>
+                <li>A TI e o Cliente <strong class="text-purple-600 dark:text-purple-400">CO-CRIAM valor</strong> juntos.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- O Sistema de Valor de Serviço (SVS) -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚙️ O SVS (Sistema de Valor de Serviço)</h2>
+            <p class="text-sm text-slate-400 mt-1">É a engrenagem principal da ITIL 4. Pega a "Oportunidade/Demanda" e transforma em "Valor".</p>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-purple-400 mb-3 uppercase tracking-wider text-xs text-center">Os 5 Componentes do SVS</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center text-sm font-medium">
+              <div class="bg-slate-800/80 border border-slate-600 p-3 rounded-lg flex flex-col items-center justify-center">
+                <span class="text-2xl mb-1">🧭</span>
+                Princípios Orientadores
+              </div>
+              <div class="bg-slate-800/80 border border-slate-600 p-3 rounded-lg flex flex-col items-center justify-center">
+                <span class="text-2xl mb-1">⚖️</span>
+                Governança
+              </div>
+              <div
+                class="bg-purple-900/40 border-2 border-purple-500 p-3 rounded-lg flex flex-col items-center justify-center transform scale-105 shadow-md shadow-purple-500/20"
+              >
+                <span class="text-2xl mb-1">🔗</span>
+                <strong class="text-white">Cadeia de Valor do Serviço (SVC)</strong>
+              </div>
+              <div class="bg-slate-800/80 border border-slate-600 p-3 rounded-lg flex flex-col items-center justify-center">
+                <span class="text-2xl mb-1">🛠️</span>
+                Práticas
+              </div>
+              <div class="bg-slate-800/80 border border-slate-600 p-3 rounded-lg flex flex-col items-center justify-center col-span-2 md:col-span-1">
+                <span class="text-2xl mb-1">📈</span>
+                Melhoria Contínua
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela Comparativa: Incidente vs Problema -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: Incidente vs Problema</h2>
+            <span class="bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded">CAI SEMPRE!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400">
+                    Gerenciamento de Incidente
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400">
+                    Gerenciamento de Problema
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Objetivo Principal</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-rose-600 dark:text-rose-400">
+                    Restaurar a operação normal do serviço O MAIS RÁPIDO POSSÍVEL.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    Descobrir a Causa Raiz e evitar que o incidente se repita.
+                  </td>
+                </tr>
+                <tr class="bg-purple-50/50 dark:bg-purple-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Mecanismo de Ação</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Usa <strong>Soluções de Contorno (Workarounds)</strong>. A velha "gambiarra" ou "reiniciar o servidor".
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Usa Análise de Causa Raiz (RCA). Gera o registro de um <strong>Erro Conhecido</strong>.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Foco no Tempo</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Curtíssimo prazo (Apagar o incêndio).
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Médio/Longo prazo (Investigação minuciosa).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Central de Serviços (Service Desk) resolve problemas?</strong> A banca diz: "A prática de Service Desk é responsável por
+                investigar a fundo as falhas de rede e descobrir a causa raiz dos problemas do usuário". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Service Desk é o <strong>Ponto Único de Contato (SPOC)</strong>. Ele atende o telefone, regista o incidente, dá suporte básico de
+                nível 1 e roteia o chamado. Ele <strong class="underline decoration-red-500">NÃO</strong> investiga causas raízes (quem faz isso é o
+                Gerenciamento de Problemas).
+              </li>
+              <li>
+                <strong>Incidente x Requisição de Serviço:</strong> O usuário liga para o TI dizendo: "Preciso de um rato novo, o meu partiu". Isso é
+                um incidente? <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Incidente é uma interrupção inesperada de um serviço que já existia e estava a funcionar. Pedir uma peça nova, pedir para redefinir a
+                palavra-passe ou pedir acesso a uma pasta é uma <strong>Requisição de Serviço (Service Request)</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Filosofia: Co-Criação de Valor e as 4 Dimensões
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A ITIL (Information Technology Infrastructure Library) v4 abandonou a ideia de que a TI "entrega" valor a um cliente passivo. A visão
+              moderna determina que o valor é <strong>co-criado</strong> através de uma colaboração ativa entre os provedores de serviços,
+              consumidores e outras partes interessadas.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">
+              As 4 Dimensões do Gerenciamento de Serviços
+            </h3>
+            <p>
+              Para garantir uma abordagem holística (completa), a ITIL 4 exige que a organização seja pensada em 4 dimensões (Mnemônico
+              <strong>POFI</strong>):
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Organizações e Pessoas:</strong> Cultura corporativa, papéis e responsabilidades, habilidades da equipe.</li>
+              <li>
+                <strong>Informação e Tecnologia:</strong> As ferramentas, bancos de dados, nuvem e sistemas de segurança usados para entregar o
+                serviço.
+              </li>
+              <li>
+                <strong>Parceiros e Fornecedores:</strong> Os relacionamentos e contratos com as empresas que apoiam a entrega do seu serviço (ex:
+                provedor de internet, fornecedor Cloud).
+              </li>
+              <li>
+                <strong>Fluxos de Valor e Processos:</strong> Como as diferentes partes da organização trabalham de forma integrada e coordenada para
+                criar valor.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Os 7 Princípios Orientadores
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A ITIL 4 aproximou-se brutalmente do <em>Agile</em> e do <em>DevOps</em>. Estes 7 princípios são recomendações universais que podem
+              orientar uma organização em qualquer circunstância (muito cobrados em provas discursivas):
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded mt-4">
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">1. Foco no valor:</strong> Tudo o que a organização faz deve mapear direta ou
+                  indiretamente o valor para os stakeholders.
+                </li>
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">2. Comece de onde você está:</strong> Não construa do zero se não for
+                  necessário. Aproveite os processos ou ferramentas que já existem e que funcionam.
+                </li>
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">3. Progrida iterativamente com feedback:</strong> Resista à tentação de fazer
+                  tudo de uma vez. Divida o trabalho em seções pequenas e gerenciáveis (Agile).
+                </li>
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">4. Colabore e promova visibilidade:</strong> O trabalho "às escondidas" gera
+                  silos. Trabalhar em conjunto melhora a confiança.
+                </li>
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">5. Pense e trabalhe holisticamente:</strong> Nenhum serviço ou elemento existe
+                  isoladamente. Os resultados sofrem se os departamentos não estiverem integrados.
+                </li>
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">6. Mantenha de forma simples e prática:</strong> Se um processo não oferece
+                  valor, elimine-o. Use o número mínimo de etapas para atingir o objetivo (Lean).
+                </li>
+                <li>
+                  <strong class="text-purple-600 dark:text-purple-400">7. Otimize e automatize:</strong> O trabalho humano deve ser reservado para
+                  atividades que não podem ser feitas por máquinas. Maximize a tecnologia.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Cadeia de Valor do Serviço (O "PIEDOM")
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Cadeia de Valor do Serviço (SVC) é o coração do SVS. É o modelo operacional flexível que dita como as seis atividades se interconectam
+              para criar produtos e serviços e gerar valor. Diferente da ITIL v3, a SVC não é sequencial; as atividades interagem de forma dinâmica.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">As 6 Atividades da Cadeia de Valor (PIEDOM):</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>P - Planejar (Plan):</strong> Assegurar uma compreensão partilhada da visão, do estado atual e da direção de melhoria para
+                todos os produtos.
+              </li>
+              <li><strong>I - Melhorar (Improve):</strong> Garantir a melhoria contínua de produtos, serviços e práticas.</li>
+              <li>
+                <strong>E - Engajar (Engage):</strong> Fornecer um bom entendimento contínuo às partes interessadas (stakeholders), transparência e
+                bom relacionamento. É a <span class="hl-yellow">ponte entre a TI e o negócio/cliente externo</span>.
+              </li>
+              <li>
+                <strong>D - Desenho e Transição (Design and Transition):</strong> Garantir que os produtos e serviços satisfazem continuamente as
+                expectativas do mercado em termos de qualidade, custo e prazo.
+              </li>
+              <li>
+                <strong>O - Obter/Construir (Obtain/Build):</strong> Garantir que os componentes de serviço (códigos, hardwares comprados) estejam
+                disponíveis quando e onde forem necessários.
+              </li>
+              <li>
+                <strong>M - Entregar e Suportar (Deliver and Support):</strong> Garantir que os serviços são entregues e suportados de acordo com as
+                especificações acordadas com o cliente. (É aqui que vivem os Incidentes e o Service Desk).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Deep Dive nas Práticas de Gerenciamento (As mais cobradas)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O que antes eram os "26 Processos" agora são as <strong>34 Práticas</strong>, divididas em Práticas Gerais de Gestão (14), Práticas de
+              Gestão de Serviços (17) e Práticas de Gestão Técnica (3). O foco em concursos é restrito a um punhado delas:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4 text-sm">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-purple-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-slate-800 dark:text-white text-base block mb-1">Central de Serviços (Service Desk)</strong>
+                É a prática de capturar a demanda de incidentes e solicitações. A sua característica mestre é ser o
+                <strong>Ponto Único de Contato (SPOC - Single Point of Contact)</strong> entre o prestador de serviço (a TI) e todos os usuários
+                finais. Eles categorizam o problema, tentam resolver na ligação e, se não conseguirem, encaminham para os níveis superiores (L2, L3).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-rose-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-slate-800 dark:text-white text-base block mb-1">Gerenciamento de Incidentes</strong>
+                Um incidente é <em>"uma interrupção não planejada de um serviço ou uma redução na sua qualidade"</em>. O objetivo é restaurar o
+                serviço normal o mais rápido possível para minimizar o impacto negativo no negócio. Como o foco é a velocidade, a TI pode usar
+                <span class="hl-red">Soluções de Contorno (Workarounds)</span>, que reduzem ou eliminam o impacto temporariamente sem resolver a raiz
+                do defeito.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-sky-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-slate-800 dark:text-white text-base block mb-1">Gerenciamento de Problemas</strong>
+                Problema é <em>"uma causa, ou causa potencial, de um ou mais incidentes"</em>. O objetivo é reduzir a probabilidade e o impacto de
+                incidentes descobrindo e tratando as suas causas. Eles executam a Análise de Causa Raiz (RCA). Quando a causa é descoberta, o problema
+                é documentado como um <strong class="text-sky-600 dark:text-sky-400">Erro Conhecido (Known Error)</strong>, registrando o
+                <em>workaround</em> oficial para que a Central de Serviços use na próxima vez que o incidente ocorrer, até que os programadores
+                desenvolvam a solução definitiva.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border-l-4 border-l-emerald-500 border border-slate-200 dark:border-slate-700">
+                <strong class="text-slate-800 dark:text-white text-base block mb-1">Habilitação de Mudança (Change Enablement)</strong>
+                Antes chamada de Gerenciamento de Mudança na v3. Foca em maximizar o número de mudanças bem-sucedidas através de avaliações de risco e
+                aprovações. Divide-se em:
+                <ul class="list-disc pl-5 mt-2">
+                  <li><strong>Mudança Padrão (Standard):</strong> Baixo risco, pré-autorizada. (Ex: instalar o pacote Office num PC novo).</li>
+                  <li>
+                    <strong>Mudança Normal:</strong> Risco médio/alto. Precisa ser agendada e avaliada por um comitê (CAB - Change Advisory Board).
+                    (Ex: migrar o servidor de banco de dados principal).
+                  </li>
+                  <li>
+                    <strong>Mudança Emergencial:</strong> Tem que ser implementada o mais rápido possível para resolver um incidente gravíssimo. Pula
+                    as aprovações normais para salvar o negócio.
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

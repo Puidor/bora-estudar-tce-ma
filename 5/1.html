@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Governança de TI (COBIT 2019 e ISO 38500)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Purple */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #9333ea;
+        border-radius: 4px;
+      } /* Purple-600 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #7e22ce;
+      } /* Purple-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-purple {
+        @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+          Governança de TI: COBIT 2019 e ISO 38500
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Confronto Rei -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ A Separação Sagrada: Governança vs Gestão</h2>
+            <span class="bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded">CAI SEMPRE!</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">👑</div>
+              <h3 class="font-bold text-purple-700 dark:text-purple-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Governança (O Conselho)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300 mt-3">
+                <li>🎯 <strong>Foco:</strong> Direção e Avaliação (Estratégico).</li>
+                <li>👥 <strong>Quem faz:</strong> Alta Direção / Conselho de Administração.</li>
+                <li>
+                  🛠️ <strong>O que faz?</strong> Avalia necessidades,
+                  <strong class="text-purple-600 dark:text-purple-400">Dirige/Direciona</strong> prioridades e Monitora o desempenho geral.
+                </li>
+                <li>🔑 <strong>Domínio COBIT:</strong> EDM (Evaluate, Direct, Monitor).</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative">
+              <div class="absolute top-2 right-2 text-3xl opacity-20">⚙️</div>
+              <h3 class="font-bold text-sky-600 dark:text-sky-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">
+                Gestão (A Gerência)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300 mt-3">
+                <li>🎯 <strong>Foco:</strong> Execução e Entrega (Tático/Operacional).</li>
+                <li>👥 <strong>Quem faz:</strong> Diretoria Executiva / Gerência de TI (CEO, CIO).</li>
+                <li>🛠️ <strong>O que faz?</strong> Planeja, Constrói, Executa e Monitora atividades alinhadas à direção da Governança.</li>
+                <li>🔑 <strong>Domínios COBIT:</strong> APO, BAI, DSS, MEA.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ISO 38500 -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">📜</span> ISO/IEC 38500 (A Norma Mãe)
+          </h2>
+          <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 mb-6 text-center">
+            <p class="font-bold text-slate-800 dark:text-white">O Modelo EDM da ISO 38500</p>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              Os dirigentes devem: <strong class="text-purple-600 dark:text-purple-400">Avaliar</strong> (Evaluate) o uso atual e futuro da TI ➔
+              <strong class="text-purple-600 dark:text-purple-400">Dirigir/Direcionar</strong> (Direct) a preparação de planos ➔
+              <strong class="text-purple-600 dark:text-purple-400">Monitorar</strong> (Monitor) a conformidade e desempenho.
+            </p>
+          </div>
+
+          <h3 class="font-bold text-slate-800 dark:text-white mb-3 text-sm uppercase tracking-wider text-center">
+            Os 6 Princípios da ISO 38500 (Mnemônico: REA-DCC)
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-center text-sm font-medium">
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded shadow-sm">
+              <span class="text-purple-500 text-lg">R</span>esponsabilidade
+            </div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded shadow-sm">
+              <span class="text-purple-500 text-lg">E</span>stratégia
+            </div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded shadow-sm">
+              <span class="text-purple-500 text-lg">A</span>quisição
+            </div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded shadow-sm">
+              <span class="text-purple-500 text-lg">D</span>esempenho
+            </div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded shadow-sm">
+              <span class="text-purple-500 text-lg">C</span>onformidade
+            </div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded shadow-sm">
+              <span class="text-purple-500 text-lg">C</span>omportamento Humano
+            </div>
+          </div>
+        </section>
+
+        <!-- COBIT 2019 Princípios -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">💎 COBIT 2019: Divisão dos Princípios</h2>
+            <p class="text-sm text-purple-200 mt-1">A grande novidade da versão 2019 foi separar os princípios em duas famílias.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700 text-sm">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-purple-700 dark:text-purple-400 mb-3 border-b border-slate-100 dark:border-slate-700 pb-1">
+                6 Princípios para o SISTEMA de Governança
+              </h3>
+              <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+                <li>1. Fornecer <strong>Valor</strong> aos Stakeholders</li>
+                <li>2. Abordagem <strong>Holística</strong></li>
+                <li>3. Sistema de Governança <strong>Dinâmico</strong></li>
+                <li>4. Governança <strong>Distinta</strong> da Gestão</li>
+                <li>5. Adaptado (<strong>Tailored</strong>) às Necessidades da Empresa</li>
+                <li>6. Sistema de Governança <strong>Ponta a Ponta</strong></li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-sky-700 dark:text-sky-400 mb-3 border-b border-slate-100 dark:border-slate-700 pb-1">
+                3 Princípios para o FRAMEWORK de Governança
+              </h3>
+              <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+                <li>1. Baseado num <strong>Modelo Conceitual</strong></li>
+                <li>2. <strong>Aberto e Flexível</strong></li>
+                <li>3. <strong>Alinhado aos Principais Padrões</strong> (ISO, ITIL)</li>
+              </ul>
+              <div class="mt-4 p-2 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-xs italic">
+                O "Sistema" é a engrenagem rodando na empresa. O "Framework" é o livro do COBIT que ajuda a construir a engrenagem.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>COBIT é um padrão prescritivo?</strong> A banca afirma que "O COBIT 2019 é uma norma que descreve passo a passo como
+                configurar servidores para ter conformidade legal". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O COBIT é um <strong>Framework (Guia / Modelo)</strong>. Ele diz <em>O QUÊ</em> deve ser feito (ex: gerenciar o risco), mas nunca dita
+                o passo a passo técnico exato. A norma principal (certificável para indivíduos, não para empresas) orienta a estrutura.
+              </li>
+              <li>
+                <strong>Os "Enablers" do COBIT 5:</strong> Se você vir na prova a palavra
+                <strong class="underline decoration-red-500">Habilitadores (Enablers)</strong> associada a 7 itens, lembre-se: isso era no COBIT 5! No
+                COBIT 2019, o termo mudou para <strong>Componentes do Sistema de Governança</strong>.
+              </li>
+              <li>
+                <strong>Modelo em Cascata vs Cascada de Objetivos:</strong> Não confunda com engenharia de software! A "Cascata de Objetivos" (Goals
+                Cascade) do COBIT traduz as necessidades das partes interessadas em Objetivos Corporativos, que viram Objetivos de Alinhamento (TI),
+                que se traduzem em Objetivos de Governança e Gestão.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos: A Necessidade da Governança de TI
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Governança de TI surgiu porque os diretores das empresas sentiam que a TI era uma "caixa preta". Gastava-se milhões e não se via
+              retorno claro para o negócio. A governança garante que a TI <strong>não exista apenas por existir</strong>, mas sim para
+              <span class="hl-purple">suportar e maximizar os objetivos estratégicos do negócio</span>.
+            </p>
+            <p>
+              <strong>Alinhamento Estratégico:</strong> É o pilar fundamental. Se o banco quer lançar um cartão de crédito rápido para jovens, a TI
+              não deve focar em modernizar servidores de mainframes antigos de agência, mas sim investir numa arquitetura Cloud ágil.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Norma ISO/IEC 38500
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              É a norma internacional (muito enxuta, de poucas páginas) que estabelece princípios orientadores para dirigentes corporativos sobre a
+              governança de TI. Ela foca no <strong>uso efetivo, eficiente e aceitável</strong> da TI.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">O Modelo EDM</h3>
+            <p>A norma diz que a Alta Direção deve focar em 3 tarefas principais:</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Evaluate (Avaliar):</strong> Examinar o uso atual e futuro da TI, analisando pressões externas, inovações e necessidades do
+                negócio.
+              </li>
+              <li>
+                <strong>Direct (Dirigir/Direcionar):</strong> Fornecer orientação. Preparar e implementar planos e políticas, distribuindo
+                responsabilidades.
+              </li>
+              <li>
+                <strong>Monitor (Monitorar):</strong> Acompanhar o desempenho da TI (através de métricas) para garantir que ela está seguindo a
+                direção estabelecida.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">Os 6 Princípios Detalhados</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Responsabilidade:</strong> Indivíduos devem ter clareza e entender as suas responsabilidades em relação à TI (ter autoridade
+                para atuar).
+              </li>
+              <li><strong>Estratégia:</strong> O plano de negócios e os planos de TI devem estar totalmente alinhados e integrados.</li>
+              <li>
+                <strong>Aquisição:</strong> Os investimentos em TI devem ser feitos de forma transparente e balancear riscos, oportunidades e
+                benefícios.
+              </li>
+              <li>
+                <strong>Desempenho:</strong> A TI deve suportar a organização de forma eficiente e fornecer os serviços exigidos para atender ao
+                negócio.
+              </li>
+              <li>
+                <strong>Conformidade (Compliance):</strong> A TI deve cumprir legislações, políticas, regulamentações e normas de segurança (ex:
+                LGPD).
+              </li>
+              <li>
+                <strong>Comportamento Humano:</strong> As políticas de TI devem respeitar o fator humano (necessidades das pessoas em processo de
+                trabalho).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. COBIT 2019 (Visão Geral e Evolução)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Mantido pela ISACA, o COBIT (Control Objectives for Information and Related Technologies) evoluiu do COBIT 5 para o COBIT 2019 para se
+              tornar mais ágil e personalizável.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">
+              O Coração da Governança: Criação de Valor
+            </h3>
+            <p>
+              O objetivo primário do sistema de governança do COBIT é a criação de valor. Esse valor se baseia num equilíbrio entre:
+              <br />1. <strong class="text-emerald-600 dark:text-emerald-400">Realização de Benefícios</strong>. <br />2.
+              <strong class="text-rose-600 dark:text-rose-400">Otimização de Riscos</strong>. <br />3.
+              <strong class="text-amber-600 dark:text-amber-500">Otimização de Recursos</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">
+              Novidade Suprema 2019: Fatores de Desenho (Design Factors)
+            </h3>
+            <p>
+              Uma das maiores críticas ao COBIT 5 era ser muito engessado. O COBIT 2019 introduziu <strong>11 Fatores de Desenho</strong>. Eles são
+              variáveis que influenciam como o sistema de governança deve ser construído na prática.
+            </p>
+            <div class="bg-purple-50 dark:bg-purple-900/10 p-4 border border-purple-200 dark:border-purple-800 rounded mt-2 text-sm">
+              <strong class="text-purple-800 dark:text-purple-300">Exemplos de Fatores de Desenho em prova:</strong>
+              <ul class="list-[circle] pl-6 mt-2 space-y-1">
+                <li>Estratégia da Empresa (Inovação vs Liderança em Custos).</li>
+                <li>Tamanho da Empresa.</li>
+                <li>Perfil de Risco de TI.</li>
+                <li>Papel da TI (A TI suporta o negócio ou a TI É o negócio?).</li>
+                <li>Método de Entrega de TI (Ágil, DevOps, Tradicional).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Os 40 Objetivos do COBIT Core Model
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O modelo de referência do COBIT divide os processos de TI em domínios de <strong>Governança</strong> (EDM) e domínios de
+              <strong>Gestão</strong>. Ao todo, são <span class="hl-purple">40 Objetivos</span> de Governança e Gestão no COBIT 2019 (eram 37 no COBIT
+              5).
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <div class="border border-slate-200 dark:border-slate-700 rounded-lg p-5 bg-slate-50 dark:bg-slate-900/50">
+                <h3 class="font-bold text-purple-700 dark:text-purple-400 mb-2">Domínio de GOVERNANÇA</h3>
+                <ul class="text-sm space-y-2">
+                  <li>
+                    <strong>EDM (Evaluate, Direct and Monitor):</strong> Atividades da Alta Direção. Ex: Garantir a otimização de riscos (EDM03).
+                  </li>
+                </ul>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-700 rounded-lg p-5 bg-slate-50 dark:bg-slate-900/50">
+                <h3 class="font-bold text-sky-700 dark:text-sky-400 mb-2">Domínios de GESTÃO</h3>
+                <ul class="text-sm space-y-2">
+                  <li><strong>APO (Align, Plan and Organize):</strong> Estratégia, arquitetura, portfólio. (Planejar).</li>
+                  <li>
+                    <strong>BAI (Build, Acquire and Implement):</strong> Adquirir software, desenvolver, gerir projetos e mudanças. (Construir).
+                  </li>
+                  <li><strong>DSS (Deliver, Service and Support):</strong> Operação diária, service desk, gestão de incidentes. (Entregar).</li>
+                  <li>
+                    <strong>MEA (Monitor, Evaluate and Assess):</strong> Monitoramento do desempenho e controles internos. (Monitorar a gestão).
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
