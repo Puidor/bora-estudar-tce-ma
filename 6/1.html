@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gestão de Contratação de Soluções de TI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Orange */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f97316;
+        border-radius: 4px;
+      } /* Orange-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #c2410c;
+      } /* Orange-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-orange {
+        @apply bg-orange-200 text-orange-900 dark:bg-orange-900/60 dark:text-orange-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-orange-600 dark:text-orange-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-orange-600 dark:text-orange-400 tracking-wider uppercase mb-2">
+          Fiscalização de Contratos de TI
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-orange-500 pb-2 inline-block">
+          Gestão e Fiscalização de Contratações
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-orange-600 border-b-2 border-orange-600 dark:text-orange-400 dark:border-orange-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-orange-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Objetivo Central:</strong> Garantir que a empresa contratada entregue o software, serviço ou hardware de TI
+              <strong>exatamente conforme o combinado no edital (TR/Projeto Básico)</strong>, com qualidade e no prazo.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Segregação de Funções:</strong> Princípio basilar. Quem pede não é quem atesta, e quem atesta não é quem paga. Múltiplos fiscais
+              dividem o poder para evitar corrupção e desvios de finalidade.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>A Fronteira do Vínculo:</strong> A empresa contratada <strong>DEVE designar um Preposto</strong> (Representante). O fiscal do
+              governo
+              <span class="bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300 font-bold px-1.5 py-0.5 rounded">NUNCA</span> dá
+              ordens diretas aos funcionários terceirizados; ele fala apenas com o preposto.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Os 4 Papéis Fiscais -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">👥 A Equipe de Fiscalização (Core Decoreba)</h2>
+            <span class="bg-yellow-400 text-orange-900 text-xs font-bold px-2 py-1 rounded">CAI EM TODA PROVA!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Gestor -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-4 rounded-lg relative overflow-hidden">
+                <h3 class="font-black text-sky-400 mb-2 uppercase tracking-wide text-sm border-b border-sky-500/30 pb-2">1. Gestor do Contrato</h3>
+                <p class="text-xs text-slate-400 mb-2 italic">O Coordenador Geral.</p>
+                <ul class="space-y-1 text-sm">
+                  <li>• Cuida das questões gerenciais.</li>
+                  <li>• Consolida as avaliações dos fiscais.</li>
+                  <li>• <strong>Encaminha a fatura para pagamento.</strong></li>
+                  <li>• Aplica penalidades e pede aditivos/prorrogação.</li>
+                </ul>
+              </div>
+
+              <!-- Fiscal Técnico -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-4 rounded-lg relative overflow-hidden">
+                <h3 class="font-black text-emerald-400 mb-2 uppercase tracking-wide text-sm border-b border-emerald-500/30 pb-2">
+                  2. Fiscal Técnico
+                </h3>
+                <p class="text-xs text-slate-400 mb-2 italic">O Nerd de TI.</p>
+                <ul class="space-y-1 text-sm">
+                  <li>• Fiscaliza o "código" e a tecnologia.</li>
+                  <li>• Analisa as métricas de qualidade (SLA).</li>
+                  <li>• Aprova os entregáveis técnicos de TI.</li>
+                  <li>• <strong>Emite o Termo de Recebimento Provisório.</strong></li>
+                </ul>
+              </div>
+
+              <!-- Fiscal Requisitante -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-4 rounded-lg relative overflow-hidden">
+                <h3 class="font-black text-fuchsia-400 mb-2 uppercase tracking-wide text-sm border-b border-fuchsia-500/30 pb-2">
+                  3. Fiscal Requisitante
+                </h3>
+                <p class="text-xs text-slate-400 mb-2 italic">A Área de Negócio.</p>
+                <ul class="space-y-1 text-sm">
+                  <li>• O usuário final (ex: o pessoal do RH).</li>
+                  <li>• Avalia se a funcionalidade resolve o problema prático.</li>
+                  <li>• Avalia a Usabilidade do sistema.</li>
+                  <li>• Assina junto com o Técnico o Recebimento Provisório.</li>
+                </ul>
+              </div>
+
+              <!-- Fiscal Administrativo -->
+              <div class="border border-rose-500/50 bg-rose-900/20 p-4 rounded-lg relative overflow-hidden">
+                <h3 class="font-black text-rose-400 mb-2 uppercase tracking-wide text-sm border-b border-rose-500/30 pb-2">
+                  4. Fiscal Administrativo
+                </h3>
+                <p class="text-xs text-slate-400 mb-2 italic">A Burocracia e as Leis (Setor de RH/Contratos).</p>
+                <ul class="space-y-1 text-sm">
+                  <li>• Exigido caso haja cessão de mão de obra (terceirizados fixos).</li>
+                  <li>• Verifica se a empresa pagou o INSS/FGTS dos funcionários.</li>
+                  <li>• <strong>Não fiscaliza o software</strong>, fiscaliza as obrigações previdenciárias e fiscais.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- O Ciclo do Pagamento -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-orange-800 dark:bg-orange-900 p-4 border-b border-orange-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">✅ A Ordem dos Recebimentos (O Pagamento)</h2>
+          </div>
+          <div class="p-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 font-bold text-sm text-center">
+              <div class="flex-1 bg-slate-50 dark:bg-slate-800 p-4 rounded-lg border border-slate-300 dark:border-slate-600">
+                <span class="text-orange-600 dark:text-orange-400 block mb-1">Passo 1</span>
+                Entrega do Produto/Serviço pela Contratada.
+              </div>
+              <div class="hidden md:block text-slate-400 text-2xl">➔</div>
+              <div class="flex-1 bg-indigo-50 dark:bg-indigo-900/10 p-4 rounded-lg border-2 border-indigo-400 dark:border-indigo-600">
+                <span class="text-indigo-600 dark:text-indigo-400 block mb-1">Recebimento Provisório</span>
+                Assinado pelos <strong class="text-slate-800 dark:text-white">Fiscais Técnico e Requisitante</strong> (Avaliam se funciona).
+              </div>
+              <div class="hidden md:block text-slate-400 text-2xl">➔</div>
+              <div class="flex-1 bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-lg border-2 border-emerald-500 shadow-md">
+                <span class="text-emerald-600 dark:text-emerald-400 block mb-1">Recebimento Definitivo</span>
+                Assinado pelo <strong class="text-slate-800 dark:text-white">Gestor do Contrato</strong> (Aprova e manda pagar).
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Fusão de Fiscais:</strong> A banca afirma que "Para garantir a segregação de funções, a lei proíbe terminantemente que o
+                Fiscal Técnico e o Fiscal Requisitante sejam a mesma pessoa". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A norma do governo federal PODE PERMITIR a acumulação do papel de Técnico e Requisitante
+                <strong class="underline decoration-red-500">desde que haja justificativa e falta de pessoal</strong>. O que NÃO PODE juntar jamais é
+                o Gestor do Contrato com os Fiscais, ou o Fiscal Administrativo com os Fiscais Técnicos.
+              </li>
+              <li>
+                <strong>Direcionamento:</strong> "Para agilizar o desenvolvimento, o Fiscal do órgão público deve alocar tarefas diárias e cobrar o
+                horário de almoço do programador terceirizado alocado nas dependências do órgão". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Configura <strong class="underline decoration-red-500">Subordinação Jurídica Diretiva</strong> (Pecado capital no TCU!). O fiscal do
+                órgão repassa a demanda (Ordens de Serviço) para o <strong>PREPOSTO</strong> (gerente da empresa). É a empresa quem manda nos seus
+                funcionários.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos da Gestão de Contratos (O Contexto)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A etapa de Fiscalização de Contratos começa imediatamente <strong>após a assinatura do contrato</strong> (quando a fase de
+              licitação/seleção do fornecedor termina). É a fase de execução.
+            </p>
+            <p>
+              No Brasil, as contratações de TI são duramente vigiadas pelos órgãos de controle (TCU, CGU). O passado de superfaturamento e contratação
+              de "mão-de-obra" disfarçada forçou a criação de regras estritas: a Instrução Normativa <strong>SGD/ME nº 94/2022</strong> (e suas
+              derivadas) balizam como o estado gere o ciclo de vida destas compras.
+            </p>
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 rounded border-l-4 border-orange-500 mt-4 text-sm">
+              <strong>Princípio da Segregação de Funções:</strong> As decisões não devem ficar centralizadas em um único servidor. Quem atesta que a
+              qualidade técnica do código está boa, não é a mesma pessoa que verifica se os impostos da empresa estão pagos, e também não é a mesma
+              pessoa que ordena o pagamento final. Isso evita o conluio.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Os Atores da Fiscalização (A Equipe)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O órgão público nomeia, por portaria oficial, os servidores que farão parte da Equipe de Fiscalização. É necessário saber detalhadamente
+              os seus deveres:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg block mb-1">O Gestor do Contrato</strong>
+                É o cérebro da operação burocrática. Ele coordena a equipa de fiscalização. Consolida os relatórios, aprova alterações de cronograma,
+                aplica multas e sanções se houver atrasos e assina o <strong>Termo de Recebimento Definitivo</strong>. O Gestor interage com a
+                administração da empresa.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-500">
+                <strong class="text-emerald-700 dark:text-emerald-400 text-lg block mb-1">O Fiscal Técnico do Contrato</strong>
+                Geralmente um Analista de TI. Ele olha para o código, para as métricas, para os servidores e para o SLA (Acordo de Nível de Serviço).
+                Ele atesta formalmente (via Recebimento Provisório) que o software entregue está sem <em>bugs</em> e atende aos requisitos do Edital.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-700 dark:text-fuchsia-400 text-lg block mb-1">O Fiscal Requisitante do Contrato</strong>
+                Representa a Área de Negócios (ex: O chefe do departamento de Logística). Ele não sabe ver código. Ele avalia o sistema sob a ótica do
+                usuário final: <em>"O software resolve o meu problema de frota diária? A tela é fácil de usar?"</em>.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-rose-700 dark:text-rose-400 text-lg block mb-1">O Fiscal Administrativo (Se Aplicável)</strong>
+                Em contratos com dedicação exclusiva de mão de obra (ex: o governo contrata 20 programadores terceirizados que vão bater ponto dentro
+                do órgão), o fiscal administrativo vigia se a empresa está pagando o salário, as férias e o INSS destes trabalhadores, evitando que o
+                governo sofra processos trabalhistas no futuro.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Fluxo de Execução, Recebimento e Pagamento
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Como a empresa de TI é acionada e como ela recebe o dinheiro? O fluxo segue um rito formal rígido.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2 border-l-4 border-orange-500 pl-3">A Ordem de Serviço (OS)</h3>
+            <p>
+              A empresa não inventa o que vai fazer. O órgão público emite uma
+              <strong>Ordem de Serviço (OS) ou Ordem de Fornecimento de Bens</strong>. Nela consta o escopo, as métricas de qualidade exigidas (SLA) e
+              o prazo.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-orange-500 pl-3">
+              Os Dois Tempos do Recebimento
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong class="text-indigo-600 dark:text-indigo-400">Termo de Recebimento Provisório (TRP):</strong> Emitido pelo(s) Fiscal(ais)
+                Técnico e Requisitante. O fiscal avalia os produtos entregues num prazo (ex: 15 dias). Se o software tiver falhas menores que o SLA
+                aceita, a empresa deve corrigir. Ao fim da inspeção técnica, o fiscal emite o parecer provisório de que o produto tem qualidade.
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Termo de Recebimento Definitivo (TRD):</strong> Emitido pelo Gestor do
+                Contrato. Com base nos laudos provisórios dos fiscais, o gestor atesta que o contrato foi legalmente e tecnicamente cumprido. A fatura
+                só é encaminhada para o setor financeiro do Governo pagar <strong>após o TRD</strong>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. As Proibições Fatais do TCU (Pagamento e Pessoalidade)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, o governo cometia duas fraudes gigantescas que o Tribunal de Contas da União (TCU) e os normativos atuais proibiram
+              categoricamente. Caem frequentemente em questões discursivas ou itens de V/F:
+            </p>
+
+            <div class="bg-red-50 dark:bg-red-900/10 p-5 rounded border border-red-200 dark:border-red-800 mt-4">
+              <strong class="text-red-800 dark:text-red-400 text-lg block mb-2">1. Fuga da Métrica de Esforço (UST Homem-Hora)</strong>
+              <p class="text-sm mb-2">
+                No passado, pagava-se por "Homem-Hora". A empresa dizia que demorou 1.000 horas para fazer uma tela e recebia fortuna.
+                <strong>A Regra Atual:</strong> O pagamento DEVE ser vinculado à <span class="hl-yellow">entrega de resultados e produtos</span>.
+                Devem-se usar métricas como <strong>Pontos de Função (APF)</strong> para desenvolvimento de software, e as Unidades de Serviço (USTs)
+                devem estar atreladas a uma tabela fechada de entregas (Ex: Formatar PC = 2 UST. A empresa recebe as USTs e não a quantidade de horas
+                que o técnico suou).
+              </p>
+            </div>
+
+            <div class="bg-red-50 dark:bg-red-900/10 p-5 rounded border border-red-200 dark:border-red-800 mt-4">
+              <strong class="text-red-800 dark:text-red-400 text-lg block mb-2">2. Proibição do Vínculo de Subordinação</strong>
+              <p class="text-sm mb-2">
+                A empresa X ganhou a licitação e enviou o programador "João" para trabalhar fisicamente na Secretaria da Fazenda. O chefe de TI do
+                Governo (Servidor Público) <strong>NÃO PODE dar ordens diretas ao João</strong>, não pode aprovar as férias do João e não pode decidir
+                o horário de entrada dele. Se fizer isso, a justiça do trabalho dirá que João é "funcionário sem concurso público" do Estado.
+              </p>
+              <p class="text-sm font-bold text-rose-700 dark:text-rose-400">
+                A Comunicação Oficial: O fiscal público tem que fazer as reclamações, ordens de trabalho e elogios exclusivamente para o PREPOSTO (um
+                gerente) da empresa contratada, e este gerente gere os seus empregados.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-orange-600", "border-orange-600", "dark:text-orange-400", "dark:border-orange-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-orange-600", "border-orange-600", "dark:text-orange-400", "dark:border-orange-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
