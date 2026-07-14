@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo: Governança de Dados (DAMA-DMBoK)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom scrollbar Purple */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #9333ea; border-radius: 4px; } /* Purple-600 */
+        .dark ::-webkit-scrollbar-thumb { background: #7e22ce; } /* Purple-700 */
+        
+        /* Tab transition */
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Marca-texto CSS para Aba 2 */
+        .hl-yellow { @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium; }
+        .hl-purple { @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium; }
+        .hl-green { @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Voltar ao Edital
+            </a>
+            
+            <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+        
+        <header>
+            <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+                DAMA-DMBoK: Governança de Dados
+            </h1>
+        </header>
+
+        <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+            <button id="btn-tab-1" class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors">
+                🎯 Resumo Visual
+            </button>
+            <button id="btn-tab-2" class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors">
+                📖 Teoria Aprofundada
+            </button>
+        </div>
+
+        <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+        <div id="tab-1" class="tab-content active space-y-8">
+            
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500 text-2xl">⚡</span> Direto ao Ponto
+                </h2>
+                <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+                    <li class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-purple-500 before:rounded-full">
+                        <strong>O que é o DMBoK?</strong> É o <em>Data Management Body of Knowledge</em>. Um guia de melhores práticas mantido pela associação DAMA International.
+                    </li>
+                    <li class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-purple-500 before:rounded-full">
+                        <strong>A Premissa Fundamental:</strong> O dado não é apenas um "subproduto" de sistemas de TI. O dado é um <span class="bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 font-bold px-1.5 py-0.5 rounded">Ativo Corporativo Estratégico</span> e deve ser gerenciado com o mesmo rigor que o dinheiro ou os recursos humanos.
+                    </li>
+                    <li class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-purple-500 before:rounded-full">
+                        <strong>TI vs Negócio:</strong> A Governança de Dados <strong class="text-rose-600 dark:text-rose-400">NÃO É</strong> um projeto de TI. É um programa contínuo impulsionado e liderado pela área de NEGÓCIOS.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+                <div class="bg-slate-800 p-4 border-b border-slate-700">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        🎡 A Roda do DAMA (O Modelo Visual)
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1">A representação gráfica cobrada em praticamente todas as provas.</p>
+                </div>
+                <div class="p-6 flex flex-col items-center">
+                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 border-4 border-purple-500 rounded-full flex items-center justify-center p-4">
+                        <!-- O Centro -->
+                        <div class="bg-purple-600 text-white w-24 h-24 sm:w-32 sm:h-32 rounded-full flex items-center justify-center text-center font-bold shadow-lg z-10 p-2 text-xs sm:text-sm">
+                            GOVERNANÇA<br>DE DADOS
+                        </div>
+                        <!-- Borda -->
+                        <div class="absolute inset-0 rounded-full border-[20px] border-slate-800/80"></div>
+                        <div class="absolute top-2 text-[10px] sm:text-xs text-sky-400 font-bold">Arquitetura</div>
+                        <div class="absolute bottom-2 text-[10px] sm:text-xs text-sky-400 font-bold">Qualidade</div>
+                        <div class="absolute left-2 text-[10px] sm:text-xs text-sky-400 font-bold" style="writing-mode: vertical-rl;">Modelagem</div>
+                        <div class="absolute right-2 text-[10px] sm:text-xs text-sky-400 font-bold" style="writing-mode: vertical-rl; transform: rotate(180deg);">Segurança</div>
+                    </div>
+                    <div class="mt-6 text-center text-sm font-medium text-slate-300 max-w-md">
+                        <strong class="text-purple-400 text-base block mb-2">A Regra de Ouro da Imagem:</strong>
+                        A Governança de Dados fica sempre no <strong>CENTRO da roda</strong>. Ela orbita e supervisiona todas as outras 10 áreas de conhecimento (que ficam na borda da roda).
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        👥 Papéis na Governança de Dados
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+                    <div class="bg-white dark:bg-slate-800 p-6 relative">
+                        <div class="absolute top-2 right-2 text-3xl opacity-20">👑</div>
+                        <h3 class="font-bold text-rose-600 dark:text-rose-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">Data Owner (Dono do Dado)</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">
+                            Geralmente um diretor ou alto executivo de negócios (ex: Diretor de RH).
+                        </p>
+                        <ul class="text-sm space-y-2 mt-3 text-slate-600 dark:text-slate-400">
+                            <li>✔️ Tem a palavra final (autoridade legal/operacional).</li>
+                            <li>✔️ Decide <strong>quem</strong> pode acessar os dados da sua área.</li>
+                            <li>✔️ Aprova a classificação do dado (ex: Confidencial ou Público).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-800 p-6 relative">
+                        <div class="absolute top-2 right-2 text-3xl opacity-20">🛡️</div>
+                        <h3 class="font-bold text-sky-600 dark:text-sky-400 mb-2 text-xl border-b border-slate-100 dark:border-slate-700 pb-2">Data Steward (Curador/Zelador)</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">
+                            A ponte entre a TI e o Negócio. O profissional "mão na massa" do dia a dia.
+                        </p>
+                        <ul class="text-sm space-y-2 mt-3 text-slate-600 dark:text-slate-400">
+                            <li>✔️ <strong>Não é o dono!</strong> Ele cuida do dado em nome do Data Owner.</li>
+                            <li>✔️ Cuida da qualidade, documenta os metadados.</li>
+                            <li>✔️ Responde às dúvidas dos usuários sobre o significado daquele dado.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+                <svg class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                
+                <div class="relative z-10">
+                    <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+                        🚨 Pegadinhas Mortais de Prova
+                    </h2>
+                    <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+                        <li>
+                            <strong>Governança de Dados vs Governança de TI:</strong> A banca afirma que "Governança de Dados (DAMA) é um subconjunto da Governança de TI (COBIT), focada em gerenciar os discos rígidos". <br>
+                            <span class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide">Falso!</span> Elas são <strong>paralelas e complementares</strong>. A Governança de Dados foca no <em>Dado</em> (que pertence ao negócio). A Governança de TI foca na <em>Infraestrutura e Sistemas</em> que transportam o dado.
+                        </li>
+                        <li>
+                            <strong>Mestre vs Metadados:</strong> <br>
+                            👉 <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Dados Mestres (Master Data)</span>: Os dados críticos sobre as "entidades" do negócio que são compartilhados por toda a empresa (Ex: Tabela universal de Clientes e Produtos).<br>
+                            👉 <span class="bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-1 rounded uppercase text-[10px]">Metadados (Metadata)</span>: Dados sobre dados. O significado das coisas. (Ex: O dicionário que diz que a coluna 'DT_NASC' é a Data de Nascimento no formato YYYY-MM-DD).
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+        <div id="tab-2" class="tab-content space-y-8">
+            
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    1. A Filosofia: O Dado como Ativo
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        No passado, a informação era tratada pelas empresas como algo que simplesmente "acontecia" ao usar um sistema. O <strong>DAMA-DMBOK v2</strong> estabelece que a gestão de dados deve ser tratada como a gestão financeira ou a gestão de recursos humanos. O dado é um <strong>Ativo Tangível e de Alto Valor</strong>.
+                    </p>
+                    <p>
+                        Se a empresa tem dados duplicados, desatualizados ou sem um dono claro, ela perde dinheiro, toma decisões erradas (lixo entra, lixo sai) e sofre multas regulatórias (ex: LGPD). O framework foca em criar um ciclo de vida para o dado (desde o seu planejamento e criação, até o seu expurgo e destruição).
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    2. Governança de Dados vs. Gestão de Dados
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        Assim como no COBIT (onde separamos Governança e Gestão de TI), o DMBoK exige que o candidato saiba a diferença exata entre estes dois níveis no mundo dos dados.
+                    </p>
+                    
+                    <ul class="list-none space-y-4 mt-4">
+                        <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-purple-500">
+                            <strong class="text-purple-700 dark:text-purple-400 text-lg">Governança de Dados (A Direção)</strong><br>
+                            É o exercício da autoridade, controle e tomada de decisão compartilhada. A Governança foca em <strong>Fazer a coisa certa</strong>. Ela cria as Políticas de Dados, os Comitês de Decisão e define quem tem o direito de acessar o quê. Ela dita as regras do jogo.
+                        </li>
+                        <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-sky-500">
+                            <strong class="text-sky-700 dark:text-sky-400 text-lg">Gestão de Dados (A Execução)</strong><br>
+                            É o planeamento, execução e manutenção prática. A Gestão foca em <strong>Fazer as coisas direito</strong>. Se a Governança definiu que os CPFs devem ser mascarados, a Gestão de Dados é quem vai criar a rotina de banco de dados (SQL, Python) para efetivamente executar esse mascaramento.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    3. As 11 Áreas de Conhecimento (A Roda do DAMA)
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A Roda do DAMA v2 possui 11 áreas. A <strong>Governança de Dados</strong> (1) ocupa o centro, pois amarra e dá direção às outras 10 áreas, que interagem de forma não-sequencial. Em provas, é comum eles pedirem a definição destas funções:
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 text-sm">
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Arquitetura de Dados:</strong> O design macro. O modelo da empresa, desenhando como os dados fluem pelos sistemas.
+                        </div>
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Modelagem e Design:</strong> Desenhar os diagramas ER (Conceitual, Lógico e Físico) das bases de dados (O Tópico 2.3).
+                        </div>
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Armazenamento e Operações:</strong> O papel puro do DBA. Manter os bancos no ar, backup, restore e tuning.
+                        </div>
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Segurança de Dados:</strong> Privacidade, confidencialidade, adequação à LGPD. Garantir o acesso apenas aos autorizados.
+                        </div>
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Integração e Interoperabilidade:</strong> Processos ETL, ELT e APIs. Movimentar dados entre sistemas.
+                        </li>
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Gestão de Documentos/Conteúdo:</strong> Gerenciar dados não-estruturados (PDFs, vídeos, e-mails).
+                        </div>
+                        <div class="p-3 border-l-4 border-l-indigo-500 rounded bg-indigo-50 dark:bg-indigo-900/10">
+                            <strong class="text-indigo-800 dark:text-indigo-300">Dados Mestres e de Referência:</strong> <em>Muito cobrado!</em> Controlar os dados críticos e compartilhados por toda a empresa para evitar duplicidade (ex: "Cadastro Único de Clientes" para o Marketing e Financeiro).
+                        </div>
+                        <div class="p-3 border border-slate-200 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800/50">
+                            <strong class="text-slate-900 dark:text-white">Data Warehousing e BI:</strong> Estruturação de dados para análise, relatórios e OLAP.
+                        </div>
+                        <div class="p-3 border-l-4 border-l-amber-500 rounded bg-amber-50 dark:bg-amber-900/10">
+                            <strong class="text-amber-800 dark:text-amber-300">Gestão de Metadados:</strong> O "dicionário". Criar e manter a documentação sobre o que significa cada dado, sua linhagem e origem.
+                        </div>
+                        <div class="p-3 border-l-4 border-l-emerald-500 rounded bg-emerald-50 dark:bg-emerald-900/10">
+                            <strong class="text-emerald-800 dark:text-emerald-300">Qualidade de Dados (Data Quality):</strong> Medir se os dados são precisos, completos, atuais e válidos. Limpar o "lixo".
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    4. Data Stewardship (O Pilar Operacional)
+                </h2>
+                <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        A Governança de Dados fracassa se for apenas um documento assinado pelos diretores e esquecido na gaveta. Para que a Governança ganhe vida nas operações diárias, o DAMA introduz o conceito de <strong>Data Stewardship</strong> (Curadoria ou Zeladoria de Dados).
+                    </p>
+                    <p>
+                        O <strong>Data Steward</strong> (Curador) não é necessariamente um cargo novo; é um <em>papel</em> atribuído a alguém do negócio que entende profundamente daquele dado (ex: o analista sênior do RH cuidando da tabela de "Benefícios"). Ele responde por garantir que as políticas do Conselho de Governança sejam aplicadas no seu departamento, melhorando ativamente a Qualidade e catalogando os Metadados da sua área.
+                    </p>
+                    <div class="mt-4 p-4 bg-purple-50 dark:bg-purple-900/10 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded text-sm text-center">
+                        <strong class="font-bold">Em suma para a prova:</strong> O Conselho/Data Owner <em>Pensa e Decide</em> (Estratégico). O Data Steward <em>Cuida, Executa e Documenta</em> o negócio (Tático/Operacional). A área de TI <em>Programa e Mantém o Hardware</em>.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Tab switching logic
+        const btnTab1 = document.getElementById('btn-tab-1');
+        const btnTab2 = document.getElementById('btn-tab-2');
+        const tab1 = document.getElementById('tab-1');
+        const tab2 = document.getElementById('tab-2');
+
+        function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+            // Update Buttons
+            activeBtn.classList.add('text-purple-600', 'border-purple-600', 'dark:text-purple-400', 'dark:border-purple-400', 'font-bold');
+            activeBtn.classList.remove('text-slate-500', 'border-transparent', 'font-medium');
+            
+            inactiveBtn.classList.remove('text-purple-600', 'border-purple-600', 'dark:text-purple-400', 'dark:border-purple-400', 'font-bold');
+            inactiveBtn.classList.add('text-slate-500', 'border-transparent', 'font-medium');
+
+            // Update Tabs
+            activeTab.classList.add('active');
+            inactiveTab.classList.remove('active');
+        }
+
+        btnTab1.addEventListener('click', () => switchTab(btnTab1, btnTab2, tab1, tab2));
+        btnTab2.addEventListener('click', () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+        // Theme switching logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
