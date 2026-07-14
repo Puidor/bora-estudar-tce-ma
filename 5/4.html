@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gestão de Projetos (PMBOK e Ágil)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Purple */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #9333ea;
+        border-radius: 4px;
+      } /* Purple-600 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #7e22ce;
+      } /* Purple-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-purple {
+        @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+          Gestão de Projetos e Metodologias Ágeis
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- A Grande Revolução do PMBOK -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🚀 A Revolução do PMBOK (Moderno vs Antigo)</h2>
+            <p class="text-sm text-purple-200 mt-1">Esqueça a decoreba de processos. O Guia mudou o seu DNA.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6 relative opacity-70">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">📚</div>
+              <h3 class="font-bold text-slate-500 dark:text-slate-400 mb-2 text-xl line-through decoration-red-500 decoration-2">
+                Versões Antigas (Até a 6ª)
+              </h3>
+              <ul class="text-sm space-y-3 text-slate-600 dark:text-slate-400 mt-3">
+                <li>🎯 <strong>Foco:</strong> Baseado em <strong>PROCESSOS</strong> (ITTOs: Entradas, Ferramentas, Saídas).</li>
+                <li>🏗️ <strong>Estrutura:</strong> 10 Áreas de Conhecimento e 49 Processos engessados.</li>
+                <li>📦 <strong>Foco da Entrega:</strong> Entregas (Deliverables). "Entregar o que foi pedido no escopo".</li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 relative border-l-4 border-purple-500">
+              <div class="absolute top-2 right-2 text-2xl opacity-30">💡</div>
+              <h3 class="font-bold text-purple-700 dark:text-purple-400 mb-2 text-xl">PMBOK Atual (7ª Edição +)</h3>
+              <ul class="text-sm space-y-3 text-slate-700 dark:text-slate-300 mt-3 font-medium">
+                <li>
+                  🎯 <strong>Foco:</strong> Baseado em <strong class="text-purple-600 dark:text-purple-400">PRINCÍPIOS</strong> (Orientação de
+                  comportamento).
+                </li>
+                <li>
+                  🏗️ <strong>Estrutura:</strong> 12 Princípios e
+                  <strong class="text-purple-600 dark:text-purple-400">8 Domínios de Desempenho</strong>.
+                </li>
+                <li>
+                  💎 <strong>Foco da Entrega:</strong> Valor e Resultados (Outcomes). "Entregar o que traz benefício ao negócio, mesmo mudando o
+                  escopo".
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Os 8 Domínios de Desempenho -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">🧩</span> Os 8 Domínios de Desempenho (PMBOK 7)
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-t-2 border-t-purple-500"
+            >
+              Partes Interessadas
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-t-2 border-t-purple-500"
+            >
+              Equipe
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-t-2 border-t-purple-500"
+            >
+              Abordagem (Ciclo de Vida)
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-t-2 border-t-purple-500"
+            >
+              Planejamento
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-b-2 border-b-indigo-500"
+            >
+              Trabalho do Projeto
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-b-2 border-b-indigo-500 text-indigo-700 dark:text-indigo-400 font-bold"
+            >
+              Entrega (Valor)
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-b-2 border-b-indigo-500"
+            >
+              Medição
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded shadow-sm border-b-2 border-b-indigo-500"
+            >
+              Incerteza (Risco)
+            </div>
+          </div>
+        </section>
+
+        <!-- Ágil na Gestão de Projetos (Scrum & Kanban) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 A Tríade da Gestão Ágil</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-700 text-sm">
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 flex items-center gap-2"><span>🏈</span> Scrum (Framework)</h3>
+              <p class="text-slate-700 dark:text-slate-300">
+                Baseia-se em <strong>iterações fixas</strong> (Sprints de 1 a 4 semanas). Possui papéis definidos (PO, Scrum Master, Developers) e
+                foca na previsibilidade a curto prazo.
+              </p>
+              <p class="mt-2 text-xs font-bold text-indigo-500">Foco: Gerenciamento do Projeto.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-2"><span>📋</span> Kanban (Fluxo)</h3>
+              <p class="text-slate-700 dark:text-slate-300">
+                Sem iterações obrigatórias. Baseia-se em <strong>Fluxo Contínuo</strong> (Sistema Puxado). Sua regra principal é limitar o Trabalho em
+                Progresso (WIP).
+              </p>
+              <p class="mt-2 text-xs font-bold text-emerald-500">Foco: Visualização e Gargalos.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <h3 class="font-bold text-fuchsia-600 dark:text-fuchsia-400 mb-2 flex items-center gap-2"><span>🧬</span> Abordagem Híbrida</h3>
+              <p class="text-slate-700 dark:text-slate-300">
+                O PMBOK moderno exalta isso: Usar <strong>Cascata (Preditivo)</strong> onde os requisitos são claros (ex: hardware) e
+                <strong>Ágil (Adaptativo)</strong> onde há incerteza (ex: software).
+              </p>
+              <p class="mt-2 text-xs font-bold text-fuchsia-500">Foco: Aderência ao Contexto (Tailoring).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>PMBOK exige Cascata?</strong> A banca diz que "O PMBOK prescreve obrigatoriamente a utilização do modelo em cascata
+                tradicional para o ciclo de vida do projeto". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Isso nunca foi totalmente verdade, mas na versão atual é um absurdo. O PMBOK é <strong>Agnóstico</strong> à abordagem. Ele recomenda a
+                Alfaiataria (<em>Tailoring</em>), onde o gestor decide se o projeto usará Preditivo (Cascata), Ágil, Iterativo, Incremental ou
+                Híbrido.
+              </li>
+              <li>
+                <strong>Gerente de Projeto no Scrum:</strong> "O Scrum Master substitui a figura do Gerente de Projetos dentro do framework Scrum".
+                <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Scrum Master <strong>NÃO</strong> é um gerente de projetos (ele não gere orçamentos, prazos ou pessoas). O papel de Gerente de
+                Projeto simplesmente <em>não existe</em> no Scrum; as suas responsabilidades tradicionais são diluídas entre o PO, o Scrum Master e a
+                Equipa de Desenvolvedores.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Filosofia Moderna de Gestão de Projetos
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A gestão de projetos deixou de ser vista como "cumprir cronograma e orçamento" para ser avaliada por
+              <strong class="text-purple-600 dark:text-purple-400">Entrega de Valor de Negócio</strong>. Se você entregar o projeto no prazo, no
+              custo, e ele não gerar lucro ou utilidade para o cliente, o projeto foi um fracasso.
+            </p>
+            <p>
+              O <em>Project Management Institute (PMI)</em>, através do Guia PMBOK 7ª Edição, absorveu a mentalidade ágil (que antes ficava isolada em
+              guias de extensão). A mudança principal é o foco em <strong>Outcomes (Resultados/Benefícios)</strong> em vez de
+              <em>Outputs (Entregáveis físicos/documentos)</em>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">
+              Os 12 Princípios do Gerenciamento de Projetos (Bases de Prova)
+            </h3>
+            <p>Substituíram os processos. Não precisa decorar todos, mas precisa reconhecer a "vibe" ágil deles:</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>Seja um administrador (steward) diligente, respeitoso e atencioso.</li>
+              <li>Crie um ambiente colaborativo para a equipe do projeto.</li>
+              <li>Envolva as <strong>partes interessadas</strong> (Stakeholders) efetivamente.</li>
+              <li>Foque no <strong>Valor</strong>.</li>
+              <li>Reconheça, avalie e responda às interações sistêmicas (Pensamento Sistêmico).</li>
+              <li>Demonstre comportamentos de Liderança.</li>
+              <li><strong class="text-emerald-600 dark:text-emerald-400">Faça a "Alfaiataria" (Tailoring)</strong> baseada no contexto.</li>
+              <li>Incorpore a <strong>qualidade</strong> nos processos e entregas.</li>
+              <li>Navegue na complexidade.</li>
+              <li>Otimize as respostas aos <strong>Riscos</strong>.</li>
+              <li>Adote a <strong>Adaptabilidade e Resiliência</strong>.</li>
+              <li>Habilite a <strong>Mudança</strong> para atingir o estado futuro visualizado.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Alfaiataria (Tailoring) e Ciclos de Vida
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <em>Alfaiataria</em> é o conceito de que "um tamanho único não serve para todos". O gerente de projetos moderno analisa as
+              características do projeto para escolher a melhor abordagem.
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-slate-800 dark:text-white text-lg block mb-1">Abordagem Preditiva (Cascata/Tradicional)</strong>
+                O escopo, prazo e custo são determinados nas fases iniciais do ciclo de vida. Modificações no escopo são rigidamente controladas.
+                <span class="hl-yellow">Quando usar: Obras de engenharia civil ou projetos onde o requisito é claro, fixo e o erro é caríssimo.</span>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-600 dark:text-emerald-400 text-lg block mb-1">Abordagem Adaptativa (Ágil)</strong>
+                O escopo detalhado é definido iterativamente antes do início de uma nova iteração (Sprint). As mudanças são esperadas. O trabalho é
+                entregue de forma incremental.
+                <span class="hl-green"
+                  >Quando usar: Desenvolvimento de Software, inovação, onde os requisitos mudam rápido e o cliente precisa ver o produto logo.</span
+                >
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-fuchsia-500">
+                <strong class="text-fuchsia-600 dark:text-fuchsia-400 text-lg block mb-1">Abordagem Híbrida</strong>
+                Uma combinação.
+                <span class="text-sm"
+                  >Exemplo Clássico: Em um projeto de implantação de um novo Data Center corporativo, a compra e a instalação física dos servidores
+                  usam a abordagem <strong>Preditiva</strong> (não dá para "iterar" hardware). Mas o desenvolvimento e a instalação dos softwares de
+                  monitoramento desse mesmo Data Center usam a abordagem <strong>Ágil</strong>.</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Detalhamento Ágil: Scrum na Gestão
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para a disciplina de Gestão de Projetos de TI, o Scrum deve ser encarado sob a ótica de <em>como</em> ele mitiga o risco e gere os
+              requisitos, substituindo os antigos cronogramas em Gráfico de Gantt.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Gestão do Escopo: Product Backlog</h3>
+            <p>
+              No Scrum, o escopo não é fixo num documento. Ele vive no <strong>Product Backlog</strong>, que é uma lista
+              <em>viva, emergente e ordenada</em> daquilo que é necessário para melhorar o produto. O topo da lista contém itens (geralmente Histórias
+              de Usuário) refinados, claros e prontos para a próxima Sprint. O fundo da lista contém ideias vagas.
+              <span class="hl-yellow"
+                >Apenas o Product Owner (PO) decide a ordem/prioridade, sempre focando em antecipar a entrega de Valor (ROI).</span
+              >
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A Gestão de Tempo e Custo: Timeboxing</h3>
+            <p>
+              No modelo tradicional, o escopo era fixo e o tempo e o custo variavam (o projeto atrasava). No Ágil (Scrum),
+              <strong>o tempo e o custo são FIXOS (Timebox)</strong>, e o Escopo é que varia. Se uma Sprint tem 2 semanas, ela acaba rigorosamente em
+              2 semanas, entregue o que estiver entregue. O que não foi feito, volta para o Backlog.
+            </p>
+
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded mt-4 text-sm font-medium">
+              <strong>Métricas Ágeis de Gestão (Velocity e Burndown):</strong> O gerente de projetos/Scrum Master acompanha o progresso não por
+              cronogramas, mas sim por <em>Burn-down charts</em> (mostram quanto trabalho falta na Sprint) e medindo a <em>Velocity</em> da equipe
+              (quantos pontos de história a equipe consegue entregar, em média, por Sprint) para projetar datas futuras de entrega de grandes épicos.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. O Sistema Kanban
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Muito utilizado em Operações e Manutenção (Sustentação de Sistemas), o Kanban brilha onde as prioridades mudam todos os dias e planejar
+              Sprints fechadas de 2 semanas é inviável.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Lógica do Sistema "Pull" (Puxar) e do WIP Limit</h3>
+            <p>
+              Num sistema tradicional, o gerente "empurra" (Push) 10 tarefas para o programador. O programador fica sufocado, faz mal-feito e tudo
+              atrasa.
+            </p>
+            <p>
+              No Kanban, nós limitamos o Trabalho em Progresso (<strong>WIP - Work in Progress limit</strong>). Se a coluna "Desenvolvimento" tem
+              limite de 3, e já tem 3 tarefas lá, o sistema trava. Ninguém pode trazer uma nova tarefa da coluna "To Do" até que uma tarefa de
+              "Desenvolvimento" passe para "Teste".
+              <span class="hl-green">Isso força a equipe a parar de iniciar coisas novas e terminar as que já estão começadas.</span>
+            </p>
+
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Lei de Little (Little's Law):</strong> Quanto mais coisas você colocar no
+                sistema ao mesmo tempo (WIP alto), maior será o tempo de entrega (Lead Time). Portanto, para entregar mais rápido, baixe o WIP.
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Quadro Kanban:</strong> Não é exclusivo do método Kanban. Equipes Scrum
+                frequentemente usam o quadro Kanban para visualizar as tarefas da sua Sprint. O que torna o Kanban um "Método" em si é a adoção
+                matemática de métricas de fluxo e as políticas de WIP.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

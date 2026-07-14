@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Contratações de TI no Setor Público</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Purple */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #9333ea;
+        border-radius: 4px;
+      } /* Purple-600 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #7e22ce;
+      } /* Purple-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-purple {
+        @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+          Contratações de TI no Setor Público
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: O Ciclo de Contratação -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">🔄</span> O Ciclo de Contratação (As 3 Fases)
+          </h2>
+
+          <div class="flex flex-col md:flex-row items-stretch justify-center gap-4 text-center">
+            <!-- Planejamento -->
+            <div class="flex-1 bg-purple-50 dark:bg-purple-900/10 border-2 border-purple-500 rounded-lg p-4 shadow-sm transform md:scale-105">
+              <span class="text-3xl block mb-2">🧠</span>
+              <h3 class="font-black text-purple-800 dark:text-purple-300 text-lg">1. Planejamento</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 mt-2">
+                É a fase <strong>MAIS IMPORTANTE</strong> e cobrada. Onde se justifica a necessidade e se define o que comprar. (DOD, ETP, TR).
+              </p>
+            </div>
+            <div class="hidden md:flex items-center text-slate-400 text-2xl font-bold">➔</div>
+
+            <!-- Seleção -->
+            <div class="flex-1 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+              <span class="text-3xl block mb-2">⚖️</span>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">2. Seleção</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                A licitação em si (Pregão, Concorrência). O pregoeiro conduz o certame e escolhe o fornecedor.
+              </p>
+            </div>
+            <div class="hidden md:flex items-center text-slate-400 text-2xl font-bold">➔</div>
+
+            <!-- Gestão -->
+            <div class="flex-1 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+              <span class="text-3xl block mb-2">🤝</span>
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">3. Gestão / Fiscalização</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                A execução do contrato. Receber o serviço, atestar a qualidade e autorizar os pagamentos.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Jurisprudência do TCU (Decoreba) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🏛️ A Visão do TCU (Regras de Ouro)</h2>
+            <span class="bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded">CAI SEMPRE!</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 dark:bg-slate-700">
+            <div class="bg-white dark:bg-slate-800 p-6">
+              <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-base border-b border-slate-100 dark:border-slate-700 pb-2">
+                Pagamento por Resultados (Súmula 269)
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                A regra no governo é <span class="font-bold">NÃO pagar por "hora trabalhada" (homem-hora)</span>. O pagamento deve ser vinculado a
+                <strong>resultados efetivamente entregues e aferíveis</strong> (ex: Unidade de Serviço Técnico - UST, ou Pontos de Função - APF).
+              </p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-6">
+              <h3 class="font-bold text-rose-600 dark:text-rose-400 mb-2 text-base border-b border-slate-100 dark:border-slate-700 pb-2">
+                Terceirização e Funções Críticas
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                O Governo <span class="font-bold text-rose-600 dark:text-rose-400">NÃO PODE terceirizar</span> a tomada de decisão estratégica, a
+                gestão do contrato e a aprovação técnica. A empresa terceirizada executa o código, mas a avaliação e validação é feita exclusivamente
+                por um <strong>servidor público</strong>.
+              </p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-6">
+              <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 text-base border-b border-slate-100 dark:border-slate-700 pb-2">
+                Alinhamento Obrigatório
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Nenhuma contratação de TI pode ser feita se não estiver previamente aprovada e listada no <strong>PDTI</strong> (Plano Diretor de TI)
+                e no PAC/PCA (Plano de Contratações Anual) do órgão.
+              </p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-6">
+              <h3 class="font-bold text-sky-600 dark:text-sky-400 mb-2 text-base border-b border-slate-100 dark:border-slate-700 pb-2">
+                Parcelamento do Objeto
+              </h3>
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                O objeto <strong>deve ser parcelado</strong> (dividido em licitações menores) para ampliar a concorrência, <em>SEMPRE QUE</em> for
+                técnica e economicamente viável. Só se contrata "tudo junto" se separar causar prejuízo ou perda de economia de escala.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Os 3 Atores do Planejamento -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">👥</span> Equipe de Planejamento da Contratação
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 shadow-sm">
+              <div class="text-3xl mb-2">🗣️</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Integrante Requisitante</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Representa a <strong>área de negócio</strong> (o dono do problema). Ele diz o que precisa ser resolvido.
+              </p>
+            </div>
+            <div
+              class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 shadow-sm border-t-4 border-t-purple-500"
+            >
+              <div class="text-3xl mb-2">💻</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Integrante Técnico</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Representa a <strong>TI</strong>. Ele traduz a necessidade do negócio em requisitos tecnológicos e de segurança.
+              </p>
+            </div>
+            <div class="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 shadow-sm">
+              <div class="text-3xl mb-2">📄</div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Integrante Administrativo</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Representa o <strong>setor de licitações/compras</strong>. Cuida da burocracia, leis e pesquisa de preços.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Ilusão da Terceirização Total:</strong> A banca diz que "Para economizar recursos, o órgão público pode terceirizar a
+                elaboração do Termo de Referência (TR) e a fiscalização do contrato para uma empresa especializada". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Atividades de planejamento da licitação, fiscalização e avaliação de qualidade são
+                <strong>atividades de Estado (indelegáveis)</strong>. A empresa terceira pode até "apoiar" com consultoria, mas a responsabilidade e
+                assinatura final são sempre de um servidor público.
+              </li>
+              <li>
+                <strong>Marcas Específicas:</strong> "Na fase de planejamento, a TI deve especificar a marca exata do servidor a ser comprado (Ex:
+                Servidor IBM) para garantir a qualidade". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A Lei de Licitações <strong>veda a indicação de marca</strong>, exceto em casos raríssimos de padronização justificada. A
+                especificação deve ser feita por meio do desempenho e características técnicas.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Governança e o Alinhamento (O "Porquê" Comprar)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A contratação de TI no setor público sofreu uma revolução nas últimas décadas por causa do TCU. Antigamente, a TI comprava computadores
+              que não serviam para nada ou que ficavam nas caixas, porque não havia alinhamento.
+            </p>
+            <p>
+              Hoje, o fluxo de Governança dita que <strong>toda a despesa de TI deve nascer de uma necessidade do negócio</strong>. A regra de ouro é:
+              "A TI não contrata para si mesma, a TI contrata para apoiar a organização".
+            </p>
+            <div class="bg-purple-50 dark:bg-purple-900/10 p-4 rounded border-l-4 border-purple-500 mt-4 text-sm">
+              <strong class="text-purple-800 dark:text-purple-300">A Trava do PDTI:</strong> Se o diretor de TI quiser comprar uma nova solução de
+              Nuvem hoje, a primeira pergunta da auditoria será: <em>"Isso está previsto no seu Plano Diretor de TI?"</em>. Se não estiver, a
+              contratação é irregular e deve ser suspensa até que o plano seja formalmente revisto e atualizado.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Fase de Planejamento (A mais importante!)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Para a governança, a fase de Seleção (o Pregão) é apenas um detalhe burocrático. O sucesso ou o fracasso de um contrato de software no
+              governo decide-se na fase de <strong>Planejamento da Contratação</strong>. Os documentos gerados nesta fase costumam aparecer na sua
+              prova:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+                <strong class="text-slate-800 dark:text-white text-lg block mb-1">DOD (Documento de Oficialização da Demanda)</strong>
+                O pontapé inicial. O Setor Requisitante (ex: RH) envia um DOD para a TI dizendo: "Preciso de um sistema para automatizar as férias". O
+                DOD não tem detalhes técnicos, é apenas a declaração de que o problema existe.
+              </li>
+              <li class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900/50 border-l-4 border-l-sky-500">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg block mb-1">ETP (Estudo Técnico Preliminar)</strong>
+                O coração do planeamento. A Equipe de Planejamento (Requisitante + Técnico) senta para avaliar
+                <span class="hl-yellow">soluções disponíveis no mercado</span>. É melhor construir o software do zero (Fábrica de Software) ou comprar
+                uma licença pronta (SaaS)? O ETP responde qual é a opção mais vantajosa técnica e economicamente.
+              </li>
+              <li
+                class="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900/50 border-l-4 border-l-indigo-500"
+              >
+                <strong class="text-indigo-700 dark:text-indigo-400 text-lg block mb-1">TR (Termo de Referência)</strong>
+                Se o ETP concluiu que o melhor é comprar, o TR vai definir <span class="hl-green">COMO</span> será a compra. Ele contém as
+                especificações técnicas detalhadas, os SLAs (Acordos de Nível de Serviço), como o pagamento será medido e as penalidades se a empresa
+                falhar. O TR é o anexo principal do Edital de Licitação.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Métrica de Pagamento (Fim do Homem-Hora)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No passado, o governo contratava "10 mil horas de programação". A empresa vencedora colocava 5 programadores lentos numa sala, o
+              software não ficava pronto, e o governo era obrigado a pagar todas as horas.
+            </p>
+            <p>
+              O TCU proibiu essa prática com a <strong>Súmula 269</strong>. Em contratos de TI, a remuneração deve estar vinculada à
+              <strong class="text-emerald-600 dark:text-emerald-400">entrega de resultados ou produtos (entregáveis)</strong>. O governo não paga pelo
+              esforço (quantas horas o fornecedor suou), paga pelo valor (o software a funcionar).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Exemplos de Métricas Aprovadas</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Pontos de Função (APF):</strong> Métrica padrão ouro para contratar desenvolvimento de software. Se o fornecedor entregou um
+                "Módulo de Cadastro" avaliado em 15 Pontos de Função, ele recebe o valor de 15 pontos. Se demorou 1 hora ou 1 mês para fazer, o
+                problema é dele.
+              </li>
+              <li>
+                <strong>Unidade de Serviço Técnico (UST):</strong> Um catálogo de serviços. Ex: Formatar um computador equivale a 2 USTs; recuperar
+                senha equivale a 0.5 UST. Paga-se pelo total de USTs entregues no mês.
+              </li>
+              <li>
+                <strong>SLA (Service Level Agreement):</strong> Contratações de Suporte e Nuvem pagam com base na disponibilidade. Se a nuvem prometia
+                99% de Uptime e entregou 90%, o pagamento sofre um "desconto" (glosa) automático no fim do mês.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Vendor Lock-in (O Aprisionamento Tecnológico)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Uma das piores falhas de governança em contratações públicas é o <strong>Vendor Lock-in</strong>. Ocorre quando a Administração Pública
+              fica totalmente dependente ("refém") de um único fornecedor ou tecnologia proprietária.
+            </p>
+            <p>
+              <em>Exemplo:</em> O órgão compra um sistema de arquivo fechado que usa um banco de dados altamente criptografado que só o Fornecedor A
+              entende. Cinco anos depois, o fornecedor dobra o preço do contrato. O órgão tenta contratar o Fornecedor B, mas o Fornecedor B avisa que
+              é impossível migrar os dados do antigo sistema. O órgão é obrigado a continuar a pagar o Fornecedor A para sempre.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">
+              Como a Governança previne o Lock-in?
+            </h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>Exigir no TR o uso de <strong>Padrões Abertos (Open Standards)</strong> e de interoperabilidade na construção do software.</li>
+              <li>
+                Exigir que a contratada entregue o <strong>Código-Fonte</strong> e a documentação completa no final do projeto (quando for fábrica de
+                software).
+              </li>
+              <li>
+                Garantir no contrato uma cláusula de <strong>"Descontinuidade / Exit Strategy"</strong> (o fornecedor atual é obrigado a ajudar na
+                migração de dados para a nova empresa caso o contrato acabe).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

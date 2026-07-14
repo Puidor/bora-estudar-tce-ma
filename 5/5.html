@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Planejamento Estratégico de TI (PETI e PDTI)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Purple */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #9333ea;
+        border-radius: 4px;
+      } /* Purple-600 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #7e22ce;
+      } /* Purple-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-purple {
+        @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+          Planejamento de TI (PETI e PDTI)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- A Pirâmide Hierárquica -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">🔺</span> A Hierarquia do Planejamento
+          </h2>
+
+          <div class="flex flex-col gap-3 max-w-2xl mx-auto">
+            <!-- PEI -->
+            <div class="bg-purple-700 text-white rounded-t-xl p-4 text-center shadow-md">
+              <h3 class="font-black tracking-widest text-lg">1. PEI (Plano Estratégico Institucional)</h3>
+              <p class="text-purple-100 text-sm mt-1">O norte da empresa toda. Define Visão, Missão e Valores do negócio. Longo prazo.</p>
+              <p class="text-xs font-mono mt-2 bg-purple-900/50 inline-block px-2 py-1 rounded">"Aonde o negócio quer chegar?"</p>
+            </div>
+
+            <!-- PETI -->
+            <div class="bg-purple-500 text-white p-4 text-center shadow-md border-x-4 border-purple-300">
+              <h3 class="font-black tracking-widest text-lg">2. PETI (Plano Estratégico de TI)</h3>
+              <p class="text-purple-100 text-sm mt-1">Nível <strong>Estratégico</strong> da TI. Alinha os objetivos da TI ao PEI.</p>
+              <p class="text-xs font-mono mt-2 bg-purple-700/50 inline-block px-2 py-1 rounded">"O que a TI deve focar para apoiar o PEI?"</p>
+            </div>
+
+            <!-- PDTI -->
+            <div class="bg-purple-400 text-white rounded-b-xl p-4 text-center shadow-md">
+              <h3 class="font-black tracking-widest text-lg">3. PDTI (Plano Diretor de TI)</h3>
+              <p class="text-purple-50 text-sm mt-1">
+                Nível <strong>Tático</strong>. A "mão na massa". Orçamento, projetos, contratações e cronogramas (geralmente de 1 a 2 anos).
+              </p>
+              <p class="text-xs font-mono mt-2 bg-purple-600/50 inline-block px-2 py-1 rounded">"Como e com o que vamos executar a estratégia?"</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela de Confronto: PETI vs PDTI -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-800 dark:bg-slate-900 p-4 border-b border-slate-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Confronto: PETI vs PDTI</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700">Característica</th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400">
+                    PETI (Estratégico)
+                  </th>
+                  <th class="p-4 font-bold border-b border-slate-200 dark:border-slate-700 text-fuchsia-600 dark:text-fuchsia-400">
+                    PDTI (Diretor / Tático)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Nível Gerencial</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-indigo-600 dark:text-indigo-400">
+                    Alta Administração (CGTI) / Estratégico
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-fuchsia-600 dark:text-fuchsia-400">
+                    Gerência Média / Tático-Operacional
+                  </td>
+                </tr>
+                <tr class="bg-purple-50/50 dark:bg-purple-900/10">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Horizonte de Tempo</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">Longo Prazo (ex: 4 a 5 anos)</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Curto a Médio Prazo (ex: 1 a 2 anos)
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">Conteúdo Principal</td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    Diretrizes, Objetivos de TI, Alinhamento Estratégico.
+                  </td>
+                  <td class="p-4 border-b border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                    <strong>Plano de Ação, Metas, Orçamento, Projetos, Aquisições.</strong>
+                  </td>
+                </tr>
+                <tr class="bg-purple-50/50 dark:bg-purple-900/10">
+                  <td class="p-4 font-bold text-slate-800 dark:text-slate-200">A Pergunta Central</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">"Quais os objetivos da TI para suportar o negócio?"</td>
+                  <td class="p-4 text-slate-700 dark:text-slate-300">"Como alocar os recursos ($) e pessoas este ano?"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais de Prova</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A TI Dita as Regras?</strong> A banca afirma: "A estratégia de negócios da organização deve ser desenhada com base nas
+                diretrizes estabelecidas no PETI (Plano Estratégico de TI)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                É <strong>exatamente o oposto</strong>. O negócio nunca se subordina à TI (Visão de Governança). O PETI é que deve ser desenhado para
+                suportar as necessidades do PEI (Estratégia do Negócio). <em>A TI é o meio, não o fim.</em>
+              </li>
+              <li>
+                <strong>Comprar Hardware no PETI?</strong> "O PETI é o documento adequado para detalhar as especificações de contratação e as compras
+                de servidores para o próximo ano." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O PETI não fala de compras específicas nem de orçamentos detalhados (ele é estratégico). O documento correto para o planejamento
+                tático de compras, licitações e orçamentos é o <strong class="underline decoration-red-500">PDTI</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Necessidade do Planejamento de TI
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No passado, o departamento de TI era visto apenas como "o suporte técnico que conserta impressoras". As decisões de investimento em
+              tecnologia eram tomadas de forma isolada (Ad-hoc), baseadas nas preferências do gerente de TI.
+            </p>
+            <p>
+              A Governança Corporativa de TI (amparada por normas como a ISO 38500 e o COBIT) mudou isso. Hoje, a TI é um braço estratégico. Para que
+              a TI entregue valor, ela precisa <strong>planejar as suas ações de forma totalmente alinhada ao negócio</strong>. A esse processo damos
+              o nome de <span class="hl-purple">Alinhamento Estratégico</span>. E ele é materializado através do PETI e do PDTI.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. PETI (Plano Estratégico de TI)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>PETI</strong> é o desdobramento natural do Planejamento Estratégico Institucional (PEI). Se o PEI diz que o banco vai focar em
+              "bancarização digital" nos próximos 5 anos, o PETI deve desenhar a visão tecnológica de longo prazo para permitir que isso aconteça.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">Características Essenciais:</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Orientação a Objetivos:</strong> Define as grandes metas (Ex: Migração para Cloud, Aumento da Segurança da Informação).</li>
+              <li><strong>Governança de TI:</strong> Define o modelo de governança, comitês de decisão e as políticas de alto nível.</li>
+              <li>
+                <strong>Inovação:</strong> Avalia como novas tecnologias (IA, Blockchain) podem gerar vantagem competitiva para a organização a longo
+                prazo.
+              </li>
+              <li>
+                <strong>Elaboração:</strong> É elaborado com a forte participação do Comitê de TI (que conta com diretores de negócio, não apenas o
+                CIO).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. PDTI (Plano Diretor de TI) e o SISP
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No contexto do Governo Federal Brasileiro, o <strong>PDTI</strong> é o documento rei. O SISP (Sistema de Administração dos Recursos de
+              Tecnologia da Informação) torna a elaboração do PDTI obrigatória para os órgãos federais.
+            </p>
+            <p>
+              O PDTI "aterra" a estratégia. Se o PETI disse que é preciso aumentar a segurança cibernética, o PDTI vai dizer:
+              <em
+                >"No primeiro semestre de 2024, gastaremos R$ 500 mil para comprar um Firewall de Nova Geração e alocaremos 3 analistas no
+                projeto"</em
+              >.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-fuchsia-500 pl-3">
+              O Ciclo de Elaboração do PDTI (Foco SISP)
+            </h3>
+            <p>A elaboração de um PDTI não é feita "de cabeça". Ela segue três fases metodológicas (memorize-as para a prova):</p>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-700 dark:text-fuchsia-400 text-lg">1. Fase de Preparação:</strong><br />
+                Define a Equipe de Elaboração (normalmente liderada por um gestor da área de negócios, não de TI). Institui-se formalmente o plano de
+                trabalho.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-fuchsia-500">
+                <strong class="text-fuchsia-700 dark:text-fuchsia-400 text-lg">2. Fase de Diagnóstico:</strong><br />
+                É o levantamento do "Estado Atual" (As-Is). Faz-se o inventário de hardware, software, licenças, contratos vigentes e a Análise de
+                SWOT (Forças, Fraquezas, Oportunidades, Ameaças) da TI atual. Identificam-se os gargalos.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-700 dark:text-fuchsia-400 text-lg">3. Fase de Planejamento:</strong><br />
+                É o desenho do "Estado Futuro" (To-Be). Define o Plano de Ação, a <span class="hl-yellow">Carteira de Projetos</span> de TI para o
+                período, o plano de investimento/orçamento e o plano de gestão de pessoas e risco.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Revisão, Orçamento e Governança
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A elaboração dos planos (PETI e PDTI) não termina no momento da sua publicação.</p>
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li>
+                <strong class="text-slate-800 dark:text-white text-base">Comitê de TI (CGTI):</strong> A aprovação final do PDTI (e do PETI) é
+                competência do Comitê Estratégico de TI ou da Autoridade Máxima do Órgão. O CIO (Diretor de TI) apoia e lidera tecnicamente, mas
+                <span class="hl-red">não aprova o plano sozinho</span>.
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white text-base">Revisão Contínua:</strong> O PDTI é um documento "vivo". Ele deve ser revisto
+                anualmente ou sempre que houver mudanças significativas no orçamento ou na estratégia do negócio.
+              </li>
+              <li>
+                <strong class="text-slate-800 dark:text-white text-base">Impacto nas Contratações:</strong> Especialmente na Administração Pública
+                (que estudaremos adiante), uma compra de TI (licitação) <strong>não pode ocorrer se não estiver prevista no PDTI</strong> vigente. O
+                PDTI é o principal justificante da necessidade da contratação (PAC/PCA).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

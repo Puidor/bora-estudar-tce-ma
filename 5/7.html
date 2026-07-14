@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gestão de Processos e BPMN</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Purple */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #9333ea;
+        border-radius: 4px;
+      } /* Purple-600 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #7e22ce;
+      } /* Purple-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-purple {
+        @apply bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-2">Gestão e Governança de TI</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-purple-500 pb-2 inline-block">
+          Gestão de Processos (BPMN e Melhoria)
+        </h1>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-purple-600 border-b-2 border-purple-600 dark:text-purple-400 dark:border-purple-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto: Processo vs Projeto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">⚡</span> O Confronto Básico: Processo vs Projeto
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <div class="border-l-4 border-slate-400 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">Projeto (Finito)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Esforço temporário (tem início, meio e fim) para criar um produto, serviço ou resultado <strong>ÚNICO</strong>. (Ex: Construir um
+                prédio, desenvolver um software novo).
+              </p>
+            </div>
+            <div class="border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-purple-800 dark:text-purple-400 mb-2">Processo (Contínuo)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Esforço contínuo e <strong>REPETITIVO</strong> de operações padronizadas que entregam valor a um cliente. (Ex: Processo de admissão de
+                funcionário, emissão de nota fiscal).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Sintaxe BPMN (Core Decoreba) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-purple-800 dark:bg-purple-900 p-4 border-b border-purple-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔣 Dicionário BPMN (Business Process Model and Notation)</h2>
+            <span class="bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded">DECORE!</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-700 text-center">
+            <!-- Eventos -->
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <div class="w-12 h-12 mx-auto rounded-full border-2 border-emerald-500 flex items-center justify-center mb-3"></div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Eventos (Círculos)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Algo que "Acontece".<br />
+                <span class="text-emerald-500 font-bold">Linha Fina:</span> Início<br />
+                <span class="text-amber-500 font-bold">Linha Dupla:</span> Intermediário<br />
+                <span class="text-red-500 font-bold">Linha Grossa:</span> Fim
+              </p>
+            </div>
+
+            <!-- Atividades -->
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <div class="w-16 h-10 mx-auto rounded-lg border-2 border-blue-500 mb-3"></div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Atividades (Retângulos arred.)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Trabalho realizado dentro do processo.<br />Pode ser uma Tarefa simples (atômica) ou um Subprocesso (contém detalhamento interno +).
+              </p>
+            </div>
+
+            <!-- Gateways -->
+            <div class="bg-white dark:bg-slate-800 p-5">
+              <div class="w-10 h-10 mx-auto border-2 border-amber-500 transform rotate-45 mb-3"></div>
+              <h3 class="font-bold text-slate-800 dark:text-white text-base">Gateways (Losangos)</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                Controle de Fluxo. Pontos de decisão onde o caminho se divide (Divergência) ou se encontra (Convergência).
+              </p>
+            </div>
+          </div>
+
+          <!-- Detalhamento Gateways -->
+          <div class="bg-purple-50 dark:bg-purple-900/10 p-5 border-t border-purple-100 dark:border-purple-800">
+            <h3 class="font-bold text-center text-purple-800 dark:text-purple-300 mb-4 uppercase tracking-wider text-sm">Os 3 Gateways Principais</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+              <div>
+                <div class="w-8 h-8 mx-auto border-2 border-purple-500 transform rotate-45 flex items-center justify-center mb-2">
+                  <span class="transform -rotate-45 text-purple-500 font-bold text-xs">X</span>
+                </div>
+                <strong class="text-slate-800 dark:text-white text-sm block">Exclusivo (XOR)</strong>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Vazio ou com 'X'. O caminho segue por <strong>APENAS UM</strong> dos ramos disponíveis. Um ou outro.
+                </p>
+              </div>
+              <div>
+                <div class="w-8 h-8 mx-auto border-2 border-purple-500 transform rotate-45 flex items-center justify-center mb-2">
+                  <span class="transform -rotate-45 text-purple-500 font-bold text-lg leading-none">+</span>
+                </div>
+                <strong class="text-slate-800 dark:text-white text-sm block">Paralelo (AND)</strong>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Com um '+'. O caminho divide-se por <strong>TODOS</strong> os ramos disponíveis, acontecendo ao mesmo tempo.
+                </p>
+              </div>
+              <div>
+                <div class="w-8 h-8 mx-auto border-2 border-purple-500 transform rotate-45 flex items-center justify-center mb-2">
+                  <span class="transform -rotate-45 text-purple-500 font-bold text-sm">O</span>
+                </div>
+                <strong class="text-slate-800 dark:text-white text-sm block">Inclusivo (OR)</strong>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Com um círculo 'O'. O caminho pode seguir por <strong>UM, ALGUNS ou TODOS</strong> os ramos, dependendo das condições.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Melhoria Contínua: PDCA -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-purple-500 text-2xl">🔄</span> Melhoria Contínua (O Ciclo PDCA)
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+              <strong class="text-purple-600 dark:text-purple-400 text-lg block border-b border-slate-200 dark:border-slate-700 pb-1 mb-2">P</strong>
+              <span class="font-bold text-slate-800 dark:text-white text-sm block">Plan (Planejar)</span>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Identificar o problema, analisar o AS-IS e traçar metas (TO-BE).</p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+              <strong class="text-purple-600 dark:text-purple-400 text-lg block border-b border-slate-200 dark:border-slate-700 pb-1 mb-2">D</strong>
+              <span class="font-bold text-slate-800 dark:text-white text-sm block">Do (Fazer/Executar)</span>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Treinar as pessoas e colocar o plano em prática. (Execução do processo).</p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+              <strong class="text-purple-600 dark:text-purple-400 text-lg block border-b border-slate-200 dark:border-slate-700 pb-1 mb-2">C</strong>
+              <span class="font-bold text-slate-800 dark:text-white text-sm block">Check (Verificar)</span>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Comparar os resultados obtidos com as metas planejadas (Medição / KPIs).</p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+              <strong class="text-purple-600 dark:text-purple-400 text-lg block border-b border-slate-200 dark:border-slate-700 pb-1 mb-2">A</strong>
+              <span class="font-bold text-slate-800 dark:text-white text-sm block">Act (Agir/Ajustar)</span>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Padronizar o sucesso ou corrigir a rota se a meta não foi alcançada.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+              🚨 Pegadinhas Mortais de Prova (MUITO COBRADO)
+            </h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>A Regra Sagrada das Piscinas (Pools):</strong> A banca afirma: "Em BPMN, o Fluxo de Sequência (linha cheia) pode cruzar
+                livremente a fronteira entre duas Pools (Piscinas) diferentes, interligando atividades de organizações diferentes." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Fluxo de Sequência NUNCA sai de uma Pool. A comunicação entre duas Piscinas diferentes DEVE OBRIGATORIAMENTE ser feita através do
+                <strong class="underline decoration-red-500">Fluxo de Mensagem (Message Flow - Linha tracejada com seta aberta)</strong>.
+              </li>
+              <li>
+                <strong>Pools vs Lanes (Raias):</strong> "Uma raia (Lane) representa entidades corporativas completamente independentes (ex:
+                Fornecedor e Empresa)". <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O que separa entidades externas (Empresa vs Fornecedor) é a <strong>Pool</strong>. A Raia (Lane) é uma subdivisão <em>dentro</em> da
+                piscina para representar departamentos ou papéis da MESMA empresa (Ex: Financeiro, RH, Vendedor). O Fluxo de Sequência PODE cruzar
+                Lanes.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Disciplina de BPM e o CBOK
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>BPM (Business Process Management - Gerenciamento de Processos de Negócio)</strong> é uma disciplina gerencial que integra
+              estratégias e objetivos da organização com as expectativas dos clientes. Não é apenas tecnologia (apesar de usar BPMS - Sistemas de
+              BPM), é uma mudança cultural. O seu corpo de conhecimento oficial é o <strong>BPM CBOK</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-purple-500 pl-3">O Ciclo de Vida de BPM</h3>
+            <p>A gestão de processos não é algo que se faz uma vez e se abandona. O CBOK prevê um ciclo contínuo:</p>
+            <ul class="list-decimal pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Planejamento e Alinhamento Estratégico:</strong> Identificar quais processos existem e como eles suportam a estratégia da
+                empresa.
+              </li>
+              <li>
+                <strong>Análise de Processos:</strong> Estudar o processo atual (estado <span class="hl-red">AS-IS</span>), entender como funciona
+                hoje, identificar gargalos, desperdícios (Lean) e desconexões.
+              </li>
+              <li>
+                <strong>Desenho de Processos:</strong> Criar a visão futura (estado <span class="hl-green">TO-BE</span>). Desenhar como o processo
+                DEVE ser para atingir a máxima eficiência.
+              </li>
+              <li><strong>Implementação:</strong> Transformar o desenho em realidade (treinar pessoas, comprar software, colocar em produção).</li>
+              <li><strong>Monitoramento e Controle:</strong> Medir o processo rodando através de Indicadores de Desempenho (KPIs).</li>
+              <li><strong>Refinamento (Otimização):</strong> Fechar o ciclo aplicando a Melhoria Contínua baseada nos dados monitorados.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Linguagem Padrão: BPMN 2.0
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>BPMN (Business Process Model and Notation)</strong> é o padrão global (mantido pela OMG) para modelagem de processos de
+              negócio. O seu maior trunfo é ser legível tanto para os analistas de negócios quanto para os sistemas de automação de TI que executarão
+              o processo.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">As 4 Categorias de Elementos (Cobrado em Prova)</h3>
+            <ul class="list-none space-y-4 mt-2">
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-sky-500">
+                <strong class="text-slate-800 dark:text-white">1. Objetos de Fluxo (Flow Objects):</strong> O núcleo do mapa.<br />
+                São os <strong>Eventos</strong> (círculos), as <strong>Atividades</strong> (retângulos com cantos arredondados) e os
+                <strong>Gateways</strong> (losangos).
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-indigo-500">
+                <strong class="text-slate-800 dark:text-white">2. Objetos de Conexão (Connecting Objects):</strong> Como os itens se ligam.<br />
+                <ul class="list-disc pl-5 mt-1 text-sm">
+                  <li>
+                    <strong>Fluxo de Sequência (Sequence Flow):</strong> Linha cheia com seta fechada. Mostra a ordem de execução DENTRO de uma mesma
+                    Piscina (Pool).
+                  </li>
+                  <li>
+                    <strong>Fluxo de Mensagem (Message Flow):</strong> Linha tracejada com seta vazada. Mostra a comunicação/troca de dados ENTRE duas
+                    Piscinas diferentes.
+                  </li>
+                  <li><strong>Associação (Association):</strong> Linha pontilhada que liga um artefato (texto/documento) a um objeto de fluxo.</li>
+                </ul>
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-500">
+                <strong class="text-slate-800 dark:text-white">3. Piscinas e Raias (Swimlanes):</strong><br />
+                A <strong>Piscina (Pool)</strong> representa um participante majoritário do processo (uma empresa, um cliente, um sistema parceiro). O
+                processo em si vive dentro da Pool. A <strong>Raia (Lane)</strong> é uma fatia horizontal ou vertical dentro da Pool para atribuir
+                tarefas a um cargo específico (ex: Lane "Analista", Lane "Gerente").
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-l-amber-500">
+                <strong class="text-slate-800 dark:text-white">4. Artefatos (Artifacts):</strong> Informações de apoio.<br />
+                Anotações de texto simples, Grupos (agrupamento visual pontilhado sem alterar o fluxo) e Objetos de Dados (papéis desenhados que
+                representam que um documento/dado foi gerado).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Detalhes de Prova: Gateways Baseados em Eventos
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Além dos Gateways Exclusivo, Paralelo e Inclusivo (vistos na aba visual), a banca FCC e o CEBRASPE amam o
+              <strong>Gateway Baseado em Eventos (Event-Based Gateway)</strong>.
+            </p>
+            <p>
+              O símbolo é um losango com círculos concêntricos dentro. Ele é uma bifurcação "Exclusiva" (apenas um caminho será seguido), MAS a
+              decisão
+              <span class="hl-yellow"
+                >não é tomada por um dado ou regra lógica da empresa, e sim por algo que acontece no mundo externo (um Evento)</span
+              >.
+            </p>
+            <div class="bg-purple-50 dark:bg-purple-900/10 p-4 border border-purple-200 dark:border-purple-800 rounded mt-2 text-sm">
+              <strong>O Exemplo do Restaurante:</strong> Após o cliente fazer o pedido, o fluxo chega a um Gateway Baseado em Eventos. Se o evento
+              "Chegou a mensagem de pagamento no cartão aprovado" acontecer primeiro, o fluxo vai pelo caminho de imprimir o recibo. Se o evento
+              "Ocorreu o tempo (Timer) de 15 minutos e não houve pagamento" estourar primeiro, o fluxo vai para o caminho de cancelar o pedido.
+              <span class="font-bold text-purple-700 dark:text-purple-400">É uma "Corrida de Eventos"</span>. O que acontecer primeiro, domina o
+              caminho e anula os outros.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Melhoria Contínua e Transformação
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Melhorar os processos AS-IS para TO-BE pode ser feito através de duas vertentes de intensidade diferentes:</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-emerald-500 pl-3">
+              A. Melhoria Contínua (Kaizen / Evolucionária)
+            </h3>
+            <p>
+              Baseia-se em pequenas melhorias diárias, aplicadas passo a passo de forma constante (Bottom-up). Usa ferramentas estatísticas,
+              <strong>Six Sigma</strong> (para reduzir variação/defeitos) e o ciclo <strong>PDCA</strong>. O processo fundamental não é destruído, é
+              afinado e polido. A resistência cultural à mudança é menor.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2 border-l-4 border-rose-500 pl-3">
+              B. Reengenharia de Processos (BPR - Radical)
+            </h3>
+            <p>
+              É o oposto da melhoria contínua. Proposto por Michael Hammer, BPR (Business Process Reengineering) significa começar com um papel em
+              branco. <span class="hl-red">O processo atual (AS-IS) é jogado no lixo e redesenhado do zero (Top-down)</span>, assumindo novos
+              paradigmas de tecnologia para obter ganhos dramáticos de performance. O risco de fracasso e a resistência dos funcionários são
+              altíssimos.
+            </p>
+
+            <div
+              class="mt-6 p-4 bg-slate-100 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-600 dark:text-slate-300"
+            >
+              <strong>O que priorizar na melhoria? O Gargalo (Gargalo da Garrafa):</strong><br />
+              Segundo a Teoria das Restrições (Goldratt), todo sistema/processo tem pelo menos um gargalo (o elo mais fraco, a etapa mais lenta). Se
+              você melhorar uma etapa super rápida do processo, não ganha nada no fim do dia. A melhoria contínua tem que obrigatoriamente
+              <strong>focar e subordinar os recursos à elevação da capacidade do gargalo do sistema</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-purple-600", "border-purple-600", "dark:text-purple-400", "dark:border-purple-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
