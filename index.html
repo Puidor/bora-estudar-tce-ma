@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TCE-MA | Edital</title>
+    <title>TCE-MA | Conhecimentos Específicos</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -96,6 +96,25 @@
   <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-12">
     <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
       <div class="max-w-4xl mx-auto px-4 py-4">
+        <!-- Navegação entre os Editais -->
+        <div
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 pb-4 border-b border-slate-100 dark:border-slate-700/50"
+        >
+          <a
+            href="conhecimentos-gerais.html"
+            class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors bg-slate-100 dark:bg-slate-800 py-1.5 px-3 rounded-lg border border-slate-200 dark:border-slate-700"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Ir para Conhecimentos Gerais
+          </a>
+          <span
+            class="text-xs font-bold uppercase tracking-widest text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 px-2 py-1 rounded"
+            >Módulo Específico</span
+          >
+        </div>
+
         <div class="flex justify-between items-center mb-3">
           <h1 class="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <svg class="w-6 h-6 text-primary-600 dark:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +125,7 @@
                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
               ></path>
             </svg>
-            Edital Tracker
+            Edital Tracker: Específicos
           </h1>
           <div class="flex items-center gap-3">
             <!-- Botão Zerar Progresso Destacado -->
@@ -157,7 +176,7 @@
 
     <main class="max-w-4xl mx-auto px-4 mt-8">
       <div class="mb-6 flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Conteúdo Programático</h2>
+        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Conteúdo Programático (Auditor de TI)</h2>
         <button id="expand-all" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">Expandir tudo</button>
       </div>
       <div id="edital-container" class="space-y-4"></div>
@@ -184,7 +203,7 @@
           <h3 class="text-xl font-bold">Atenção!</h3>
         </div>
         <p class="text-slate-600 dark:text-slate-300 mb-6 text-sm md:text-base leading-relaxed">
-          Tem certeza que deseja zerar todo o seu progresso no edital? <strong>Esta ação não pode ser desfeita.</strong>
+          Tem certeza que deseja zerar todo o seu progresso nos Conhecimentos Específicos? <strong>Esta ação não pode ser desfeita.</strong>
         </p>
         <div class="flex justify-end gap-3">
           <button
