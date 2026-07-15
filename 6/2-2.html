@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: IN SGD/ME nº 94/2022</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Orange */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f97316;
+        border-radius: 4px;
+      } /* Orange-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #c2410c;
+      } /* Orange-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-orange {
+        @apply bg-orange-200 text-orange-900 dark:bg-orange-900/60 dark:text-orange-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-orange-600 dark:text-orange-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-orange-600 dark:text-orange-400 tracking-wider uppercase mb-2">
+          Fiscalização de Contratos de TI
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-orange-500 pb-2 inline-block">
+          IN SGD/ME nº 94/2022
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-orange-600 border-b-2 border-orange-600 dark:text-orange-400 dark:border-orange-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-orange-500 text-2xl">⚡</span> Direto ao Ponto
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>O que é:</strong> É a norma atual que disciplina a contratação de Soluções de Tecnologia da Informação e Comunicação (TIC) na
+              Administração Pública Federal.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Substituição:</strong> Ela <strong>revogou a famosa IN 01/2019</strong>, adaptando os processos de TIC para a
+              <span class="bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300 font-bold px-1.5 py-0.5 rounded"
+                >Nova Lei de Licitações (14.133/21)</span
+              >.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Obrigação:</strong> Aplica-se à Administração Pública Federal (Direta, Autárquica e Fundacional). Estados e Municípios
+              frequentemente a utilizam como <strong>referência normativa</strong> (e por isso cai no TCE-MA).
+            </li>
+          </ul>
+        </section>
+
+        <!-- As 3 Fases da IN -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 O Processo de Contratação de TIC (3 Fases)</h2>
+            <span class="bg-yellow-400 text-orange-900 text-xs font-bold px-2 py-1 rounded">DECORE!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-slate-800/80 p-5 rounded-lg border-t-4 border-sky-500 shadow-md">
+                <h3 class="font-bold text-sky-400 text-lg mb-2">1. Planejamento</h3>
+                <p class="text-xs text-slate-400 mb-3">Onde tudo nasce (E onde a banca mais bate).</p>
+                <ul class="text-sm space-y-1">
+                  <li>• ETP (Estudo Técnico Preliminar)</li>
+                  <li>• TR / Projeto Básico</li>
+                  <li>• Plano de Gestão de Riscos (PGR)</li>
+                  <li>• Feito pela <strong>EPC</strong> (Equipe de Planejamento da Contratação).</li>
+                </ul>
+              </div>
+              <div class="bg-slate-800/80 p-5 rounded-lg border-t-4 border-emerald-500 shadow-md">
+                <h3 class="font-bold text-emerald-400 text-lg mb-2">2. Seleção do Fornecedor</h3>
+                <p class="text-xs text-slate-400 mb-3">O pregão/concorrência em si.</p>
+                <ul class="text-sm space-y-1">
+                  <li>• Análise e julgamento de propostas</li>
+                  <li>• Avaliação de documentação técnica</li>
+                  <li>• Conduzido pelo Agente de Contratação/Pregoeiro.</li>
+                </ul>
+              </div>
+              <div class="bg-orange-900/20 p-5 rounded-lg border-t-4 border-orange-500 shadow-md">
+                <h3 class="font-bold text-orange-400 text-lg mb-2">3. Gestão e Fiscalização</h3>
+                <p class="text-xs text-slate-400 mb-3">Após assinar o contrato.</p>
+                <ul class="text-sm space-y-1">
+                  <li>• Acompanhamento do SLA</li>
+                  <li>• Aceite (Provisório e Definitivo)</li>
+                  <li>• Feito pelos Fiscais e Gestor do Contrato.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Planejamento vs Fiscalização -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-orange-800 dark:bg-orange-900 p-4 border-b border-orange-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ O Duelo das Equipes</h2>
+            <p class="text-sm text-orange-200 mt-1">A banca AMA confundir quem faz o Planejamento com quem faz a Fiscalização.</p>
+          </div>
+          <div class="p-0 overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-100 dark:bg-slate-700/50">
+                  <th class="p-4 border-b border-slate-200 dark:border-slate-600 font-bold text-slate-800 dark:text-white w-1/2">
+                    🛠️ Equipe de Planejamento da Contratação (Fase 1)
+                  </th>
+                  <th class="p-4 border-b border-slate-200 dark:border-slate-600 font-bold text-slate-800 dark:text-white w-1/2">
+                    🕵️ Equipe de Fiscalização (Fase 3)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-sm divide-y divide-slate-200 dark:divide-slate-700">
+                <tr>
+                  <td class="p-4">
+                    <strong>Integrante Requisitante</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >Levanta a necessidade da área de negócio.</span
+                    >
+                  </td>
+                  <td class="p-4 border-l border-slate-200 dark:border-slate-700">
+                    <strong>Fiscal Requisitante</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >Testa e atesta se a solução resolve a necessidade do negócio.</span
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4 bg-slate-50 dark:bg-slate-800/30">
+                    <strong>Integrante Técnico</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >Desenha o TR, o SLA e avalia soluções de mercado.</span
+                    >
+                  </td>
+                  <td class="p-4 border-l border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/30">
+                    <strong>Fiscal Técnico</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >Verifica métricas, código e infra. Emite o aceite provisório.</span
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4">
+                    <strong>Integrante Administrativo</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >Verifica se há orçamento e monta o processo formal.</span
+                    >
+                  </td>
+                  <td class="p-4 border-l border-slate-200 dark:border-slate-700">
+                    <strong>Fiscal Administrativo</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >Fiscaliza direitos trabalhistas (INSS, férias) dos terceirizados.</span
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4 bg-orange-50 dark:bg-orange-900/10 text-center font-bold text-orange-700 dark:text-orange-400 py-6">
+                    (Não existe Gestor no Planejamento)
+                  </td>
+                  <td class="p-4 border-l border-slate-200 dark:border-slate-700 bg-orange-50 dark:bg-orange-900/10">
+                    <strong>Gestor do Contrato</strong><br /><span class="text-slate-500 dark:text-slate-400"
+                      >O Chefão da fase 3. Coordena os fiscais e emite o aceite definitivo.</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Pode ser o mesmo cara?</strong> A banca diz: "O Integrante Técnico que planejou a contratação NUNCA pode ser nomeado como
+                Fiscal Técnico do Contrato." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Na verdade, a IN 94 <strong>recomenda</strong> que pelo menos um dos membros da Equipe de Planejamento integre a Equipe de
+                Fiscalização para garantir o histórico e o conhecimento técnico do projeto!
+              </li>
+              <li>
+                <strong>Homem-Hora em Desenvolvimento de Software:</strong> "A IN 94/2022 permite a contratação de desenvolvimento de software baseada
+                em métrica de Homem-Hora caso o ETP justifique." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso absoluto!</span
+                >
+                A contratação de desenvolvimento/manutenção de software
+                <strong class="underline decoration-red-500">DEVE OBRIGATORIAMENTE</strong> ser mensurada por resultados (ex: Pontos de Função). É
+                expressamente vedado o uso de métrica homem-hora para este fim.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Contexto: Por que a IN 94/2022 foi criada?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, as compras de TI no governo federal eram reguladas por uma série de normativos, sendo a mais famosa a
+              <span class="hl-red">revogada IN 01/2019</span>. Com a sanção da Nova Lei de Licitações (Lei nº 14.133/2021), o Ministério da Economia
+              precisou atualizar todas as diretrizes de contratação de soluções de Tecnologia da Informação e Comunicação (TIC) para se alinharem aos
+              novos dispositivos legais. Nasceu assim a <strong>Instrução Normativa SGD/ME nº 94/2022</strong>.
+            </p>
+            <p>
+              Ela é o marco regulatório que dita <em>como</em> o governo deve pensar, escrever no papel, ir ao mercado e cobrar a execução de qualquer
+              compra envolvendo TI (seja um mouse, um <em>datacenter</em> ou o desenvolvimento de um app móvel).
+            </p>
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 rounded border-l-4 border-orange-500 mt-4 text-sm">
+              <strong>Alinhamento Estratégico:</strong>
+              A IN 94 reforça que nenhuma contratação de TIC pode "nascer do nada". Toda compra deve estar justificada e alinhada ao
+              <span class="hl-yellow">PDTIC</span> (Plano Diretor de TIC) e constar obrigatoriamente no <span class="hl-yellow">PCA</span> (Plano de
+              Contratações Anual) do órgão.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. As Fases e Artefatos do Planejamento
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A NLLC inovou ao focar muito mais esforço no Planejamento do que na Execução. A IN 94 reflete isso definindo artefatos claros que devem
+              ser gerados em ordem cronológica:
+            </p>
+
+            <ul class="list-none space-y-5 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg block mb-1">1. DFD (Documento de Formalização de Demanda)</strong>
+                A fagulha inicial. O setor requisitante (ex: RH) envia para a TI um ofício dizendo:
+                <em>"Precisamos de um sistema para automatizar a folha de pagamento".</em> Se a TI aprovar e estiver no PDTIC, a demanda avança.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-orange-700 dark:text-orange-400 text-lg block mb-1"
+                  >2. Nomeação da EPC (Equipe de Planejamento da Contratação)</strong
+                >
+                A autoridade do órgão nomeia três servidores para estudarem essa demanda. São os
+                <span class="hl-yellow">Integrantes Requisitante, Técnico e Administrativo</span>. O Requisitante entende do negócio, o Técnico
+                entende de TI, e o Administrativo entende de licitações.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-700 dark:text-emerald-400 text-lg block mb-1">3. ETP (Estudo Técnico Preliminar)</strong>
+                A equipe avalia: Compramos um software pronto? Contratamos uma fábrica de software para fazer do zero? Usamos nuvem ou servidor local?
+                O ETP levanta custos estimativos e prova qual é a <strong>solução mais vantajosa</strong> para a Administração.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-violet-700 dark:text-violet-400 text-lg block mb-1">4. TR (Termo de Referência) / Projeto Básico</strong>
+                Com a solução escolhida no ETP, a equipe escreve o TR detalhando tecnicamente tudo o que o fornecedor deverá entregar, os níveis de
+                serviço (SLA), métricas de remuneração e sanções em caso de falha.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-rose-700 dark:text-rose-400 text-lg block mb-1">5. Matriz de Riscos (ou Plano de Gestão de Riscos)</strong>
+                Documento que mapeia as chances de algo dar errado (ex: atraso na entrega, vazamento de dados pessoais) e como o órgão vai mitigar
+                esses riscos.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Vedações Expressas (O que o Órgão NÃO pode fazer)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A IN 94 proíbe práticas antigas que causavam desperdício de dinheiro público ou problemas trabalhistas. Memorize estas proibições para a
+              prova:
+            </p>
+
+            <div class="bg-red-50 dark:bg-red-900/10 p-5 rounded border border-red-200 dark:border-red-800 mt-4">
+              <strong class="text-red-800 dark:text-red-400 text-lg block mb-2">🚫 Métrica de Esforço (Homem-Hora) para Desenvolvimento</strong>
+              <p class="text-sm mb-2">
+                A remuneração por "homem-hora" mede o tempo gasto, e não a entrega. Ela <span class="hl-red">incentiva a ineficiência</span> (quanto
+                mais o fornecedor demorar, mais ele ganha). Por isso, para desenvolvimento de software, a remuneração
+                <strong>deve ser por resultados</strong> (como Análise de Pontos de Função - APF).
+              </p>
+            </div>
+
+            <div class="bg-red-50 dark:bg-red-900/10 p-5 rounded border border-red-200 dark:border-red-800 mt-4">
+              <strong class="text-red-800 dark:text-red-400 text-lg block mb-2">🚫 Vínculo de Subordinação Direta</strong>
+              <p class="text-sm mb-2">
+                O servidor público do órgão <strong>não pode</strong> atuar como chefe dos empregados da contratada. Ele não pode gerir horários de
+                almoço, férias ou distribuir tarefas diárias nominais. Toda comunicação deve ser feita da Fiscalização do Contrato para o
+                <span class="hl-yellow">Preposto</span> da empresa contratada.
+              </p>
+            </div>
+
+            <div class="bg-red-50 dark:bg-red-900/10 p-5 rounded border border-red-200 dark:border-red-800 mt-4">
+              <strong class="text-red-800 dark:text-red-400 text-lg block mb-2">🚫 Indicação de Marcas sem Justificativa</strong>
+              <p class="text-sm mb-2">
+                Como regra da Nova Lei de Licitações refletida na IN, é vedada a indicação de características exclusivas que direcionem a licitação
+                para um único fornecedor, exceto em casos onde haja laudo técnico e justificativa (ex: necessidade estrita de padronização tecnológica
+                do órgão).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Inovações: CATI e LGPD
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Catálogo de Soluções de TIC (CATI)</h3>
+            <p>
+              A IN 94 fortalaceu o uso de catálogos do governo. Se um órgão federal deseja comprar uma ferramenta padrão (como licenças de Office 365,
+              Antivírus, Nuvem Pública), ele deve consultar o <span class="hl-green">CATI</span>, gerido pela Secretaria de Governo Digital. O
+              objetivo é unificar compras e obter economia de escala.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A Sombra da LGPD</h3>
+            <p>
+              A IN 94 traz expressamente a obrigação de observância à <strong>Lei Geral de Proteção de Dados (13.709/2018)</strong>. Se a solução de
+              TIC a ser contratada envolver tratamento de dados pessoais, o Estudo Técnico Preliminar e o Termo de Referência
+              <strong>têm a obrigação legal</strong> de descrever requisitos de segurança, anonimização, e as obrigações da empresa contratada no que
+              tange ao sigilo e tratamento dos dados.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-orange-600", "border-orange-600", "dark:text-orange-400", "dark:border-orange-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-orange-600", "border-orange-600", "dark:text-orange-400", "dark:border-orange-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: IN SEGES/ME nº 65/2021</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Orange */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f97316;
+        border-radius: 4px;
+      } /* Orange-500 */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #c2410c;
+      } /* Orange-700 */
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-orange {
+        @apply bg-orange-200 text-orange-900 dark:bg-orange-900/60 dark:text-orange-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-orange-600 dark:text-orange-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-orange-600 dark:text-orange-400 tracking-wider uppercase mb-2">
+          Fiscalização de Contratos de TI
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-orange-500 pb-2 inline-block">
+          IN SEGES/ME nº 65/2021
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm md:text-base">
+          A Norma da <strong>Pesquisa de Preços</strong> (O terror do superfaturamento).
+        </p>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-orange-600 border-b-2 border-orange-600 dark:text-orange-400 dark:border-orange-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Direto ao Ponto -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-orange-500 text-2xl">🎯</span> Para que serve a IN 65/21?
+          </h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 list-none ml-2">
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Objetivo Principal:</strong> Estabelecer o procedimento administrativo para a realização de
+              <strong>pesquisa de preços</strong> para aquisição de bens e serviços.
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Por que é crucial?</strong> Sem ela, o órgão público não sabe qual o "Valor Estimado" da licitação. Se errar o cálculo aqui,
+              gera superfaturamento ou fracasso da licitação (ninguém aparece).
+            </li>
+            <li
+              class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:bg-orange-500 before:rounded-full"
+            >
+              <strong>Sincronia:</strong> Ela nasce junto com o ETP (Estudo Técnico Preliminar) e se consolida no TR (Termo de Referência).
+            </li>
+          </ul>
+        </section>
+
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔍 Os 4 Parâmetros de Pesquisa (A Hierarquia)</h2>
+            <span class="bg-yellow-400 text-orange-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO</span>
+          </div>
+          <div class="p-6">
+            <p class="text-sm text-slate-400 mb-6 text-center">
+              Para descobrir o preço de um switch ou servidor, o governo <strong>NÃO</strong> pode simplesmente ligar para três lojas. Ele deve buscar
+              nos parâmetros oficiais:
+            </p>
+
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 bg-slate-800/80 p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+                <div class="bg-emerald-900/50 text-emerald-400 font-bold w-8 h-8 rounded-full flex items-center justify-center shrink-0">1</div>
+                <div>
+                  <h3 class="font-bold text-emerald-400">PNCP e Painel de Preços</h3>
+                  <p class="text-sm text-slate-400">Portal Nacional de Contratações Públicas. É a base de dados do governo. Tem peso máximo.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 bg-slate-800/80 p-4 rounded-lg border-l-4 border-sky-500 shadow-sm">
+                <div class="bg-sky-900/50 text-sky-400 font-bold w-8 h-8 rounded-full flex items-center justify-center shrink-0">2</div>
+                <div>
+                  <h3 class="font-bold text-sky-400">Contratações Similares de outros Entes</h3>
+                  <p class="text-sm text-slate-400">
+                    Olhar licitações recentes de outros órgãos públicos (em execução ou concluídas no período de até 1 ano).
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 bg-slate-800/80 p-4 rounded-lg border-l-4 border-amber-500 shadow-sm">
+                <div class="bg-amber-900/50 text-amber-400 font-bold w-8 h-8 rounded-full flex items-center justify-center shrink-0">3</div>
+                <div>
+                  <h3 class="font-bold text-amber-400">Mídia e Sítios Eletrônicos Especializados</h3>
+                  <p class="text-sm text-slate-400">
+                    Tabelas de referência, revistas de TI especializadas ou sites de domínio amplo (comprovando a data e hora do acesso).
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 bg-slate-800/80 p-4 rounded-lg border-l-4 border-rose-500 shadow-sm">
+                <div class="bg-rose-900/50 text-rose-400 font-bold w-8 h-8 rounded-full flex items-center justify-center shrink-0">4</div>
+                <div>
+                  <h3 class="font-bold text-rose-400">Pesquisa Direta com Fornecedores</h3>
+                  <p class="text-sm text-slate-400">Pedir orçamentos formais para as empresas. É o parâmetro mais frágil e sujeito a manipulações.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-orange-800 dark:bg-orange-900 p-4 border-b border-orange-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🧮 Como Calcular o Preço Final?</h2>
+          </div>
+          <div class="p-6">
+            <p class="text-slate-700 dark:text-slate-300 text-sm mb-4">
+              Após juntar todos os preços coletados (a "cesta de preços"), o servidor não escolhe o preço que ele quer. Ele deve aplicar
+              <strong>um destes métodos matemáticos</strong>, justificando a escolha no processo:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div class="border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
+                <span class="text-3xl block mb-2">📊</span>
+                <strong class="text-slate-800 dark:text-white block">Média</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400">Soma tudo e divide pela quantidade. (O mais comum).</span>
+              </div>
+              <div class="border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
+                <span class="text-3xl block mb-2">🎯</span>
+                <strong class="text-slate-800 dark:text-white block">Mediana</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                  >O valor do meio da amostra. Ótimo quando há muita discrepância de preços.</span
+                >
+              </div>
+              <div class="border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
+                <span class="text-3xl block mb-2">⬇️</span>
+                <strong class="text-slate-800 dark:text-white block">Menor Valor</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400">O governo adota o menor preço encontrado na pesquisa como teto.</span>
+              </div>
+            </div>
+
+            <div class="mt-4 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-3 text-sm text-yellow-800 dark:text-yellow-200">
+              <strong>Atenção ao Descarte:</strong> Preços excessivamente altos ou inexequíveis (baixos demais) <strong>DEVEM</strong> ser descartados
+              do cálculo por distorcerem o resultado.
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Pesquisa só com 1 fornecedor?</strong> A banca diz: "A pesquisa de preços com fornecedores exige obrigatoriamente um mínimo de
+                3 (três) orçamentos, sob pena de nulidade, não admitindo exceção." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A regra é reunir 3 ou mais. PORÉM, a norma admite exceção: se o órgão justificar que o mercado é restrito e não existem 3 fornecedores
+                disponíveis, a pesquisa com menos de 3 é válida.
+              </li>
+              <li>
+                <strong>A Exclusividade da Média:</strong> "O cálculo do valor estimado deve ser feito exclusivamente pela média aritmética dos
+                valores pesquisados." <br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A norma permite Média, Mediana ou Menor Valor.
+              </li>
+              <li>
+                <strong>Prazo do Orçamento:</strong> Qual a validade de um orçamento pedido a um fornecedor? A banca adora dizer que "só vale se tiver
+                menos de 1 ano". Na verdade, para entrar na pesquisa de preços, os orçamentos de fornecedores devem estar dentro do prazo de validade
+                ou, se não houver prazo, devem ter sido emitidos <strong>nos últimos 6 (seis) meses</strong> anteriores à data de divulgação do
+                edital.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentação e Importância da Pesquisa de Mercado
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O grande calcanhar de Aquiles das contratações públicas, sobretudo as de Tecnologia da Informação (TI), é a definição do
+              <strong>Valor Estimado</strong>. Como saber o preço justo de uma Fábrica de Software ou de um Link de Internet Dedicado?
+            </p>
+            <p>
+              A <strong>IN SEGES/ME nº 65/2021</strong> foi editada para regulamentar o artigo 23 da Nova Lei de Licitações (Lei 14.133/21). Ela
+              unificou e endureceu as regras para que a Administração Pública Federal pare de aceitar orçamentos inflacionados de "empresas amigas".
+            </p>
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 rounded border-l-4 border-orange-500 mt-4 text-sm">
+              <strong class="text-orange-800 dark:text-orange-300">Conceito Chave: Cesta de Preços aceitável.</strong><br />
+              A pesquisa de preços materializa-se em um documento formal dentro do processo licitatório. O servidor responsável deve criar uma "cesta
+              de preços" coletando dados de múltiplas fontes, e sobre essa cesta, aplicar um tratamento estatístico para eliminar distorções.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Os Parâmetros de Pesquisa (Art. 5º)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A IN 65/2021 determina que a pesquisa de preços seja realizada mediante a utilização dos seguintes parâmetros,
+              <strong>de forma combinada ou não</strong>:
+            </p>
+
+            <ul class="list-none space-y-4 mt-4">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-emerald-700 dark:text-emerald-400 text-lg block mb-1">I - Portal Nacional de Contratações Públicas (PNCP)</strong>
+                Composição de preços observada no PNCP, abrangendo o Painel de Preços (ferramenta que agrupa notas fiscais e contratos já firmados
+                pelo governo) e banco de preços em saúde, referente a compras e contratações realizadas pela administração pública no período de
+                <span class="hl-green">até 1 (um) ano</span> anterior à pesquisa. É o parâmetro de ouro.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg block mb-1">II - Contratações Similares Feitas pela Administração</strong>
+                Pesquisa em contratações similares feitas por outros órgãos públicos, em execução ou concluídas no período de
+                <span class="hl-green">até 1 (um) ano</span> anterior à data da pesquisa.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-amber-700 dark:text-amber-400 text-lg block mb-1">III - Dados de Mídia Especializada e Sítios Eletrônicos</strong>
+                Dados de pesquisa publicada em mídia especializada, tabelas de referência formalmente aprovadas, ou sítios eletrônicos especializados
+                ou de domínio amplo (ex: KaBuM!, Dell, Pichau para compra de hardware), desde que contenham a data e a hora do acesso.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700 border-l-4 border-rose-500">
+                <strong class="text-rose-700 dark:text-rose-400 text-lg block mb-1">IV - Pesquisa direta com Fornecedores</strong>
+                A fonte mais frágil e a mais burocrática. Exige-se que o órgão envie formalmente um pedido de orçamento (E-mail com o Termo de
+                Referência anexo).
+                <div class="mt-2 text-sm">
+                  <strong>Requisitos estritos para esse parâmetro:</strong>
+                  <ul class="list-disc pl-5 mt-1 space-y-1">
+                    <li>Solicitar a um <span class="hl-red">mínimo de 3 (três)</span> fornecedores diferentes.</li>
+                    <li>Dar prazo adequado para resposta.</li>
+                    <li>
+                      Os orçamentos apresentados não podem ter data de emissão superior a <span class="hl-yellow">6 (seis) meses</span> da data de
+                      divulgação do edital.
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Tratamento dos Dados e Metodologia Matemática
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Obtida a "cesta" com vários preços (ex: R$ 100, R$ 110, R$ 105, R$ 900), a Administração não pode utilizá-los cegamente. O artigo 6º da
+              IN determina os métodos de consolidação:
+            </p>
+
+            <ol class="list-decimal pl-6 space-y-3 font-medium">
+              <li>Média aritmética;</li>
+              <li>Mediana (valor central de uma amostra ordenada);</li>
+              <li>Menor dos valores pesquisados.</li>
+            </ol>
+
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 p-5 rounded border border-indigo-200 dark:border-indigo-800 mt-6">
+              <strong class="text-indigo-800 dark:text-indigo-300 block mb-2">Saneamento da Amostra (O Descarte)</strong>
+              <p class="text-sm">
+                Antes de calcular a média ou mediana, a Administração tem o <strong>dever</strong> de desconsiderar os preços inexequíveis (aqueles
+                baratos demais que a empresa não conseguiria cumprir) e os preços excessivamente elevados (o famoso R$ 900 no exemplo acima).
+              </p>
+              <p class="text-sm mt-2">
+                A IN 65 exige que o processo seja instruído com a memória de cálculo e com a justificativa técnica para o descarte desses "outliers"
+                estatísticos, garantindo uma estimativa real e confiável.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            4. Inexigibilidade, Dispensa e Exceções
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Nas contratações diretas por <strong>Inexigibilidade</strong> (quando só existe 1 fornecedor exclusivo no mundo que vende o software,
+              por exemplo), a pesquisa de preços não pode seguir o padrão, pois não há concorrência para formar uma "cesta".
+            </p>
+            <p>
+              Neste caso, a IN 65 determina que a comprovação do preço seja feita <strong>pelo próprio fornecedor</strong>, que deve apresentar notas
+              fiscais emitidas para outros clientes (públicos ou privados) referentes ao mesmo produto ou serviço, comprovando que o preço cobrado do
+              governo é o preço de mercado praticado por ele.
+            </p>
+            <p>
+              Excepcionalmente, se o órgão fizer a pesquisa e só conseguir <strong>1 ou 2 preços</strong> no total (não conseguindo chegar a 3), a
+              pesquisa poderá ser aceita, desde que o gestor apresente <strong>justificativa fundamentada</strong> demonstrando a limitação do mercado
+              ou a ausência de resposta das empresas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-orange-600", "border-orange-600", "dark:text-orange-400", "dark:border-orange-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-orange-600", "border-orange-600", "dark:text-orange-400", "dark:border-orange-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

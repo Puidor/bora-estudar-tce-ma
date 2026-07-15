@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TCE-MA | Conhecimentos Gerais</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config - Trocando Primary para Emerald para diferenciar do Index -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#ecfdf5",
+                100: "#d1fae5",
+                500: "#10b981",
+                600: "#059669",
+                900: "#064e3b",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+
+      /* Custom scrollbar Emerald */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #a7f3d0;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #065f46;
+      }
+
+      /* Checkbox styles */
+      input[type="checkbox"] {
+        accent-color: #059669;
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .progress-bar-fill {
+        transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .accordion-content {
+        display: none;
+      }
+      .accordion-content.open {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .rotate-180 {
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-12">
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+      <div class="max-w-4xl mx-auto px-4 py-4">
+        <!-- Navegação entre os Editais -->
+        <div
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 pb-4 border-b border-slate-100 dark:border-slate-700/50"
+        >
+          <a
+            href="index.html"
+            class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-slate-100 dark:bg-slate-800 py-1.5 px-3 rounded-lg border border-slate-200 dark:border-slate-700"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Ir para Conhecimentos Específicos
+          </a>
+          <span
+            class="text-xs font-bold uppercase tracking-widest text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 px-2 py-1 rounded"
+            >Módulo Básico</span
+          >
+        </div>
+
+        <div class="flex justify-between items-center mb-3">
+          <h1 class="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            <svg class="w-6 h-6 text-primary-600 dark:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+            Edital Tracker: Gerais
+          </h1>
+          <div class="flex items-center gap-3">
+            <button
+              id="reset-btn"
+              class="flex items-center gap-1.5 px-3 py-1.5 text-xs md:text-sm font-medium text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+              <span class="hidden sm:inline">Zerar Progresso</span>
+            </button>
+
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+            >
+              <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between items-end mb-1">
+            <span class="text-sm font-semibold text-slate-600 dark:text-slate-300">Progresso Geral</span>
+            <span id="overall-percentage" class="text-lg font-bold text-primary-600 dark:text-primary-400">0%</span>
+          </div>
+          <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+            <div id="overall-progress-bar" class="bg-primary-600 dark:bg-primary-500 h-3 rounded-full progress-bar-fill" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-8">
+      <div class="mb-6 flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Cronograma TCE-MA</h2>
+        <button id="expand-all" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">Expandir tudo</button>
+      </div>
+      <div id="edital-container" class="space-y-4"></div>
+    </main>
+
+    <!-- Modal Customizado -->
+    <div
+      id="confirm-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+    >
+      <div
+        class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-slate-200 dark:border-slate-700 transform scale-95 transition-transform duration-300"
+        id="confirm-modal-box"
+      >
+        <div class="flex items-center gap-3 mb-4 text-red-600 dark:text-red-500">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            ></path>
+          </svg>
+          <h3 class="text-xl font-bold">Atenção!</h3>
+        </div>
+        <p class="text-slate-600 dark:text-slate-300 mb-6 text-sm md:text-base leading-relaxed">
+          Tem certeza que deseja zerar todo o seu progresso nos Conhecimentos Gerais? <strong>Esta ação não pode ser desfeita.</strong>
+        </p>
+        <div class="flex justify-end gap-3">
+          <button
+            id="modal-cancel"
+            class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            id="modal-confirm"
+            class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
+          >
+            Sim, zerar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const editalData = [
+        {
+          id: "cg1",
+          title: "LÍNGUA PORTUGUESA",
+          topics: [
+            { id: "cg1-t1", title: "Compreensão e interpretação de textos de gêneros variados." },
+            { id: "cg1-t2", title: "Reconhecimento de tipos e gêneros textuais." },
+            { id: "cg1-t3", title: "Domínio da ortografia oficial." },
+            {
+              id: "cg1-t4",
+              title: "Domínio dos mecanismos de coesão textual.",
+              subtopics: [
+                {
+                  id: "cg1-t4-s1",
+                  title:
+                    "Emprego de elementos de referenciação, substituição e repetição, de conectores e de outros elementos de sequenciação textual.",
+                },
+                { id: "cg1-t4-s2", title: "Emprego de tempos e modos verbais." },
+              ],
+            },
+            {
+              id: "cg1-t5",
+              title: "Domínio da estrutura morfossintática do período.",
+              subtopics: [
+                { id: "cg1-t5-s1", title: "Emprego das classes de palavras." },
+                { id: "cg1-t5-s2", title: "Relações de coordenação entre orações e entre termos da oração." },
+                { id: "cg1-t5-s3", title: "Relações de subordinação entre orações e entre termos da oração." },
+                { id: "cg1-t5-s4", title: "Emprego dos sinais de pontuação." },
+                { id: "cg1-t5-s5", title: "Concordância verbal e nominal." },
+                { id: "cg1-t5-s6", title: "Regência verbal e nominal." },
+                { id: "cg1-t5-s7", title: "Emprego do sinal indicativo de crase." },
+                { id: "cg1-t5-s8", title: "Colocação dos pronomes átonos." },
+              ],
+            },
+            {
+              id: "cg1-t6",
+              title: "Reescrita de frases e parágrafos do texto.",
+              subtopics: [
+                { id: "cg1-t6-s1", title: "Significação das palavras." },
+                { id: "cg1-t6-s2", title: "Substituição de palavras ou de trechos de texto." },
+                { id: "cg1-t6-s3", title: "Reorganização da estrutura de orações e de períodos do texto." },
+                { id: "cg1-t6-s4", title: "Reescrita de textos de diferentes gêneros e níveis de formalidade." },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cg2",
+          title: "COMPETÊNCIAS DIGITAIS E INFORMÁTICA APLICADA",
+          topics: [
+            {
+              id: "cg2-t1",
+              title: "Competências digitais no setor público.",
+              subtopics: [
+                {
+                  id: "cg2-t1-s1",
+                  title:
+                    "Conceitos fundamentais: cultura digital, cidadania digital, letramento digital e midiático (BNCC e Política Nacional de Educação Digital – Lei nº 14.533/2023).",
+                },
+                {
+                  id: "cg2-t1-s2",
+                  title:
+                    "Pensamento computacional aplicado ao serviço público: análise crítica de informações, ética no uso de dados e combate à desinformação.",
+                },
+              ],
+            },
+            {
+              id: "cg2-t2",
+              title: "Informática básica e aplicada.",
+              subtopics: [
+                {
+                  id: "cg2-t2-s1",
+                  title: "Sistemas operacionais: Microsoft Windows (conceitos, interface, gerenciamento de arquivos, pastas e programas).",
+                },
+                { id: "cg2-t2-s2", title: "Editores de texto, planilhas e apresentações: Microsoft Office." },
+                { id: "cg2-t2-s3", title: "Redes de computadores: conceitos básicos, protocolos e noções de interoperabilidade." },
+                {
+                  id: "cg2-t2-s4",
+                  title: "Ferramentas de comunicação e colaboração: correio eletrônico, aplicativos de comunicação e noções de trabalho remoto.",
+                },
+              ],
+            },
+            {
+              id: "cg2-t3",
+              title: "Segurança e governança digital.",
+              subtopics: [
+                { id: "cg2-t3-s1", title: "Segurança da informação: backup, vírus, pragas virtuais, antivírus, firewall e ameaças digitais." },
+                { id: "cg2-t3-s2", title: "Lei Geral de Proteção de Dados Pessoais (LGPD – Lei nº 13.709/2018)." },
+                { id: "cg2-t3-s3", title: "Armazenamento em nuvem (cloud storage): conceitos e aplicações." },
+                { id: "cg2-t3-s4", title: "Noções de assinatura digital em processos administrativos." },
+                { id: "cg2-t3-s5", title: "Marco Civil da Internet (Lei nº 12.965/2014)." },
+              ],
+            },
+            {
+              id: "cg2-t4",
+              title: "Informática aplicada ao setor público.",
+              subtopics: [
+                { id: "cg2-t4-s1", title: "Governo digital e serviços ao cidadão: plataforma Gov.br." },
+                { id: "cg2-t4-s2", title: "Portal Nacional de Dados Abertos." },
+                { id: "cg2-t4-s3", title: "Noções de transparência e acesso à informação pública (Lei de Acesso à Informação)." },
+                { id: "cg2-t4-s4", title: "Sistemas e ferramentas do setor público: PEN e SEI, Assinatura Eletrônica." },
+                {
+                  id: "cg2-t4-s5",
+                  title: "Tecnologias emergentes no setor público: inteligência artificial (IA generativa, chatbots), big data e IoT.",
+                },
+                { id: "cg2-t4-s6", title: "Ética e responsabilidade digital no serviço público." },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cg3",
+          title: "RACIOCÍNIO LÓGICO",
+          topics: [
+            { id: "cg3-t1", title: "Estruturas lógicas." },
+            {
+              id: "cg3-t2",
+              title: "Lógica de argumentação.",
+              subtopics: [{ id: "cg3-t2-s1", title: "Analogias, inferências, deduções e conclusões." }],
+            },
+            {
+              id: "cg3-t3",
+              title: "Lógica sentencial (ou proposicional).",
+              subtopics: [
+                { id: "cg3-t3-s1", title: "Proposições simples e compostas." },
+                { id: "cg3-t3-s2", title: "Tabelas-verdade." },
+                { id: "cg3-t3-s3", title: "Equivalências." },
+                { id: "cg3-t3-s4", title: "Leis de De Morgan." },
+                { id: "cg3-t3-s5", title: "Diagramas lógicos." },
+              ],
+            },
+            { id: "cg3-t4", title: "Lógica de primeira ordem." },
+            { id: "cg3-t5", title: "Princípios de contagem e probabilidade." },
+            { id: "cg3-t6", title: "Operações com conjuntos." },
+            { id: "cg3-t7", title: "Raciocínio lógico envolvendo problemas aritméticos, geométricos e matriciais." },
+          ],
+        },
+        {
+          id: "cg4",
+          title: "DIREITO ADMINISTRATIVO",
+          topics: [
+            {
+              id: "cg4-t1",
+              title: "Noções de organização administrativa.",
+              subtopics: [
+                { id: "cg4-t1-s1", title: "Centralização, descentralização, concentração e desconcentração." },
+                { id: "cg4-t1-s2", title: "Administração direta e indireta." },
+                { id: "cg4-t1-s3", title: "Autarquias, fundações, empresas públicas e sociedades de economia mista." },
+              ],
+            },
+            {
+              id: "cg4-t2",
+              title: "Ato administrativo.",
+              subtopics: [{ id: "cg4-t2-s1", title: "Conceito, requisitos, atributos, classificação e espécies." }],
+            },
+            {
+              id: "cg4-t3",
+              title: "Agentes públicos.",
+              subtopics: [
+                { id: "cg4-t3-s1", title: "Disposições constitucionais aplicáveis." },
+                { id: "cg4-t3-s2", title: "Disposições doutrinárias: Conceito, Espécies, Cargo, emprego e função pública." },
+              ],
+            },
+            {
+              id: "cg4-t4",
+              title: "Poderes administrativos.",
+              subtopics: [
+                { id: "cg4-t4-s1", title: "Hierárquico, disciplinar, regulamentar e de polícia." },
+                { id: "cg4-t4-s2", title: "Uso e abuso do poder." },
+              ],
+            },
+            {
+              id: "cg4-t5",
+              title: "Licitação.",
+              subtopics: [
+                { id: "cg4-t5-s1", title: "Princípios, contratação direta, modalidades, tipos e procedimentos." },
+                { id: "cg4-t5-s2", title: "Lei nº 14.133/2021 e Decreto nº 11.462/2023." },
+              ],
+            },
+            {
+              id: "cg4-t6",
+              title: "Controle da administração pública.",
+              subtopics: [
+                { id: "cg4-t6-s1", title: "Controle exercido pela administração pública." },
+                { id: "cg4-t6-s2", title: "Controle judicial e legislativo." },
+              ],
+            },
+            {
+              id: "cg4-t7",
+              title: "Responsabilidade civil do Estado.",
+              subtopics: [
+                { id: "cg4-t7-s1", title: "Responsabilidade por ato comissivo e por omissão." },
+                { id: "cg4-t7-s2", title: "Requisitos, causas excludentes e atenuantes da responsabilidade." },
+              ],
+            },
+            {
+              id: "cg4-t8",
+              title: "Contratos administrativos.",
+              subtopics: [
+                { id: "cg4-t8-s1", title: "Lei nº 14.133/2021 e Lei nº 11.107/2005 (consórcios)." },
+                { id: "cg4-t8-s2", title: "Conceito, características, vigência e alterações." },
+                { id: "cg4-t8-s3", title: "Execução, inexecução e rescisão. Convênios." },
+              ],
+            },
+            { id: "cg4-t9", title: "Desapropriação (Conceito, características, fundamentos, requisitos, indenização, indireta e por zona)." },
+            { id: "cg4-t10", title: "Súmulas e jurisprudência vinculante do STF e STJ." },
+            {
+              id: "cg4-t11",
+              title: "Acesso à informação e Dados.",
+              subtopics: [
+                { id: "cg4-t11-s1", title: "Lei nº 12.527/2011 (LAI)." },
+                { id: "cg4-t11-s2", title: "Lei nº 13.709/2018 (LGPD)." },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cg5",
+          title: "DIREITO CONSTITUCIONAL",
+          topics: [
+            { id: "cg5-t1", title: "Constituição de 1988: Princípios fundamentais." },
+            {
+              id: "cg5-t2",
+              title: "Aplicabilidade das normas constitucionais.",
+              subtopics: [
+                { id: "cg5-t2-s1", title: "Normas de eficácia plena, contida e limitada." },
+                { id: "cg5-t2-s2", title: "Normas programáticas." },
+              ],
+            },
+            { id: "cg5-t3", title: "Direitos e garantias fundamentais: Individuais, coletivos, sociais, nacionalidade e políticos." },
+            { id: "cg5-t4", title: "Organização político-administrativa do Estado." },
+            { id: "cg5-t5", title: "Administração pública: Disposições gerais e servidores." },
+            { id: "cg5-t6", title: "Poder Executivo: Atribuições e responsabilidades do presidente." },
+            {
+              id: "cg5-t7",
+              title: "Poder Legislativo.",
+              subtopics: [
+                { id: "cg5-t7-s1", title: "Estrutura, funcionamento e processo legislativo." },
+                { id: "cg5-t7-s2", title: "Fiscalização contábil, financeira e orçamentária." },
+                { id: "cg5-t7-s3", title: "Comissões parlamentares de inquérito." },
+              ],
+            },
+            {
+              id: "cg5-t8",
+              title: "Poder Judiciário.",
+              subtopics: [
+                { id: "cg5-t8-s1", title: "Órgãos, organização e competências." },
+                { id: "cg5-t8-s2", title: "Conselho Nacional de Justiça." },
+              ],
+            },
+            {
+              id: "cg5-t9",
+              title: "Funções essenciais à justiça.",
+              subtopics: [
+                { id: "cg5-t9-s1", title: "Ministério Público e Advocacia pública." },
+                { id: "cg5-t9-s2", title: "Defensoria Pública." },
+              ],
+            },
+            { id: "cg5-t10", title: "Constituição do Estado do Maranhão." },
+          ],
+        },
+        {
+          id: "cg6",
+          title: "CONTROLE EXTERNO & LEGISLAÇÃO",
+          topics: [
+            { id: "cg6-t1", title: "Conceito, tipos e formas de controle." },
+            { id: "cg6-t2", title: "Controle interno, externo, parlamentar e administrativo." },
+            { id: "cg6-t3", title: "Lei nº 8.429/1992 (Lei de Improbidade Administrativa)." },
+            {
+              id: "cg6-t4",
+              title: "Sistemas de controle jurisdicional.",
+              subtopics: [{ id: "cg6-t4-s1", title: "Contencioso administrativo e sistema da jurisdição una." }],
+            },
+            { id: "cg6-t5", title: "Controle da atividade financeira do Estado." },
+            { id: "cg6-t6", title: "TCU, tribunais de contas dos estados e do DF." },
+            { id: "cg6-t7", title: "TCE/MA na Constituição do Estado do Maranhão." },
+            {
+              id: "cg6-t8",
+              title: "Legislação Específica (TCE/MA)",
+              subtopics: [
+                { id: "cg6-t8-s1", title: "Regimento Interno do TCE/MA." },
+                { id: "cg6-t8-s2", title: "Lei nº 8.258/2005 (Lei Orgânica)." },
+                { id: "cg6-t8-s3", title: "Lei nº 9.936/2013 (Organização administrativa)." },
+                { id: "cg6-t8-s4", title: "IN nº 50/2017 e IN nº 82/2025." },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cg7",
+          title: "HISTÓRIA E GEOGRAFIA DO MARANHÃO",
+          topics: [
+            {
+              id: "cg7-t1",
+              title: "I - História do Maranhão",
+              subtopics: [
+                { id: "cg7-t1-s1", title: "França equinocial e Fundação de São Luís." },
+                { id: "cg7-t1-s2", title: "Batalha de Guaxenduba, Invasão e Expulsão dos holandeses." },
+                { id: "cg7-t1-s3", title: "A Revolta de Bequimão e Companhia de Comércio." },
+                { id: "cg7-t1-s4", title: "Período do Império e Independência do Brasil (Batalha do Jenipapo)." },
+                { id: "cg7-t1-s5", title: "A Balaiada." },
+                { id: "cg7-t1-s6", title: "Período Republicano, Revolução de 1930 e Vitorinismo." },
+                { id: "cg7-t1-s7", title: "Fatos políticos, econômicos e sociais da segunda metade do séc. XX." },
+              ],
+            },
+            {
+              id: "cg7-t2",
+              title: "II - Geografia do Maranhão",
+              subtopics: [
+                { id: "cg7-t2-s1", title: "Localização, superfície, limites e pontos extremos." },
+                { id: "cg7-t2-s2", title: "Áreas de Proteção Ambiental, Parques Nacionais e Climas." },
+                { id: "cg7-t2-s3", title: "Geomorfologia, Geologia e Classificação do relevo." },
+                { id: "cg7-t2-s4", title: "Bacias e rios (Parnaíba, Gurupi, Tocantins-Araguaia e rios maranhenses)." },
+                { id: "cg7-t2-s5", title: "Principais formações vegetais (floresta, cerrado e cocais)." },
+                { id: "cg7-t2-s6", title: "Geografia da População e urbanização." },
+                { id: "cg7-t2-s7", title: "Agricultura, pecuária e extrativismo." },
+                { id: "cg7-t2-s8", title: "Parque industrial e Setor terciário (comércio, transportes)." },
+                { id: "cg7-t2-s9", title: "Malha viária, Portos, aeroportos e Cultura maranhense." },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cg8",
+          title: "NOÇÕES DE DIREITOS HUMANOS",
+          topics: [
+            { id: "cg8-t1", title: "Teoria geral dos direitos fundamentais." },
+            { id: "cg8-t2", title: "Direitos humanos e direitos fundamentais." },
+            { id: "cg8-t3", title: "Declaração Universal dos Direitos Humanos." },
+            { id: "cg8-t4", title: "Agenda 2030 da ONU." },
+            { id: "cg8-t5", title: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/2015)." },
+            { id: "cg8-t6", title: "Normas para promoção da acessibilidade (Lei nº 10.098/2000)." },
+            { id: "cg8-t7", title: "Prioridade de atendimento (Lei nº 10.048/2000)." },
+            { id: "cg8-t8", title: "Estatuto da Igualdade Racial (Lei nº 12.288/2010)." },
+          ],
+        },
+      ];
+
+      // Utilizamos uma chave diferente (edital-tracker-cg-progress) para não sobrescrever o index
+      let checkboxState = JSON.parse(localStorage.getItem("edital-tracker-cg-progress")) || {};
+      let flatMap = {};
+
+      function autoGenerateURLs() {
+        editalData.forEach((disc, dIdx) => {
+          delete disc.url;
+          const pasta = dIdx + 1;
+
+          disc.topics.forEach((top, tIdx) => {
+            // URL aponta para pasta "cg" para separar dos conteúdos específicos
+            if (!top.url) top.url = `cg/${pasta}/${tIdx + 1}.html`;
+
+            if (top.subtopics) {
+              top.subtopics.forEach((sub, sIdx) => {
+                if (!sub.url) sub.url = `cg/${pasta}/${tIdx + 1}-${sIdx + 1}.html`;
+              });
+            }
+          });
+        });
+      }
+
+      function buildMap() {
+        editalData.forEach((disc) => {
+          flatMap[disc.id] = { id: disc.id, type: "disc", data: disc, parent: null, children: disc.topics.map((t) => t.id), leafCount: 0 };
+          let discLeafCount = 0;
+
+          disc.topics.forEach((top) => {
+            flatMap[top.id] = {
+              id: top.id,
+              type: "top",
+              data: top,
+              parent: disc.id,
+              children: top.subtopics ? top.subtopics.map((s) => s.id) : [],
+              leafCount: 0,
+            };
+
+            if (top.subtopics && top.subtopics.length > 0) {
+              top.subtopics.forEach((sub) => {
+                flatMap[sub.id] = { id: sub.id, type: "sub", data: sub, parent: top.id, children: [], leafCount: 1 };
+              });
+              flatMap[top.id].leafCount = top.subtopics.length;
+              discLeafCount += top.subtopics.length;
+            } else {
+              flatMap[top.id].leafCount = 1;
+              discLeafCount += 1;
+            }
+          });
+          flatMap[disc.id].leafCount = discLeafCount;
+        });
+      }
+
+      function toggleNode(id, isChecked) {
+        checkboxState[id] = isChecked;
+        propagateDown(id, isChecked);
+        propagateUp(flatMap[id].parent);
+        saveState();
+        updateDOM();
+      }
+
+      function propagateDown(id, isChecked) {
+        const node = flatMap[id];
+        if (!node.children || node.children.length === 0) return;
+
+        node.children.forEach((childId) => {
+          checkboxState[childId] = isChecked;
+          propagateDown(childId, isChecked);
+        });
+      }
+
+      function propagateUp(parentId) {
+        if (!parentId) return;
+        const parentNode = flatMap[parentId];
+
+        const allChildrenChecked = parentNode.children.every((childId) => checkboxState[childId]);
+        const someChildrenChecked = parentNode.children.some((childId) => checkboxState[childId]);
+
+        checkboxState[parentId] = allChildrenChecked;
+
+        const cb = document.getElementById(`cb-${parentId}`);
+        if (cb) {
+          cb.checked = allChildrenChecked;
+          cb.indeterminate = !allChildrenChecked && someChildrenChecked;
+        }
+
+        propagateUp(parentNode.parent);
+      }
+
+      function saveState() {
+        localStorage.setItem("edital-tracker-cg-progress", JSON.stringify(checkboxState));
+      }
+
+      function renderUI() {
+        const container = document.getElementById("edital-container");
+        container.innerHTML = "";
+
+        const linkIcon = (url) =>
+          url
+            ? `<svg class="w-3.5 h-3.5 inline-block ml-1.5 opacity-60 hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>`
+            : "";
+
+        editalData.forEach((disc, dIdx) => {
+          const discCard = document.createElement("div");
+          discCard.className = "bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden";
+
+          let html = `
+            <div class="p-4 md:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="toggleAccordion('${disc.id}')">
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <span class="font-bold text-slate-800 dark:text-white select-none text-base md:text-lg transition-colors flex items-center">${disc.title}</span>
+                </div>
+                
+                <div class="flex items-center gap-4 w-full md:w-64">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Progresso</span>
+                            <span id="pct-${disc.id}" class="text-xs font-bold text-primary-600 dark:text-primary-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                            <div id="bar-${disc.id}" class="bg-primary-500 h-2 rounded-full progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <button class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-transform duration-200" id="icon-${disc.id}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="content-${disc.id}" class="accordion-content border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                <div class="p-4 md:p-6 space-y-5">
+          `;
+
+          disc.topics.forEach((top, tIdx) => {
+            html += `
+                <div class="topic-group">
+                    <div class="flex items-start gap-3 mb-2">
+                        <input type="checkbox" id="cb-${top.id}" class="mt-1" onchange="toggleNode('${top.id}', this.checked)">
+                        <a href="${top.url || "#"}" id="link-${top.id}" target="_blank" class="font-semibold text-sm md:text-base text-slate-700 dark:text-slate-200 hover:text-primary-600 dark:hover:text-primary-400 hover:underline cursor-pointer select-none leading-tight transition-colors flex items-center">${tIdx + 1}. ${top.title} ${linkIcon(top.url)}</a>
+                    </div>
+            `;
+
+            if (top.subtopics && top.subtopics.length > 0) {
+              html += `<div class="ml-7 pl-4 border-l-2 border-slate-200 dark:border-slate-600 space-y-2.5 mt-2">`;
+              top.subtopics.forEach((sub, sIdx) => {
+                html += `
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" id="cb-${sub.id}" class="mt-0.5 w-4 h-4" onchange="toggleNode('${sub.id}', this.checked)">
+                        <a href="${sub.url}" id="link-${sub.id}" target="_blank" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 hover:underline cursor-pointer select-none leading-tight transition-colors flex items-center">${tIdx + 1}.${sIdx + 1}. ${sub.title} ${linkIcon(sub.url)}</a>
+                    </div>
+                `;
+              });
+              html += `</div>`;
+            }
+            html += `</div>`;
+          });
+
+          html += `</div></div>`;
+          discCard.innerHTML = html;
+          container.appendChild(discCard);
+        });
+      }
+
+      function updateDOM() {
+        let totalLeaves = 0;
+        let checkedLeaves = 0;
+
+        Object.keys(flatMap).forEach((id) => {
+          const node = flatMap[id];
+          const cb = document.getElementById(`cb-${id}`);
+
+          if (cb) {
+            cb.checked = !!checkboxState[id];
+            if (node.children && node.children.length > 0) {
+              const all = node.children.every((c) => checkboxState[c]);
+              const some = node.children.some((c) => isNodeOrDescendantChecked(c));
+              cb.indeterminate = !all && some;
+            }
+          }
+
+          if (node.type === "disc") {
+            let discTotal = node.leafCount;
+            let discChecked = countCheckedLeaves(node);
+            let pct = discTotal > 0 ? Math.round((discChecked / discTotal) * 100) : 0;
+
+            document.getElementById(`pct-${id}`).innerText = `${pct}%`;
+            document.getElementById(`bar-${id}`).style.width = `${pct}%`;
+
+            totalLeaves += discTotal;
+            checkedLeaves += discChecked;
+          }
+        });
+
+        let overallPct = totalLeaves > 0 ? Math.round((checkedLeaves / totalLeaves) * 100) : 0;
+        document.getElementById("overall-percentage").innerText = `${overallPct}%`;
+        document.getElementById("overall-progress-bar").style.width = `${overallPct}%`;
+      }
+
+      function isNodeOrDescendantChecked(id) {
+        if (checkboxState[id]) return true;
+        const node = flatMap[id];
+        if (!node.children) return false;
+        return node.children.some((c) => isNodeOrDescendantChecked(c));
+      }
+
+      function countCheckedLeaves(node) {
+        if (!node.children || node.children.length === 0) {
+          return checkboxState[node.id] ? 1 : 0;
+        }
+        return node.children.reduce((sum, childId) => sum + countCheckedLeaves(flatMap[childId]), 0);
+      }
+
+      function toggleAccordion(id) {
+        const content = document.getElementById(`content-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+
+        if (content.classList.contains("open")) {
+          content.classList.remove("open");
+          icon.classList.remove("rotate-180");
+        } else {
+          content.classList.add("open");
+          icon.classList.add("rotate-180");
+        }
+      }
+
+      let isExpanded = false;
+      document.getElementById("expand-all").addEventListener("click", (e) => {
+        isExpanded = !isExpanded;
+        e.target.innerText = isExpanded ? "Recolher tudo" : "Expandir tudo";
+
+        editalData.forEach((disc) => {
+          const content = document.getElementById(`content-${disc.id}`);
+          const icon = document.getElementById(`icon-${disc.id}`);
+          if (isExpanded) {
+            content.classList.add("open");
+            icon.classList.add("rotate-180");
+          } else {
+            content.classList.remove("open");
+            icon.classList.remove("rotate-180");
+          }
+        });
+      });
+
+      const confirmModal = document.getElementById("confirm-modal");
+      const confirmModalBox = document.getElementById("confirm-modal-box");
+
+      document.getElementById("reset-btn").addEventListener("click", () => {
+        confirmModal.classList.remove("hidden");
+        confirmModal.classList.add("flex");
+        setTimeout(() => {
+          confirmModal.classList.remove("opacity-0");
+          confirmModalBox.classList.remove("scale-95");
+        }, 10);
+      });
+
+      document.getElementById("modal-cancel").addEventListener("click", () => {
+        closeModal();
+      });
+
+      document.getElementById("modal-confirm").addEventListener("click", () => {
+        checkboxState = {};
+        saveState();
+        updateDOM();
+        closeModal();
+      });
+
+      function closeModal() {
+        confirmModal.classList.add("opacity-0");
+        confirmModalBox.classList.add("scale-95");
+        setTimeout(() => {
+          confirmModal.classList.remove("flex");
+          confirmModal.classList.add("hidden");
+        }, 300);
+      }
+
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      function initTheme() {
+        if (
+          localStorage.getItem("edital-tracker-theme") === "dark" ||
+          (!("edital-tracker-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+          lightIcon.classList.remove("hidden");
+        } else {
+          document.documentElement.classList.remove("dark");
+          darkIcon.classList.remove("hidden");
+        }
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("edital-tracker-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("edital-tracker-theme", "dark");
+        }
+      });
+
+      function init() {
+        autoGenerateURLs();
+        buildMap();
+        renderUI();
+
+        editalData.forEach((disc) => {
+          disc.topics.forEach((top) => {
+            if (top.subtopics) propagateUp(top.id);
+          });
+          propagateUp(disc.id);
+        });
+
+        updateDOM();
+        initTheme();
+      }
+
+      init();
+    </script>
+  </body>
+</html>
