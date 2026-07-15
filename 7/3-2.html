@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Arquiteturas Serverless e Event-driven</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 3.2
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Serverless e Event-driven
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Conceito Central -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">⚡</span> Serverless (Sem Servidor)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            Em arquiteturas Serverless, <strong>existem servidores físicos</strong>, mas o desenvolvedor não precisa provisionar, escalar, atualizar
+            (SO) ou gerenciar nenhum deles. Você apenas escreve o código e o provedor de nuvem (AWS, Azure) faz o resto.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-3 rounded border-l-4 border-sky-500">
+              <strong class="text-sky-700 dark:text-sky-400 block text-sm">Escala a Zero</strong>
+              <span class="text-xs text-slate-600 dark:text-slate-400"
+                >Se ninguém acessar seu sistema, a infraestrutura "desliga" automaticamente.</span
+              >
+            </div>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-3 rounded border-l-4 border-sky-500">
+              <strong class="text-sky-700 dark:text-sky-400 block text-sm">Pay-per-Use</strong>
+              <span class="text-xs text-slate-600 dark:text-slate-400"
+                >Você só paga pelos milissegundos exatos em que seu código esteve executando.</span
+              >
+            </div>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-3 rounded border-l-4 border-sky-500">
+              <strong class="text-sky-700 dark:text-sky-400 block text-sm">FaaS (Function)</strong>
+              <span class="text-xs text-slate-600 dark:text-slate-400"
+                >Modelo mais comum. Seu código vira uma "Função". Ex: AWS Lambda, Google Cloud Functions.</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- Arquitetura Orientada a Eventos -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📨 Arquitetura Event-driven (Orientada a Eventos)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">DESACOPLAMENTO!</span>
+          </div>
+          <div class="p-6">
+            <p class="text-sm text-slate-400 mb-6 text-center">
+              Sistemas reagem a "mudanças de estado" (Eventos) em vez de esperarem consultas síncronas.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 font-bold text-sm text-center">
+              <!-- Produtor -->
+              <div class="flex-1 bg-slate-800/80 p-4 rounded-lg border border-fuchsia-500/50 w-full relative">
+                <span class="absolute -top-3 left-4 bg-fuchsia-500 text-white text-xs font-bold px-2 py-0.5 rounded">Produtor</span>
+                <span class="text-fuchsia-400 block mb-1">Gera o Evento</span>
+                <span class="text-xs text-slate-400 font-normal">Ex: "Cliente finalizou uma compra no site."</span>
+              </div>
+
+              <div class="hidden md:block text-slate-500 text-2xl">➔</div>
+
+              <!-- Roteador -->
+              <div class="flex-1 bg-sky-900/40 p-4 rounded-lg border-2 border-sky-500 w-full relative">
+                <span class="absolute -top-3 left-4 bg-sky-500 text-white text-xs font-bold px-2 py-0.5 rounded">Roteador / Broker</span>
+                <span class="text-sky-400 block mb-1">Fila ou Tópico</span>
+                <span class="text-xs text-slate-400 font-normal">Ex: Amazon SNS, Kafka, RabbitMQ. Filtra e distribui.</span>
+              </div>
+
+              <div class="hidden md:block text-slate-500 text-2xl">➔</div>
+
+              <!-- Consumidor -->
+              <div class="flex-1 bg-slate-800/80 p-4 rounded-lg border border-emerald-500/50 w-full relative">
+                <span class="absolute -top-3 left-4 bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded">Consumidor</span>
+                <span class="text-emerald-400 block mb-1">Reage ao Evento</span>
+                <span class="text-xs text-slate-400 font-normal"
+                  >Ex: Microsserviço de Estoque diminui o item; Serviço de Email envia nota fiscal.</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- O Casamento Perfeito -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">💍</span> O Casamento: Serverless + Eventos
+          </h2>
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="w-full md:w-1/2">
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                Serverless e Event-driven nasceram um para o outro. Uma Função Serverless (ex: AWS Lambda) fica "dormindo" (custando R$ 0,00). Quando
+                um <strong>Evento</strong> acontece (ex: Um PDF é salvo no banco de dados), o roteador acorda a Função instantaneamente, ela processa
+                o PDF e volta a dormir.
+              </p>
+            </div>
+            <div class="w-full md:w-1/2 bg-slate-100 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 text-sm">
+              <strong class="block text-slate-800 dark:text-white mb-2">Vantagens combinadas:</strong>
+              <ul class="space-y-1 text-slate-600 dark:text-slate-300">
+                <li>✅ <strong>Assincronismo:</strong> O usuário não fica esperando a tela carregar.</li>
+                <li>✅ <strong>Custo-Efetivo:</strong> Evita pagar por servidores ligados de madrugada sem uso.</li>
+                <li>✅ <strong>Auto-Escala mágica:</strong> Se 1.000 PDFs chegarem num segundo, o provedor liga 1.000 instâncias da função.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>O Fim dos Servidores?</strong><br />
+                A banca diz: "No paradigma Serverless, a arquitetura física foi abolida, de modo que o processamento ocorre inteiramente nas
+                interfaces de rede sem uso de hardware em data centers."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso Absoluto!</span
+                >
+                "Sem servidor" é apenas um nome comercial. Os servidores físicos, switches e roteadores <strong>continuam existindo</strong> nos
+                galpões da AWS/Azure/GCP. A diferença é que a responsabilidade de gerir, atualizar SO e alocar espaço é 100% transferida para o
+                provedor, ficando <strong class="underline decoration-red-500">abstraída/transparente</strong> para o cliente.
+              </li>
+              <li>
+                <strong>O Custo é sempre menor?</strong><br />
+                "Adotar arquitetura Serverless garante invariavelmente uma redução de custos operacionais em relação a instâncias IaaS (Máquinas
+                Virtuais)."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Serverless é cobrado por <strong>execução/milissegundo</strong>. Se você tiver uma aplicação que roda 100% do tempo, 24 horas por dia,
+                num processamento pesado ininterrupto, Serverless vai sair <strong>MUITO MAIS CARO</strong> do que alugar uma VM com valor fixo mensal
+                (IaaS).
+              </li>
+              <li>
+                <strong>Sincronismo em Event-Driven:</strong><br />
+                "Na arquitetura Event-driven, o produtor do evento deve aguardar sincronicamente a resposta do consumidor para garantir a integridade
+                da transação."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A magia do Event-driven é o <strong>Assincronismo</strong> e o <strong>Desacoplamento</strong>. O produtor "joga" o evento no
+                Barramento/Fila (<em>Fire and Forget</em>) e vai fazer outra coisa. Ele não sabe nem se o consumidor existe, quem dirá ficar esperando
+                por ele.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Desmistificando o Serverless
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O termo <strong>Serverless (Computação sem Servidor)</strong> não significa o fim do hardware. Ele se refere a um modelo de execução em
+              computação em nuvem em que o provedor atua como o alocador dinâmico de recursos da máquina.
+            </p>
+            <p>
+              Na computação IaaS tradicional, você aluga uma Máquina Virtual (VM) de 16GB de RAM. Mesmo se o seu site não receber nenhuma visita de
+              madrugada, você pagará por aquela máquina ligada. No Serverless, o provedor só cobra quando um bloco de código (Função) é executado,
+              tarifando a memória usada e os milissegundos que o código demorou para rodar.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">FaaS vs BaaS (Divisão Teórica)</h3>
+            <p>A arquitetura Serverless geralmente engloba dois conceitos interligados:</p>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>FaaS (Function as a Service):</strong> É a execução de lógicas de negócio. Você faz o upload do seu código (Node.js, Python),
+                e o provedor lida com a infraestrutura para executar. (Ex: AWS Lambda, Azure Functions).
+              </li>
+              <li>
+                <strong>BaaS (Backend as a Service):</strong> São serviços de terceiros que substituem componentes de infraestrutura tradicionais por
+                APIs gerenciadas. (Ex: Em vez de instalar um Banco de Dados MySQL numa VM, você usa o Amazon DynamoDB ou o Firebase, onde você não
+                provisiona a máquina do banco, apenas "salva e lê" dados, escalando ao infinito).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. O Problema do "Cold Start" (Partida Fria)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Este é o calcanhar de Aquiles do Serverless e um <span class="hl-yellow">termo técnico obrigatório para provas de TI</span>.</p>
+            <p>
+              Como o provedor "desliga" (escala para zero) os recursos quando ninguém está usando, o que acontece quando o primeiro cliente do dia
+              acessa o seu sistema às 8h da manhã?
+            </p>
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 rounded border-l-4 border-red-500 mt-2">
+              <p class="text-sm">
+                A infraestrutura precisa baixar o seu código, alocar um container isolado, iniciar a linguagem (Runtime como Java ou .NET) e aí sim
+                rodar a sua função. Todo esse processo de "acordar a máquina" leva alguns segundos (às vezes 2 ou 3 segundos extras). A esse atraso
+                dá-se o nome de <strong>Cold Start (Partida Fria)</strong>.
+              </p>
+              <p class="text-sm mt-2">
+                <em>Consequência:</em> Se você tem uma aplicação que exige latência crítica e ultrabaixa (ex: sistema de negociação na Bolsa de
+                Valores ou controle de mísseis), Serverless <strong>NÃO é recomendado</strong>, devido à imprevisibilidade do Cold Start.
+              </p>
+            </div>
+            <p>
+              <em>Nota:</em> Requisições subsequentes logo após a primeira irão bater no container que já está "quente" (<strong>Warm Start</strong>),
+              sendo processadas em milissegundos.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Arquitetura Orientada a Eventos (EDA)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Arquitetura Orientada a Eventos (<em>Event-Driven Architecture</em>) promove a produção, detecção, consumo de, e reação a eventos. Um
+              <strong>evento</strong> pode ser definido como "uma mudança significativa no estado" (Ex: Carrinho de compras pago, Upload de vídeo
+              concluído).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">Padrões de Comunicação Event-Driven</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>Padrão Publisher/Subscriber (Pub/Sub):</strong> A infraestrutura de mensagens rastreia assinaturas (Subscribers). Quando um
+                evento é publicado, ele é enviado (<em>push</em>) a todos os inscritos naquele "Tópico". Depois que o evento é recebido, ele não pode
+                ser repetido/lido novamente. (Ex: Amazon SNS).
+              </li>
+              <li>
+                <strong>Event Streaming (Fluxo de Eventos):</strong> Os eventos são gravados em um log (um fluxo contínuo). Ao contrário do Pub/Sub
+                clássico, os clientes podem ler (e reler) eventos passados de qualquer parte do fluxo a qualquer momento, pois os eventos são retidos
+                por um tempo predeterminado (Ex: Apache Kafka, Amazon Kinesis).
+              </li>
+              <li>
+                <strong>Event Sourcing (Origem de Eventos):</strong> Em vez de salvar apenas o estado atual (Ex: "Saldo: R$ 100"), o banco de dados
+                armazena a <em>sequência inteira de eventos</em> que levou a esse estado (Ex: "Depósito de R$ 50", "Depósito de R$ 50"). Isso permite
+                reconstruir o estado passado da aplicação a qualquer momento ("Viagem no tempo").
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">🔗 4. O Risco Oculto: Vendor Lock-in</h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Ao adotar uma arquitetura puramente <strong>Serverless e Event-Driven</strong>, os desenvolvedores tendem a utilizar fortemente as
+            soluções nativas do provedor (AWS Lambda, AWS SNS, DynamoDB).
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            O problema arquitetural gerado por isso é o <span class="hl-sky">Vendor Lock-in (Aprisionamento Tecnológico)</span>. Como o seu código
+            passa a depender de APIs fechadas, ferramentas de monitoramento e gatilhos que só existem na AWS, mudar o sistema inteiro para o Microsoft
+            Azure ou GCP no futuro se tornará uma tarefa dolorosa, cara e de refatoração extrema (diferente de usar <em>Containers/Docker</em>, que
+            rodam de forma igual em qualquer provedor de nuvem).
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

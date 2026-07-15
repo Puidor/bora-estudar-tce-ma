@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Plataformas de Nuvem (AWS, Azure, GCP)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 2
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Plataformas: AWS, Azure e GCP
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Duelo dos Três Grandes -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">☁️</span> As Três Grandes (The Big Three)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mt-2">
+            <div class="border-t-4 border-orange-500 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-b-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">AWS (Amazon)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">A pioneira e líder isolada.</p>
+            </div>
+            <div class="border-t-4 border-blue-500 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-b-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Microsoft Azure</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Forte apelo corporativo (integração Windows/AD).</p>
+            </div>
+            <div class="border-t-4 border-emerald-500 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-b-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg">Google Cloud (GCP)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Excelência em Dados, IA e Kubernetes.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Pedra de Roseta da Nuvem (Tabela Equivalente) -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🗺️ A Pedra de Roseta da Nuvem</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">DECORE ESTA TABELA!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead class="text-xs uppercase bg-slate-800 text-slate-400">
+                <tr>
+                  <th class="px-4 py-3 border-r border-slate-700">Categoria (NIST)</th>
+                  <th class="px-4 py-3 border-r border-slate-700 text-orange-400">AWS</th>
+                  <th class="px-4 py-3 border-r border-slate-700 text-blue-400">Azure</th>
+                  <th class="px-4 py-3 text-emerald-400">Google Cloud (GCP)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-700">
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-4 py-3 font-medium text-sky-300">
+                    Computação (IaaS) <br /><span class="text-xs text-slate-500 font-normal">Máquinas Virtuais</span>
+                  </td>
+                  <td class="px-4 py-3 border-l border-slate-700">Amazon EC2</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Azure Virtual Machines</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Compute Engine</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-4 py-3 font-medium text-sky-300">
+                    Funções (Serverless/FaaS) <br /><span class="text-xs text-slate-500 font-normal">Execução de código sem servidor</span>
+                  </td>
+                  <td class="px-4 py-3 border-l border-slate-700 font-bold text-white">AWS Lambda</td>
+                  <td class="px-4 py-3 border-l border-slate-700 font-bold text-white">Azure Functions</td>
+                  <td class="px-4 py-3 border-l border-slate-700 font-bold text-white">Cloud Functions</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-4 py-3 font-medium text-sky-300">
+                    Armazenamento de Objetos <br /><span class="text-xs text-slate-500 font-normal">Arquivos não estruturados (fotos, vídeos)</span>
+                  </td>
+                  <td class="px-4 py-3 border-l border-slate-700 font-bold text-white">Amazon S3</td>
+                  <td class="px-4 py-3 border-l border-slate-700 font-bold text-white">Azure Blob Storage</td>
+                  <td class="px-4 py-3 border-l border-slate-700 font-bold text-white">Cloud Storage</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-4 py-3 font-medium text-sky-300">
+                    Armazenamento em Bloco <br /><span class="text-xs text-slate-500 font-normal">Discos virtuais plugados nas VMs</span>
+                  </td>
+                  <td class="px-4 py-3 border-l border-slate-700">Amazon EBS</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Managed Disks</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Persistent Disk</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-4 py-3 font-medium text-sky-300">
+                    Banco de Dados Relacional (PaaS)<br /><span class="text-xs text-slate-500 font-normal">SQL estruturado</span>
+                  </td>
+                  <td class="px-4 py-3 border-l border-slate-700">Amazon RDS / Aurora</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Azure SQL Database</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Cloud SQL / Spanner</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-4 py-3 font-medium text-sky-300">
+                    Banco de Dados NoSQL <br /><span class="text-xs text-slate-500 font-normal">Chave-valor, Documentos</span>
+                  </td>
+                  <td class="px-4 py-3 border-l border-slate-700">Amazon DynamoDB</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Azure Cosmos DB</td>
+                  <td class="px-4 py-3 border-l border-slate-700">Firestore / Datastore</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tipos de Storage -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">💾</span> Os Três Tipos de Armazenamento
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Objeto (Object)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Ex: Amazon S3</p>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                <li>• Dados são guardados como "Objetos" em "Buckets".</li>
+                <li>• Não há hierarquia de pastas real, tudo é plano.</li>
+                <li>• Perfeito para mídias, backups e big data. Acesso via APIs (HTTP/REST).</li>
+                <li>• <strong class="text-sky-600 dark:text-sky-400">Não serve para instalar Sistema Operacional!</strong></li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Bloco (Block)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Ex: Amazon EBS</p>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                <li>• Funciona como um HD tradicional plugado na placa-mãe.</li>
+                <li>• Dividido em blocos de tamanho fixo de alto desempenho.</li>
+                <li>• Só pode ser atachado a uma VM (Instância) por vez (geralmente).</li>
+                <li>• <strong class="text-sky-600 dark:text-sky-400">É aqui que se instala o S.O. (Windows/Linux) e o BD.</strong></li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Arquivo (File)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Ex: Amazon EFS</p>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                <li>• O clássico servidor de arquivos de rede (NAS).</li>
+                <li>• Hierarquia de diretórios (pastas e subpastas).</li>
+                <li>
+                  • <strong class="text-sky-600 dark:text-sky-400">Pode ser montado (compartilhado) por várias VMs ao mesmo tempo</strong> via NFS ou
+                  SMB.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>S3 como Disco Rígido:</strong><br />
+                A banca diz: "O administrador de redes pode instanciar uma máquina EC2 na AWS e instalar o sistema operacional Ubuntu diretamente em
+                um bucket do Amazon S3 para garantir durabilidade."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O <strong>Amazon S3</strong> é armazenamento de OBJETOS. Não possui sistema de arquivos capaz de realizar *boot* de sistema
+                operacional. Para instalar um S.O., é obrigatório o uso de armazenamento em BLOCO (<strong>Amazon EBS</strong>).
+              </li>
+              <li>
+                <strong>PaaS x Serverless:</strong><br />
+                "O Amazon EC2 é um exemplo de serviço serverless, pois isenta o usuário de gerenciar as instâncias físicas de servidores."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O <strong>Amazon EC2</strong> é a quintessência do <strong>IaaS</strong> (você tem que escolher RAM, CPU, instalar S.O. e gerenciar
+                tudo). Um exemplo de <em>Serverless</em> na AWS seria o <strong>AWS Lambda</strong>.
+              </li>
+              <li>
+                <strong>Disponibilidade vs Durabilidade no S3:</strong><br />
+                Cuidado com o jogo de palavras. A AWS garante "11 noves" (99.999999999%) de
+                <strong class="underline decoration-red-500">DURABILIDADE</strong> no S3 (chance de não perder seu arquivo ao longo de um ano). A
+                <strong class="underline decoration-red-500">DISPONIBILIDADE</strong> (chance de você conseguir acessar o arquivo num dado momento)
+                costuma ser de 99.9% a 99.99%, dependendo da classe de armazenamento.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Amazon Web Services (AWS)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A AWS é a subsidiária de nuvem da Amazon. Sendo a pioneira (lançada em 2006), detém a maior fatia de mercado e é o referencial de
+              nomenclatura para as bancas de concurso. A maioria das questões genéricas sobre nuvem terá alternativas contendo serviços da AWS.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Principais Serviços que caem em prova:</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Amazon EC2 (Elastic Compute Cloud):</strong> O principal serviço IaaS da AWS. Fornece capacidade computacional escalável. Você
+                aluga uma Máquina Virtual (chamada de <em>Instância</em>), escolhe a Amazon Machine Image (AMI) como o Ubuntu ou Windows Server e tem
+                acesso *root* ao SO.
+              </li>
+              <li>
+                <strong>Amazon S3 (Simple Storage Service):</strong> Armazenamento de objetos projetado para arquivar e recuperar qualquer quantidade
+                de dados da web. Os arquivos ficam em <em>Buckets</em>. É excelente para imagens de sites, backups estruturados e hospedar sites
+                estáticos (HTML/CSS puros).
+              </li>
+              <li>
+                <strong>Amazon RDS (Relational Database Service):</strong> Serviço PaaS que facilita a configuração, operação e escalonamento de um
+                banco de dados relacional. Suporta MySQL, PostgreSQL, Oracle, SQL Server e o banco próprio da Amazon: Aurora. O cliente não precisa
+                aplicar *patches* no Linux do servidor do banco, a AWS faz isso.
+              </li>
+              <li>
+                <strong>AWS Lambda:</strong> Serviço de computação <em>Serverless</em> (sem servidor) orientado a eventos. Você faz o upload do seu
+                código (Node.js, Python, Java) e o Lambda o executa em resposta a gatilhos (como a chegada de uma foto no S3). Você só paga pelo tempo
+                de computação consumido (milissegundos).
+              </li>
+              <li>
+                <strong>VPC (Virtual Private Cloud):</strong> O serviço de rede lógica isolada onde seus recursos da AWS residem. Você controla
+                sub-redes (públicas e privadas), tabelas de roteamento e gateways de rede.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Microsoft Azure
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A nuvem da Microsoft tem forte apelo em organizações que já dependem pesadamente do ecossistema corporativo Microsoft (Windows Server,
+              SQL Server, .NET, Active Directory).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Principais Serviços Correspondentes:</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Azure Virtual Machines:</strong> O equivalente direto do EC2 da AWS. Fornece IaaS para implantação de máquinas virtuais Linux
+                e Windows.
+              </li>
+              <li>
+                <strong>Azure Blob Storage:</strong> O equivalente do Amazon S3. "Blob" significa <em>Binary Large Object</em>. É a solução de
+                armazenamento de objetos da Microsoft para grandes volumes de dados não estruturados.
+              </li>
+              <li>
+                <strong>Azure SQL Database:</strong> Banco de dados relacional (PaaS) totalmente gerenciado, construído com base na engine do SQL
+                Server da Microsoft.
+              </li>
+              <li>
+                <strong>Azure Functions:</strong> O equivalente ao AWS Lambda. É a solução <em>Serverless</em> para rodar pequenos trechos de código
+                orientados a eventos.
+              </li>
+              <li>
+                <strong>Azure Active Directory (Azure AD / Microsoft Entra ID):</strong> O grande trunfo do Azure. Serviço de gerenciamento de
+                identidades e acessos baseado em nuvem, permitindo que empresas sincronizem facilmente as senhas do escritório físico com as senhas da
+                Nuvem e do Microsoft 365.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Google Cloud Platform (GCP)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O GCP é reconhecido mundialmente pela sua força bruta no processamento de dados (Big Data), Machine Learning e por ser o berço de
+              criação da tecnologia de orquestração de contêineres <strong>Kubernetes</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Principais Serviços Correspondentes:</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Compute Engine (GCE):</strong> O ambiente IaaS do Google para execução de máquinas virtuais na rede de fibra óptica global do
+                Google.
+              </li>
+              <li><strong>Cloud Storage:</strong> O equivalente ao S3 e ao Blob Storage. O serviço de armazenamento unificado de objetos do GCP.</li>
+              <li>
+                <strong>Cloud SQL e Cloud Spanner:</strong> Cloud SQL atua como o RDS para bancos tradicionais (MySQL, PostgreSQL). Já o
+                <strong>Spanner</strong> é o diferencial de prova: um banco de dados relacional único que escala <em>horizontalmente</em> com
+                consistência global (o que é raríssimo para bancos SQL).
+              </li>
+              <li><strong>Cloud Functions:</strong> A resposta do Google ao Lambda e Azure Functions (FaaS/Serverless).</li>
+              <li>
+                <strong>BigQuery:</strong> Data warehouse corporativo na nuvem (PaaS/SaaS) absurdamente rápido, <em>Serverless</em>, construído para
+                analisar petabytes de dados utilizando a linguagem SQL padrão.
+              </li>
+              <li>
+                <strong>Google Kubernetes Engine (GKE):</strong> Um dos serviços de orquestração de contêineres gerenciados mais robustos do mercado,
+                dado que o Kubernetes foi criado internamente pelos engenheiros do próprio Google.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

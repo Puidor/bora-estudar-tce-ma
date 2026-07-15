@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Elasticidade, Escalabilidade e Alta Disponibilidade</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 1.4
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Elasticidade, Escalabilidade e HA
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Elasticidade vs Escalabilidade -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🆚 A Diferença Crucial (Cai Muito)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">NÃO CONFUNDA!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Escalabilidade -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -bottom-4 text-6xl opacity-10">📈</div>
+                <h3 class="font-black text-sky-400 mb-2 uppercase tracking-wide text-sm border-b border-sky-500/30 pb-2 flex items-center gap-2">
+                  <span>Escalabilidade</span>
+                </h3>
+                <p class="text-xs text-slate-400 mb-3 italic">O crescimento planejado a longo prazo.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Capacidade do sistema lidar com o <strong>aumento de carga</strong> adicionando mais recursos.</li>
+                  <li>• Foca em <strong>Crescer</strong> sem perder performance.</li>
+                  <li>• Envolve planejamento arquitetural (ex: usar banco de dados distribuído).</li>
+                  <li>• <strong class="text-white">Não foca no encolhimento dinâmico.</strong></li>
+                </ul>
+              </div>
+
+              <!-- Elasticidade -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -bottom-4 text-6xl opacity-10">🪀</div>
+                <h3
+                  class="font-black text-emerald-400 mb-2 uppercase tracking-wide text-sm border-b border-emerald-500/30 pb-2 flex items-center gap-2"
+                >
+                  <span>Elasticidade</span>
+                </h3>
+                <p class="text-xs text-slate-400 mb-3 italic">O estica-e-puxa imediato e reativo.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Capacidade de <strong>alocar E liberar (retrair)</strong> recursos dinamicamente.</li>
+                  <li>• Foca em <strong>Custo-Benefício</strong> (Pagar apenas pelo que usa).</li>
+                  <li>• É uma ação geralmente <strong>Automática</strong> baseada em gatilhos (ex: CPU > 80%).</li>
+                  <li>• É um dos 5 pilares fundamentais do modelo de Nuvem do NIST.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Vertical x Horizontal -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">📐</span> Formas de Escalar
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border-l-4 border-fuchsia-500 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Scale-UP (Vertical)</h3>
+              <p class="text-sm text-fuchsia-600 dark:text-fuchsia-400 font-semibold mb-3">"Aumentar o motor do carro"</p>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                <li>• Adicionar mais <strong>CPU e RAM</strong> na mesma máquina.</li>
+                <li>• <strong>Tem limite físico</strong> (não dá para pôr RAM infinita).</li>
+                <li>• Geralmente causa <strong>Downtime</strong> (tempo fora do ar) para reiniciar a máquina com novo hardware.</li>
+                <li>• Usado frequentemente em Banco de Dados Relacional legado.</li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border-l-4 border-sky-500 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Scale-OUT (Horizontal)</h3>
+              <p class="text-sm text-sky-600 dark:text-sky-400 font-semibold mb-3">"Colocar mais carros na frota"</p>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                <li>• Adicionar <strong>MAIS MÁQUINAS (instâncias/nós)</strong> iguais lado a lado.</li>
+                <li>• <strong>Escala (quase) infinita</strong>.</li>
+                <li>• <strong>Zero Downtime</strong>. O Balanceador de Carga cuida de distribuir os acessos.</li>
+                <li>• Padrão-ouro em Cloud Computing e Microsserviços.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alta Disponibilidade (HA) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🛡️</span> Alta Disponibilidade (HA)
+          </h2>
+
+          <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+            High Availability (HA) é o design de sistema que garante <strong>tempo de atividade (uptime)</strong> contínuo e tolerância a falhas.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div class="p-4 border border-slate-200 dark:border-slate-600 rounded">
+              <div class="text-3xl mb-2">🎭</div>
+              <strong class="text-slate-800 dark:text-white block">Redundância</strong>
+              <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Ter componentes "extras" (Múltiplos Servidores, Múltiplas Zonas de Disponibilidade - Multi-AZ).</span
+              >
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-600 rounded">
+              <div class="text-3xl mb-2">⚖️</div>
+              <strong class="text-slate-800 dark:text-white block">Load Balancer</strong>
+              <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Distribui o tráfego. Se um nó "morrer", o LB detecta e para de enviar clientes para ele.</span
+              >
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-600 rounded">
+              <div class="text-3xl mb-2">🚫</div>
+              <strong class="text-slate-800 dark:text-white block">Eliminação do SPOF</strong>
+              <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Garantir que não exista um "Single Point of Failure" (Ponto Único de Falha) no desenho da rede.</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Elasticidade vs Desempenho Fixo:</strong><br />
+                A banca afirma: "A elasticidade na computação em nuvem diz respeito à capacidade de o sistema operar ininterruptamente e manter-se
+                tolerante a desastres naturais."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A capacidade de suportar desastres naturais (redundância de datacenters geográficos) e continuar operando refere-se a
+                <strong>Alta Disponibilidade e Recuperação de Desastres (DR)</strong>. A <strong>Elasticidade</strong> está atrelada à provisão e
+                liberação <em>sob demanda e rápida</em> de recursos computacionais, subindo ou diminuindo a carga conforme o tráfego.
+              </li>
+              <li>
+                <strong>Escala Vertical sem Interrupção:</strong><br />
+                "O escalonamento vertical (scale-up) é preferível em aplicações web modernas pois permite adicionar recursos sem a necessidade de
+                paradas ou reinicializações do sistema."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                É justamente o <strong>escalonamento HORIZONTAL (scale-out)</strong> que permite zero interrupção. O vertical, na maioria das vezes,
+                exige desligar a instância/VM para alocar os novos hardwares (mais RAM/CPU) e depois religá-la.
+              </li>
+              <li>
+                <strong>Tolerância a Falhas vs Alta Disponibilidade:</strong><br />
+                Cuidado com o rigor técnico: <em>High Availability (HA)</em> minimiza o tempo de inatividade (Ex: 99.99% = minutos fora do ar no ano,
+                o sistema percebe a falha, reinicia em segundos/minutos o outro nó). <em>Fault Tolerance (Tolerância a falhas)</em> garante
+                <strong>zero impacto e zero perda de estado</strong> (o sistema espelha a memória da máquina 1 na máquina 2 em tempo real. Se a 1
+                morrer, a 2 assume no exato milissegundo, sem cair a conexão TCP).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Entendendo a Escalabilidade (O Crescimento)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>escalabilidade</strong> é a característica que um sistema possui de lidar com o aumento do volume de trabalho de forma
+              elegante (ou seja, sem lentidão extrema ou travamento) mediante a adição de recursos. Em nuvem, abordamos de duas maneiras principais:
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A. Escala Vertical (Scale-UP)</h3>
+            <p>
+              Significa incrementar os componentes de um recurso existente. Por exemplo: aumentar de 4 para 8 vCPUs, ou subir a memória RAM de 16GB
+              para 32GB em um servidor de Banco de Dados.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <span class="hl-red">Limitação Física:</span> Chega um ponto em que não existe processador maior para alugar no provedor (o teto de
+                hardware).
+              </li>
+              <li>
+                <span class="hl-red">Downtime:</span> Geralmente, mudar o tamanho da máquina (resize da instância) exige reiniciar o Sistema
+                Operacional.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">B. Escala Horizontal (Scale-OUT)</h3>
+            <p>
+              Significa adicionar mais instâncias (servidores, nós ou contêineres) de forma paralela. Se 1 máquina atende 1.000 requisições,
+              colocam-se 3 máquinas para atender 3.000 requisições simultâneas.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2">
+              <li><span class="hl-green">Crescimento Ilimitado:</span> Você pode instanciar milhares de servidores.</li>
+              <li>
+                <span class="hl-green">Sem Parada:</span> Novas máquinas são ligadas enquanto as velhas continuam trabalhando; o Balanceador de Carga
+                (Load Balancer) apenas avisa "opa, temos mais um trabalhador na equipe, mandem tráfego para ele".
+              </li>
+              <li>
+                <strong>Desafio:</strong> Para escalar horizontalmente com facilidade, a aplicação deve ser <em>Stateless</em> (não salvar sessões ou
+                arquivos na memória local da máquina).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Magia da Elasticidade (A Flexibilidade Automática)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>Rápida Elasticidade</strong> é um dos 5 pilares do NIST. É a capacidade de provisionar e liberar recursos conforme a demanda
+              exata no tempo exato. A diferença entre escalar e ser elástico é a <span class="hl-yellow">Retração Automática</span>.
+            </p>
+            <p>
+              Se a Black Friday gera um pico monstruoso de acessos ao meio-dia, o <strong>Auto Scaling</strong> (escalonamento automático) percebe
+              (gatilho de métrica: CPU > 85%) e cria 50 novos servidores automaticamente. Na segunda-feira de manhã, quando o tráfego volta ao normal,
+              o sistema <em>destrói</em> os 50 servidores extras, reduzindo os custos.
+            </p>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300">Conceito Chave (Scale-IN vs Scale-DOWN):</strong>
+              Ao reduzir o tamanho, usamos a terminologia <strong>Scale-IN</strong> (destruir máquinas do pool horizontal) ou
+              <strong>Scale-DOWN</strong> (reduzir os GHz e a RAM de uma máquina específica).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Alta Disponibilidade (High Availability - HA)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Em arquiteturas on-premises e cloud, todo hardware fatalmente falhará. Os discos queimam, a energia cai. A Alta Disponibilidade projeta
+              o sistema para ocultar essas falhas dos usuários, oferecendo um tempo de atividade altíssimo.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">Os Componentes do HA:</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2">
+              <li>
+                <strong>Zonas de Disponibilidade (Multi-AZ):</strong> Os provedores de nuvem dividem uma Região (ex: São Paulo) em várias Zonas de
+                Disponibilidade (AZs). Cada AZ é um ou mais <em>datacenters</em> fisicamente separados (por vários quilômetros) e independentes em
+                rede e energia. Distribuir suas VMs em Múltiplas AZs garante que um incêndio ou enchente num prédio não derrube a sua aplicação.
+              </li>
+              <li>
+                <strong>Balanceador de Carga (Load Balancer - LB):</strong> Age como a "porta de entrada" dos usuários e direciona os acessos para o
+                conjunto de instâncias saudáveis no backend. Eles realizam constantemente <em>Health Checks</em> (Verificações de Integridade). Se o
+                Servidor B não responder o "ping", o LB o remove da rota.
+              </li>
+              <li>
+                <strong>Single Point of Failure (SPOF):</strong> Um SPOF é uma peça do sistema que, se parar de funcionar, para o sistema inteiro (ex:
+                existir apenas 1 Servidor de Banco de Dados ou apenas 1 Roteador core). Alta disponibilidade exige a eliminação rigorosa de SPOFs
+                através de replicação (Clusters Ativo-Ativo ou Ativo-Passivo).
+              </li>
+            </ul>
+
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded border-l-4 border-emerald-500 mt-4 text-sm">
+              <strong class="text-emerald-800 dark:text-emerald-300">Entendendo os Noves (The Nines) do SLA:</strong><br />
+              A disponibilidade é descrita em porcentagens.
+              <ul class="list-none mt-2 space-y-1">
+                <li><strong>99%</strong> (Dois noves): ~3,6 dias fora do ar por ano.</li>
+                <li><strong>99.9%</strong> (Três noves): ~8,7 horas fora do ar por ano.</li>
+                <li><strong>99.99%</strong> (Quatro noves): ~52 minutos fora do ar por ano.</li>
+                <li><strong>99.999%</strong> (Cinco noves - O Santo Graal): ~5 minutos fora do ar por ano.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

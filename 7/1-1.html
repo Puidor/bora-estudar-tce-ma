@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Modelos de Serviço (IaaS, PaaS, SaaS)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 1.1
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Modelos de Serviço (SPI)
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O que o Cliente Gerencia -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-sky-800 dark:bg-sky-900 p-4 border-b border-sky-700">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📊 A Pirâmide de Controle</h2>
+            <p class="text-sm text-sky-200 mt-1">Quanto mais alto na pirâmide, MENOS coisas o cliente tem que gerenciar.</p>
+          </div>
+          <div class="p-6">
+            <!-- SaaS -->
+            <div class="flex flex-col md:flex-row items-center gap-4 mb-4">
+              <div class="w-full md:w-1/4 text-center md:text-right font-bold text-emerald-600 dark:text-emerald-400 text-xl">
+                SaaS <br /><span class="text-xs text-slate-500 uppercase tracking-wide">Software</span>
+              </div>
+              <div class="w-full md:w-3/4 bg-emerald-50 dark:bg-emerald-900/10 border-2 border-emerald-500 rounded-lg p-4 relative">
+                <span class="absolute -top-3 left-4 bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded">Foco no Usuário Final</span>
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                  O cliente <strong>NÃO gerencia NADA</strong> da infraestrutura, nem sistema operacional, nem a aplicação em si. <br />
+                  <strong class="text-emerald-700 dark:text-emerald-300">Exemplos:</strong> Gmail, Salesforce, Microsoft 365.
+                </p>
+              </div>
+            </div>
+
+            <!-- PaaS -->
+            <div class="flex flex-col md:flex-row items-center gap-4 mb-4">
+              <div class="w-full md:w-1/4 text-center md:text-right font-bold text-sky-600 dark:text-sky-400 text-xl">
+                PaaS <br /><span class="text-xs text-slate-500 uppercase tracking-wide">Plataforma</span>
+              </div>
+              <div class="w-full md:w-3/4 bg-sky-50 dark:bg-sky-900/10 border-2 border-sky-500 rounded-lg p-4 relative">
+                <span class="absolute -top-3 left-4 bg-sky-500 text-white text-xs font-bold px-2 py-0.5 rounded">Foco no Desenvolvedor</span>
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                  O cliente gerencia a <strong>Aplicação e os Dados</strong>. O provedor cuida do S.O., Servidores, Bancos de Dados e Runtime.<br />
+                  <strong class="text-sky-700 dark:text-sky-300">Exemplos:</strong> Heroku, Google App Engine, AWS Lambda (Serverless atua aqui).
+                </p>
+              </div>
+            </div>
+
+            <!-- IaaS -->
+            <div class="flex flex-col md:flex-row items-center gap-4">
+              <div class="w-full md:w-1/4 text-center md:text-right font-bold text-fuchsia-600 dark:text-fuchsia-400 text-xl">
+                IaaS <br /><span class="text-xs text-slate-500 uppercase tracking-wide">Infraestrutura</span>
+              </div>
+              <div class="w-full md:w-3/4 bg-fuchsia-50 dark:bg-fuchsia-900/10 border-2 border-fuchsia-500 rounded-lg p-4 relative">
+                <span class="absolute -top-3 left-4 bg-fuchsia-500 text-white text-xs font-bold px-2 py-0.5 rounded"
+                  >Foco no Administrador (SysAdmin)</span
+                >
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                  O cliente gerencia <strong>S.O., Middleware, Aplicação e Dados</strong>. O provedor entrega a máquina virtual (Hardware, Rede,
+                  Storage).<br />
+                  <strong class="text-fuchsia-700 dark:text-fuchsia-300">Exemplos:</strong> AWS EC2, Azure VMs, Google Compute Engine.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela de Responsabilidade Comparada -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="p-4 bg-slate-100 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-600">
+            <h3 class="font-bold text-slate-800 dark:text-white">Matriz de Responsabilidade Compartilhada</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead class="text-xs uppercase bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                <tr>
+                  <th class="px-4 py-3 border-r border-slate-300 dark:border-slate-600">Camada</th>
+                  <th class="px-4 py-3 border-r border-slate-300 dark:border-slate-600 text-center text-fuchsia-600 dark:text-fuchsia-400">IaaS</th>
+                  <th class="px-4 py-3 border-r border-slate-300 dark:border-slate-600 text-center text-sky-600 dark:text-sky-400">PaaS</th>
+                  <th class="px-4 py-3 text-center text-emerald-600 dark:text-emerald-400">SaaS</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                <tr>
+                  <td class="px-4 py-2 font-medium">Aplicações / Código</td>
+                  <td class="px-4 py-2 text-center">Cliente</td>
+                  <td class="px-4 py-2 text-center font-bold underline">Cliente</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                </tr>
+                <tr class="bg-slate-50 dark:bg-slate-800/30">
+                  <td class="px-4 py-2 font-medium">Dados / Informações</td>
+                  <td class="px-4 py-2 text-center">Cliente</td>
+                  <td class="px-4 py-2 text-center">Cliente</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor*</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-medium">Runtime / Middleware</td>
+                  <td class="px-4 py-2 text-center">Cliente</td>
+                  <td class="px-4 py-2 text-center text-slate-400 font-bold underline">Provedor</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                </tr>
+                <tr class="bg-slate-50 dark:bg-slate-800/30">
+                  <td class="px-4 py-2 font-medium">Sistema Operacional (OS)</td>
+                  <td class="px-4 py-2 text-center font-bold underline">Cliente</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-medium">Virtualização (Hypervisor)</td>
+                  <td class="px-4 py-2 text-center text-slate-400 font-bold underline">Provedor</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                </tr>
+                <tr class="bg-slate-50 dark:bg-slate-800/30">
+                  <td class="px-4 py-2 font-medium">Servidores / Storage / Rede Física</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                  <td class="px-4 py-2 text-center text-slate-400">Provedor</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-3 text-xs text-slate-500 bg-slate-50 dark:bg-slate-900/50">
+            * No SaaS, o cliente <em>é dono</em> dos dados (ele decide quem acessa, faz upload/download), mas a guarda, formatação e backup técnico
+            desses dados é do provedor.
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Atualização de Sistema Operacional (OS Patching):</strong><br />
+                A banca diz: "No modelo PaaS, o consumidor deve gerenciar a aplicação implantada, bem como manter os pacotes de segurança do Sistema
+                Operacional atualizados."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A fronteira do <strong>PaaS</strong> é o "Runtime". O Sistema Operacional subjacente (Windows/Linux) é responsabilidade
+                <strong class="underline decoration-red-500">EXCLUSIVA DO PROVEDOR</strong>. O cliente só mexe no SO se ele contratar um
+                <strong>IaaS</strong>!
+              </li>
+              <li>
+                <strong>Banco de Dados Relacional:</strong><br />
+                A banca tenta confundir onde fica o DBaaS (Database as a Service - como Amazon RDS). Se o provedor cuida da instalação do SQL Server,
+                do backup e da alta disponibilidade, e o cliente apenas cria as tabelas e insere dados, isso é considerado um
+                <strong class="text-sky-600 dark:text-sky-400">PaaS</strong> (Plataforma), não IaaS.
+              </li>
+              <li>
+                <strong>Customização no SaaS:</strong> "No modelo SaaS, o cliente não possui absolutamente nenhum controle, sendo incapaz de alterar o
+                comportamento da aplicação."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O cliente não controla a <em>infraestrutura</em>, MAS a definição oficial do NIST afirma que o cliente pode ter controle sobre
+                <strong class="underline decoration-red-500">configurações limitadas do aplicativo específicas do usuário</strong> (Ex: Mudar as cores
+                do painel, criar regras de filtro de e-mail no Gmail, cadastrar novos usuários).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Modelo SPI: A Hierarquia da Nuvem
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O NIST define os Modelos de Serviço em Cloud Computing frequentemente pela sigla <strong>SPI</strong> (SaaS, PaaS, IaaS). Eles definem o
+              nível de abstração que a infraestrutura subjacente é escondida do consumidor, e concomitantemente, a divisão de trabalho (Modelo de
+              Responsabilidade Compartilhada) entre o Provedor de Cloud (AWS, Azure, Google) e o Cliente.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2
+            class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4 flex items-center gap-3"
+          >
+            <span class="bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/50 dark:text-fuchsia-400 p-2 rounded-lg">IaaS</span> Infrastructure as a
+            Service
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No IaaS, a capacidade fornecida ao consumidor é provisionar processamento, armazenamento, redes e outros recursos computacionais
+              fundamentais. A palavra-chave é: o cliente pode implantar e executar software <strong>arbitrário</strong>.
+            </p>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">A Linha de Fronteira (Virtualização)</h3>
+            <p>
+              O provedor é dono do Data Center físico, da energia, da refrigeração, do servidor físico e do
+              <span class="hl-yellow">Hypervisor (Camada de Virtualização)</span>. Daí para cima, o problema é do cliente.
+            </p>
+            <p>
+              Se o cliente cria uma Máquina Virtual (VM) Linux, <strong>ele</strong> é quem deve configurar as regras de Firewall interno (iptables),
+              <strong>ele</strong> é quem deve instalar o Apache/Nginx, e <strong>ele</strong> é quem será hackeado se esquecer a porta 22 (SSH)
+              aberta para a internet sem senha. O provedor de IaaS garante apenas que o hardware virtualizado não saia do ar.
+            </p>
+            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded mt-2 text-sm">
+              <strong class="text-slate-800 dark:text-slate-200">Palavras-chave de Prova:</strong> Máquina Virtual (VM), EC2, Instâncias, Controle
+              sobre o Sistema Operacional Guest, Flexibilidade total de ambiente.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2
+            class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4 flex items-center gap-3"
+          >
+            <span class="bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-400 p-2 rounded-lg">PaaS</span> Platform as a Service
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O PaaS eleva o nível de abstração. O consumidor não se preocupa mais em como instalar o Windows ou o Linux, nem qual versão do Java ou
+              do PHP está rodando no servidor raiz. O foco passa a ser puramente o <strong>Desenvolvimento e Deploy de Aplicações</strong>.
+            </p>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">Produtividade vs Controle</h3>
+            <p>
+              Neste modelo, o provedor entrega o ambiente de execução (<span class="hl-sky">Runtime</span>). Por exemplo, um ambiente pronto para
+              rodar código Node.js. O desenvolvedor escreve a sua aplicação, clica em "Deploy" e o provedor se encarrega de alocar os recursos de
+              máquina, instalar as bibliotecas base, balancear a carga e aplicar as correções de segurança no S.O.
+            </p>
+            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded mt-2 text-sm">
+              <strong class="text-slate-800 dark:text-slate-200">Atenção (CEBRASPE):</strong> O cliente não gerencia a infraestrutura, mas
+              <strong>pode</strong> controlar as configurações do ambiente de hospedagem da aplicação (ex: definir variáveis de ambiente, número
+              máximo/mínimo de instâncias que a aplicação pode escalar).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2
+            class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4 flex items-center gap-3"
+          >
+            <span class="bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400 p-2 rounded-lg">SaaS</span> Software as a
+            Service
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O mais alto nível de abstração. Aqui, o software já está pronto, compilado, testado e hospedado pela empresa provedora. O consumidor é o
+              <strong>Usuário Final</strong>.
+            </p>
+            <p>
+              O acesso ocorre frequentemente por meio de clientes leves (<em>thin clients</em>), como navegadores web ou aplicativos móveis. A
+              arquitetura padrão do SaaS moderno é baseada em <span class="hl-green">Multi-tenancy (Multilocatário)</span>, o que significa que vários
+              clientes diferentes (empresas diferentes) usam a exata mesma instância do software e do banco de dados físico, mas os dados são isolados
+              logicamente por IDs de conta.
+            </p>
+            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded mt-2 text-sm">
+              <strong class="text-slate-800 dark:text-slate-200">Atenção (CEBRASPE):</strong> O pagamento no SaaS geralmente é baseado no número de
+              licenças/assinaturas (ex: $10 por usuário por mês) em contraste com o IaaS, que foca no consumo técnico por hora (CPU, GB trafegado).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            👾 Modelos Derivados (Para Provas Difíceis)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            Embora o NIST formalize apenas IaaS, PaaS e SaaS, a indústria criou terminologias secundárias que frequentemente caem nas provas.
+          </p>
+          <ul class="space-y-4 text-sm text-slate-700 dark:text-slate-300">
+            <li>
+              <strong>FaaS (Function as a Service) / Serverless:</strong> O desenvolvedor escreve uma pequena função lógica (um trecho de código
+              isolado) e manda para a nuvem. Ele só paga pelos <strong>milissegundos exatos</strong> em que aquela função foi ativada. A
+              infraestrutura para rodar isso é 100% abstraída. (Ex: AWS Lambda).
+            </li>
+            <li>
+              <strong>CaaS (Container as a Service):</strong> Fica entre IaaS e PaaS. O provedor não entrega apenas a VM crua, mas uma infraestrutura
+              de orquestração de containers já pronta, e o cliente sobe seus containers (Docker/Kubernetes).
+            </li>
+            <li>
+              <strong>DBaaS (Database as a Service):</strong> O provedor aloca um banco de dados já configurado, cuidando do backup e alta
+              disponibilidade. Classifica-se, filosoficamente, como um subconjunto de <strong>PaaS</strong>, focado exclusivamente no fornecimento de
+              motor de dados.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

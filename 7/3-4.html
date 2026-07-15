@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Contêineres e Orquestração (Docker, Kubernetes)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 3.4
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Contêineres e Orquestração (Docker e K8s)
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Contêiner vs VM -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🥊 Contêineres (Docker) vs Máquina Virtual (VM)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">COMPARAÇÃO CLÁSSICA</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Máquina Virtual -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg">
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">Máquina Virtual (VM)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Necessita de um <strong>Hypervisor</strong> (VMWare, VirtualBox, Xen).</li>
+                  <li>
+                    • <strong class="text-white">Isolamento de Hardware:</strong> Cada VM roda um Sistema Operacional convidado (Guest OS) completo e
+                    pesado.
+                  </li>
+                  <li>• Demora minutos para inicializar (boot do S.O.).</li>
+                  <li>• Ocupa Gigabytes (GB) de armazenamento.</li>
+                </ul>
+              </div>
+
+              <!-- Contêiner (Docker) -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg">
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">Contêiner (Ex: Docker)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Necessita de uma <strong>Container Engine</strong> (Docker Daemon).</li>
+                  <li>
+                    • <strong class="text-white">Isolamento no Nível do S.O.:</strong> Compartilha o Kernel (núcleo do SO) da máquina hospedeira.
+                    <strong>NÃO</strong> possui SO completo interno.
+                  </li>
+                  <li>• Inicializa em milissegundos.</li>
+                  <li>• Ocupa apenas Megabytes (MB).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Vocabulário do Docker -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🐳</span> Vocabulário Básico: Docker
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border-l-4 border-sky-500 shadow-sm">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Imagem (Image)</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                O "molde" imutável. Contém a aplicação e todas as suas dependências pré-instaladas. Uma vez construída, não muda (Read-only).
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border-l-4 border-sky-500 shadow-sm">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Contêiner (Container)</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                A instância em <strong>execução</strong> de uma Imagem. Pode ser iniciado, pausado e destruído (efêmero).
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border-l-4 border-sky-500 shadow-sm">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Dockerfile</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Um script de texto simples com instruções (ex: <code>FROM ubuntu, RUN apt-get install python</code>) usado para construir a Imagem.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Orquestração Kubernetes (K8s) -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">☸️</span> Orquestração com Kubernetes (K8s)
+          </h2>
+
+          <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+            Se o Docker cria o contêiner, o Kubernetes é o "maestro" que gerencia <em>milhares</em> de contêineres espalhados em dezenas de servidores
+            (Clusters).
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 border border-slate-200 dark:border-slate-600 rounded">
+              <strong class="text-slate-800 dark:text-white block border-b border-slate-200 dark:border-slate-700 pb-2 mb-2"
+                >Cluster Architecture</strong
+              >
+              <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
+                <li>
+                  <strong class="text-emerald-600 dark:text-emerald-400">Control Plane (Master Node):</strong> O cérebro. Toma decisões globais sobre
+                  o cluster (escalonamento, monitoramento).
+                </li>
+                <li>
+                  <strong class="text-orange-600 dark:text-orange-400">Worker Nodes (Minions):</strong> As máquinas "peão". Onde os contêineres
+                  realmente executam o trabalho pesado.
+                </li>
+              </ul>
+            </div>
+
+            <div class="p-4 border border-slate-200 dark:border-slate-600 rounded">
+              <strong class="text-slate-800 dark:text-white block border-b border-slate-200 dark:border-slate-700 pb-2 mb-2"
+                >A Unidade Básica: POD</strong
+              >
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                O Kubernetes <strong>NÃO</strong> executa contêineres diretamente. Ele os encapsula num <strong>POD</strong>. O Pod é a
+                <em>menor unidade implantável</em> no K8s. Um Pod geralmente contém 1 contêiner, mas pode conter múltiplos contêineres que precisem
+                compartilhar o mesmo IP, rede e armazenamento (tightly coupled).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Contêineres contêm S.O. próprio?</strong><br />
+                "Um dos benefícios do Docker é que cada contêiner possui seu próprio sistema operacional isolado, garantindo máxima segurança e
+                independência."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Contêineres <strong>NÃO possuem Guest OS</strong>. Todos os contêineres executados na mesma máquina compartilham o mesmo Kernel
+                (núcleo) do S.O. hospedeiro. Isso é o que os torna levíssimos comparados às VMs.
+              </li>
+              <li>
+                <strong>O Limite do Pod:</strong><br />
+                "No Kubernetes, um Pod é rigidamente restrito a hospedar um, e somente um, contêiner por vez."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Embora o padrão "um contêiner por Pod" seja o mais comum, um Pod
+                <strong class="underline decoration-red-500">PODE encapsular múltiplos contêineres</strong>, desde que eles sejam fortemente acoplados
+                (ex: um contêiner web rodando Nginx e um contêiner auxiliar rodando um gerador de logs, o padrão <em>Sidecar</em>).
+              </li>
+              <li>
+                <strong>Docker = Orquestrador?</strong><br />
+                "O Docker Engine nativo realiza autonomamente a orquestração, o balanceamento de carga e o self-healing de clusters de instâncias
+                espalhadas em vários servidores."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Docker (Motor/Engine base) serve para rodar contêineres em <strong class="underline decoration-red-500">uma única máquina</strong>.
+                Para orquestrar em múltiplos servidores/clusters, utiliza-se o <strong>Kubernetes (K8s)</strong> ou o <strong>Docker Swarm</strong> (a
+                ferramenta nativa de orquestração do Docker, que é diferente do Docker básico).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Revolução dos Contêineres (Docker)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Durante muito tempo, o padrão de isolamento em servidores foi a <strong>Máquina Virtual (VM)</strong>. A virtualização particiona o
+              hardware físico. O problema é que cada VM exigia a instalação de um Sistema Operacional completo (Guest OS). Subir 10 VMs significava
+              carregar 10 Windows/Linux na memória, tornando o processo lento e obeso.
+            </p>
+            <p>
+              Os <strong>Contêineres</strong> mudaram o paradigma. Em vez de virtualizar o hardware, eles
+              <span class="hl-yellow">virtualizam o Sistema Operacional</span>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A Tecnologia por Trás (Linux)</h3>
+            <p>
+              O Docker, ferramenta mais famosa de conteinerização, baseia-se em dois recursos nativos do kernel Linux para garantir o isolamento sem
+              precisar de outro SO:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">Namespaces:</strong> Garantem o isolamento de visão. Um contêiner acha que tem sua
+                própria rede, seus próprios PIDs de processos e sua própria árvore de arquivos. Ele não "vê" o que está no contêiner vizinho.
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">Cgroups (Control Groups):</strong> Garantem o isolamento de hardware. Limitam o quanto
+                de CPU, Memória RAM e banda de I/O um contêiner pode usar.
+              </li>
+            </ul>
+            <p class="mt-4">
+              Por não precisarem fazer "boot" num sistema operacional, contêineres iniciam em frações de segundo e tornaram os Microsserviços e a
+              Integração Contínua (CI/CD) uma realidade viável. O dogma "Na minha máquina funciona, no servidor não" morreu: a Imagem Docker embala o
+              código e <em>todas</em> as suas dependências.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. O Problema da Escala: Por que o Kubernetes?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Docker resolve o problema de criar e rodar um contêiner. Mas e se você for a Netflix ou o iFood? Você terá 5.000 contêineres de
+              carrinho de compras espalhados por 50 servidores físicos.
+            </p>
+            <p>
+              O que acontece se o Servidor 12 queimar? Quem recria os contêineres dele no Servidor 13? Quem avisa o Load Balancer que o IP mudou? Quem
+              garante que quando você lançar a versão 2.0 do software, as pessoas não ficarão sem acesso?
+            </p>
+            <p>
+              Isso é a <strong>Orquestração de Contêineres</strong>. E o <span class="hl-sky">Kubernetes (K8s)</span>, plataforma de código aberto
+              originada no Google, é o padrão de facto da indústria (superando o Docker Swarm e Apache Mesos).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Arquitetura do Kubernetes (Vocabulário de Prova)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Componentes do Control Plane (O Mestre)</h3>
+            <p>O Control Plane toma as decisões globais do cluster, detecta e responde aos eventos. Ele não executa a aplicação do cliente.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>kube-apiserver:</strong> O porteiro. Todas as requisições (via linha de comando `kubectl` ou interfaces) passam por ele. É a
+                API front-end.
+              </li>
+              <li>
+                <strong>etcd:</strong> O banco de dados do cluster. Um armazenamento chave-valor altamente disponível que salva
+                <em>todo o estado</em> do cluster.
+              </li>
+              <li>
+                <strong>kube-scheduler:</strong> O cérebro logístico. Ele vigia a criação de novos Pods sem nó atribuído e decide em qual "Worker
+                Node" aquele Pod vai rodar, baseando-se em RAM/CPU livre.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Componentes do Worker Node (O Trabalhador)</h3>
+            <p>O nó trabalhador é onde seus contêineres rodam.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Kubelet:</strong> O agente (capataz) que roda em cada nó. Ele garante que os contêineres descritos pelo Master estão rodando
+                de forma saudável e relata o status de volta ao Master.
+              </li>
+              <li>
+                <strong>Kube-proxy:</strong> Um proxy de rede em cada nó. Mantém as regras de rede (iptables) que permitem a comunicação com os Pods.
+              </li>
+              <li>
+                <strong>Container Runtime:</strong> O software responsável por de fato rodar o contêiner (O Docker era usado, mas o Kubernetes adotou
+                hoje padrões genéricos como `containerd` ou `CRI-O`).
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Objetos do Kubernetes</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Pod:</strong> Menor unidade do K8s. É uma "cápsula" temporária que abriga um ou mais contêineres. Se o contêiner cai, o Pod
+                morre e um <strong>novo</strong> Pod nasce (Pods são efêmeros, não são "consertados").
+              </li>
+              <li>
+                <strong>Deployment:</strong> É o objeto que garante a <em>Resiliência</em> e a <em>Escala</em>. Você declara para o Deployment: "Eu
+                quero 3 Pods do site rodando sempre". O Deployment gerencia os ReplicaSets e cuida de matar ou recriar os pods se algo falhar
+                (Self-healing).
+              </li>
+              <li>
+                <strong>Service:</strong> Como os Pods morrem o tempo todo, seus endereços IP mudam a toda hora. O <em>Service</em> provê um IP e um
+                nome DNS <strong class="hl-green">Estável</strong>, atuando como um mini balanceador de carga que roteia o tráfego para os pods (mesmo
+                que eles mudem de IP).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            🚀 4. A Essência da "Declaração de Estado"
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            A principal característica abordada em questões teóricas é que o Kubernetes funciona num modelo <strong>Declarativo</strong> e não
+            <strong>Imperativo</strong>.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            Você não dá ordens passo a passo como: "Crie a máquina A, ligue a B, depois mate a C". Você envia um arquivo (geralmente YAML) declarando
+            seu <span class="hl-yellow">Estado Desejado</span> (Ex: "Eu quero 5 Pods rodando a versão 2 do Nginx"). O *Control Plane* do Kubernetes
+            olha para o <span class="hl-yellow">Estado Atual</span> (Ex: "Tenho apenas 3 Pods na versão 1"). A partir daí, o próprio K8s, de forma
+            autônoma e inteligente, toma as ações corretivas até que o Estado Atual fique exatamente igual ao Estado Desejado.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Balanceamento de Carga e Autoescalonamento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 3.3
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Balanceamento de Carga e Autoescalonamento
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Casamento Perfeito -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🤝</span> A Dupla Dinâmica
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-5 rounded-lg border-2 border-sky-500 shadow-sm relative">
+              <span class="absolute -top-3 left-4 bg-sky-500 text-white text-xs font-bold px-2 py-0.5 rounded">O Gerente de Trânsito</span>
+              <strong class="text-sky-700 dark:text-sky-400 block text-lg mb-2 mt-2">Load Balancer (LB)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Recebe as requisições dos utilizadores (tráfego da web) e <strong>distribui</strong> uniformemente entre os servidores saudáveis. Ele
+                garante a Alta Disponibilidade, mas <strong class="text-red-500">NÃO cria</strong> novas máquinas.
+              </p>
+            </div>
+
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-5 rounded-lg border-2 border-emerald-500 shadow-sm relative">
+              <span class="absolute -top-3 left-4 bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded">A Fábrica de Máquinas</span>
+              <strong class="text-emerald-700 dark:text-emerald-400 block text-lg mb-2 mt-2">Auto Scaling (ASG)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Monitoriza métricas (ex: CPU > 80%). Quando o limite é atingido, ele
+                <strong>cria (provisiona) ou destrói (encerra)</strong> instâncias automaticamente. Depois de criar, ele regista a máquina nova no
+                Load Balancer.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tipos de Load Balancer -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚖️ Tipos de Balanceadores (Camadas OSI)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">MUITO COBRADO!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Camada 4 -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg">
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">
+                  Network Load Balancer (Camada 4)
+                </h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Burro, porém extremamente rápido.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Atua na camada de <strong>Transporte</strong>.</li>
+                  <li>• Toma decisões baseadas apenas em <strong>IPs e Portas (TCP/UDP)</strong>.</li>
+                  <li>• Não consegue ler o conteúdo (HTML/URL) da requisição.</li>
+                  <li>• Ideal para milhões de requisições por segundo com latência ultrabaixa.</li>
+                </ul>
+              </div>
+
+              <!-- Camada 7 -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg">
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">Application Load Balancer (Camada 7)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Mais lento, porém inteligente.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Atua na camada de <strong>Aplicação</strong>.</li>
+                  <li>• Toma decisões baseadas em <strong>HTTP/HTTPS</strong> (Lê URLs, Headers, Cookies).</li>
+                  <li>
+                    • Consegue fazer <em>Roteamento Baseado em Caminho</em> (ex: <code>/api</code> vai para o Servidor A, <code>/imagens</code> vai
+                    para o Servidor B).
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Conceitos Avançados: Health Check e Sticky Sessions -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🧠</span> Conceitos de Prova (Vocabulário)
+          </h2>
+          <div class="flex flex-col gap-4">
+            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded-lg border-l-4 border-emerald-500">
+              <strong class="block text-slate-800 dark:text-white">Health Checks (Verificações de Integridade)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                O Load Balancer "pinga" continuamente os servidores (ex: chama uma página <code>/status</code> a cada 10 segundos). Se o servidor não
+                responder `HTTP 200 OK` após X tentativas, o LB marca a máquina como
+                <span class="text-red-500 font-bold">Unhealthy (Não Saudável)</span> e para de mandar utilizadores para ela, redirecionando o tráfego
+                para os sobreviventes.
+              </p>
+            </div>
+
+            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded-lg border-l-4 border-orange-500">
+              <strong class="block text-slate-800 dark:text-white">Sticky Sessions (Afinidade de Sessão)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                Por defeito, o LB manda cada clique do utilizador para uma máquina diferente (Round Robin). Com <em>Sticky Sessions</em>, o LB usa um
+                Cookie para garantir que o Utilizador "A" seja <strong>sempre</strong> direcionado para o Servidor "1" durante toda a sua visita (útil
+                em aplicações legadas que guardam a sessão na RAM da máquina).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Quem cria a máquina?</strong><br />
+                A banca diz: "O Load Balancer, ao identificar um pico de acesso no site, provisiona imediatamente novas instâncias virtuais para
+                suportar a carga extra."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Load Balancer <strong>não cria máquinas</strong>, ele apenas distribui o tráfego entre as máquinas que já existem. Quem monitoriza e
+                manda criar novas instâncias é o <strong>Auto Scaling Group</strong>.
+              </li>
+              <li>
+                <strong>Cuidado com o Scale-IN (Redução):</strong><br />
+                "As políticas de Auto Scaling garantem o aumento da infraestrutura (Scale-Out) para prevenir inatividade, mas a redução das máquinas
+                após o pico deve ser feita manualmente pelo administrador de sistemas."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Auto Scaling possui políticas tanto para aumentar (Scale-Out) quanto para diminuir (Scale-In) os recursos
+                <strong>automaticamente</strong>, otimizando assim os custos financeiros (pilar da Elasticidade).
+              </li>
+              <li>
+                <strong>Roteamento por URL no Network Load Balancer:</strong><br />
+                "Para direcionar as requisições do caminho '/imagens' para um servidor de media e '/api' para um servidor backend, utiliza-se o
+                balanceamento de camada 4."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Camada 4 (Transporte) só entende IP e Porta. Para ler o caminho da URL (`/imagens`), o balanceador precisa "abrir" o pacote HTTP, o
+                que exige um <strong>Application Load Balancer (Camada 7)</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Balanceamento de Carga (Load Balancing)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>Balanceamento de Carga</strong> é o processo metodológico de distribuição de tráfego de rede concorrente entre um grupo de
+              servidores backend. O objetivo principal é garantir que nenhum servidor singular fique sobrecarregado (o que causaria lentidão ou
+              queda), aumentando assim a responsividade e a <strong>Alta Disponibilidade</strong> da aplicação.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Algoritmos de Distribuição (Como ele escolhe quem atende?)</h3>
+            <p>Bancas mais exigentes podem questionar a lógica interna do balanceador. Os algoritmos mais comuns são:</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Round Robin:</strong> As requisições são distribuídas sequencialmente (cíclico). O servidor 1 atende o pedido A, o servidor 2
+                atende o pedido B, o servidor 3 atende o pedido C, e o servidor 1 atende o pedido D. Simples e previsível.
+              </li>
+              <li>
+                <strong>Least Connections (Menos Conexões Ativas):</strong> O balanceador verifica quem tem a menor quantidade de sessões abertas no
+                momento e encaminha a requisição nova para o servidor "mais ocioso". É excelente quando as requisições duram tempos variados.
+              </li>
+              <li>
+                <strong>IP Hash:</strong> O balanceador aplica uma função matemática (Hash) sobre o endereço de IP do cliente. Isso garante que o
+                mesmo IP sempre caia na mesma máquina (muito usado como forma alternativa de <em>Sticky Session</em>).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Camadas OSI no Balanceamento
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Entender o Modelo OSI é fundamental. Na nuvem moderna, dividimos os balanceadores em duas categorias principais de arquitetura:</p>
+
+            <h3 class="text-lg font-bold text-sky-600 dark:text-sky-400 mt-4 mb-2">Layer 4 (Camada de Transporte)</h3>
+            <p>
+              O <em>Network Load Balancer</em> não analisa o conteúdo da mensagem. Ele atua cegamente encaminhando pacotes com base no
+              <strong>IP de origem/destino e na porta (TCP/UDP)</strong>. Por não ter que descriptografar pacotes SSL/TLS ou ler Cabeçalhos HTTP, ele
+              é capaz de processar milhões de requisições por segundo mantendo latências na ordem dos milissegundos. É a escolha ideal para jogos
+              online ou streaming de dados brutos.
+            </p>
+
+            <h3 class="text-lg font-bold text-sky-600 dark:text-sky-400 mt-4 mb-2">Layer 7 (Camada de Aplicação)</h3>
+            <p>
+              O <em>Application Load Balancer</em> atua no topo da pilha. Ele abre o pacote HTTP/HTTPS, analisa cookies, cabeçalhos, e o URL exato
+              (ex: <code>meusite.com/videos</code>). Com essa "inteligência", ele pode tomar decisões complexas de roteamento (ex: "Se for via
+              smartphone Android, mandar para o servidor Y; se for PC, mandar para servidor X"). É mais lento que o L4, mas indispensável para
+              microsserviços modernos.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Autoescalonamento (Auto Scaling)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>Auto Scaling</strong> é o serviço responsável por garantir que o sistema tenha a quantidade exata (e necessária) de instâncias
+              executando a aplicação. Ele concretiza o pilar da <span class="hl-yellow">Elasticidade</span> do NIST.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">Políticas de Escalonamento (Gatilhos)</h3>
+            <p>
+              Como o Auto Scaling decide criar ou destruir uma máquina? Ele depende de métricas (via sistemas de monitorização como o CloudWatch na
+              AWS). As estratégias são:
+            </p>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>Rastreamento de Meta (Target Tracking):</strong> Você define um alvo contínuo. "Quero que a utilização média de CPU do meu
+                grupo de servidores fique sempre em torno de 50%". O Auto Scaling adiciona ou remove máquinas sozinho para manter a balança em 50%.
+              </li>
+              <li>
+                <strong>Escalonamento por Etapas (Step Scaling):</strong> Responde a alertas específicos. Ex: "Se a memória RAM passar de 80%, crie 2
+                máquinas. Se a RAM passar de 90%, entre em pânico e crie logo 5 máquinas extras".
+              </li>
+              <li>
+                <strong>Escalonamento Agendado (Scheduled Scaling):</strong> Escalonamento preditivo com base no calendário (cronograma). Você
+                <em>sabe</em> que o sistema do TCE-MA será bombardeado pelos autarcas no dia 31 do mês às 08:00h. Você agenda o Auto Scaling para
+                iniciar 10 máquinas novas às 07:45h.
+              </li>
+            </ul>
+
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4">
+              <strong class="text-sky-800 dark:text-sky-300">Resfriamento (Cooldown Period)</strong><br />
+              <span class="text-sm">
+                Após criar (ou destruir) uma máquina, o Auto Scaling entra num <em>período de resfriamento</em> (ex: 300 segundos). Durante esse
+                tempo, ele pausa novas avaliações. Isso previne que o sistema fique "louco" e crie 50 máquinas de uma vez antes de a primeira máquina
+                nova ter tido a chance de ligar e aliviar a CPU do grupo.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            🔗 4. A Dança: Como os dois se conectam?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Em uma arquitetura tolerante a falhas na nuvem, o Load Balancer e o Auto Scaling Group trabalham acoplados.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            Se o <strong>Health Check</strong> do Load Balancer perceber que a "Máquina B" parou de responder, o Load Balancer para de mandar tráfego
+            para ela. Ele avisa o <strong>Auto Scaling</strong> de que aquela máquina está corrompida. O Auto Scaling a destrói impiedosamente
+            (Termina a instância) e liga uma "Máquina C" limpa e nova. Assim que a Máquina C inicializar, o Auto Scaling a regista no Load Balancer,
+            que retoma a distribuição do tráfego. Essa é a magia dos sistemas auto-recuperáveis (<em>Self-healing</em>).
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
