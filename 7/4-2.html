@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gestão de Identidade e Acesso (IAM)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 4.2
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Gestão de Identidade e Acesso (IAM)
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Duelo: AuthN vs AuthZ -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛡️ O Duelo: Autenticação vs Autorização</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">NÃO CONFUNDA!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Autenticação -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-6xl opacity-20">👤</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">Autenticação (AuthN)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Verifica a <strong>IDENTIDADE</strong>.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Responde: <strong class="text-white">"Quem é você?"</strong></li>
+                  <li>• Valida as credenciais apresentadas.</li>
+                  <li>• <em>Exemplos:</em> Inserir usuário e senha, leitura de biometria, Token de MFA.</li>
+                </ul>
+              </div>
+
+              <!-- Autorização -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-6xl opacity-20">🗝️</div>
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">Autorização (AuthZ)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Verifica as <strong>PERMISSÕES</strong>.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Responde: <strong class="text-white">"O que você pode fazer?"</strong></li>
+                  <li>• Ocorre <strong>APÓS</strong> a autenticação.</li>
+                  <li>• <em>Exemplos:</em> Permitir a leitura de um arquivo, mas bloquear a deleção.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RBAC vs ABAC -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🎭</span> Como dar permissões? (RBAC)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 border border-sky-200 dark:border-sky-800 rounded-lg shadow-sm">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">RBAC (Role-Based Access Control)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Acesso baseado em <strong>Papéis (Cargos)</strong>. Em vez de dar permissão ao "João", você cria o papel <em>"Analista_BD"</em> com as
+                devidas permissões, e atribui o João a esse papel. Muito mais fácil de administrar em larga escala.
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <strong class="text-slate-700 dark:text-slate-300 block mb-1">ABAC (Attribute-Based Access Control)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Acesso baseado em <strong>Atributos</strong> (Condições). Ex: "Permitir apagar arquivos" SOMENTE SE "o atributo for Horário Comercial
+                (08h às 18h)" ou "IP de origem for da rede interna". Mais granular, porém mais complexo.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Trindade do MFA -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🔐</span> A Trindade do MFA
+          </h2>
+          <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+            MFA (Multi-Factor Authentication) exige <strong>pelo menos DOIS fatores de naturezas DIFERENTES</strong> para liberar o acesso.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded-lg shadow-sm text-center">
+              <div class="text-3xl mb-2">🧠</div>
+              <strong class="text-indigo-700 dark:text-indigo-400 block mb-1">Algo que você SABE</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">(Conhecimento) <br />Senha, PIN, Pergunta de segurança.</p>
+            </div>
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 border border-orange-200 dark:border-orange-800 rounded-lg shadow-sm text-center">
+              <div class="text-3xl mb-2">📱</div>
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1">Algo que você TEM</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">(Posse) <br />Smartphone (Google Authenticator), Token físico USB, Smartcard.</p>
+            </div>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 border border-emerald-200 dark:border-emerald-800 rounded-lg shadow-sm text-center">
+              <div class="text-3xl mb-2">👁️</div>
+              <strong class="text-emerald-700 dark:text-emerald-400 block mb-1">Algo que você É</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">(Inerência) <br />Impressão digital, Reconhecimento facial ou de íris.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Falso MFA:</strong><br />
+                A banca diz: "Um sistema que exige a digitação de uma senha alfanumérica forte e, na tela seguinte, a digitação de um PIN numérico
+                (ambos memorizados), implementa corretamente o MFA."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Isso é <em>Single-Factor Authentication</em> com dois passos (ambos são fatores de <strong>Conhecimento</strong>). O MFA exige fatores
+                de <strong>CATEGORIAS DIFERENTES</strong> (ex: Senha [Saber] + App Gerador de Código no Celular [Ter]).
+              </li>
+              <li>
+                <strong>RBAC: Usuários com permissão direta:</strong><br />
+                "No modelo RBAC, a maior segurança é obtida atribuindo as permissões restritivas diretamente ao objeto do Usuário."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O propósito absoluto do RBAC é <strong class="underline decoration-red-500">NÃO</strong> atribuir permissões a usuários diretamente.
+                As permissões são atreladas aos <strong>Roles (Papéis)</strong> e os usuários herdam essas permissões ao serem alocados nesses papéis.
+              </li>
+              <li>
+                <strong>Usuário Root vs IAM User:</strong><br />
+                "O usuário Root (conta principal) deve ser compartilhado entre a equipe de administração sênior para tarefas diárias de infraestrutura
+                na nuvem."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O usuário Root deve ter o MFA ativado, as chaves de acesso deletadas, e ser <strong>guardado a sete chaves</strong>. Ninguém usa a
+                Root Account no dia a dia. Cria-se usuários IAM com privilégios administrativos para o trabalho diário.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. IAM (Identity and Access Management)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>IAM (Gerenciamento de Identidade e Acesso)</strong> é o <em>framework</em> de políticas e tecnologias que garante que as
+              pessoas certas na organização tenham o acesso adequado aos recursos tecnológicos corretos.
+            </p>
+            <p>
+              Na nuvem, o IAM é o "Segurança da Porta". Ele controla absolutamente tudo, desde quem pode fazer login no painel da AWS/Azure até qual
+              máquina virtual pode ler arquivos num bucket de armazenamento.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Trindade do IAM</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li><strong>Identificação:</strong> Estabelecer quem é o sujeito (ex: Username).</li>
+              <li><strong>Autenticação (AuthN):</strong> Provar que o sujeito é quem diz ser (ex: Senha, MFA).</li>
+              <li>
+                <strong>Autorização (AuthZ):</strong> Conceder permissões para que o sujeito autenticado realize ações específicas (ex: "Pode ler",
+                mas "Não pode deletar").
+              </li>
+            </ul>
+
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4">
+              <strong class="text-sky-800 dark:text-sky-300">Princípio do Menor Privilégio (PoLP)</strong><br />
+              <p class="text-sm mt-1">
+                Regra universal em cibersegurança: O sistema <strong>Nega tudo por padrão (Default Deny)</strong>. O usuário (ou máquina) deve receber
+                <span class="hl-yellow">apenas as permissões estritamente necessárias</span> para realizar sua função, e nada além disso.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. RBAC (Role-Based Access Control)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Gerenciar permissões individualmente (conhecido como <em>Discretionary Access Control - DAC</em>) é um pesadelo logístico. Se uma
+              empresa tem 5.000 funcionários, dar permissão um por um geraria caos.
+            </p>
+            <p>
+              O <strong>RBAC</strong> resolve isso abstraindo o usuário das permissões. As permissões são vinculadas a
+              <span class="hl-sky">Roles (Papéis/Cargos)</span>, e não a indivíduos.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>Cria-se a <em>Role</em> "Desenvolvedor_Senior".</li>
+              <li>Atribui-se a essa Role permissões para acessar os servidores de Homologação e Banco de Dados de Teste.</li>
+              <li>O funcionário "João" é associado à Role "Desenvolvedor_Senior", herdando as permissões automaticamente.</li>
+              <li>
+                Se o João for promovido a "Gerente", basta retirá-lo da Role atual e colocá-lo na nova. Não é necessário revogar permissões
+                individuais.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Roles para Máquinas (IAM Roles)</h3>
+            <p>Na nuvem, as "Roles" (Funções) têm um papel ainda mais crítico: <strong>credenciais temporárias para servidores</strong>.</p>
+            <p class="text-sm border-l-2 border-slate-300 dark:border-slate-600 pl-3">
+              Nunca se deve "chumbar" (hardcode) senhas ou chaves de API no código de um sistema. Em vez disso, cria-se uma Role ("Permissão para
+              gravar no Storage") e a atrela à Máquina Virtual (EC2). Quando a VM liga, ela <em>assume</em> aquela Role e ganha permissões
+              <span class="hl-green">sem precisar de senhas fixas</span> (ela usa tokens temporários rotacionados automaticamente).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. MFA (Autenticação Multifator)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              MFA é a camada de segurança que mitiga o risco de comprometimento de senhas (ex: ataques de *Phishing*, força bruta ou credenciais
+              vazadas em brechas de terceiros).
+            </p>
+            <p>
+              Mesmo que o atacante tenha a sua senha, ele não conseguirá entrar, pois não possui o "segundo fator". Para ser MFA válido, é mandatório
+              combinar fatores de <strong>categorias diferentes</strong>:
+            </p>
+
+            <ul class="list-disc pl-6 space-y-3 mt-4 text-sm">
+              <li><strong>Fator de Conhecimento:</strong> Algo que o usuário sabe de cor. (Senha, PIN, Pergunta Secreta, Padrão de desbloqueio).</li>
+              <li>
+                <strong>Fator de Posse:</strong> Algo que o usuário possui fisicamente. (Telefone celular com app Authenticator gerando TOTP - Token
+                Baseado no Tempo; Chave de Segurança USB FIDO/YubiKey; Token de Hardware do banco).
+              </li>
+              <li>
+                <strong>Fator de Inerência (Biometria):</strong> Algo que faz parte de quem o usuário é biologicamente ou comportamentalmente.
+                (Impressão Digital, Geometria da face, Scanner de Íris, Reconhecimento de voz).
+              </li>
+            </ul>
+
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 rounded border-l-4 border-orange-500 mt-4 text-sm">
+              <strong class="text-orange-800 dark:text-orange-300">Fatores Contextuais (Bônus):</strong><br />
+              A segurança moderna também avalia "Fatores de Localização/Tempo" (Algo de onde você está). Ex: O login feito no Brasil sempre dá certo.
+              Um login feito na Rússia, 2 minutos depois, exigirá um bloqueio ou passo extra de verificação (Autenticação Baseada em Risco).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            📄 4. Como as Políticas (Policies) são escritas?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Tanto AWS, Azure quanto GCP utilizam documentos formatados (usualmente JSON) para ditar as regras do IAM. É importante entender a
+            estrutura mental de uma "Policy". Uma apólice de permissão básica responde:
+          </p>
+          <ul class="list-none pl-2 space-y-2 mt-2 text-sm text-slate-700 dark:text-slate-400">
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Effect (Efeito):</strong> É um <code>Allow</code> (Permitir) ou um
+              <code>Deny</code> (Negar)? O Deny explícito sempre sobrepõe o Allow.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Action (Ação):</strong> O que ele quer fazer? (ex: <code>s3:ListBucket</code>,
+              <code>ec2:StartInstances</code>).
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Resource (Recurso):</strong> Em qual item ele pode fazer isso? (ex: Somente no
+              banco de dados X, e não em todos os bancos).
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Condition (Condição - Opcional):</strong> ABAC entra aqui. "Permitir isso APENAS SE
+              ele fez login usando MFA".
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

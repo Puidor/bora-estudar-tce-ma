@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Criptografia em Trânsito e Repouso (TLS, KMS)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 4.3
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Criptografia: Trânsito e Repouso
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Os Dois Estados dos Dados -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 Os Dois Estados dos Dados</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">A BASE DA QUESTÃO</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Dados em Trânsito -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-6xl opacity-20">🌐</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">Dados em Trânsito (In Transit)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Os dados estão "viajando" pela rede.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>
+                    • Ameaça Principal: <strong>Man-in-the-Middle (MITM)</strong> e <em>Sniffing</em>. Alguém "escutar" o pacote no meio do caminho.
+                  </li>
+                  <li>• Solução Primária: <strong>Protocolo TLS</strong> (Transport Layer Security) e IPSec (VPNs).</li>
+                  <li>• Exemplo Clássico: Acessar uma página web usando HTTPS (onde o S significa *Secure* via TLS).</li>
+                </ul>
+              </div>
+
+              <!-- Dados em Repouso -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-6xl opacity-20">💾</div>
+                <h3 class="font-bold text-emerald-400 mb-2 uppercase text-sm border-b border-emerald-500/30 pb-2">Dados em Repouso (At Rest)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Os dados estão parados "no disco".</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Ameaça Principal: Alguém invadir o datacenter, roubar o HD e ligá-lo num outro computador para ler os ficheiros brutos.</li>
+                  <li>• Solução Primária: <strong>Criptografia de Disco/Volume</strong> ou criptografia de objetos no Bucket (S3/Blob).</li>
+                  <li>• Ferramenta de Nuvem: O <strong>KMS</strong> (Key Management Service) gera as chaves que encriptam estes discos.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TLS -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🔒</span> TLS (Transport Layer Security)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <strong class="text-slate-800 dark:text-white block mb-2">O que é?</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                É o sucessor mais moderno e seguro do antigo SSL. Ele cria um "túnel" criptográfico para os dados enquanto viajam pela rede (internet
+                pública ou dentro da própria VPC).
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <strong class="text-slate-800 dark:text-white block mb-2">A Mágica Híbrida do TLS</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Usa o "melhor dos dois mundos". Usa <strong>Criptografia Assimétrica</strong> (Chave Pública/Privada) no momento do "Handshake"
+                (aperto de mão) para combinar as senhas em segurança, e depois muda para <strong>Criptografia Simétrica</strong> para encriptar a
+                transferência pesada de dados de forma rápida.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- KMS -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🔑</span> KMS (Key Management Service)
+          </h2>
+          <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+            Em nuvem, "gerir senhas de encriptação" é tão perigoso quanto a própria ameaça de invasão. Se você perder a chave que encriptou seu banco
+            de dados (que está em repouso), você perde <strong>todos os seus dados para sempre</strong>. O KMS é o serviço centralizado da nuvem para
+            criar, guardar e rodar as chaves de criptografia.
+          </p>
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded-lg text-center">
+              <strong class="text-indigo-700 dark:text-indigo-400 block mb-1 text-sm">Geração Segura</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Usa HSMs (Hardware Security Modules) certificados por entidades de segurança (FIPS 140-2) para criar números perfeitamente aleatórios
+                impossíveis de adivinhar.
+              </p>
+            </div>
+            <div class="flex-1 bg-orange-50 dark:bg-orange-900/10 p-4 border border-orange-200 dark:border-orange-800 rounded-lg text-center">
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1 text-sm">Rotação Automática</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                O KMS pode ser configurado para gerar uma chave nova a cada ano de forma automática e "re-encriptar" tudo por baixo dos panos,
+                cumprindo normativos de segurança bancária.
+              </p>
+            </div>
+            <div class="flex-1 bg-emerald-50 dark:bg-emerald-900/10 p-4 border border-emerald-200 dark:border-emerald-800 rounded-lg text-center">
+              <strong class="text-emerald-700 dark:text-emerald-400 block mb-1 text-sm">Envelope Encryption</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                A técnica avançada de performance: A AWS cria uma chave gigante de segurança. Usa essa chave para encriptar os dados (Chave de Dados),
+                e depois <em>usa a Chave Mestre (KMS) para encriptar a própria chave de dados!</em>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>O Nome da Ferramenta errada:</strong><br />
+                A banca diz: "Para proteger os arquivos sensíveis de um sistema do governo contra o roubo físico dos discos no datacenter da nuvem, a
+                equipa deve forçar o uso do protocolo TLS (Transport Layer Security) nos <em>Buckets</em> (Armazenamento de Objetos)."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Roubo físico de HD ataca dados <strong>em Repouso (At Rest)</strong>. O <strong>TLS</strong> protege apenas dados
+                <strong>em Trânsito</strong> (quando "voam" pela rede). Para o disco, a solução correta é Server-Side Encryption gerido pelo
+                <strong>KMS</strong>.
+              </li>
+              <li>
+                <strong>KMS x Senhas Locais (Exportação):</strong><br />
+                "Uma grande vantagem do AWS KMS é permitir que o administrador de sistemas do TCE-MA exporte a Chave Mestre (Customer Master Key -
+                CMK) e a guarde num ficheiro de texto localmente num servidor do tribunal como backup."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso Absoluto!</span
+                >
+                As chaves mestres do KMS (CMKs) administradas na nuvem <strong>JAMAIS, sob nenhuma hipótese</strong>, saem (são exportadas) do KMS de
+                forma desencriptada. Elas nascem lá e morrem lá dentro do HSM. O KMS processa os pedidos de encriptação internamente e só envia os
+                "dados já encriptados" de volta. Essa inexportabilidade é a fundação da segurança do KMS.
+              </li>
+              <li>
+                <strong>SSL vs TLS:</strong><br />
+                A banca tentará te enganar sugerindo que "o SSL (Secure Sockets Layer) versão 3.0 ainda é o protocolo de eleição oficial para proteger
+                dados na nuvem devido à sua alta performance."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O SSL é <strong>antigo, obsoleto e foi deprecado</strong> devido a graves falhas de segurança (como o bug POODLE). O TLS (1.2 e 1.3) é
+                o único padrão contemporâneo válido e exigido em normativas de cibersegurança do governo federal para substituir o velho SSL.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Criptografia em Trânsito (Data in Transit)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando os dados se movimentam (seja entre o telemóvel do cidadão e o balanceador de carga do TCE, ou entre a máquina virtual X e o banco
+              de dados Y dentro do próprio datacenter fechado), eles estão num estado vulnerável a interceções. A isso chamamos "Dados em Trânsito".
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Resposta Definitiva: TLS</h3>
+            <p>
+              A proteção padrão para o ambiente web (HTTPS) é o <strong>TLS (Transport Layer Security)</strong>, o sucessor histórico do SSL. No
+              modelo de nuvem, a terminação de TLS (<em>TLS Termination</em>) geralmente acontece no Load Balancer (Application Load Balancer) ou numa
+              CDN (como CloudFront/Cloudflare).
+            </p>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300">O Paradoxo da Performance no "Backend"</strong><br />
+              <p class="mt-1">
+                Uma decisão clássica de arquitetura de nuvem: O Load Balancer descriptografa o TLS (gastando muita CPU com criptografia) e analisa o
+                URL. A partir dali, para ganhar velocidade e aliviar a carga nos servidores backend da VPC (já que é uma rede privada interna), o
+                tráfego <em>poderia</em> seguir em formato "puro" (sem TLS). <strong class="hl-yellow">Mas atenção:</strong> A tendência atual de
+                "Zero Trust" (Confiança Zero) obriga que <strong>mesmo o tráfego de backend interno da VPC seja criptografado</strong> via TLS de
+                ponta a ponta (End-to-End Encryption).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Criptografia em Repouso (Data at Rest)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Dados em Repouso referem-se aos arquivos salvos permanentemente num meio de armazenamento (HDDs de servidores EC2, Armazenamento em
+              Bloco EBS ou em Objetos como o Amazon S3).
+            </p>
+            <p>
+              Neste cenário, não adianta ter TLS na ligação. Se um intruso subornar um funcionário do datacenter da Amazon para ele desconectar um
+              disco físico e sair pela porta principal, o invasor terá tudo. A defesa em profundidade obriga a <strong>Criptografia no Disco</strong>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">SSE (Server-Side Encryption) vs CSE (Client-Side Encryption)</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong>CSE (Client-Side Encryption):</strong> O cliente (programador do TCE) encripta o PDF na memória RAM do próprio servidor do
+                tribunal, usando uma biblioteca do Java/C#. Ele envia o "lixo ininteligível" pela rede (já protegido) para salvar no provedor da
+                nuvem. A AWS guarda o arquivo e <span class="hl-red">não tem a menor ideia do que está lá dentro nem de qual foi a chave usada</span>.
+              </li>
+              <li>
+                <strong>SSE (Server-Side Encryption):</strong> A forma mais comum. Você envia o PDF para o serviço da Amazon S3 ou pro Banco de Dados
+                RDS. Antes de guardar o ficheiro no HDD magnético, o <strong>próprio serviço da nuvem encripta a informação no lado deles</strong>,
+                recorrendo ao serviço KMS, de forma transparente.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. KMS (Key Management Service)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O AWS KMS (ou Azure Key Vault) é o serviço onde nascem e operam as chaves criptográficas da nuvem. Ele simplifica enormemente a
+              complexidade de gerir "segredos" para milhares de servidores.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">O Conceito de Chave Mestra e Envelope Encryption</h3>
+            <p>
+              Na nuvem, lidamos com Petabytes de dados (milhões de GBs). Criptografar toda essa montanha usando uma única chave enviada para um
+              servidor KMS pela internet demoraria dias e paralisaria o sistema. Para contornar a lentidão física de comunicação, utiliza-se a técnica
+              de <strong>Envelope Encryption</strong>.
+            </p>
+            <ol
+              class="list-decimal pl-6 mt-4 space-y-2 text-sm bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 rounded"
+            >
+              <li>
+                O KMS possui uma <strong>Chave Mestre do Cliente (CMK)</strong> super forte. Esta chave <strong>NUNCA SAI</strong> das entranhas
+                físicas de hardware do KMS.
+              </li>
+              <li>Quando o seu servidor (VM) precisa encriptar um arquivo pesado de 10GB, ele pede uma "chave descartável" (Data Key) para o KMS.</li>
+              <li>
+                O KMS gera a Data Key. Mas ele devolve para a sua VM <strong class="text-sky-600 dark:text-sky-400">duas versões desta chave</strong>:
+                uma versão em texto simples (que a sua VM vai usar na memória RAM instantaneamente para encriptar o ficheiro gigante e depois vai
+                apagá-la) e uma versão <strong class="text-red-600 dark:text-red-400">encriptada</strong> (que foi selada pela Chave Mestre lá dentro
+                do KMS).
+              </li>
+              <li>Sua VM anexa a versão encriptada da Data Key (o "envelope") ao lado do ficheiro gigante criptografado e guarda isso no disco.</li>
+              <li>
+                Se alguém roubar o disco, ele não terá acesso à chave mestra, por conseguinte não poderá "abrir o envelope" para decifrar a Data Key,
+                e jamais conseguirá ler o arquivo!
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            🏷️ 4. CMK (Gerenciado pela AWS vs Cliente)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            As bancas também questionam os "Sabores" das chaves no KMS. Existem três modelos fundamentais de CMK (Customer Master Keys):
+          </p>
+          <ul class="list-none pl-2 space-y-2 mt-2 text-sm text-slate-700 dark:text-slate-400">
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">AWS Managed Key (Gerenciada pela AWS):</strong> É gratuita. A AWS cria as chaves
+              para proteger seus buckets (SSE-S3). Você não escolhe quando a chave rotaciona (muda a senha periodicamente) nem pode alterar suas
+              permissões; a AWS assume 100% da gestão do cofre para ti.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Customer Managed Key (Gerenciada pelo Cliente):</strong> É paga. O material
+              criptográfico é gerado pela AWS, mas <strong>o cliente</strong> tem total domínio. Ele configura a política do IAM dizendo quais
+              utilizadores ou instâncias da nuvem podem aceder àquela chave específica, pode desativá-la e pode determinar que a rotação ocorra
+              exatamente de 1 em 1 ano, cumprindo normas estritas.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">BYOK (Bring Your Own Key):</strong> Usado em clientes de extrema paranoia de
+              segurança (setor militar). Em vez da AWS gerar a matemática da chave no HSM dela, o banco local gera a chave nos seus HSMs on-premises e
+              <em>importa</em> (faz o upload seguro) para a nuvem da AWS.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

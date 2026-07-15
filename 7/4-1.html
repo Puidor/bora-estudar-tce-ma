@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Redes e Segurança em Nuvem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 4.1
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Redes, Sub-redes, VPNs e Segurança
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- Conceitos VPC e Sub-redes -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🌐</span> VPC e Sub-redes
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 border border-sky-200 dark:border-sky-800 rounded-lg">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">VPC (Virtual Private Cloud)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Uma rede virtual isolada logicamente dentro do provedor (como um <em>datacenter virtual</em>). Você define o seu próprio intervalo de
+                endereços IP (CIDR).
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg">
+              <strong class="text-slate-700 dark:text-slate-300 block mb-1">Sub-rede (Subnet)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Fatia a VPC em pedaços menores. Pode ser <strong>Pública</strong> (tem rota direta para a internet) ou <strong>Privada</strong> (não
+                tem ligação direta com o exterior).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- O Duelo: SG vs NACL -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛡️ Security Groups vs NACLs</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">CAI SEMPRE!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead class="text-xs uppercase bg-slate-800 text-slate-400">
+                <tr>
+                  <th class="px-6 py-4 border-r border-slate-700">Característica</th>
+                  <th class="px-6 py-4 border-r border-slate-700 text-sky-400 w-2/5">Security Group (SG)</th>
+                  <th class="px-6 py-4 text-fuchsia-400 w-2/5">NACL (Network ACL)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-700">
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium">Onde atua?</td>
+                  <td class="px-6 py-4 border-l border-slate-700 font-bold text-white">Nível da Instância (VM)</td>
+                  <td class="px-6 py-4 border-l border-slate-700 font-bold text-white">Nível da Sub-rede (Subnet)</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-6 py-4 font-medium">Estado (MUITO COBRADO)</td>
+                  <td class="px-6 py-4 border-l border-slate-700 text-emerald-400"><strong>STATEFUL (Com estado)</strong></td>
+                  <td class="px-6 py-4 border-l border-slate-700 text-red-400"><strong>STATELESS (Sem estado)</strong></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium">Comportamento de Retorno</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Se a requisição entrou, o tráfego de retorno é permitido automaticamente.</td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    O tráfego de retorno precisa de uma regra <strong>explícita</strong> permitindo a saída.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-6 py-4 font-medium">Tipos de Regras</td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    Só suporta regras de <strong>Permissão (Allow)</strong>. Tudo que não for permitido é negado.
+                  </td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    Suporta regras de <strong>Permissão e Negação (Deny)</strong>. Avaliadas por número de ordem.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Gateways e VPN -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🚪</span> Gateways e VPNs
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 border border-emerald-200 dark:border-emerald-800 rounded-lg shadow-sm">
+              <strong class="text-emerald-700 dark:text-emerald-400 block mb-1">IGW (Internet Gateway)</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                A porta para o mundo exterior. Permite comunicação <strong>bidirecional</strong> (entrada e saída) entre instâncias na VPC e a
+                internet.
+              </p>
+            </div>
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 border border-orange-200 dark:border-orange-800 rounded-lg shadow-sm">
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1">NAT Gateway</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Permite que máquinas em sub-redes privadas acedam à internet (para baixar atualizações), mas <strong>impede</strong> que a internet
+                inicie conexões com elas (Unidirecional).
+              </p>
+            </div>
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 p-4 border border-indigo-200 dark:border-indigo-800 rounded-lg shadow-sm">
+              <strong class="text-indigo-700 dark:text-indigo-400 block mb-1">Site-to-Site VPN</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Conexão encriptada por IPsec. Liga o Datacenter físico do seu escritório diretamente à VPC da nuvem, como se estivessem na mesma rede
+                local.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Stateful x Stateless:</strong><br />
+                A banca inverte de propósito: "Security Groups atuam como firewalls stateless no nível da instância."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Guarde isto para a vida: <strong>S</strong>ecurity Group = <strong>S</strong>tateful (Lembram-se do estado). NACL = Stateless
+                (Amnésia).
+              </li>
+              <li>
+                <strong>Onde fica o NAT Gateway?</strong><br />
+                A banca diz: "Para dar acesso à internet aos servidores de banco de dados, o administrador deve colocar um NAT Gateway na sub-rede
+                privada onde os bancos de dados estão."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O NAT Gateway serve as sub-redes privadas, mas ele <strong>DEVE ser instanciado dentro de uma Sub-rede PÚBLICA</strong> (pois ele
+                precisa de uma rota para o Internet Gateway para poder "sair").
+              </li>
+              <li>
+                <strong>Regras de Deny (Negação) no Security Group:</strong><br />
+                "O analista configurou o Security Group da aplicação web para negar explicitamente qualquer tráfego vindo do IP de um atacante
+                conhecido."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Security Groups <strong class="underline decoration-red-500">não possuem regras de DENY</strong>. O que não tem "Allow" é simplesmente
+                barrado. Se quiser bloquear um IP específico explicitamente (regra Deny), você é obrigado a usar uma
+                <strong>NACL (Network ACL)</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Fundação: VPC e Sub-redes
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Qualquer arquitetura séria em nuvem começa na rede. O bloco fundamental é a
+              <span class="hl-sky">VPC (Virtual Private Cloud - terminologia da AWS)</span> ou
+              <strong>VNet (Virtual Network - terminologia Azure)</strong>.
+            </p>
+            <p>
+              A VPC é a sua rede lógica isolada dentro da vasta nuvem pública do provedor. É como se você construísse um muro invisível em torno de
+              uma fatia do datacenter da Amazon ou da Microsoft.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Sub-redes (Subnets)</h3>
+            <p>
+              Ao criar a VPC, você define um bloco de IPs grande (ex: 10.0.0.0/16). Para organizar as máquinas, fatiamos esse bloco grande em
+              sub-redes menores. Existem dois tipos críticos para as arquiteturas em nuvem:
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Sub-rede Pública:</strong> O tráfego desta rede tem uma rota que aponta diretamente para a internet (via Internet Gateway).
+                Aqui colocamos Servidores Web, Bastion Hosts e Load Balancers públicos.
+              </li>
+              <li>
+                <strong>Sub-rede Privada:</strong> O tráfego interno <strong>não tem</strong> uma rota direta para o exterior. Ninguém da internet
+                consegue aceder a um IP aqui dentro. Usamos obrigatoriamente para as Bases de Dados e para a camada de Lógica de Negócio (App
+                Servers).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Ponte: Internet Gateway vs NAT Gateway
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Como as máquinas (VMs) dentro da sua VPC comunicam com o mundo exterior? Precisamos de "Gateways" (Portões).</p>
+
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded border-l-4 border-emerald-500 mt-2">
+              <strong class="text-emerald-700 dark:text-emerald-400 block mb-1">Internet Gateway (IGW)</strong>
+              <p class="text-sm">
+                Ele atua nas sub-redes públicas. Providencia comunicação <strong>bidirecional</strong> (entra e sai). Fornece um "alvo" nas suas
+                tabelas de rotas para tráfego rastreável pela internet e realiza a tradução de endereços de rede (NAT) de um IP privado da sua VM para
+                o IP público associado a ela.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded border-l-4 border-orange-500 mt-4">
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1">NAT Gateway (Network Address Translation)</strong>
+              <p class="text-sm">
+                Um servidor na sub-rede <em>privada</em> precisa baixar uma atualização do Linux na internet (ex: <code>apt-get update</code>). Mas
+                ele não tem IP público! É aqui que entra o NAT Gateway. A VM envia o pedido para o NAT Gateway. O NAT mascara o IP privado usando o
+                seu próprio IP público e envia para a web. Quando a atualização chega, o NAT devolve para a máquina privada. <br /><br />
+                <span class="hl-orange text-orange-900 dark:text-orange-100">Crucial:</span> O tráfego no NAT Gateway é
+                <strong>unidirecional</strong>. A máquina privada acede à internet, mas a internet jamais pode iniciar uma conexão com a máquina
+                privada através dele.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. A Barreira: Security Groups e NACLs
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A segurança de rede em nuvem funciona em camadas (Defesa em Profundidade). As duas principais são as ACLs de Rede (NACL) e os Grupos de
+              Segurança (Security Groups).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">Security Group (A Linha de Frente da VM)</h3>
+            <p>Funciona como um firewall virtual no nível da interface de rede da <strong>Instância (Máquina Virtual)</strong>.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Stateful (Com Estado):</strong> Se você abrir a porta 80 (HTTP) para receber um pedido do cliente, o fluxo de resposta
+                (outbound) daquele pacote está automaticamente autorizado, independentemente das regras de saída. Ele "lembra" do pacote que entrou.
+              </li>
+              <li>
+                <strong>Apenas Regras "Allow":</strong> Por omissão (default), ele nega tudo que entra e permite tudo que sai. Para deixar alguém
+                aceder, tem de criar explicitamente uma regra de Permissão (Allow). Não existe regra do tipo "Bloquear o IP X".
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6">NACL (A Barreira do Bairro)</h3>
+            <p>
+              Network Access Control List. Atua no nível da <strong>Sub-rede</strong> (como um porteiro de condomínio fechado, e não da sua casa
+              especificamente).
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Stateless (Sem Estado):</strong> Não tem memória. Se você permitir que uma requisição HTTP entre pela porta 80 (Inbound), você
+                <span class="hl-red">TEM OBRIGATORIAMENTE</span> que criar uma regra de saída (Outbound) permitindo o retorno pelas portas efêmeras
+                (1024-65535). Se não tiver a regra de saída explícita, a resposta morre.
+              </li>
+              <li>
+                <strong>Possui Regras "Deny":</strong> É a ferramenta ideal se sua empresa sofreu um ataque DDoS de uma sub-rede russa específica.
+                Você cria uma NACL com o IP do atacante configurado como `DENY` com número de precedência 1 (Regras de número mais baixo são lidas
+                primeiro).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            🔐 4. Conectando a Nuvem ao Escritório (VPNs)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Mesmo tendo toda a infraestrutura virtualizada numa VPC, empresas muitas vezes precisam de comunicação criptografada com os seus
+            datacenters físicos locais (on-premises) ou com colaboradores trabalhando em home-office. Para isso usamos Virtual Private Networks
+            (VPNs).
+          </p>
+          <ul class="list-disc pl-6 space-y-3 mt-2 text-sm text-slate-700 dark:text-slate-400">
+            <li>
+              <strong>Site-to-Site VPN:</strong> Uma conexão IPsec estável que une dois roteadores fixos. De um lado o Virtual Private Gateway (VGW)
+              da AWS/Azure, do outro lado o roteador (Customer Gateway) físico do escritório. Tudo que trafega pelo túnel é invisível à internet.
+            </li>
+            <li>
+              <strong>Client VPN (Point-to-Site):</strong> Para acesso de utilizadores individuais. O programador instala uma aplicação cliente
+              OpenVPN no seu computador de casa. Quando conectada, a sua máquina recebe um IP local da VPC para conseguir acessar os servidores de
+              base de dados seguros.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Dica: Direct Connect / ExpressRoute:</strong> Quando o túnel IPsec da internet não
+              é suficientemente rápido ou fiável para um banco, o provedor oferece linhas de fibra óptica exclusivas e diretas dedicadas que ligam o
+              datacenter da empresa à nuvem. (AWS Direct Connect / Azure ExpressRoute).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
