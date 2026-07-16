@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Zero Trust Architecture (ZTA)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 4.4
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Zero Trust Architecture (ZTA)
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Conceito Central -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🚫</span> O Paradigma
+          </h2>
+          <div class="bg-sky-50 dark:bg-sky-900/10 border-l-4 border-sky-500 p-4 rounded-r-lg mb-4">
+            <p class="font-bold text-lg text-sky-800 dark:text-sky-300 italic text-center">"Nunca confie, sempre verifique."</p>
+          </div>
+          <p class="text-slate-700 dark:text-slate-300">
+            <strong>Zero Trust (ZTA)</strong> não é um software. É uma filosofia e modelo de arquitetura de rede que abandona a ideia de "rede interna
+            segura". No ZTA, presume-se que a rede já está comprometida e <strong>não há confiança implícita</strong> concedida a nenhum ativo,
+            independentemente de ele estar fisicamente dentro do escritório ou conectado via VPN.
+          </p>
+        </section>
+
+        <!-- A Evolução: Castelo vs Zero Trust -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🏰 O Fim do "Perímetro"</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">COMPARAÇÃO CHAVE</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Castle-and-Moat -->
+              <div class="border border-red-500/50 bg-red-900/20 p-5 rounded-lg">
+                <h3 class="font-bold text-red-400 mb-2 text-sm border-b border-red-500/30 pb-2">Modelo Antigo: Castelo e Fosso</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Confiança baseada na localização da rede.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• O Firewall é o "fosso". Quem está fora não entra.</li>
+                  <li>
+                    • <strong class="text-red-300">O Problema:</strong> Se um <em>hacker</em> passar pelo firewall (ou invadir o PC do estagiário),
+                    ele ganha confiança total e movimenta-se livremente pela rede inteira (Movimentação Lateral).
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Zero Trust -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg">
+                <h3 class="font-bold text-emerald-400 mb-2 text-sm border-b border-emerald-500/30 pb-2">Modelo Atual: Zero Trust</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Confiança baseada em Identidade e Contexto.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• O perímetro não existe mais.</li>
+                  <li>
+                    • <strong class="text-emerald-300">A Solução:</strong> Mesmo que o <em>hacker</em> invada o PC do estagiário, quando esse PC
+                    tentar aceder ao Servidor de Dados que está ao lado dele, terá que se autenticar novamente. A movimentação lateral é bloqueada.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Os Três Pilares -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🏛️</span> Os Três Pilares da Microsoft/NIST
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <div class="text-2xl mb-2">👁️</div>
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Verificação Explícita</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Autenticar e autorizar <strong>sempre</strong>. Usar múltiplos pontos de dados: identidade do utilizador, localização, integridade do
+                dispositivo e anomalias de acesso.
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <div class="text-2xl mb-2">📉</div>
+              <strong class="text-fuchsia-700 dark:text-fuchsia-400 block mb-1">Privilégio Mínimo</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Limitar o acesso de utilizadores com Just-In-Time (apenas na hora exata) e Just-Enough-Access (apenas o necessário), além de políticas
+                rigorosas de acesso baseadas em risco.
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <div class="text-2xl mb-2">💥</div>
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1">Assuma a Violação (Breach)</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Parta do princípio de que os invasores <strong>já estão dentro do ambiente</strong>. Criptografe tudo e utilize
+                <em>microssegmentação</em> para limitar a área de explosão (blast radius).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>ZTA é só Identidade?</strong><br />
+                "O modelo Zero Trust abandona totalmente o controlo de rede e baseia-se única e exclusivamente no controlo de identidade via IAM."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A rede continua sendo crucial. A diferença é que a segurança de rede passa a utilizar <strong>Microssegmentação</strong> (controlos
+                rigorosos e firewalls isolando pequenos grupos de recursos ou aplicações individuais), não apenas um grande firewall de borda.
+              </li>
+              <li>
+                <strong>ZTA substitui a VPN?</strong><br />
+                A banca afirma: "Uma infraestrutura de rede corporativa que implementa uma conexão IPsec VPN (Virtual Private Network) atende
+                integralmente ao paradigma Zero Trust Architecture."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Na verdade, a VPN clássica é <strong>o exato oposto do Zero Trust</strong>. Numa VPN tradicional, uma vez que o utilizador efetua
+                login, ele obtém acesso livre à rede corporativa interna (confiança após o fosso). Soluções ZTNA (Zero Trust Network Access) concedem
+                acesso per-application (àquela aplicação específica), e não à rede toda.
+              </li>
+              <li>
+                <strong>Apenas Tráfego Externo?</strong><br />
+                "Para cumprir os requisitos de ZTA, as organizações devem focar no tráfego <em>North-South</em> (tráfego da internet para a rede
+                interna)."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                ZTA brilha na proteção do tráfego <strong>East-West</strong> (tráfego de servidor interno para servidor interno). Ele assume que a
+                ameaça já transpôs a borda.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Queda do Perímetro e o Nascimento do ZTA
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, as redes de TI eram projetadas como fortalezas. O foco das defesas cibernéticas concentrava-se no "perímetro" (firewalls
+              externos, IDS/IPS de borda). O paradigma era: <strong>pessoas ruins estão fora, pessoas boas estão dentro</strong>.
+            </p>
+            <p>Esse modelo falhou espetacularmente na era moderna devido a três fatores:</p>
+            <ul class="list-decimal pl-6 space-y-2 mt-2 text-sm font-medium">
+              <li>
+                <strong>Computação em Nuvem:</strong> Os dados já não vivem no prédio da empresa. Eles estão espalhados em datacenters da Amazon,
+                Google e Microsoft. O "perímetro" físico desapareceu.
+              </li>
+              <li>
+                <strong>Trabalho Remoto e Dispositivos Pessoais (BYOD):</strong> O funcionário acede à rede de um café público, usando um portátil
+                pessoal.
+              </li>
+              <li>
+                <strong>Movimentação Lateral Avançada:</strong> Os atacantes modernos (Ransomware/Phishing) não atacam o Firewall da borda. Eles
+                enganam um funcionário interno. Uma vez na rede com "confiança cega", eles movem-se de servidor em servidor, silenciosamente, até
+                encontrarem o servidor de bases de dados principal.
+              </li>
+            </ul>
+            <p class="mt-4">
+              A resposta do mercado e de entidades como o NIST (National Institute of Standards and Technology) foi a adoção da
+              <strong>Zero Trust Architecture (ZTA)</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Arquitetura Lógica do Zero Trust (PDP e PEP)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Bancas mais exigentes podem questionar <strong>como</strong> a decisão de acesso é tomada no modelo ZTA. De acordo com o framework do
+              NIST (SP 800-207), o ZTA é orquestrado por dois grandes componentes lógicos que atuam no momento em que um sujeito (utilizador ou
+              máquina) tenta aceder a um recurso empresarial:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <div>
+                <h3 class="text-lg font-bold text-sky-600 dark:text-sky-400 mb-2">1. O Cérebro: Policy Decision Point (PDP)</h3>
+                <p class="text-sm">
+                  É o motor que calcula os riscos e decide se concede, nega ou revoga o acesso a um recurso. Ele pega em milhares de dados:
+                  <em>Qual é o utilizador? O dispositivo dele está com antivírus atualizado? Ele está num país habitual? Que horas são?</em> Com base
+                  na política do órgão, ele toma a decisão em tempo real.
+                </p>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-bold text-fuchsia-600 dark:text-fuchsia-400 mb-2">2. O Músculo: Policy Enforcement Point (PEP)</h3>
+                <p class="text-sm">
+                  É o componente que, de facto, executa as ordens do PDP. O PEP "senta-se" à frente do recurso (pode ser um proxy de aplicação, um
+                  gateway ou um agente instalado no servidor). Se o PDP disser "não", o PEP corta a conexão imediatamente.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300">Controlo por Sessão:</strong>
+              No ZTA, a autenticação e autorização são aplicadas rigorosamente <span class="hl-sky">por sessão</span>. Se você estiver a aceder ao
+              sistema do RH e o seu perfil de risco mudar a meio da sessão (ex: um malware ataca a sua máquina de repente), o PDP instrui o PEP a
+              cortar a ligação no mesmo segundo (Continuous Evaluation).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Como o Zero Trust é implementado na Prática Cloud?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Implementar ZTA não significa comprar uma "caixa com a etiqueta Zero Trust". É a integração de várias tecnologias em Cloud:</p>
+
+            <ul class="list-disc pl-6 space-y-4 mt-4 text-sm">
+              <li>
+                <strong>Microssegmentação:</strong> Abandona-se a ideia de "redes grandes e planas". A rede é fatiada em milhares de micro-zonas
+                (usando <em>Security Groups</em> ou redes baseadas em software). Se um atacante comprometer o "Servidor Web A", ele baterá num muro
+                imediato ao tentar escanear o "Servidor Web B".
+              </li>
+              <li>
+                <strong>Identity-Aware Proxy (IAP):</strong> Substitui as VPNs. Em vez de conectar o colaborador à rede (para que ele procure a
+                aplicação interna), o IAP expõe aplicações internas na internet, mas interceta qualquer acesso pedindo
+                <em>Single Sign-On (SSO) + MFA + Postura do Dispositivo</em>. Só depois disto o tráfego é roteado para a aplicação.
+              </li>
+              <li>
+                <strong>Criptografia End-to-End:</strong> Como o ZTA presume que a rede está comprometida,
+                <span class="hl-green">TODO o tráfego interno</span> (mesmo entre o Servidor de Backend e a Base de Dados dentro da Sub-rede Privada
+                da nuvem) deve estar criptografado com TLS.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            👁️ 4. O Princípio "Assume Breach" (Assuma a Violação)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Este é o pilar mais contra-intuitivo do Zero Trust e muito frequente em provas. O princípio <strong>Assume Breach</strong> muda o mindset
+            da equipa de Segurança.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            Em vez de gastar toda a energia a tentar bloquear a entrada (que é impossível garantir a 100%), as equipas projetam o sistema arquitetando
+            as defesas para <em>minimizar o raio de explosão (blast radius)</em> e focar pesado em deteção e telemetria. É por isso que no modelo ZTA,
+            ferramentas avançadas de registos (Logging) e sistemas SIEM (Security Information and Event Management) são obrigatórios: se a rede for
+            invadida amanhã, o centro de controlo identificará a anomalia através de Machine Learning e o atacante não terá para onde se mover.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

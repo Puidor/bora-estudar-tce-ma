@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Observabilidade, Monitoramento, Logging e Tracing</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 5.3
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Observabilidade: Logs, Métricas e Traces
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Duelo: Monitoramento x Observabilidade -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">👁️</span> A Diferença Chave
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <div class="border-l-4 border-slate-400 bg-slate-50 dark:bg-slate-700/50 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white mb-2">Monitoramento</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Responde à pergunta: <strong>"O sistema está quebrado?"</strong> <br />
+                Foco no Sintoma. Mostra se um serviço parou de funcionar e aciona alertas (ex: "CPU chegou a 90%").
+              </p>
+            </div>
+            <div class="border-l-4 border-sky-500 bg-sky-50 dark:bg-sky-900/10 p-4 rounded-r-lg shadow-sm">
+              <h3 class="font-bold text-sky-800 dark:text-sky-400 mb-2">Observabilidade</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Responde à pergunta: <strong>"POR QUE o sistema está quebrado?"</strong> <br />
+                Foco na Causa. Capacidade de entender o estado interno de um sistema analisando apenas as suas saídas de dados.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Os 3 Pilares -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🏛️ Os Três Pilares da Observabilidade</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">OS ALVOS DE PROVA</span>
+          </div>
+          <div class="p-6">
+            <div class="space-y-6">
+              <!-- Logs -->
+              <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <div class="w-full md:w-1/4">
+                  <h3 class="font-black text-fuchsia-400 text-xl">Logs</h3>
+                  <span class="text-xs uppercase tracking-wide text-slate-400">Registros textuais</span>
+                </div>
+                <div class="w-full md:w-3/4 bg-fuchsia-900/20 border-l-4 border-fuchsia-500 p-4 rounded text-sm text-slate-300">
+                  <strong class="text-white block mb-1">O que aconteceu?</strong>
+                  São registos imutáveis com data/hora (timestamp) de eventos discretos. Se uma exceção ocorrer, o erro detalhado (Stack Trace) estará
+                  aqui. <br />
+                  <span class="text-xs text-fuchsia-300 mt-2 inline-block"
+                    >Ferramentas: ELK Stack (Elasticsearch, Logstash, Kibana), Splunk, Datadog.</span
+                  >
+                </div>
+              </div>
+
+              <!-- Metrics -->
+              <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <div class="w-full md:w-1/4">
+                  <h3 class="font-black text-emerald-400 text-xl">Metrics</h3>
+                  <span class="text-xs uppercase tracking-wide text-slate-400">Métricas</span>
+                </div>
+                <div class="w-full md:w-3/4 bg-emerald-900/20 border-l-4 border-emerald-500 p-4 rounded text-sm text-slate-300">
+                  <strong class="text-white block mb-1">Qual é a tendência geral?</strong>
+                  Representações numéricas agregadas medidas ao longo do tempo. (Ex: "A média de tempo de resposta é 200ms", ou "A taxa de erro é
+                  5%"). Ocupam pouca memória e disparam alertas. <br />
+                  <span class="text-xs text-emerald-300 mt-2 inline-block">Ferramentas: Prometheus, Grafana, AWS CloudWatch.</span>
+                </div>
+              </div>
+
+              <!-- Traces -->
+              <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <div class="w-full md:w-1/4">
+                  <h3 class="font-black text-orange-400 text-xl">Traces</h3>
+                  <span class="text-xs uppercase tracking-wide text-slate-400">Rastreamento</span>
+                </div>
+                <div class="w-full md:w-3/4 bg-orange-900/20 border-l-4 border-orange-500 p-4 rounded text-sm text-slate-300">
+                  <strong class="text-white block mb-1">Onde está o gargalo?</strong>
+                  Representa o ciclo de vida completo de uma única requisição ponta a ponta passando por N microsserviços. Ex: "Gastou 10ms na API
+                  Gateway, 50ms no Microsserviço de Pagamento e 2000ms travado no Banco de Dados". <br />
+                  <span class="text-xs text-orange-300 mt-2 inline-block">Ferramentas: AWS X-Ray, Jaeger, Zipkin.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tracing Distribuído Explicado -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🔗</span> Como funciona o Tracing Distribuído?
+          </h2>
+          <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+            <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+              Em um sistema de <strong>Microsserviços</strong>, um simples clique do usuário passa por 10 servidores diferentes. Se demorar, como
+              saber qual servidor foi o culpado?
+            </p>
+            <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
+              <li>
+                Quando o utilizador faz o request, o <strong>API Gateway</strong> gera um <strong>Trace ID (ID de Correlação)</strong> único (ex:
+                <code>id-1234</code>).
+              </li>
+              <li>Esse ID é inserido no Cabeçalho HTTP (Header) da requisição.</li>
+              <li>
+                O Microsserviço "A" recebe a requisição, anota nos seus <strong>Logs</strong> "Estou a processar o id-1234" e repassa o mesmo
+                Cabeçalho para o Microsserviço "B".
+              </li>
+              <li>
+                No final, a ferramenta de Tracing (ex: Jaeger) puxa os logs de todas as máquinas e monta um gráfico temporal (Cascata) unindo tudo o
+                que tiver <code>id-1234</code>.
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Métricas Substituem Traces?</strong><br />
+                A banca diz: "Em arquiteturas de microsserviços maduras, a correta implementação de métricas (Metrics) torna a implementação de
+                rastreamento (Tracing) obsoleta."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Eles têm propósitos diferentes e complementares. A <strong>Métrica</strong> diz: "O tempo de resposta do Checkout demorou 5 segundos
+                (Alertar a equipa!)". Mas a Métrica não sabe dizer <em>porquê</em>. O <strong>Trace</strong> é quem vai dizer: "O tempo demorou 5
+                segundos porque a etapa de validar o cartão de crédito demorou 4.8 segundos no serviço de terceiros."
+              </li>
+              <li>
+                <strong>O Conceito de Observabilidade:</strong><br />
+                "Observabilidade é o ato mecânico de coletar o uso de CPU, disco e memória RAM utilizando agentes instalados nos servidores."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O ato de coletar as métricas brutas (CPU, RAM) define o <strong>Monitoramento (Monitoring)</strong>. A
+                <strong>Observabilidade</strong> é uma propriedade do sistema (o quão transparente ele é) que utiliza ferramentas de monitoramento
+                para responder a problemas desconhecidos (os "unknown unknowns").
+              </li>
+              <li>
+                <strong>Elasticsearch/Kibana são Tracing?</strong><br />
+                "O Kibana e o Logstash são as ferramentas padrão da indústria para realizar Tracing Distribuído."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Embora o Kibana possa exibir dados de Tracing em algumas configurações, ele (e o ELK stack em geral) é mundialmente famoso como um
+                concentrador de <strong>Logs (Registros)</strong>. Para Tracing nativo, as bancas esperam que você conheça nomes como Jaeger, Zipkin
+                ou AWS X-Ray.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Problema Moderno: O Paradigma dos Microsserviços
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Nos sistemas antigos (monolitos), quando a aplicação travava, o desenvolvedor apenas precisava se ligar remotamente por SSH ao servidor
+              único, abrir um ficheiro de texto chamado <code>error.log</code> e procurar a linha com erro. Simples.
+            </p>
+            <p>
+              Na era moderna (Cloud e Kubernetes), a sua aplicação pode ser dividida em 50 microsserviços, rodando em 500 contêineres diferentes que
+              são ligados e desligados dinamicamente a cada minuto (Auto Scaling). Se um cliente disser "Tentei pagar e deu erro",
+              <strong>onde você vai procurar o log?</strong> A máquina que atendeu o cliente pode até já ter sido destruída e não existir mais! É aí
+              que nasce a disciplina e engenharia de Observabilidade.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Fundo nos Três Pilares (MELT)
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div>
+              <h3 class="text-lg font-bold text-emerald-600 dark:text-emerald-400 mb-2">1. Métricas (Metrics)</h3>
+              <p>
+                Métricas são valores numéricos amostrados e agrupados. Elas medem o desempenho ou o estado de um sistema em um momento específico,
+                como uso de CPU, latência ou quantidade de erros 404 HTTP (Ex: "Taxa de erro subiu para 200/segundo").
+              </p>
+              <ul class="list-disc pl-6 space-y-1 mt-2 text-sm">
+                <li>
+                  <strong>Pró:</strong> Ocupam um espaço minúsculo de armazenamento e são perfeitas para disparar alertas SMS/Email (ex: PagerDuty) e
+                  criar dashboards executivos.
+                </li>
+                <li><strong>Contra:</strong> Não lhe dizem o motivo do erro.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-bold text-fuchsia-600 dark:text-fuchsia-400 mb-2">2. Logs (Registros)</h3>
+              <p>
+                Logs são registros detalhados (texto puro ou JSON) de eventos que aconteceram em uma aplicação (Ex:
+                <code>[12:00:05] ERROR: Cannot connect to database at 10.0.1.5</code>). Em sistemas distribuídos, a prática obrigatória é a
+                <strong>Centralização de Logs</strong>.
+              </p>
+              <div class="bg-slate-50 dark:bg-slate-900 p-4 border-l-4 border-fuchsia-500 mt-2 text-sm">
+                <strong class="block mb-1">Como funciona a Centralização?</strong>
+                Os contêineres enviam todos os seus logs de texto (stdout/stderr) não para um arquivo local, mas sim para a rede usando agentes como o
+                Fluentd ou Logstash. Esses agentes enviam o texto para um indexador gigante (ex: Elasticsearch), onde a equipe pode pesquisar
+                palavras-chave como se estivessem no Google.
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-bold text-orange-600 dark:text-orange-400 mb-2">3. Traces (Rastreamento)</h3>
+              <p>
+                Traces amarram o caos. Enquanto um Log diz "O Serviço C estourou memória", o Trace diz "O Serviço C estourou memória quando processava
+                o ID 1234, que foi originado no Serviço A, passou pelo Serviço B e chegou ao C".
+              </p>
+              <p class="text-sm mt-2">
+                <strong>Anatomia do Trace:</strong> O Trace completo (toda a jornada) é composto por <strong>Spans</strong> (os "pulos" individuais em
+                cada serviço). Um Trace contém um Trace ID único, e cada Span diz quanto tempo demorou o seu pedaço de trabalho.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. OpenTelemetry: A Padronização do Mercado
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              No passado, cada ferramenta de monitoramento exigia que você programasse o seu código utilizando a biblioteca proprietária deles. Se
+              você quisesse mudar do Splunk para o Datadog, teria que reescrever boa parte do seu código-fonte para trocar os agentes emissores.
+            </p>
+            <p>
+              A resposta da indústria (e figurinha certa em concursos sofisticados) foi o <strong>OpenTelemetry (OTel)</strong>. Ele é um framework e
+              padrão aberto (incubado pela Cloud Native Computing Foundation - CNCF) que unificou como as Métricas, Logs e Traces devem ser gerados e
+              coletados.
+            </p>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-2 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300 block mb-1">Impacto Arquitetural:</strong>
+              Com o OpenTelemetry, a organização utiliza bibliotecas agnósticas (neutras) na sua aplicação. O código apenas "emite o dado". O
+              OpenTelemetry Collector apanha o dado e, a partir daí, pode enviá-lo para qualquer ferramenta de análise paga do mercado, eliminando o
+              <strong>Vendor Lock-in</strong> de observabilidade.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            📊 4. Os Quatro Sinais Dourados (Four Golden Signals)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Um dos livros mais famosos da área é o "Site Reliability Engineering" (Engenharia de Confiabilidade de Sites) do Google (SRE). O Google
+            definiu quais são as 4 métricas absolutas que devem ser monitorizadas em aplicações orientadas ao utilizador:
+          </p>
+          <ul class="list-none pl-2 space-y-3 mt-2 text-sm text-slate-700 dark:text-slate-400">
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">1. Latência (Latency):</strong> O tempo que leva para atender a uma solicitação
+              (mesmo quando a requisição é bem-sucedida ou falha). O atraso.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">2. Tráfego (Traffic):</strong> A demanda atual sobre o seu sistema, frequentemente
+              medida em solicitações HTTP por segundo.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">3. Erros (Errors):</strong> A taxa de solicitações que falham (códigos HTTP 500x).
+              É o principal indicador de que algo quebrou.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">4. Saturação (Saturation):</strong> Quão "cheio" está o seu sistema. Ex: Uso de
+              CPU, Memória ou a Fila de um banco de dados que está perto do limite.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

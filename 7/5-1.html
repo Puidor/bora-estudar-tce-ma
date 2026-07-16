@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Ferramentas IaC (Terraform)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 5.1
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Ferramentas de IaC: Terraform
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Conceito Central -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🏗️</span> O que é o Terraform?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            O <strong>Terraform</strong> (criado pela HashiCorp) é a ferramenta líder global em
+            <strong class="text-sky-600 dark:text-sky-400">Infraestrutura como Código (IaC)</strong>. Ele permite definir, provisionar e gerenciar a
+            infraestrutura de nuvem usando código escrito em uma linguagem declarativa simples chamada <strong>HCL</strong> (HashiCorp Configuration
+            Language).
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-3 rounded border border-sky-200 dark:border-sky-800">
+              <strong class="text-sky-700 dark:text-sky-400 text-sm block">Agnóstico de Nuvem</strong>
+              <span class="text-xs text-slate-600 dark:text-slate-400"
+                >Diferente do AWS CloudFormation, o Terraform pode gerenciar recursos na AWS, Azure, GCP e on-premises, tudo com a mesma ferramenta
+                (usando <em>Providers</em>).</span
+              >
+            </div>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded border border-emerald-200 dark:border-emerald-800">
+              <strong class="text-emerald-700 dark:text-emerald-400 text-sm block">Abordagem Declarativa</strong>
+              <span class="text-xs text-slate-600 dark:text-slate-400"
+                >Você diz <strong>O QUE</strong> quer (estado final) e não <strong>COMO</strong> fazer. O Terraform descobre sozinho a ordem de
+                criação dos recursos.</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- O Ciclo de Vida -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🔄 O Fluxo Sagrado (Core Workflow)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO EM PROVA!</span>
+          </div>
+          <div class="p-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 font-bold text-sm text-center">
+              <div class="flex-1 bg-slate-800/80 p-4 rounded-lg border border-sky-500/50 w-full relative">
+                <span class="text-sky-400 font-mono text-lg block mb-1">terraform init</span>
+                <span class="text-xs text-slate-400 font-normal"
+                  >Inicializa o diretório. Faz o download dos <em>Providers</em> (plugins da AWS/Azure) necessários para o projeto.</span
+                >
+              </div>
+
+              <div class="hidden md:block text-slate-500 text-2xl">➔</div>
+
+              <div class="flex-1 bg-slate-800/80 p-4 rounded-lg border border-yellow-500/50 w-full relative">
+                <span class="text-yellow-400 font-mono text-lg block mb-1">terraform plan</span>
+                <span class="text-xs text-slate-400 font-normal"
+                  ><strong>"O Teste a Seco"</strong>. Mostra um plano de execução detalhando o que será criado, modificado ou destruído,
+                  <strong class="text-white">sem alterar nada na nuvem real</strong>.</span
+                >
+              </div>
+
+              <div class="hidden md:block text-slate-500 text-2xl">➔</div>
+
+              <div class="flex-1 bg-emerald-900/40 p-4 rounded-lg border-2 border-emerald-500 w-full relative transform scale-105 shadow-md">
+                <span class="text-emerald-400 font-mono text-lg block mb-1">terraform apply</span>
+                <span class="text-xs text-slate-300 font-normal"
+                  >O botão de disparo. Executa o plano e <strong>cria a infraestrutura na nuvem de verdade</strong>, atualizando o arquivo de
+                  estado.</span
+                >
+              </div>
+            </div>
+            <div class="mt-6 text-center">
+              <span class="text-red-400 font-mono text-sm bg-red-900/20 px-3 py-1 rounded border border-red-500/50">terraform destroy</span>
+              <span class="text-xs text-slate-400 ml-2">Destrói toda a infraestrutura gerenciada de forma limpa.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- O Arquivo de Estado -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🧠</span> O Cérebro: O Arquivo de Estado
+          </h2>
+          <div class="flex flex-col md:flex-row gap-6 items-center">
+            <div class="w-full md:w-1/3 flex justify-center">
+              <div class="bg-slate-900 text-slate-300 font-mono text-xs p-4 rounded-lg border-l-4 border-sky-500 w-full shadow-inner">
+                // terraform.tfstate<br /><br />
+                {<br />
+                &nbsp;&nbsp;"version": 4,<br />
+                &nbsp;&nbsp;"resources": [<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "aws_instance",<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name": "web_server"<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                &nbsp;&nbsp;]<br />
+                }
+              </div>
+            </div>
+            <div class="w-full md:w-2/3">
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                O <strong>State File (<code>terraform.tfstate</code>)</strong> é como o Terraform rastreia os recursos. Ele atua como um "mapa" que
+                liga a configuração escrita no seu computador à infraestrutura real rodando na nuvem.
+              </p>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                <li>
+                  <strong class="text-slate-800 dark:text-white">Fonte da Verdade:</strong> Antes de modificar algo, o Terraform consulta este
+                  arquivo, não a nuvem.
+                </li>
+                <li>
+                  <strong class="text-red-500 dark:text-red-400">Perigo de Senhas:</strong> O state file frequentemente guarda dados sensíveis (senhas
+                  de DB) em texto puro (plaintext). <strong>NUNCA</strong> faça commit dele no Git (adicione no <code>.gitignore</code>).
+                </li>
+                <li>
+                  <strong class="text-emerald-600 dark:text-emerald-400">Remote State:</strong> Em equipes, o state file deve ser salvo remotamente
+                  (ex: Amazon S3) com o recurso de <em>State Locking</em> (bloqueio via DynamoDB) para evitar que duas pessoas alterem o estado ao
+                  mesmo tempo.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Terraform vs Configuration Management (Ansible):</strong><br />
+                A banca diz: "O Terraform foi desenhado primariamente para gerenciar a configuração interna de um sistema operacional, substituindo
+                ferramentas como o Ansible e o Chef."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Eles têm propósitos diferentes. <strong>Terraform</strong> é focado no
+                <strong class="underline">Provisionamento da Infraestrutura</strong> (Criar a VPC, o Load Balancer e a VM vazia). O
+                <strong>Ansible/Chef</strong> foca em <em>Gerência de Configuração</em> (Entrar dentro da VM já criada e instalar o Apache e o PHP).
+                Eles costumam trabalhar juntos!
+              </li>
+              <li>
+                <strong>O Terraform consulta a nuvem em tempo real?</strong><br />
+                "Para saber quais recursos destruir, o Terraform faz uma varredura completa na nuvem da AWS em tempo real analisando todas as
+                instâncias existentes."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Terraform lê as informações do seu <strong>Arquivo de Estado (<code>terraform.tfstate</code>)</strong>. Se você for no painel da AWS
+                e criar uma máquina com o mouse, o Terraform não saberá que ela existe a não ser que você mande ele importar o estado.
+              </li>
+              <li>
+                <strong>Imperativo vs Declarativo:</strong><br />
+                "Ao programar no Terraform, o administrador deve criar scripts passo a passo indicando a ordem exata de criação: primeiro a rede,
+                depois a máquina, depois o IP."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Terraform é <strong>Declarativo</strong>. Você joga todos os recursos num ficheiro. O motor interno do Terraform lê o ficheiro,
+                constrói um <strong class="text-sky-600 dark:text-sky-400">Grafo de Dependências (Dependency Graph)</strong> e cria as coisas na ordem
+                certa automaticamente, maximizando o paralelismo.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Arquitetura do Terraform
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Terraform funciona através de uma arquitetura centralizada muito simples, baseada em código aberto, composta por duas partes cruciais
+              que frequentemente aparecem em questões de concurso mais profundas:
+            </p>
+            <ul class="list-disc pl-6 space-y-4 mt-2 text-sm">
+              <li>
+                <strong class="text-sky-700 dark:text-sky-400 text-base">Core (Núcleo):</strong>
+                É o binário estático que você baixa (o executável <code>terraform</code>). O Core lê os arquivos de configuração (o código HCL),
+                analisa o estado atual (State File) e calcula o Grafo de Dependências. Ele descobre "O que eu preciso criar primeiro?".
+              </li>
+              <li>
+                <strong class="text-sky-700 dark:text-sky-400 text-base">Providers (Provedores):</strong>
+                São <em>plugins</em>. O Core do Terraform não sabe como comunicar com a AWS ou com o Azure. Quem sabe são os <em>Providers</em>.
+                Quando você escreve <code>provider "aws"</code>, o Terraform baixa um plugin construído pela Amazon que ensina o Terraform a traduzir
+                o plano em chamadas de API reais (REST) para os servidores da AWS. Essa arquitetura de plugins é o que torna o Terraform uma
+                ferramenta <span class="hl-green">Agnóstica de Nuvem (Multi-Cloud)</span>.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. A Linguagem HCL e o Conceito Declarativo
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O Terraform utiliza a <strong>HashiCorp Configuration Language (HCL)</strong>, uma linguagem declarativa focada em ser amigável tanto
+              para humanos lerem quanto para máquinas processarem.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Por que Declarativo?</h3>
+            <p>
+              Em ferramentas imperativas (como um script Shell de bash), você precisa programar loops (<code>if/else</code>) e a ordem de execução. Se
+              o script travar a meio, você terá infraestrutura órfã.
+            </p>
+            <p>
+              Na abordagem Declarativa do HCL, você declara:
+              <span class="font-mono text-sky-600">resource "aws_instance" "servidor_web" { ... }</span>. Você foca no
+              <strong>Estado Desejado</strong>. Se o servidor_web já existir na nuvem e estiver perfeito, ao rodar <code>terraform apply</code> o
+              Terraform responderá: <em>"Nenhuma mudança necessária"</em> (Idempotência). Se o servidor não existir, ele o cria.
+            </p>
+
+            <div
+              class="bg-slate-50 dark:bg-slate-900 p-4 border-l-4 border-slate-400 mt-4 text-sm font-mono overflow-x-auto text-slate-600 dark:text-slate-400"
+            >
+              # Exemplo de bloco HCL no Terraform<br />
+              resource "aws_s3_bucket" "banco_imagens" {<br />
+              &nbsp;&nbsp;bucket = "tce-ma-imagens-2026"<br />
+              &nbsp;&nbsp;acl &nbsp;&nbsp;&nbsp;= "private"<br />
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Aprofundando no State File e Colaboração
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>O <code>terraform.tfstate</code> é um arquivo JSON gerado automaticamente após o primeiro <code>apply</code>.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">O Desafio do Trabalho em Equipe</h3>
+            <p>
+              Se você e o seu colega desenvolvedor estiverem trabalhando no mesmo projeto Terraform, onde fica o arquivo de estado? Se ele ficar no
+              seu laptop local, o Terraform do seu colega não vai saber o que você já criou na nuvem, e pode tentar duplicar recursos.
+            </p>
+
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300 block mb-2">A Solução Padrão-Ouro (Cai em Discursivas):</strong>
+              <ul class="list-decimal pl-5 space-y-1">
+                <li>
+                  <strong class="text-sky-700 dark:text-sky-400">Remote State (Estado Remoto):</strong> Em vez de manter o arquivo
+                  <code>.tfstate</code> localmente, o Terraform é configurado para guardar este arquivo na nuvem de forma centralizada (ex: em um
+                  bucket do <strong>Amazon S3</strong>).
+                </li>
+                <li>
+                  <strong class="text-fuchsia-700 dark:text-fuchsia-400">State Locking (Bloqueio de Estado):</strong> O que acontece se duas pessoas
+                  digitarem <code>terraform apply</code> ao exato mesmo milissegundo? O arquivo de estado vai corromper-se. Para evitar isso, usa-se o
+                  <em>State Locking</em>. Na AWS, configura-se uma tabela no <strong>DynamoDB</strong>. Quando a Pessoa A digita apply, o Terraform
+                  tranca a tabela. Se a Pessoa B digitar apply, ela recebe um erro informando que o estado está "trancado" por outro processo.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            📦 4. Módulos no Terraform (Reusabilidade)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Assim como na programação tradicional nós criamos "Funções" para não repetir código, no Terraform nós criamos <strong>Módulos</strong>.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            Se a criação de uma VPC inteira com 4 sub-redes, tabelas de roteamento e NAT Gateways exige 300 linhas de código HCL, a equipe de
+            operações empacota tudo isso em um <em>Módulo</em> chamado <code>vpc_segura_padrao</code>. Quando um desenvolvedor de outro setor precisar
+            de uma rede nova, ele apenas "chama" esse módulo com 3 linhas de código, reaproveitando o conhecimento e garantindo o
+            <span class="hl-indigo">compliance</span> e padronização da arquitetura do órgão público.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

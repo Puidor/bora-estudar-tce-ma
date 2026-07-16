@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: VPNs e Conexões Dedicadas</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 4.5
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          VPNs e Conexões Dedicadas
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Cenário -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🌍</span> Como ligar o Escritório à Nuvem?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300">
+            Quando o TCE-MA precisa que seus servidores físicos locais conversem de forma segura com os servidores alugados na Nuvem (VPC/VNet),
+            existem <strong>duas grandes abordagens</strong>: criar um túnel virtual por cima da internet pública (VPN) ou puxar um cabo de fibra
+            ótica real (Conexão Dedicada).
+          </p>
+        </section>
+
+        <!-- Comparação Direta -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚔️ VPN vs Conexão Dedicada</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">CAI NA PROVA!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- VPN Site-to-Site -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🛡️</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">VPN Site-to-Site</h3>
+                <ul class="space-y-3 text-sm text-slate-300 mt-4">
+                  <li><strong class="text-white">Meio Físico:</strong> Usa a <strong>Internet Pública</strong>.</li>
+                  <li><strong class="text-white">Segurança:</strong> Altamente criptografado por padrão (usa <strong>IPsec</strong>).</li>
+                  <li>
+                    <strong class="text-white">Velocidade:</strong> Baixa a média (Limitada a ~1.25 Gbps por túnel). Sujeita a congestionamentos e
+                    latência instável da internet.
+                  </li>
+                  <li>
+                    <strong class="text-white">Tempo de Instalação:</strong> <strong>Minutos</strong> (É só configurar roteadores via software).
+                  </li>
+                  <li><strong class="text-white">Custo:</strong> Baixo.</li>
+                </ul>
+              </div>
+
+              <!-- Conexão Dedicada -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🚀</div>
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">
+                  Conexão Dedicada (Direct Connect / ExpressRoute)
+                </h3>
+                <ul class="space-y-3 text-sm text-slate-300 mt-4">
+                  <li>
+                    <strong class="text-white">Meio Físico:</strong> Link físico de <strong>fibra ótica direto</strong> (não passa pela internet).
+                  </li>
+                  <li>
+                    <strong class="text-white">Segurança:</strong> Privado, porém
+                    <strong class="text-red-400">NÃO é criptografado por padrão</strong> (embora novos padrões como MACsec existam).
+                  </li>
+                  <li><strong class="text-white">Velocidade:</strong> Altíssima (1 Gbps a 100 Gbps). Latência ultrabaixa e consistente.</li>
+                  <li><strong class="text-white">Tempo de Instalação:</strong> <strong>Semanas ou Meses</strong> (Envolve Telecom e cabos reais).</li>
+                  <li><strong class="text-white">Custo:</strong> Muito Alto.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabela de Nomes -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">📖</span> Dicionário dos Provedores
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-100 dark:bg-slate-700/50">
+                  <th class="p-3 border-b border-slate-200 dark:border-slate-600 font-bold text-slate-800 dark:text-white">Serviço (Conceito)</th>
+                  <th class="p-3 border-b border-slate-200 dark:border-slate-600 font-bold text-orange-600 dark:text-orange-400">Na AWS</th>
+                  <th class="p-3 border-b border-slate-200 dark:border-slate-600 font-bold text-blue-600 dark:text-blue-400">No Azure</th>
+                  <th class="p-3 border-b border-slate-200 dark:border-slate-600 font-bold text-emerald-600 dark:text-emerald-400">
+                    No Google Cloud
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                <tr>
+                  <td class="p-3 font-medium">Link Físico Dedicado</td>
+                  <td class="p-3"><strong>AWS Direct Connect</strong></td>
+                  <td class="p-3"><strong>Azure ExpressRoute</strong></td>
+                  <td class="p-3"><strong>Cloud Interconnect</strong></td>
+                </tr>
+                <tr class="bg-slate-50 dark:bg-slate-800/30">
+                  <td class="p-3 font-medium">VPN de Site para Site</td>
+                  <td class="p-3">AWS Site-to-Site VPN</td>
+                  <td class="p-3">Azure VPN Gateway</td>
+                  <td class="p-3">Cloud VPN</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Criptografia no Direct Connect:</strong><br />
+                A banca diz: "O AWS Direct Connect e o Azure ExpressRoute utilizam por padrão os protocolos IPsec e IKE para criptografar fortemente
+                os dados que trafegam entre o cliente e a nuvem."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Eles são links <strong>privados</strong>, logo não passam pela internet, mas os dados trafegam em
+                <strong>texto plano (sem criptografia)</strong> por padrão. Quem usa IPsec nativamente é a <strong>VPN Site-to-Site</strong>. Se você
+                quiser as duas coisas (Link privado + Criptografia), deve instalar uma VPN <em>por cima</em> do Direct Connect!
+              </li>
+              <li>
+                <strong>Tempo de Implantação:</strong><br />
+                "Uma vantagem do AWS Direct Connect sobre a VPN tradicional é a sua capacidade de ser provisionado e ativado em questão de minutos
+                através do console web."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Direct Connect exige que uma empresa de Telecomunicação (ex: Embratel, Oi) puxe um <strong>cabo físico de fibra ótica</strong> do
+                seu prédio até o provedor parceiro da AWS. Isso leva <strong>semanas ou meses</strong>. Quem é instalado em minutos é a VPN.
+              </li>
+              <li>
+                <strong>ExpressRoute e a Internet:</strong><br />
+                "As conexões do Azure ExpressRoute garantem alta velocidade roteando o tráfego exclusivamente através das rotas mais curtas da rede
+                pública de internet."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O propósito do ExpressRoute (e do Direct Connect) é justamente <strong class="underline decoration-red-500">NÃO USAR</strong> a
+                internet pública. Ele usa a rede privada das operadoras parceiras para chegar direto aos datacenters da Microsoft.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Necessidade da Nuvem Híbrida
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Em cenários corporativos reais e governamentais, raramente uma empresa consegue migrar 100% dos seus servidores para a nuvem de um dia
+              para o outro. Muitos sistemas legados continuam operando fisicamente (on-premises). Isso cria a <strong>Nuvem Híbrida</strong>.
+            </p>
+            <p>
+              Para que os servidores na nuvem (VPC/VNet) consigam conversar com os servidores na sede do TCE-MA com segurança, precisamos criar uma
+              ponte. Essa ponte não pode expor os dados à internet aberta. As tecnologias para criar essa ponte se dividem basicamente em duas
+              soluções: <strong>Baseadas na Internet (VPNs)</strong> e <strong>Conexões Dedicadas (Físicas)</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. VPN Site-to-Site (Rede Privada Virtual)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A VPN Site-to-Site estabelece um <strong>túnel virtual</strong> entre a rede do seu escritório e a sua VPC na nuvem. Os pacotes de dados
+              trafegam fisicamente pelos cabos da internet pública, mas ninguém os consegue ler porque eles são envoltos por uma forte camada de
+              criptografia.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Arquitetura (Exemplo AWS)</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>VGW (Virtual Private Gateway):</strong> É o roteador que a AWS instala na borda da sua VPC na nuvem para receber a conexão.
+              </li>
+              <li>
+                <strong>CGW (Customer Gateway):</strong> É a representação lógica, dentro da AWS, do roteador físico (Cisco, Juniper) que você tem no
+                seu escritório local.
+              </li>
+              <li>
+                <strong>Túneis IPsec:</strong> Para garantir Alta Disponibilidade, uma VPN bem configurada levanta pelo menos
+                <strong>dois túneis IPsec paralelos</strong>. Se uma rota da internet cair, a conexão transita pelo túnel 2.
+              </li>
+            </ul>
+
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300">Desvantagem da VPN:</strong>
+              Como a VPN viaja pela internet pública, ela concorre com o tráfego global. Isso significa que a
+              <strong>latência (ping) não é previsível</strong> e a banda máxima é limitada (geralmente por volta de 1,25 Gbps por túnel).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Conexões Dedicadas (Direct Connect / ExpressRoute)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando uma organização precisa de taxas de transferência massivas (ex: replicar Petabytes de banco de dados todo dia) e de uma latência
+              idêntica a de uma rede local (LAN), a VPN se torna insuficiente. Entram em cena o <strong>AWS Direct Connect</strong> e o
+              <strong>Azure ExpressRoute</strong>.
+            </p>
+            <p>
+              Essas soluções configuram uma <strong>ligação física de rede (fibra ótica)</strong> que vai do seu Datacenter diretamente para as
+              instalações da AWS/Azure, usando empresas parceiras de telecomunicações (ex: Equinix).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Protocolos e Roteamento (BGP)</h3>
+            <p>
+              As conexões dedicadas são ancoradas num protocolo chamado <span class="hl-yellow">BGP (Border Gateway Protocol)</span>. A nuvem e o seu
+              roteador trocam rotas dinamicamente via BGP usando <strong>VLANs (802.1Q)</strong>. Se você adicionar uma sub-rede nova na nuvem, o BGP
+              avisa automaticamente o seu datacenter local sobre esse novo caminho.
+            </p>
+
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm">
+              <li>
+                <strong>Velocidade Consistente:</strong> Você não passa pela internet, então ninguém "concorre" com a sua banda. As portas disponíveis
+                vão de 1 Gbps a 100 Gbps dedicados.
+              </li>
+              <li>
+                <strong>Redução de Custos de Dados (Outbound):</strong> Os provedores de nuvem costumam cobrar muito caro para dados que
+                <em>saem</em> da nuvem pela internet. Com o Direct Connect/ExpressRoute, a taxa cobrada por GB de dados transferidos
+                <strong>para fora (Data Transfer Out)</strong> é muito mais barata.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            🔗 4. Arquiteturas de Alta Segurança (O Casamento)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            A banca pode perguntar: E se eu precisar da estabilidade de uma fibra ótica direta (Direct Connect), mas as regras do banco central me
+            exigirem Criptografia total do tráfego (IPsec), já que o Direct Connect por si só não encripta os dados?
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            <strong>A Solução:</strong> Nós criamos as duas coisas juntas! Você contrata o Direct Connect para estabelecer o cabo físico direto
+            (garantindo velocidade e estabilidade). Depois, você configura uma
+            <strong>VPN Site-to-Site que trafega "por dentro" do Direct Connect</strong> em vez de trafegar pela internet. Assim você tem o melhor dos
+            dois mundos: <span class="hl-sky">Conexão Privada + Criptografia IPsec End-to-End</span>. (Algumas portas modernas de Direct Connect já
+            suportam criptografia de link chamada <strong>MACsec</strong> nativamente).
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

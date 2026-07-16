@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Pipelines CI/CD (Jenkins, GitHub Actions)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 5.2
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Pipelines CI/CD: Jenkins e GitHub Actions
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Conceito Central -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🛤️</span> O que é um Pipeline?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300">
+            Um <strong>Pipeline</strong> é uma sequência de etapas automatizadas que o seu código percorre desde o momento em que o programador faz o
+            "commit" (envio) até chegar ao servidor de produção. Ele materializa o <strong>CI/CD</strong> (Integração e Entrega Contínuas).
+          </p>
+        </section>
+
+        <!-- O Duelo: Jenkins vs GitHub Actions -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🥊 O Duelo: Jenkins vs GitHub Actions</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO EM PROVA!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead class="text-xs uppercase bg-slate-800 text-slate-400">
+                <tr>
+                  <th class="px-6 py-4 border-r border-slate-700">Característica</th>
+                  <th class="px-6 py-4 border-r border-slate-700 text-sky-400 w-2/5">Jenkins</th>
+                  <th class="px-6 py-4 text-emerald-400 w-2/5">GitHub Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-700">
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium">Hospedagem</td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    <strong>Self-hosted (IaaS/On-prem)</strong>. Você precisa instalar, gerenciar e atualizar o servidor.
+                  </td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    <strong>SaaS (Gerenciado)</strong>. Roda direto na nuvem do GitHub, sem servidor para administrar.
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-6 py-4 font-medium">Linguagem do Pipeline</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Baseado em <strong>Groovy</strong> (<code>Jenkinsfile</code>).</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Baseado em <strong>YAML</strong> (<code>.github/workflows/*.yml</code>).</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium">Extensibilidade</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Baseado em milhares de <strong>Plugins</strong> de terceiros.</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Baseado em <strong>Actions</strong> nativas e da comunidade (Marketplace).</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-6 py-4 font-medium">Arquitetura de Execução</td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    <strong>Master / Agent (Slave)</strong>. O Master coordena, os Agents rodam o job.
+                  </td>
+                  <td class="px-6 py-4 border-l border-slate-700">Baseado em <strong>Runners</strong> (VMs do GitHub ou Self-hosted).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Aprofundando em Jenkins -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">☕</span> Vocabulário Jenkins
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded-lg border-l-4 border-sky-500 shadow-sm">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Jenkinsfile</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                É o arquivo de texto que contém a definição do Pipeline. Ele permite a prática de <strong>"Pipeline as Code"</strong> (Pipeline como
+                Código). Fica salvo no próprio repositório Git junto com o código-fonte da aplicação.
+              </p>
+            </div>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded-lg border-l-4 border-sky-500 shadow-sm">
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Declarative vs Scripted</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                O Jenkinsfile pode ser escrito de duas formas: <strong>Declarativo</strong> (mais moderno, estruturado e fácil de ler) ou
+                <strong>Scripted</strong> (forma antiga, usa código Groovy puro, mais complexo mas muito flexível).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>O Jenkins não precisa de servidor?</strong><br />
+                A banca diz: "O Jenkins é uma solução Serverless que isenta o administrador de gerenciar o servidor de integração contínua."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Jenkins <strong>requer um servidor físico ou máquina virtual</strong> (IaaS). Você tem que instalar o Java, baixar o Jenkins,
+                atualizar o SO e gerenciar a segurança dele. O GitHub Actions é que atua no formato SaaS/Serverless.
+              </li>
+              <li>
+                <strong>Master executa as tarefas (builds)?</strong><br />
+                "Na arquitetura do Jenkins, o nó Master é responsável por compilar e testar os códigos de todas as linguagens da empresa
+                simultaneamente."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Por boas práticas, o <strong>Master</strong> serve APENAS para gerenciar o painel web, escalonar os jobs e monitorizar os
+                <strong>Agents (Slaves)</strong>. Quem efetivamente roda o código, instala pacotes e faz o build são os Agents (máquinas auxiliares
+                conectadas ao Master).
+              </li>
+              <li>
+                <strong>GitHub Actions só funciona com Git?</strong><br />
+                "Os Workflows do GitHub Actions só podem ser disparados quando um desenvolvedor faz um *push* (envio) de código no repositório."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Os Workflows (pipelines) do GitHub Actions são <strong>Event-driven</strong> (orientados a eventos). Eles podem ser acionados por um
+                *push*, mas também por eventos de tempo (Agendamento CRON / <code>schedule</code>), cliques de botões manuais
+                (<code>workflow_dispatch</code>) ou até webhooks de sistemas externos.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Fundamentos: Por que precisamos de Pipelines?
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Antes do CI/CD, os programadores construíam o código nas suas próprias máquinas e, na sexta-feira, tentavam juntar os códigos de toda a
+              equipe para enviar para o servidor. Se algo falhasse (e sempre falhava), ninguém sabia qual linha exata causou o problema.
+            </p>
+            <p>
+              Os <strong>Pipelines de CI/CD</strong> automatizam esse processo. É uma "linha de montagem". Se você escreve código, você envia para o
+              servidor Git. Imediatamente, uma ferramenta (como Jenkins) é notificada. Ela descarrega o seu código e executa uma série de
+              <em>Estágios (Stages)</em>: <strong>Build (Compilar) -> Test (Testar) -> Deploy (Lançar)</strong>. Se falhar no teste, a esteira para e
+              o programador recebe um e-mail de alerta.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Jenkins (O Gigante Open-Source)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Escrito em Java, o <strong>Jenkins</strong> é a ferramenta de automação open-source mais famosa do mundo. Sua maior força é o seu
+              ecossistema: ele possui milhares de plugins, podendo integrar-se com quase qualquer tecnologia de software existente.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">A Arquitetura Master / Agent</h3>
+            <p>O Jenkins usa uma arquitetura distribuída para escalar.</p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Controller (antigo Master):</strong> É o coração do Jenkins. Serve a interface web (UI), distribui as tarefas (Jobs), gere os
+                ficheiros de configuração e recebe as chamadas Webhooks do repositório de código.
+              </li>
+              <li>
+                <strong>Agents (antigos Slaves):</strong> São máquinas, contêineres ou VMs configuradas especificamente para executar os
+                <em>builds</em>. O Controller manda uma ordem: "Agent do Linux, pegue esse código Python e rode o teste unitário".
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Jenkinsfile: Pipeline as Code</h3>
+            <p>
+              No passado, as pessoas clicavam em botões na interface web do Jenkins para configurar uma automação. Hoje, usa-se o
+              <code>Jenkinsfile</code>. Ao colocar a infraestrutura do pipeline em um arquivo de código-fonte, todo o processo se torna versionável.
+            </p>
+            <div
+              class="bg-slate-50 dark:bg-slate-900 p-4 border-l-4 border-slate-400 mt-4 text-sm font-mono overflow-x-auto text-slate-600 dark:text-slate-400"
+            >
+              # Exemplo de Jenkinsfile Declarativo<br />
+              pipeline {<br />
+              &nbsp;&nbsp;agent any<br />
+              &nbsp;&nbsp;stages {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;stage('Build') {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;steps { echo 'Compilando...' }<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;stage('Test') {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;steps { echo 'Testando...' }<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;}<br />
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. GitHub Actions (A Nuvem Nativa)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O <strong>GitHub Actions</strong> é uma plataforma moderna de CI/CD embutida nativamente dentro do GitHub. Diferente do Jenkins, o
+              GitHub Actions é servido no modelo SaaS (Software as a Service).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Estrutura do GitHub Actions</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Workflows:</strong> O pipeline inteiro. Configurado em arquivos <code>.yml</code> no diretório
+                <code>.github/workflows</code> do seu repositório.
+              </li>
+              <li>
+                <strong>Events (Eventos):</strong> O que "acorda" o workflow. Pode ser um <code>push</code> na branch principal, a abertura de um
+                <code>pull_request</code> ou um evento agendado.
+              </li>
+              <li>
+                <strong>Jobs:</strong> Conjunto de etapas (steps) que executam na mesma máquina (Runner). Jobs rodam em paralelo por padrão, a não ser
+                que você configure dependências entre eles.
+              </li>
+              <li>
+                <strong>Runners:</strong> É o "Agent" do GitHub. O GitHub fornece VMs gerenciadas (Ubuntu, Windows, macOS) para rodar seus jobs
+                gratuitamente (até certo limite). Você também pode hospedar seu próprio Runner (Self-hosted) no seu datacenter.
+              </li>
+            </ul>
+
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300 block mb-2">Diferença Central de Manutenção:</strong>
+              O Jenkins exige uma equipa de Operações (Ops) para gerir patches do Java, falhas no servidor do Jenkins e backups. O GitHub Actions
+              elimina 90% do esforço de Ops, já que o GitHub fornece o ambiente pronto e autoescalável, permitindo que a equipa foque estritamente em
+              escrever o ficheiro YAML da automação.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
