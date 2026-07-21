@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Data Lakes e Processamento Distribuído</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 7.2
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Data Lakes e Processamento Distribuído
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Conceito Central -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🌊</span> O que é um Data Lake?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            Um <strong>Data Lake (Lago de Dados)</strong> é um repositório centralizado que permite armazenar todos os dados da organização
+            (estruturados e não estruturados) em <strong>qualquer escala e em seu estado BRUTO (Raw)</strong>. Você não precisa formatar os dados
+            antes de salvá-los; você simplesmente despeja tudo lá.
+          </p>
+          <div class="bg-sky-50 dark:bg-sky-900/10 p-3 rounded border-l-4 border-sky-500">
+            <strong class="text-sky-700 dark:text-sky-400 block text-sm">O Alvo da Prova: A Base de Armazenamento</strong>
+            <span class="text-xs text-slate-600 dark:text-slate-400"
+              >Na nuvem, 99% dos Data Lakes são construídos usando <strong>Armazenamento de Objetos</strong> (como o Amazon S3, Azure Data Lake
+              Storage ou Google Cloud Storage) devido ao custo baratíssimo e escalabilidade infinita.</span
+            >
+          </div>
+        </section>
+
+        <!-- O Duelo: DL vs DW -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🥊 Data Lake vs Data Warehouse</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">CAI MUITO EM PROVA!</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead class="text-xs uppercase bg-slate-800 text-slate-400">
+                <tr>
+                  <th class="px-6 py-4 border-r border-slate-700">Característica</th>
+                  <th class="px-6 py-4 border-r border-slate-700 text-sky-400 w-2/5">Data Lake (O Lago)</th>
+                  <th class="px-6 py-4 text-emerald-400 w-2/5">Data Warehouse (O Armazém)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-700">
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium">Tipos de Dados</td>
+                  <td class="px-6 py-4 border-l border-slate-700">
+                    Estruturados, semi-estruturados e <strong>NÃO estruturados</strong> (Vídeos, Logs, JSON, PDFs).
+                  </td>
+                  <td class="px-6 py-4 border-l border-slate-700">Apenas dados <strong>Estruturados</strong> (Tabelas Relacionais, SQL).</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-6 py-4 font-medium">Estado do Dado</td>
+                  <td class="px-6 py-4 border-l border-slate-700"><strong>BRUTO (Raw)</strong>. É mantido exatamente como foi gerado.</td>
+                  <td class="px-6 py-4 border-l border-slate-700"><strong>REFINADO</strong>. Já foi limpo, transformado e tratado (ETL).</td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium">Processamento / Esquema</td>
+                  <td class="px-6 py-4 border-l border-slate-700 text-sky-300">
+                    <strong>Schema-on-Read</strong> (O esquema é aplicado apenas na hora de ler o dado).
+                  </td>
+                  <td class="px-6 py-4 border-l border-slate-700 text-emerald-300">
+                    <strong>Schema-on-Write</strong> (Você tem que criar a tabela e o esquema ANTES de salvar o dado).
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 transition-colors bg-slate-800/20">
+                  <td class="px-6 py-4 font-medium">Usuários Alvo</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Cientistas de Dados (Machine Learning) e Engenheiros de Dados.</td>
+                  <td class="px-6 py-4 border-l border-slate-700">Analistas de Negócios (Business Intelligence - BI) e Executivos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Processamento Distribuído -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">⚡</span> Processamento Distribuído de Big Data
+          </h2>
+          <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+            Você não consegue processar 50 Terabytes num único computador. O Processamento Distribuído fatia o problema em pedaços pequenos, distribui
+            para um *Cluster* (grupo de servidores) e depois junta os resultados. Os dois gigantes desta área são:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-fuchsia-50 dark:bg-fuchsia-900/10 p-4 border border-fuchsia-200 dark:border-fuchsia-800 rounded-lg shadow-sm">
+              <strong class="text-fuchsia-700 dark:text-fuchsia-400 block mb-1">Hadoop (MapReduce)</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                O pioneiro. Ele divide o trabalho (Map) e consolida os resultados (Reduce). É super resiliente, mas é <strong>LENTO</strong> porque
+                salva os dados parciais no Disco Rígido entre cada etapa do cálculo.
+              </p>
+            </div>
+            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 border border-orange-200 dark:border-orange-800 rounded-lg shadow-sm">
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1">Apache Spark</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                O substituto moderno. Até 100x mais rápido que o Hadoop pois processa tudo em
+                <strong>Memória RAM (In-Memory Processing)</strong> utilizando RDDs (Resilient Distributed Datasets).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>O Data Lake "substituiu" o Data Warehouse?</strong><br />
+                "Com o advento do Data Lake na computação em nuvem, os Data Warehouses tornaram-se tecnologias obsoletas, devendo ser integralmente
+                substituídos nas empresas modernas."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Eles são <strong class="underline decoration-red-500">Complementares</strong>! O Data Lake absorve tudo barato. Depois, ferramentas de
+                ETL puxam do Data Lake os dados que realmente importam para o negócio, limpam e salvam no Data Warehouse para que os diretores usem em
+                relatórios rápidos de BI. (A união moderna dos dois chama-se <strong>Data Lakehouse</strong>).
+              </li>
+              <li>
+                <strong>O Problema do "Pântano de Dados" (Data Swamp):</strong><br />
+                "Um Data Lake garante automaticamente a qualidade, catálogo e descoberta fácil dos dados apenas pelo ato de ingeri-los na nuvem."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Se você apenas despejar dados no Data Lake sem criar um Catálogo de Metadados (Data Catalog) e sem Governança, o seu lago limpo vai
+                transformar-se num <strong>Data Swamp (Pântano de Dados)</strong>: um lixão digital onde ninguém consegue encontrar ou confiar em
+                nenhuma informação.
+              </li>
+              <li>
+                <strong>Schema on Write no Data Lake:</strong><br />
+                "Para garantir consistência, o Data Lake opera nativamente com o paradigma Schema-on-Write, validando a estrutura do arquivo antes da
+                inserção."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Isso é característica de bancos relacionais e Data Warehouses. O Data Lake utiliza <strong>Schema-on-Read</strong> (O esquema só é
+                inferido e aplicado no momento em que você executa uma <em>query</em> ou lê o arquivo).
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Filosofia do Data Lake (Lago de Dados)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, se uma organização do setor público (como o TCE-MA) quisesse guardar dados, ela precisava saber <em>exatamente</em> o
+              formato desse dado para criar uma Tabela de Banco de Dados. Isso causava um problema: muitos dados valiosos (como logs de servidores,
+              imagens escaneadas de processos e PDFs não estruturados) eram jogados fora, porque processá-los e estruturá-los era muito caro.
+            </p>
+            <p>
+              O <strong>Data Lake</strong> surgiu para resolver o desafio do <em>Big Data</em>. A lógica inverteu-se:
+              <span class="hl-sky">Armazene tudo agora de forma bruta e barata; decida como estruturar e analisar apenas quando precisar</span>.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Arquitetura de Nuvem do Data Lake</h3>
+            <p>
+              Qualquer provedor de nuvem baseia os seus Data Lakes num serviço de <strong>Armazenamento de Objetos</strong>. Na AWS, a fundação do
+              Data Lake é sempre o <strong>Amazon S3</strong>. No Azure, é o <strong>Azure Data Lake Storage (ADLS)</strong>, que nada mais é do que o
+              Azure Blob Storage com suporte a um sistema de arquivos hierárquico (HDFS compatível) por cima.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Estruturando o Caos: Data Catalog e ETL/ELT
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Como mencionado na aba de pegadinhas, um Data Lake sem governança vira um <em>Data Swamp (Pântano)</em>. Para evitar isso, usa-se um
+              serviço de <strong>Catálogo de Dados (Data Catalog)</strong>.
+            </p>
+            <p>
+              Serviços como o <strong>AWS Glue</strong> usam robôs (<em>Crawlers</em>) que "rastejam" pelo Data Lake, abrem os arquivos CSV, JSON ou
+              Parquet, inferem o que está lá dentro e criam um dicionário de metadados. Sem esse dicionário, ferramentas de análise ficam cegas.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">De ETL para ELT</h3>
+            <p>
+              Antigamente (na era dos Data Warehouses locais), a regra era <strong>ETL</strong>: Extract (Extrair), Transform (Transformar e limpar a
+              memória num servidor intermediário), Load (Carregar no banco de destino).
+            </p>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded border-l-4 border-emerald-500 mt-2 text-sm">
+              <strong class="text-emerald-800 dark:text-emerald-300 block mb-1">A mudança do Data Lake (ELT):</strong>
+              Na nuvem, o paradigma preferido é o <strong>ELT</strong>. Extract (Extrair da fonte), Load (Carregar bruto e rápido direto no Data
+              Lake), e só depois Transform (Transformar o dado usando o poder massivo de processamento distribuído da própria nuvem, como o Apache
+              Spark, para criar as visões refinadas).
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Processamento Distribuído
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Depois de armazenar Petabytes de dados, como processá-los? O processamento distribuído (frameworks nativos para Big Data) é a resposta.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A. Hadoop e o paradigma MapReduce</h3>
+            <p>
+              O Apache Hadoop dividia problemas colossais em milhares de computadores normais. O coração dele era o HDFS (sistema de arquivos próprio)
+              e o motor de cálculo <strong>MapReduce</strong>. O <em>Map</em> filtrou e dividiu os dados; o <em>Reduce</em> somou e consolidou as
+              respostas. O problema do Hadoop é que, entre a fase do Map e a do Reduce, ele precisava salvar o estado no disco rígido (Disk I/O). Para
+              Analytics moderno e Machine Learning, isso revelou-se demasiado lento.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">B. Apache Spark (A Revolução)</h3>
+            <p>
+              O Spark não substitui o armazenamento do Hadoop, mas <strong class="hl-green">substitui o motor de cálculo (MapReduce)</strong>. A
+              grande sacada do Spark é o processamento <strong>Em Memória (In-Memory)</strong> utilizando estruturas imutáveis chamadas RDDs e
+              DataFrames. Ele faz todo o trabalho pesado na Memória RAM dos servidores do cluster e evita ao máximo gravar nos discos rígidos físicos.
+              É o padrão oficial da indústria atual.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            ☁️ 4. Serviços de Nuvem Associados (Nomes de Prova)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Bancas de nível sênior podem cobrar de que forma você implementa um Spark ou um Hadoop num dos "Big 3" sem ter que instalar tudo
+            manualmente (PaaS/SaaS).
+          </p>
+          <ul class="space-y-4 text-sm text-slate-700 dark:text-slate-400">
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Amazon EMR (Elastic MapReduce):</strong> A plataforma de Big Data da AWS. Permite
+              que você "alugue" um cluster Hadoop/Spark completo que se liga em minutos. Você analisa os dados que estão no S3 e pode destruir o
+              cluster após a análise (pagando pouco).
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">Amazon Athena:</strong> Serviço <em>Serverless</em> genial. Ele permite que você
+              digite comandos <strong>SQL padrão</strong> e os execute diretamente sobre ficheiros brutos (CSV/JSON/Parquet) que estão largados lá
+              dentro do Amazon S3, sem nem precisar de ter um banco de dados ligado.
+            </li>
+            <li>
+              <strong class="text-indigo-700 dark:text-indigo-400">GCP Dataproc e BigQuery:</strong> O Dataproc é o equivalente ao EMR da AWS no
+              Google (para rodar Spark/Hadoop gerido). O BigQuery é o Data Warehouse Serverless massivo do Google, considerado líder da indústria em
+              velocidade analítica.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

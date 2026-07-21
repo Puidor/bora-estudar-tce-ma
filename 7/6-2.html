@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Políticas de uso e Governança em Nuvem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 6.2
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Políticas e Governança em Nuvem
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Paradigma -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">⚖️</span> O que é Governança na Nuvem?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            Em datacenters antigos, o controle era feito por "gargalos" humanos (pedir um servidor demorava meses). Na nuvem, o provisionamento é
+            instantâneo. A governança serve para aplicar <strong>"Guardrails" (Balizas de Segurança)</strong>: permitir que os desenvolvedores criem
+            recursos livremente, desde que não quebrem regras de orçamento ou segurança.
+          </p>
+        </section>
+
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛠️ As Três Ferramentas do Gestor</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">OS PILARES</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Tags -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🏷️</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">1. Tagging (Etiquetas)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Pares de Chave=Valor.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• <strong class="text-white">Rateio (Billing):</strong> Saber que o "Setor RH" gastou R$ 5 mil.</li>
+                  <li>• <strong class="text-white">Automação:</strong> Um script lê a tag <code>Ambiente=Dev</code> e desliga a máquina à noite.</li>
+                  <li>• <strong class="text-white">Segurança:</strong> Liberar acesso apenas se a máquina tiver a tag correta.</li>
+                </ul>
+              </div>
+
+              <!-- Cotas -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">📏</div>
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">2. Cotas e Limites</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Limites arquiteturais e de serviço.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Impede a criação de "1.000 máquinas" por erro num loop de código.</li>
+                  <li>• <strong class="text-fuchsia-300">Hard Limits:</strong> Não podem ser mudados.</li>
+                  <li>• <strong class="text-fuchsia-300">Soft Limits:</strong> O administrador pode pedir aumento ao suporte da nuvem.</li>
+                </ul>
+              </div>
+
+              <!-- Budgets -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">💰</div>
+                <h3 class="font-bold text-emerald-400 mb-2 uppercase text-sm border-b border-emerald-500/30 pb-2">3. Orçamentos e Alertas</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Vigiando a carteira.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Configuração de limites financeiros por mês.</li>
+                  <li>• <strong>Gatilhos:</strong> Dispara e-mails quando o gasto atinge 80% do previsto.</li>
+                  <li>• Pode realizar <strong>ações automáticas</strong> (ex: bloquear criação de recursos novos ao estourar o limite).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 flex flex-col md:flex-row gap-6 items-center"
+        >
+          <div class="w-full md:w-1/3 flex justify-center text-8xl">👻</div>
+          <div class="w-full md:w-2/3">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-2">O Fantasma do Shadow IT</h2>
+            <p class="text-sm text-slate-700 dark:text-slate-300">
+              É o uso de sistemas de TI, dispositivos, softwares, aplicativos e serviços em nuvem
+              <strong>sem a aprovação ou conhecimento explícito</strong> do departamento de TI e Segurança da organização.
+            </p>
+            <div class="bg-slate-100 dark:bg-slate-900 border-l-4 border-slate-500 p-3 mt-3 text-sm text-slate-600 dark:text-slate-400">
+              <strong>Exemplo na Nuvem:</strong> Um diretor, cansado da burocracia, usa seu cartão corporativo para criar uma conta paralela na AWS e
+              hospeda lá dados confidenciais do TCE. A TI nem sabe que isso existe, e os dados vazam pois não havia regras de compliance.
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Tagueamento (Tags) serve apenas para finanças?</strong><br />
+                A banca afirma: "Em ambientes de computação em nuvem, o uso de tags (etiquetas) restringe-se exclusivamente à organização e rateio de
+                custos nas faturas mensais (Chargeback)."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                As tags também são fundamentais para <strong>Segurança e Controle de Acesso (ABAC - Attribute-Based Access Control)</strong>, além de
+                servirem para <strong>Automação</strong> (scripts que agem apenas sobre máquinas com determinada tag).
+              </li>
+              <li>
+                <strong>Cotas Protetivas:</strong><br />
+                "As Service Quotas (Cotas de Serviço) são configuradas exclusivamente pelos provedores de nuvem para proteger os seus datacenters
+                físicos contra esgotamento de hardware, não tendo utilidade para a governança do cliente."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Apesar de os provedores terem limites padrão, os clientes usam ativamente cotas como
+                <strong class="underline decoration-red-500">ferramenta de governança interna</strong>. Eles aplicam cotas restritivas para garantir
+                que um erro de código ou ataque não gere faturas milionárias inesperadas.
+              </li>
+              <li>
+                <strong>Governança destrói a Agilidade?</strong><br />
+                A banca sugere que aplicar governança forte anula os benefícios de velocidade da nuvem. <br />
+                <strong class="text-red-600 dark:text-red-400">Falso.</strong> A governança moderna usa o conceito de
+                <strong>"Guardrails"</strong> (Políticas automatizadas como o <em>AWS Organizations</em> ou <em>Azure Policies</em>) que bloqueiam
+                ações perigosas no momento em que são tentadas, mantendo a liberdade de <em>self-service</em> dos desenvolvedores intacta.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Paradigma da Governança em Nuvem
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Governança em TI é tradicionalmente associada a lentidão: formulários, aprovações, tickets e longas esperas. Contudo, a essência da
+              computação em nuvem (segundo o NIST) é o <strong>Autosserviço sob demanda</strong>. Se um desenvolvedor precisar de um banco de dados,
+              ele mesmo o cria.
+            </p>
+            <p>
+              O desafio da governança em nuvem é manter essa velocidade, mas impedir que o desenvolvedor crie um banco de dados na Ásia em vez de no
+              Brasil, com portas abertas para a internet e custando mil dólares por dia.
+            </p>
+            <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded border-l-4 border-sky-500 mt-4 text-sm">
+              <strong class="text-sky-800 dark:text-sky-300">Guardrails (Balizas) vs Gates (Portões)</strong><br />
+              A governança moderna substitui os "Portões" (bloqueios onde um humano precisa aprovar a criação do servidor) por "Balizas". Uma política
+              de guardrail é um script ativo na conta de nuvem que permite a criação de qualquer recurso,
+              <span class="hl-sky">desde que</span> obedeça às regras. Exemplo: "Permitir a criação de Instâncias EC2, <em>exceto</em> se a família da
+              instância for do tipo GPU de altíssimo custo". O bloqueio é automático.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Tagueamento (Tagging) em Profundidade
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Uma "Tag" é uma etiqueta na forma de um metadado (Chave=Valor) associado a um recurso na nuvem. Exemplo:
+              <code>Projeto=PortalTransparencia</code> ou <code>CentroDeCusto=SecretariaTI</code>. Numa arquitetura corporativa madura, a
+              <strong>Política de Tags Obrigatórias</strong> é o coração da governança.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">As Três Dimensões do Uso de Tags</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">1. Alocação de Custos (Finanças):</strong> É impossível olhar para uma conta de
+                nuvem de 100 mil reais e saber quem gastou o quê sem as tags. Com elas, as ferramentas de finanças separam a fatura e permitem o
+                <strong>Showback</strong> (mostrar para o setor X quanto ele gastou) e o <strong>Chargeback</strong> (cobrar diretamente do orçamento
+                do setor X a sua cota da nuvem).
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">2. Automação e Operações:</strong> Se você tiver 500 máquinas rodando e
+                precisar desligar apenas as máquinas de "Teste" nos finais de semana para economizar dinheiro, você usa ferramentas (como AWS Systems
+                Manager ou Azure Automation) programadas para rodar a rotina de desligamento <em>apenas em recursos que possuam a tag</em>
+                <code>Ambiente=Teste</code>.
+              </li>
+              <li>
+                <strong class="text-red-600 dark:text-red-400">3. Segurança e Controle de Acesso (ABAC):</strong> Políticas do IAM podem usar tags.
+                Exemplo: O usuário "José" só pode apagar servidores que contenham a tag <code>Dono=Jose</code>. Isso é chamado de Controle de Acesso
+                Baseado em Atributos (ABAC).
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Gestão de Cotas, Limites e Orçamentos
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>Em um mundo "Pay-as-you-go" (Pague pelo que usa) com escala quase infinita, qualquer anomalia custa dinheiro real.</p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Service Quotas (Cotas de Serviço)</h3>
+            <p>
+              Os provedores impõem limites sobre quantos recursos você pode criar. Isso serve para proteger a nuvem deles, mas também atua como um
+              cinto de segurança para a empresa.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Soft Limits (Limites Flexíveis):</strong> Limites padrão da conta (ex: máximo de 5 endereços IP elásticos). Podem ser
+                aumentados abrindo um ticket simples com o suporte da nuvem.
+              </li>
+              <li>
+                <strong>Hard Limits (Limites Rígidos):</strong> Limites estruturais irredutíveis impostos por questões de engenharia da plataforma.
+              </li>
+            </ul>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-6 mb-2">Budgets (Alertas de Orçamento)</h3>
+            <p>
+              Políticas de governança determinam a criação obrigatória de alertas. Define-se que a conta de "Desenvolvimento" não pode ultrapassar R$
+              5.000 mensais. Configura-se um alarme: quando atingir 80% do valor (R$ 4.000), o sistema dispara um e-mail para a diretoria ou ativa um
+              script (Lambda/Function) que impede a criação de novos servidores.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            👻 4. O Perigo do "Shadow IT" (TI Invisível)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            O <strong>Shadow IT</strong> é um dos fenômenos mais cobrados em avaliações sobre gestão de governança e segurança contemporânea. Ocorre
+            quando setores de negócio começam a comprar e usar softwares e ferramentas de TI por conta própria, ignorando o departamento oficial de
+            TI.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            Na era do SaaS e da Nuvem Pública, isso agravou-se severamente. É muito fácil para um setor governamental usar um cartão corporativo para
+            assinar um serviço como o Trello, Dropbox ou até criar um banco de dados no Google Cloud, para fugir da "lentidão" do suporte da TI
+            central.
+          </p>
+          <div class="bg-white dark:bg-slate-900 p-4 border border-indigo-200 dark:border-indigo-800 rounded mt-4">
+            <strong class="text-red-700 dark:text-red-400 text-sm block mb-1">Os Riscos que a Banca Cobra:</strong>
+            <ul class="list-disc pl-5 text-sm text-slate-600 dark:text-slate-400 space-y-1">
+              <li>
+                <span class="hl-red">Falta de Compliance:</span> Os dados hospedados por conta própria (Shadow IT) escapam às leis de proteção (como
+                LGPD), gerando multas gigantescas em caso de vazamento.
+              </li>
+              <li>
+                <span class="hl-red">Arquiteturas Inseguras:</span> Sistemas configurados por pessoas de negócio e não por engenheiros geralmente
+                ficam com portas abertas para a internet e sem senhas fortes (MFA).
+              </li>
+              <li>
+                <span class="hl-red">Desperdício Financeiro:</span> Assinaturas de softwares duplicadas e recursos ociosos abandonados gerando custos
+                recorrentes que a TI não pode otimizar pois não sabe que existem.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

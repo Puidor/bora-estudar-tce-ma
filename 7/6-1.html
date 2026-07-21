@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Gerenciamento de Custos e Otimização</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 6.1
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Gerenciamento de Custos e Otimização
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- OPEX vs CAPEX -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">💸</span> A Mudança Financeira: CAPEX vs OPEX
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-red-50 dark:bg-red-900/10 p-4 border border-red-200 dark:border-red-800 rounded-lg">
+              <strong class="text-red-700 dark:text-red-400 block mb-1">CAPEX (Despesa de Capital)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                O modelo do <strong>Datacenter Antigo</strong>. Você gasta milhões antecipadamente para comprar servidores físicos, licenças e
+                ar-condicionado. É um investimento fixo que sofre depreciação.
+              </p>
+            </div>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+              <strong class="text-emerald-700 dark:text-emerald-400 block mb-1">OPEX (Despesa Operacional)</strong>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                O modelo da <strong>Nuvem</strong>. Não há custo inicial. Você aluga o serviço (Pay-as-you-go) e o pagamento entra como despesa do dia
+                a dia (conta de luz, água, nuvem).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Modelos de Precificação (Cobrança) -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">🛒 Os Três Modelos de Cobrança (VMs)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">MUITO COBRADO!</span>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <!-- On-Demand -->
+              <div class="bg-slate-800 border-l-4 border-slate-500 p-4 rounded shadow-sm">
+                <h3 class="font-bold text-slate-300 text-lg">1. Sob Demanda (On-Demand)</h3>
+                <p class="text-sm mt-1 text-slate-400">O padrão. Você cria a máquina, usa e desliga. Paga pelo segundo/hora exato de uso.</p>
+                <div class="mt-2 text-xs">
+                  <span class="text-slate-500 block"><strong>Vantagem:</strong> Flexibilidade total. Não tem compromisso de longo prazo.</span>
+                  <span class="text-slate-500 block"><strong>Desvantagem:</strong> É o modelo mais caro a longo prazo.</span>
+                </div>
+              </div>
+
+              <!-- Reservadas -->
+              <div class="bg-slate-800 border-l-4 border-sky-500 p-4 rounded shadow-sm">
+                <h3 class="font-bold text-sky-400 text-lg">2. Instâncias Reservadas / Savings Plans</h3>
+                <p class="text-sm mt-1 text-slate-300">
+                  Você assina um contrato comprometendo-se a usar aquele recurso (ou família de máquinas) de forma contínua por
+                  <strong>1 a 3 anos</strong>.
+                </p>
+                <div class="mt-2 text-xs">
+                  <span class="text-sky-300/80 block"
+                    ><strong>Vantagem:</strong> Descontos massivos (pode chegar a 72% de desconto frente ao On-Demand).</span
+                  >
+                  <span class="text-sky-300/80 block"
+                    ><strong>Desvantagem:</strong> Você vai pagar por 3 anos, mesmo que pare de usar no meio do caminho. Ideal para sistemas de
+                    tráfego base que estão sempre ligados (ex: Banco de Dados Principal).</span
+                  >
+                </div>
+              </div>
+
+              <!-- Spot -->
+              <div class="bg-slate-800 border-l-4 border-fuchsia-500 p-4 rounded shadow-sm">
+                <h3 class="font-bold text-fuchsia-400 text-lg">3. Instâncias Spot (Spot Instances)</h3>
+                <p class="text-sm mt-1 text-slate-300">
+                  A Nuvem leiloa a capacidade de servidores que está sobrando no datacenter dela a preço de banana.
+                </p>
+                <div class="mt-2 text-xs">
+                  <span class="text-fuchsia-300/80 block"><strong>Vantagem:</strong> Desconto mais agressivo possível (até 90%).</span>
+                  <span class="text-fuchsia-300/80 block font-bold text-white"
+                    ><strong>O Perigo:</strong> Se a Nuvem precisar da máquina de volta para um cliente que paga o preço cheio, ela
+                    <em>encerra a sua máquina com 2 minutos de aviso</em>. Só use para processamento flexível ou microsserviços tolerantes a
+                    falhas!</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pilares da Otimização -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🔧</span> Pilares da Otimização (Evitando o Cloud Shock)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <div class="text-2xl mb-2">📏</div>
+              <strong class="text-sky-700 dark:text-sky-400 block mb-1">Rightsizing</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                A "Adequação de Tamanho". É monitorizar se uma VM com 32GB de RAM está consumindo apenas 2GB e, se sim, reduzi-la para uma VM menor.
+                Combate direto ao Superprovisionamento.
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <div class="text-2xl mb-2">🏷️</div>
+              <strong class="text-emerald-700 dark:text-emerald-400 block mb-1">Tagging (Etiquetas)</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Sem etiquetar os recursos (Ex: <code>Setor=RH</code>, <code>Ambiente=Dev</code>), é impossível saber quem gastou a verba no fim do
+                mês. A Tag é a base do rateio (Chargeback).
+              </p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-200 dark:border-slate-600 rounded-lg shadow-sm">
+              <div class="text-2xl mb-2">💤</div>
+              <strong class="text-orange-700 dark:text-orange-400 block mb-1">Desligar Ociosidade</strong>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Servidores de Desenvolvimento/Teste não precisam ficar ligados no fim de semana. Automatizar o desligamento noturno gera economia
+                imediata de 60%.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Nuvem é sempre mais barata?</strong><br />
+                A banca diz: "A adoção da computação em nuvem reduz inevitavelmente os custos de TI de um órgão público devido à economia de escala
+                dos provedores."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Este é o famoso <em>Cloud Shock</em>. Sem processos rígidos de governança (desligar máquinas ociosas, usar auto scaling), a conta da
+                nuvem pode ser **muito mais cara** do que a de um datacenter tradicional, por causa da facilidade com que qualquer desenvolvedor pode
+                instanciar servidores caros com 1 clique (Shadow IT).
+              </li>
+              <li>
+                <strong>Spot Instances para Banco de Dados?</strong><br />
+                "Para baratear o custo do Banco de Dados de Produção do TCE-MA, o administrador deve alocar a base de dados principal em uma Instância
+                Spot."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso Absoluto!</span
+                >
+                Instâncias Spot podem ser <strong>interrompidas e tomadas de volta pelo provedor</strong> a qualquer instante. Se você colocar um
+                banco de dados de produção nelas, o sistema vai cair do nada e corromper dados. Spots são para <em>processamento de jobs em fila</em>,
+                edição de vídeo, big data ou contêineres <em>stateless</em> fáceis de recriar.
+              </li>
+              <li>
+                <strong>Otimização Automática do provedor:</strong><br />
+                "No modelo IaaS, o provedor (ex: AWS) avalia automaticamente o desempenho do software do cliente e altera a capacidade do servidor
+                para economizar custos de forma unilateral."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A responsabilidade de gerenciar os custos e definir o tamanho do servidor (Rightsizing) é <strong>100% do Cliente</strong>. O provedor
+                até pode oferecer ferramentas ou relatórios de sugestões (ex: AWS Trusted Advisor), mas jamais alterará as configurações de IaaS sem
+                autorização.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Choque Financeiro: De CAPEX para OPEX
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>A migração para a nuvem não é apenas uma mudança de engenharia, é uma virada radical na contabilidade das empresas.</p>
+            <p>
+              No modelo <strong>On-Premises</strong>, as compras são categorizadas como <span class="hl-red">CAPEX (Despesas de Capital)</span>. O
+              Governo abre uma licitação pesada, compra servidores da Dell/HP e eles viram "Bens de Capital". É um processo lento, engessado e que
+              sofre depreciação física. O principal erro desse modelo é o <strong>Superprovisionamento (Overprovisioning)</strong>: compra-se
+              equipamento a mais para aguentar um possível pico daqui a 3 anos, mas ele passa a maior parte do tempo ocioso.
+            </p>
+            <p>
+              Na <strong>Nuvem</strong>, tudo é categorizado como <span class="hl-green">OPEX (Despesas Operacionais)</span>. O serviço é consumido e
+              pago sob demanda, faturado como uma despesa recorrente mensal. A agilidade extrema permite que os desenvolvedores criem servidores em
+              segundos. O problema? Se eles esquecerem de desligar a máquina sexta-feira à noite, a conta (billing) continua rodando no fim de semana
+              inteiro (o chamado desperdício ocioso).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Táticas de Otimização de Arquitetura
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">A. Rightsizing (Adequação de Tamanho)</h3>
+              <p>
+                É o processo contínuo de análise do desempenho das instâncias computacionais e do redimensionamento delas de acordo com a carga real
+                de trabalho.
+              </p>
+              <div class="bg-sky-50 dark:bg-sky-900/10 p-4 rounded mt-2 text-sm border-l-4 border-sky-500">
+                <strong class="text-sky-800 dark:text-sky-300 block mb-1">Dica de Prova: Famílias de Instâncias</strong>
+                Não adianta apenas alugar "uma máquina grande". Os provedores dividem o hardware em famílias (Uso Geral, Otimizadas para Computação,
+                Otimizadas para Memória). Se o seu banco de dados precisa de muita memória RAM, alugar uma máquina "Uso Geral Gigante" resultará em
+                desperdício da CPU extra que você não precisava. O <em>Rightsizing</em> também envolve trocar a família da instância para combinar com
+                a necessidade exata do software.
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                B. Arquiteturas Elásticas (Scale-In é Rei)
+              </h3>
+              <p>
+                Muitos sistemas usam o <em>Auto Scaling</em> para criar novas instâncias quando a carga aumenta (Scale-Out). No entanto, de uma
+                perspetiva financeira, o verdadeiro poder da nuvem está no <span class="hl-green">Scale-In (Retração)</span>. Se a política de
+                autoescalonamento não estiver configurada para destruir instâncias à noite ou em feriados, a nuvem será uma fonte infinita de
+                despesas.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                C. Armazenamento com Ciclo de Vida (Tiering)
+              </h3>
+              <p>
+                O armazenamento de objetos (como o S3) possui classes de preço. Dados quentes (acessados hoje) custam caro. O bom gerenciamento de
+                custos exige configurar "Políticas de Ciclo de Vida". Exemplo: Se um PDF de processo do tribunal for mais velho que 90 dias, mova-o
+                automaticamente para um armazenamento <strong>Glacier / Cold Archive (Armazenamento Frio)</strong>, que custa centavos, mas demora
+                minutos/horas para ser recuperado.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Estratégias de Aquisição (Modelos de Compra)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Em um ambiente maduro de governança de nuvem (especialmente no setor público), a equipe não pode depender puramente de instâncias
+              <em>Sob Demanda</em>. É obrigatório criar um "Mix de Precificação".
+            </p>
+
+            <ul class="list-none space-y-4 mt-4 text-sm">
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-slate-800 dark:text-white text-lg block mb-1">On-Demand (Sob Demanda)</strong>
+                Usado para cargas de trabalho imprevisíveis que não podem ser interrompidas ou projetos experimentais. Você paga o preço máximo de
+                tabela sem compromisso de renovação.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-sky-700 dark:text-sky-400 text-lg block mb-1">Reserved Instances (RIs) e Savings Plans</strong>
+                É como assinar um contrato de aluguel. A empresa prevê que a "Base de Dados Master" vai ficar ligada 24/7 pelos próximos 3 anos. Logo,
+                ela assina um <em>Savings Plan</em> comprometendo-se financeiramente. Em troca, o provedor abate mais de 50% do valor horário daquela
+                máquina. A nuvem pública federal exige a adoção desses planos para as cargas base.
+              </li>
+              <li class="bg-slate-50 dark:bg-slate-900 p-4 rounded border border-slate-200 dark:border-slate-700">
+                <strong class="text-fuchsia-700 dark:text-fuchsia-400 text-lg block mb-1">Spot Instances (Capacidade Ociosa)</strong>
+                A AWS/Azure possuem milhões de servidores vazios esperando clientes. Para não deixar o hardware apodrecendo, eles leiloam essa
+                capacidade com descontos estratosféricos. <strong class="text-red-500">O risco:</strong> Se um cliente que paga "o valor cheio" entrar
+                no sistema, o provedor desliga a sua Instância Spot para dar a máquina a ele. O seu software *deve* estar preparado para ser ejetado
+                no meio da tarefa e recomeçar de onde parou quando conseguir outra máquina Spot.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            🏷️ 4. Governança por Tags: Chargeback e Showback
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Na fatura mensal da AWS para um tribunal, haverá uma linha dizendo: <em>"Amazon EC2: R$ 50.000,00"</em>. Como saber se esse gasto foi o
+            sistema do RH que cresceu, o sistema de fiscalização, ou um projeto paralelo que deixaram ligado por engano?
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            A resposta é a <strong>Tagueamento Extensivo (Tagging)</strong>. Nenhuma máquina, banco ou disco deve ser criado sem uma *Tag* (Etiqueta).
+            Ex: <code>Projeto=e-Contas</code>, <code>Ambiente=Produção</code>.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed mt-2">
+            Isso permite ferramentas de Gestão de Custos gerarem relatórios de <span class="hl-indigo">Showback</span> (Mostrar para a Diretoria de RH
+            o quanto a TI gastou exclusivamente com os servidores do setor de RH) ou <span class="hl-indigo">Chargeback</span> (O RH tem o seu próprio
+            orçamento e ele é debitado/cobrado internamente por esse uso da nuvem).
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Conformidade e Padrões (ISO, NIST, LGPD)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 6.3
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Conformidade e Padrões
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <!-- O Paradigma de Compliance -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">📋</span> Compliance na Nuvem
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            <em>Compliance</em> (Conformidade) é o ato de garantir que o uso da nuvem obedece às leis do país e aos padrões da indústria. Na nuvem, o
+            ônus da prova é facilitado pela **Herança de Conformidade**: se o provedor já é auditado e certificado na base física (datacenters), o
+            cliente herda essa aprovação, precisando se preocupar apenas com a configuração do software.
+          </p>
+        </section>
+
+        <!-- As Três Grandes Normas -->
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">📚 O Trio de Ferro (Foco do Edital)</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">DECORE SUAS FUNÇÕES!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- ISO 27001 -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🌐</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">ISO/IEC 27001</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Padrão Internacional.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Foca na criação de um <strong class="text-white">SGSI</strong> (Sistema de Gestão da Segurança da Informação).</li>
+                  <li>• Não é um produto que você instala. É um <strong>processo de melhoria contínua (PDCA)</strong>.</li>
+                  <li>• Prova que a empresa tem processos maduros para lidar com riscos.</li>
+                </ul>
+              </div>
+
+              <!-- NIST 800-53 -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🇺🇸</div>
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">NIST SP 800-53</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Catálogo do Governo Americano.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Fornece um <strong>catálogo exaustivo de controles</strong> de segurança e privacidade.</li>
+                  <li>• Base para o FISMA e o FedRAMP (exigido para nuvens que hospedam dados do governo dos EUA).</li>
+                  <li>• Usado mundialmente como o melhor "checklist" técnico de defesa profunda.</li>
+                </ul>
+              </div>
+
+              <!-- LGPD -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🇧🇷</div>
+                <h3 class="font-bold text-emerald-400 mb-2 uppercase text-sm border-b border-emerald-500/30 pb-2">LGPD (Lei 13.709/18)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Lei Brasileira de Dados.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• <strong class="text-emerald-300">Órgão Público (TCE):</strong> É o CONTROLADOR dos dados.</li>
+                  <li>• <strong class="text-emerald-300">Provedor de Nuvem:</strong> É o OPERADOR (Apenas processa a mando do controlador).</li>
+                  <li>• Define as regras para transferência internacional de dados (importante já que nuvens ficam espalhadas pelo mundo).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Compliance Programs -->
+        <section
+          class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 flex flex-col md:flex-row gap-6 items-center"
+        >
+          <div class="w-full md:w-1/3 flex justify-center text-8xl">📜</div>
+          <div class="w-full md:w-2/3">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Relatórios Sob Demanda</h2>
+            <p class="text-sm text-slate-700 dark:text-slate-300">
+              O administrador de rede do TCE-MA não pode viajar até a sede da Amazon nos EUA para auditar fisicamente se os guardas armados do
+              datacenter estão lá. Para resolver isso, os provedores possuem portais (ex: <strong>AWS Artifact</strong> ou
+              <strong>Microsoft Service Trust Portal</strong>).
+            </p>
+            <div class="bg-slate-100 dark:bg-slate-900 border-l-4 border-slate-500 p-3 mt-3 text-sm text-slate-600 dark:text-slate-400">
+              Nestes portais, o cliente baixa relatórios de auditorias independentes (SOC 1, SOC 2, ISO 27001) para provar aos seus próprios auditores
+              que a base da nuvem que estão utilizando está 100% em conformidade com as leis mundiais.
+            </div>
+          </div>
+        </section>
+
+        <!-- Alerta Pegadinha -->
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Nuvem e LGPD (Responsabilidade Automática?):</strong><br />
+                A banca afirma: "Ao hospedar os dados dos cidadãos num provedor de nuvem como Azure ou AWS, o órgão público transfere integralmente a
+                responsabilidade legal de cumprimento da LGPD para o provedor, eximindo-se de multas em caso de vazamento."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Provedor é o <strong class="underline decoration-red-500">OPERADOR</strong> e o Órgão Público é o
+                <strong class="underline decoration-red-500">CONTROLADOR</strong>. Ambos têm responsabilidade solidária/compartilhada perante a ANPD.
+                A escolha de senhas fracas ou portas abertas na configuração (responsabilidade do cliente) gera punição para o Controlador.
+              </li>
+              <li>
+                <strong>O que a ISO 27001 certifica?</strong><br />
+                "A certificação ISO/IEC 27001 garante que a tecnologia ou software em nuvem utilizado pela empresa é infalível contra ataques
+                cibernéticos."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A ISO 27001 <strong class="underline decoration-red-500">não certifica software</strong>. Ela certifica o
+                <strong>processo de gestão (SGSI)</strong>. Ela prova que a empresa possui políticas organizacionais maduras para identificar riscos,
+                treinar pessoas e reagir a incidentes, baseadas num ciclo de melhoria contínua (PDCA).
+              </li>
+              <li>
+                <strong>NIST 800-53 é Lei no Brasil?</strong><br />
+                A banca pode tentar dizer que os tribunais no Brasil são obrigados por lei federal a cumprir o NIST 800-53. <br />
+                <strong class="text-red-600 dark:text-red-400">Falso.</strong> O NIST é um padrão do
+                <strong class="hl-yellow">governo dos Estados Unidos</strong>. No Brasil, ele é amplamente utilizado como uma *melhor prática* ou um
+                benchmark de excelência para configurar a nuvem, mas não possui força de lei no território nacional.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Conformidade e Herança na Nuvem
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Quando uma organização opera num Datacenter on-premises (físico próprio), ela tem que lidar com toda a esteira de conformidade de ponta
+              a ponta: desde os extintores de incêndio e câmeras de segurança do prédio até a criptografia do banco de dados.
+            </p>
+            <p>
+              Ao migrar para a Computação em Nuvem, entra em jogo o conceito de
+              <span class="hl-green">Conformidade Herdada (Inherited Compliance)</span>, diretamente ligado ao Modelo de Responsabilidade
+              Compartilhada. As porções que o provedor gerencia (segurança física dos datacenters, segurança da rede hipervisora) já vêm
+              pré-certificadas globalmente com os mais altos padrões. O Cliente (TCE-MA) anexa esses certificados aos seus próprios relatórios,
+              reduzindo o custo e tempo de auditoria interna.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. ISO/IEC 27001 (O Padrão Global de Gestão)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A <strong>ISO/IEC 27001</strong> é a norma internacional mais conhecida para Sistemas de Gestão da Segurança da Informação (SGSI). Todos
+              os grandes provedores de nuvem ostentam essa certificação em seus data centers.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Fundamentos da Norma para Provas:</h3>
+            <ul class="list-disc pl-6 space-y-3 mt-2 text-sm">
+              <li>
+                <strong class="text-violet-600 dark:text-violet-400">Ciclo PDCA (Plan, Do, Check, Act):</strong> O coração do SGSI. A norma exige que
+                a segurança não seja estática, mas sim avaliada, monitorada e aprimorada iterativamente.
+              </li>
+              <li>
+                <strong class="text-emerald-600 dark:text-emerald-400">Gestão de Riscos:</strong> A ISO 27001 é guiada pelo risco (Risk-based
+                approach). A organização mapeia suas ameaças, calcula o impacto e aplica controles mitigatórios proporcionais (não se gasta R$ 1
+                milhão para proteger um ativo que vale R$ 10).
+              </li>
+              <li>
+                <strong class="text-red-600 dark:text-red-400">Auditoria Independente:</strong> A certificação tem validade (geralmente 3 anos) e
+                exige auditorias externas frequentes para provar que a empresa não relaxou nas políticas com o passar do tempo.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. NIST SP 800-53 (O Guia Tático)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Publicado pelo <em>National Institute of Standards and Technology</em> dos EUA, o <strong>Special Publication 800-53</strong> é um
+              compêndio denso focado em Controles de Segurança e Privacidade para Sistemas de Informação Federais.
+            </p>
+
+            <p>
+              Enquanto a ISO 27001 te diz <em>que</em> você precisa gerenciar seus riscos num nível organizacional (macro), o NIST 800-53 é o guia
+              tático que te mostra o <span class="hl-sky">CATÁLOGO EXATO</span> de centenas de controlos técnicos de como trancar a porta, configurar
+              senhas e proteger a nuvem.
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm">
+              <li>
+                <strong>Categorização (FIPS 199):</strong> Os sistemas são classificados como tendo impacto Baixo, Moderado ou Alto, e a baseline de
+                controles do NIST é aplicada proporcionalmente.
+              </li>
+              <li>
+                <strong>Fundamento do FedRAMP:</strong> Provedores de nuvem como AWS, GCP e Azure usam os controles do NIST 800-53 para conseguir a
+                certificação <em>FedRAMP</em>, que é obrigatória para que possam vender armazenamento em nuvem para o Pentágono e o Governo dos EUA.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">⚖️ 4. A Nuvem sob a Ótica da LGPD</h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            A <strong>Lei nº 13.709/2018 (LGPD)</strong> afeta intrinsecamente a arquitetura de Computação em Nuvem em órgãos públicos e empresas.
+            Quando o TCE-MA move dados de cidadãos para a AWS ou Azure, ocorrem fenômenos jurídicos importantes cobrados em prova:
+          </p>
+          <div class="bg-white dark:bg-slate-900 p-4 border border-indigo-200 dark:border-indigo-800 rounded mt-4">
+            <strong class="text-indigo-700 dark:text-indigo-400 text-sm block mb-1">Os 3 Pontos de Atenção na LGPD:</strong>
+            <ul class="list-decimal pl-5 text-sm text-slate-600 dark:text-slate-400 space-y-3 mt-2">
+              <li>
+                <span class="font-bold text-slate-800 dark:text-slate-200">Controlador vs Operador:</span> O Órgão Público (TCE-MA) é o Controlador.
+                Ele detém a competência das decisões referentes ao tratamento dos dados. A Nuvem (Microsoft, Amazon) é a Operadora, realizando o
+                tratamento em nome do Controlador. Se a Nuvem vazar os dados devido a uma falha física do servidor deles, a Nuvem responde legalmente
+                também.
+              </li>
+              <li>
+                <span class="font-bold text-slate-800 dark:text-slate-200">Transferência Internacional de Dados:</span> Datacenters em nuvem
+                frequentemente ficam fora do Brasil (ex: Virgínia nos EUA). A LGPD permite isso? <strong>Sim</strong>, mas sob regras estritas (ex: se
+                o país de destino proporcionar grau de proteção de dados adequado, ou se a empresa assinar cláusulas padrão contratuais exigidas).
+              </li>
+              <li>
+                <span class="font-bold text-slate-800 dark:text-slate-200">Privacy by Design:</span> A nuvem deve ser configurada prezando pela
+                privacidade desde a concepção. Usar Criptografia em Repouso (KMS), Criptografia em Trânsito (TLS) e Controle de Acesso Baseado no
+                Menor Privilégio são formas materiais de demonstrar à ANPD (Autoridade Nacional) que o órgão zelou pelos dados.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

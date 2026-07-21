@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Integração com Big Data e IA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 7.3
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Integração com Big Data e IA
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🤖</span> Nuvem: O Combustível da IA
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            A Inteligência Artificial e o Big Data exigem duas coisas que os datacenters locais raramente têm de sobra:
+            <strong>Armazenamento Infinito (para os dados) e Poder Computacional Massivo (GPUs para treinar a IA)</strong>. A Computação em Nuvem
+            entrega ambos através do modelo elástico (pague pelo que usar).
+          </p>
+          <div class="bg-sky-50 dark:bg-sky-900/10 p-3 rounded border-l-4 border-sky-500 text-sm">
+            <strong class="text-sky-700 dark:text-sky-400">Democratização da IA:</strong>
+            A nuvem permitiu que pequenas empresas (ou setores públicos) usassem algoritmos bilionários (como o reconhecimento facial do Google ou a
+            IA de linguagem da OpenAI) pagando apenas centavos por requisição, sem precisar comprar hardware superpotente.
+          </div>
+        </section>
+
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">⚙️ O Pipeline Moderno na Nuvem</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">FLUXO DE DADOS</span>
+          </div>
+          <div class="p-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 font-bold text-sm text-center">
+              <!-- Ingestão -->
+              <div class="flex-1 bg-slate-800/80 p-4 rounded-lg border border-sky-500/50 w-full">
+                <span class="text-sky-400 block mb-1">1. Ingestão</span>
+                <span class="text-xs text-slate-400 font-normal">Streaming em tempo real ou arquivos pesados.</span>
+                <span class="block mt-2 text-[10px] bg-slate-700/50 text-slate-300 px-2 py-1 rounded">Ex: Kafka, Kinesis</span>
+              </div>
+
+              <div class="hidden md:block text-slate-500">➔</div>
+
+              <!-- Data Lake -->
+              <div class="flex-1 bg-slate-800/80 p-4 rounded-lg border border-fuchsia-500/50 w-full">
+                <span class="text-fuchsia-400 block mb-1">2. Armazenamento</span>
+                <span class="text-xs text-slate-400 font-normal">O Data Lake (Lago de Dados Brutos).</span>
+                <span class="block mt-2 text-[10px] bg-slate-700/50 text-slate-300 px-2 py-1 rounded">Ex: Amazon S3, Blob</span>
+              </div>
+
+              <div class="hidden md:block text-slate-500">➔</div>
+
+              <!-- Treinamento -->
+              <div class="flex-1 bg-emerald-900/30 p-4 rounded-lg border-2 border-emerald-500 w-full">
+                <span class="text-emerald-400 block mb-1">3. Treinamento IA</span>
+                <span class="text-xs text-slate-300 font-normal">O cluster usa os dados para ensinar o modelo (Machine Learning).</span>
+                <span class="block mt-2 text-[10px] bg-emerald-900/50 text-emerald-300 px-2 py-1 rounded">Ex: Amazon SageMaker</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">🧠</span> Os Dois Sabores da IA na Nuvem
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border-l-4 border-orange-500 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-2">1. IA Pronta (APIs Cognitivas - SaaS)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                Modelos pré-treinados pelos gigantes. Você só manda o dado (ex: uma foto) e recebe o resultado (ex: "Tem um carro").
+              </p>
+              <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+                <li><strong class="text-orange-600 dark:text-orange-400">Visão:</strong> AWS Rekognition, Google Vision API</li>
+                <li><strong class="text-orange-600 dark:text-orange-400">Texto/Voz:</strong> Amazon Polly, Azure Cognitive Services</li>
+                <li><strong class="text-orange-600 dark:text-orange-400">Foco:</strong> Zero configuração. Rápido e barato.</li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-lg border-l-4 border-indigo-500 shadow-sm">
+              <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-2">2. IA Customizada (Plataformas ML - PaaS)</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                Quando a API pronta não serve (ex: prever fraudes nos contratos do TCE-MA). A nuvem lhe dá as ferramentas (Jupyter Notebooks, clusters
+                GPU) para criar o <strong>seu próprio modelo</strong>.
+              </p>
+              <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+                <li><strong class="text-indigo-600 dark:text-indigo-400">Ferramentas:</strong> Amazon SageMaker, Google Vertex AI, Azure ML</li>
+                <li>
+                  <strong class="text-indigo-600 dark:text-indigo-400">Foco:</strong> Requer Cientistas de Dados. Custos com treino e deploy (MLOps).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>Precisa de hardware (IaaS) para usar IA?</strong><br />
+                A banca diz: "A adoção de tecnologias de IA na nuvem pública requer, obrigatoriamente, a contratação e o gerenciamento de instâncias
+                computacionais (IaaS) equipadas com GPUs pelo órgão público."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Se o órgão usar <strong>Serviços Gerenciados ou APIs Cognitivas (SaaS/PaaS)</strong>, a infraestrutura subjacente (as GPUs) fica 100%
+                abstraída (invisível). O cliente só paga pela requisição da API (ex: centavos por foto analisada), sem gerenciar IaaS nenhum.
+              </li>
+              <li>
+                <strong>O que é MLOps?</strong><br />
+                "O conceito de MLOps refere-se exclusivamente à fase de treinamento dos modelos de Machine Learning, terminando no momento em que o
+                modelo é colocado em produção."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A prática de <strong>MLOps (Machine Learning Operations)</strong> abrange todo o ciclo de vida: treino, implantação (deploy), testes
+                e, criticamente, o <strong class="underline decoration-red-500">Monitoramento Contínuo</strong>. Se os dados do mundo real mudarem
+                (<em>Data Drift</em>), o modelo perde eficácia e o pipeline de MLOps deve re-treinar a IA automaticamente.
+              </li>
+              <li>
+                <strong>Dados na nuvem estruturam-se sozinhos?</strong><br />
+                "Ao integrar um Data Lake com ferramentas de Machine Learning nativas da nuvem, a plataforma de IA purifica e padroniza
+                automaticamente os dados brutos."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                A nuvem não faz mágica. Modelos de IA dependem de <strong>dados com qualidade</strong>. Processos de Limpeza, Preparação de Dados e
+                Engenharia de Features (ETL/ELT) são etapas cruciais que a equipe de engenharia do cliente ainda precisa programar/orquestrar antes de
+                jogar os dados no algoritmo.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. A Sinergia: Nuvem, Big Data e IA
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, o treinamento de Inteligência Artificial e o processamento de Big Data eram privilégios de pouquíssimas
+              mega-corporações, porque exigiam compras multimilionárias de *clusters* de servidores e GPUs dedicadas que passavam grande parte do
+              tempo ociosas.
+            </p>
+            <p>
+              A Computação em Nuvem virou esse jogo ao oferecer <span class="hl-green">Elasticidade</span> e o modelo
+              <span class="hl-green">Pay-as-you-go (Pague pelo uso)</span>. Hoje, uma equipe pode ligar um servidor brutal com 8 GPUs de última
+              geração na Amazon, treinar um modelo de IA durante 10 horas, pagar apenas algumas centenas de dólares por essas 10 horas, e destruir a
+              máquina em seguida.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">A Arquitetura de Referência</h3>
+            <p>
+              A integração perfeita funciona numa arquitetura desacoplada: os dados "vivem" num <strong>Data Lake</strong> (Armazenamento de Objetos
+              super barato, como S3 ou Cloud Storage). Ferramentas de <strong>Processamento Distribuído</strong> (como Apache Spark ou AWS EMR)
+              extraem, limpam e preparam esses dados. Por fim, as plataformas de <strong>Machine Learning</strong> puxam esses dados refinados do lago
+              para treinar a Inteligência Artificial.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Serviços Gerenciados de Machine Learning (MLOps)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Os maiores provedores (AWS, Google, Microsoft) não fornecem apenas as "máquinas". Eles fornecem ecossistemas completos do tipo PaaS
+              (Plataforma como Serviço) voltados para a ciência de dados. As figurinhas carimbadas em prova são:
+              <strong>Amazon SageMaker, Google Vertex AI e Azure Machine Learning</strong>.
+            </p>
+
+            <div class="bg-slate-50 dark:bg-slate-900 border-l-4 border-indigo-500 p-4 mt-4">
+              <strong class="text-indigo-800 dark:text-indigo-400 block mb-2">O Ciclo de MLOps na Nuvem:</strong>
+              <ol class="list-decimal pl-5 text-sm space-y-2">
+                <li>
+                  <strong>Construção (Build):</strong> A nuvem fornece ambientes web baseados no <em>Jupyter Notebook</em> para que o cientista de
+                  dados escreva o código Python/R.
+                </li>
+                <li>
+                  <strong>Treinamento (Train):</strong> Com um clique, a nuvem provisiona uma máquina potente, injeta os dados, treina o modelo
+                  matemático e se autodestrói (salvando o modelo treinado num balde de armazenamento).
+                </li>
+                <li>
+                  <strong>Implantação (Deploy):</strong> O modelo é publicado como um <em>Endpoint de API REST</em>. Agora, qualquer aplicativo (mesmo
+                  no celular) pode mandar uma requisição pra API pedindo uma previsão em tempo real.
+                </li>
+                <li>
+                  <strong>Monitoramento (Monitor):</strong> Se com o passar do tempo a IA ficar "burra" porque o comportamento dos clientes mudou
+                  (fenômeno chamado de <span class="hl-red">Data Drift</span>), a plataforma alerta a equipe e reinicia o treinamento.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. APIs Cognitivas prontas (AI as a Service)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Nem toda organização tem a necessidade (ou orçamento para contratar cientistas de dados) de construir seus próprios algoritmos. Os
+              provedores de nuvem pegaram os algoritmos bilionários que eles usam internamente e os disponibilizaram como "Serviços Prontos" (SaaS).
+            </p>
+            <p>
+              Você não treina a IA, não envia base de dados, não provisiona servidor. Você simplesmente chama a API via código, envia o arquivo e ela
+              retorna um arquivo JSON com a resposta inteligente. A cobrança é puramente por uso (ex: U$ 1 dólar por cada 1.000 imagens analisadas).
+            </p>
+            <ul class="list-disc pl-6 space-y-2 mt-4 text-sm font-medium">
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">Computer Vision (Visão):</strong> AWS Rekognition, Google Cloud Vision. (Identificam
+                rostos, objetos, texto em imagens e vídeos. Muito usado para KYC e validação de identidade).
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">Natural Language Processing (NLP):</strong> AWS Comprehend, Amazon Polly, Azure OpenAI.
+                (Traduzem idiomas, transformam texto em fala de forma humana, extraem o "sentimento" - positivo/negativo - de um texto ou ouvidoria
+                pública).
+              </li>
+              <li>
+                <strong class="text-sky-600 dark:text-sky-400">GenAI (IA Generativa):</strong> Serviços como Amazon Bedrock ou Azure OpenAI Service
+                permitem criar chatbots corporativos customizados (estilo ChatGPT) em minutos usando os LLMs de fundação do mercado.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">
+            ⚖️ 4. O Cuidado com os Dados (Governança e LGPD)
+          </h2>
+          <p class="text-slate-700 dark:text-slate-400 mb-4 text-sm leading-relaxed">
+            Como os algoritmos de IA baseados em nuvem são vorazes por "Big Data", surge um grave risco legal para órgãos públicos. Ao despejar
+            milhões de documentos de processos (PDFs) no Data Lake para treinar uma IA capaz de resumir as petições, a equipe de TI pode enviar
+            inadvertidamente <strong>Dados Pessoais Sensíveis (CPF, laudos médicos)</strong> de cidadãos.
+          </p>
+          <p class="text-slate-700 dark:text-slate-400 text-sm leading-relaxed">
+            A integração de IA na nuvem do setor público hoje exige obrigatoriamente a adoção de tecnologias de
+            <span class="hl-indigo">Data Loss Prevention (DLP)</span> e <span class="hl-indigo">Anonimização/Mascaramento Automático</span>. A nuvem
+            deve "ler" e ofuscar o CPF antes que o algoritmo de treinamento ingira a informação, para evitar o enquadramento em penalidades da
+            <strong>LGPD</strong>.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

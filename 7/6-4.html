@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: FinOps (Operações Financeiras na Nuvem)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 6.4
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">FinOps</h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <div id="tab-1" class="tab-content active space-y-8">
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+            <span class="text-sky-500 text-2xl">💸</span> O que é FinOps?
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 mb-4">
+            Abreviação de <em>Financial Operations</em> (ou Cloud Financial Management). É uma
+            <strong>prática cultural e modelo operacional</strong> em evolução. FinOps une as equipes de TI (Engenharia), Finanças e Negócios para
+            assumir a propriedade colaborativa sobre os custos da nuvem.
+          </p>
+          <div class="bg-sky-50 dark:bg-sky-900/10 p-4 border-l-4 border-sky-500 rounded text-sm text-sky-800 dark:text-sky-300 font-medium italic">
+            "FinOps não é sobre poupar dinheiro. FinOps é sobre ganhar dinheiro." (Foco em maximizar o valor de negócio da nuvem).
+          </div>
+        </section>
+
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">♻️ O Ciclo de Vida do FinOps</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">DECORE AS 3 FASES!</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Inform -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">📊</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">1. Informar (Inform)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Visibilidade é tudo.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Dá poder às equipes com visibilidade de custos.</li>
+                  <li>• Uso pesado de <strong>Tags (Tagueamento)</strong> para saber quem gastou o quê.</li>
+                  <li>• Implementa o <em>Showback</em> e <em>Chargeback</em>.</li>
+                </ul>
+              </div>
+
+              <!-- Optimize -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🎯</div>
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">2. Otimizar (Optimize)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Gastar melhor.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Toma ações para reduzir o desperdício.</li>
+                  <li>• Faz o <strong>Rightsizing</strong> (diminuir VMs ociosas).</li>
+                  <li>• Compra <em>Instâncias Reservadas</em> ou <em>Savings Plans</em> para obter descontos massivos na carga de base.</li>
+                </ul>
+              </div>
+
+              <!-- Operate -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">⚙️</div>
+                <h3 class="font-bold text-emerald-400 mb-2 uppercase text-sm border-b border-emerald-500/30 pb-2">3. Operar (Operate)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">Melhoria contínua.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Avalia continuamente as métricas.</li>
+                  <li>• Executa processos de FinOps no dia a dia.</li>
+                  <li>• Toma decisões de governança entre velocidade vs custo vs qualidade.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 flex flex-col md:flex-row gap-6 items-center"
+        >
+          <div class="w-full md:w-1/3 flex justify-center text-6xl">🔨</div>
+          <div class="w-full md:w-2/3">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Quebrando Silos Organizacionais</h2>
+            <p class="text-sm text-slate-700 dark:text-slate-300">
+              Assim como o DevOps uniu Desenvolvedores e Operações, o FinOps destrói o muro entre a
+              <strong>Engenharia de TI e as Finanças (Contabilidade)</strong>.
+            </p>
+            <div class="bg-slate-100 dark:bg-slate-900 border-l-4 border-slate-500 p-3 mt-3 text-sm text-slate-600 dark:text-slate-400">
+              No passado, a TI pedia hardware e a Contabilidade pagava (CAPEX). Na nuvem, o código do Engenheiro gera custo em tempo real (OPEX). No
+              FinOps, o Engenheiro passa a ser responsabilizado pelo impacto financeiro de sua arquitetura.
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>O Falso Foco Único na Redução de Custos:</strong><br />
+                A banca afirma: "A prática de FinOps tem como objetivo central e exclusivo a redução sistemática dos custos da fatura de nuvem
+                pública, mesmo que isso acarrete em degradação da performance."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O objetivo central do FinOps <strong class="underline decoration-red-500">NÃO é apenas cortar custos</strong>. Se gastar mais 1.000
+                reais na AWS trouxer 10.000 reais em novas vendas, o FinOps aprova esse gasto. O foco é a
+                <strong>Eficiência e o Valor de Negócio (Unit Economics)</strong>, e não a mera contenção de despesas.
+              </li>
+              <li>
+                <strong>Responsabilidade Financeira Centralizada vs Descentralizada:</strong><br />
+                "Na cultura FinOps, o controle e a responsabilidade pelos gastos na nuvem pertencem exclusivamente à equipe de compras e finanças do
+                órgão público."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Um dos pilares fundamentais do FinOps é que
+                <strong class="underline decoration-red-500">"Todos são responsáveis pelo seu uso da nuvem"</strong>. As equipes de
+                engenharia/produtos devem ter responsabilidade (ownership) pelos custos de suas próprias arquiteturas.
+              </li>
+              <li>
+                <strong>FinOps é uma ferramenta de software:</strong><br />
+                "Para implementar FinOps, o Tribunal de Contas precisa obrigatoriamente licitar e adquirir um software SaaS de FinOps, visto que é uma
+                plataforma tecnológica de controle."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                FinOps é uma <strong class="text-red-600 dark:text-red-400">Prática Cultural e Operacional</strong> (como DevOps ou Agile). Embora se
+                utilizem ferramentas para auxiliar na visibilidade (ex: AWS Cost Explorer, tags), FinOps em si não é uma ferramenta que se compra.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. O Paradoxo da Nuvem e o Nascimento do FinOps
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Historicamente, se a área de TI do TCE-MA precisasse de um servidor novo, o processo demorava meses: a TI fazia a especificação,
+              Finanças aprovava o orçamento (CAPEX), abria-se a licitação e o hardware chegava. O "poder de compra" estava engessado no setor
+              financeiro.
+            </p>
+            <p>
+              Com a Computação em Nuvem (IaaS/PaaS), o <strong>Poder de Compra foi descentralizado para os desenvolvedores</strong>. Em uma tarde, um
+              estagiário de desenvolvimento pode escrever três linhas de código no Terraform (IaC) e criar 20 servidores que vão custar R$ 5.000 por
+              mês (custo variável / OPEX).
+            </p>
+            <p>
+              O <span class="hl-green">FinOps</span> (desenvolvido e padronizado pela FinOps Foundation) surge para resolver este choque cultural. Ele
+              é um modelo operacional que estabelece governança, visibilidade e colaboração entre as equipes de Engenharia, Finanças e Negócios.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Os 6 Princípios Essenciais do FinOps
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              A Fundação FinOps define seis princípios que norteiam qualquer implementação dessa cultura e que são alvos muito frequentes de provas de
+              auditoria de TI:
+            </p>
+
+            <ul class="list-decimal pl-6 space-y-3 mt-4 text-sm font-medium">
+              <li>
+                <strong class="text-sky-700 dark:text-sky-400">As equipes precisam colaborar:</strong> Finanças, TI e Negócios devem trabalhar juntos
+                em tempo real.
+              </li>
+              <li>
+                <strong class="text-emerald-700 dark:text-emerald-400">O valor do negócio direciona as decisões da nuvem:</strong> O sucesso é medido
+                pela economia unitária (<em>Unit Economics</em>) e pelo valor gerado, não pela mera redução global de custos.
+              </li>
+              <li>
+                <strong class="text-violet-700 dark:text-violet-400">Todos assumem a responsabilidade pelo uso:</strong> As equipes de desenvolvimento
+                de produto devem gerenciar seus próprios orçamentos na nuvem (Accountability).
+              </li>
+              <li>
+                <strong class="text-rose-700 dark:text-rose-400">Os dados e relatórios de FinOps devem ser acessíveis e pontuais:</strong> O feedback
+                deve ser rápido. Se um erro de código gastou milhares de dólares hoje, a equipe precisa saber amanhã, e não no final do mês quando a
+                fatura chegar.
+              </li>
+              <li>
+                <strong class="text-orange-700 dark:text-orange-400">Uma equipe centralizada impulsiona o FinOps:</strong> Deve existir um comitê
+                central (CCoE - Cloud Center of Excellence) que negocia descontos em massa (Reservadas) com a AWS/Azure e estabelece as melhores
+                práticas, deixando que a engenharia foque apenas em otimizar o uso.
+              </li>
+              <li>
+                <strong class="text-yellow-700 dark:text-yellow-400">Aproveite o modelo de custo variável da nuvem:</strong> Ajustar o tamanho da
+                infraestrutura (Rightsizing) constantemente para cima e para baixo.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. O Ciclo de Vida do FinOps em Detalhes
+          </h2>
+          <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Fase 1: Inform (Informar / Visibilidade)</h3>
+              <p>
+                Você não pode otimizar o que você não vê. Nesta fase, o órgão público implementa o <strong>Tagueamento Obrigatório (Tagging)</strong>.
+                Todo recurso criado na nuvem deve ter etiquetas como `Secretaria=Fazenda`, `Ambiente=Producao`. Isso permite cruzar dados e gerar
+                painéis mostrando exatamente para onde o dinheiro está a ir. Cria-se o <em>Showback</em> (mostrar o custo aos setores).
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                Fase 2: Optimize (Otimizar)
+              </h3>
+              <p>Nesta fase tomam-se ações para maximizar o valor do investimento. Isso é dividido em duas vertentes:</p>
+              <ul class="list-disc pl-6 space-y-1 mt-2 text-sm">
+                <li>
+                  <strong class="text-sky-600 dark:text-sky-400">Otimização de Uso:</strong> Desligar máquinas ociosas na sexta-feira (Scale-in),
+                  diminuir a RAM de um servidor de 32GB para 4GB (Rightsizing).
+                </li>
+                <li>
+                  <strong class="text-emerald-600 dark:text-emerald-400">Otimização de Tarifas (Rates):</strong> Comprar instâncias antecipadamente
+                  (Instâncias Reservadas / Savings Plans) para garantir grandes descontos.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 border-t border-slate-200 dark:border-slate-700 pt-4">
+                Fase 3: Operate (Operar)
+              </h3>
+              <p>
+                A fase final transforma as otimizações em processos rotineiros. Os processos de TI, negócios e finanças começam a convergir e as
+                equipes integram relatórios de FinOps nos seus rituais de desenvolvimento. (Ex: criar alertas automatizados se os custos passarem do
+                normal).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 rounded-r-xl shadow-sm p-6 md:p-8">
+          <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-4 flex items-center gap-2">🏷️ 4. Vocabulário de Prova</h2>
+          <ul class="space-y-3 text-sm text-slate-700 dark:text-slate-400">
+            <li>
+              <strong class="text-slate-800 dark:text-white block mb-1">Unit Economics (Economia Unitária):</strong>
+              Em vez de perguntar "Quanto a nuvem custou este mês?", pergunta-se "Quanto custou a nuvem por cada processo auditado pelo TCE-MA?". Se o
+              custo total da nuvem subiu 20%, mas o número de processos auditados subiu 50%, o custo *unitário* desceu. É um sinal de sucesso em
+              FinOps.
+            </li>
+            <li>
+              <strong class="text-slate-800 dark:text-white block mb-1">Anomaly Detection (Detecção de Anomalias):</strong>
+              Sistemas de alerta (baseados em Machine Learning) que avisam a TI em minutos se o gasto diário de R$ 50 saltar repentinamente para R$
+              10.000 devido a um ataque cibernético ou falha num loop de código.
+            </li>
+            <li>
+              <strong class="text-slate-800 dark:text-white block mb-1">Chargeback vs Showback:</strong>
+              O <span class="hl-indigo">Showback</span> consiste apenas em gerar um relatório visual para o Diretor de TI informando: "Sua equipe
+              gastou 5 mil". O <span class="hl-indigo">Chargeback</span> vai além: ele ativamente debita os 5 mil do orçamento (conta interna) do
+              departamento de TI.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

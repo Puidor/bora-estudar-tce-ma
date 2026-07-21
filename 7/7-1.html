@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="pt-BR" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo: Tipos de Armazenamento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      /* Custom scrollbar Sky */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9; /* sky-500 */
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #0369a1; /* sky-800 */
+      }
+
+      /* Tab transition */
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Marca-texto CSS para Aba 2 */
+      .hl-yellow {
+        @apply bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-200 px-1 rounded font-medium;
+      }
+      .hl-sky {
+        @apply bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200 px-1 rounded font-medium;
+      }
+      .hl-green {
+        @apply bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 px-1 rounded font-medium;
+      }
+      .hl-red {
+        @apply bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 px-1 rounded font-medium;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen pb-16">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Edital
+        </a>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 110-2h1a1 1 0 011 1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.415 0zM10 14a4 4 0 100-8 4 4 0 000 8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-5 mt-8 space-y-8">
+      <header>
+        <p class="text-xs md:text-sm font-semibold text-sky-600 dark:text-sky-400 tracking-wider uppercase mb-2">
+          Computação em Nuvem &bull; Tópico 7.1
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white border-b-4 border-sky-500 pb-2 inline-block">
+          Tipos de Armazenamento
+        </h1>
+      </header>
+
+      <div class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <button
+          id="btn-tab-1"
+          class="whitespace-nowrap py-3 px-5 font-bold text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400 transition-colors"
+        >
+          🎯 Resumo Visual
+        </button>
+        <button
+          id="btn-tab-2"
+          class="whitespace-nowrap py-3 px-5 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+        >
+          📖 Teoria Aprofundada
+        </button>
+      </div>
+
+      <!-- ==========================================
+             ABA 1: RESUMO VISUAL
+             ========================================== -->
+      <div id="tab-1" class="tab-content active space-y-8">
+        <section class="bg-slate-900 text-slate-200 rounded-xl shadow-lg overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">💾 O Trio do Armazenamento</h2>
+            <span class="bg-yellow-400 text-sky-900 text-xs font-bold px-2 py-1 rounded">OS ALVOS DE PROVA</span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Armazenamento em Bloco -->
+              <div class="border border-fuchsia-500/50 bg-fuchsia-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">🧱</div>
+                <h3 class="font-bold text-fuchsia-400 mb-2 uppercase text-sm border-b border-fuchsia-500/30 pb-2">Bloco (Block)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">O "Disco Rígido" tradicional (HD/SSD).</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Funciona como um drive não formatado (SAN).</li>
+                  <li>• Baixa latência, alta performance.</li>
+                  <li>• <strong class="text-white">Único capaz de rodar Sistema Operacional e Bancos de Dados Relacionais intensos.</strong></li>
+                  <li>• Geralmente ligado a 1 única VM por vez.</li>
+                  <li>• <em>Exemplo:</em> Amazon EBS, Azure Managed Disks.</li>
+                </ul>
+              </div>
+
+              <!-- Armazenamento de Arquivos -->
+              <div class="border border-sky-500/50 bg-sky-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">📁</div>
+                <h3 class="font-bold text-sky-400 mb-2 uppercase text-sm border-b border-sky-500/30 pb-2">Arquivo (File)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">A "Pasta Compartilhada" na rede.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Sistema de arquivos com <strong>Hierarquia Real</strong> (pastas e subpastas).</li>
+                  <li>• Pode ser <strong>compartilhado (montado) por dezenas de VMs ao mesmo tempo</strong>.</li>
+                  <li>• Usa protocolos de rede como NFS ou SMB.</li>
+                  <li>• <em>Exemplo:</em> Amazon EFS, Azure Files.</li>
+                </ul>
+              </div>
+
+              <!-- Armazenamento de Objetos -->
+              <div class="border border-emerald-500/50 bg-emerald-900/20 p-5 rounded-lg relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-5xl opacity-20">📦</div>
+                <h3 class="font-bold text-emerald-400 mb-2 uppercase text-sm border-b border-emerald-500/30 pb-2">Objeto (Object)</h3>
+                <p class="text-xs text-slate-400 mb-3 italic">O "Depósito Infinito" para a Web.</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• Estrutura <strong>PLANA</strong>. Não tem hierarquia de pastas (é tudo salvo em "Buckets" usando uma chave).</li>
+                  <li>• Rico em metadados customizáveis.</li>
+                  <li>• Acessado via <strong>API Web (HTTP/REST)</strong>.</li>
+                  <li>• Excelente para Backups, Fotos, Vídeos, Big Data.</li>
+                  <li>• <em>Exemplo:</em> Amazon S3, Google Cloud Storage.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-xl shadow-sm p-6 relative overflow-hidden">
+          <svg
+            class="absolute -right-4 -bottom-4 w-32 h-32 text-red-100 dark:text-red-900/30 opacity-50 pointer-events-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <div class="relative z-10">
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">🚨 Pegadinhas Mortais da Banca (CEBRASPE)</h2>
+            <ul class="space-y-4 text-slate-800 dark:text-slate-200 text-sm md:text-base">
+              <li>
+                <strong>S.O. no Armazenamento de Objetos:</strong><br />
+                A banca diz: "O administrador de nuvem deve criar um bucket no Amazon S3 (Objeto) e instalar o sistema operacional Linux dentro dele
+                para garantir alta durabilidade."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                O Armazenamento de Objetos <strong>não suporta execução de Sistemas Operacionais</strong>. Eles exigem comunicação de baixíssima
+                latência com blocos raw de disco (I/O intensivo), o que só o
+                <strong class="underline decoration-red-500">Armazenamento em Bloco</strong> fornece.
+              </li>
+              <li>
+                <strong>Hierarquia de Pastas no S3:</strong><br />
+                "O armazenamento de objetos permite criar uma hierarquia profunda de subdiretórios e pastas lógicas idêntica a de um sistema Windows
+                tradicional."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Armazenamento de objetos é <strong>PLANO (Flat)</strong>. Não existem pastas reais. O provedor até mostra uma "pasta" na interface
+                gráfica por conveniência visual se o nome do arquivo for `fotos/férias/img.jpg`, mas para o sistema, aquilo é apenas uma única string
+                inteira (chave) ligada a um objeto. Se quiser pastas reais, tem que usar <strong>Armazenamento de Arquivos</strong>.
+              </li>
+              <li>
+                <strong>Alteração de Dados em Objetos:</strong><br />
+                "Para alterar apenas uma letra de um arquivo de texto de 5GB salvo no Armazenamento de Objetos, o sistema realiza a modificação
+                daquele pequeno setor do disco, poupando banda."<br />
+                <span
+                  class="inline-block mt-1 bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 font-bold px-2 py-0.5 rounded text-xs uppercase tracking-wide"
+                  >Falso!</span
+                >
+                Objetos são <strong>Imutáveis</strong>. Não se pode editar "um pedacinho" de um objeto. Se quiser alterar uma letra, terá que fazer o
+                upload de um novo objeto de 5GB para substituir o antigo inteiro! Quem permite a alteração de pequenos pedaços (setores) é o
+                Armazenamento em <strong>Bloco</strong>.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+             ABA 2: TEORIA APROFUNDADA
+             ========================================== -->
+      <div id="tab-2" class="tab-content space-y-8">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            1. Armazenamento em Bloco (Block Storage)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              O armazenamento em bloco é o mais semelhante ao disco rígido (HDD/SSD) físico que existe dentro do seu computador. Ele abstrai a
+              complexidade do hardware e entrega "volumes" crus para o Sistema Operacional da sua Máquina Virtual (EC2/VM) na nuvem.
+            </p>
+            <p>
+              Neste modelo, os dados são divididos em <strong>blocos de tamanho fixo</strong> (ex: 4KB ou 8KB). O Sistema Operacional pega nesse disco
+              "vazio", formata-o com um <em>File System</em> conhecido (como NTFS para Windows ou ext4 para Linux) e passa a gerir como guarda e onde
+              guarda as coisas.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Principais Características e Casos de Uso:</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Atualização Parcial:</strong> É altamente eficiente se você precisa alterar apenas pequenos pedaços de um ficheiro gigante,
+                pois ele altera somente o "bloco" correspondente e não o arquivo inteiro.
+              </li>
+              <li><strong>Baixa Latência:</strong> A comunicação é rapidíssima (via rede Fibre Channel/iSCSI ou internamente na nuvem).</li>
+              <li>
+                <strong>Casos de Uso Críticos:</strong> É mandatório para <span class="hl-yellow">Sistemas Operacionais (Boot Volume)</span> e para
+                <span class="hl-yellow">Bancos de Dados Relacionais e Transacionais</span> que requerem leitura e gravação constantes.
+              </li>
+              <li>
+                <strong>Isolamento (Regra Geral):</strong> Geralmente, um disco de bloco (como o AWS EBS) só pode estar montado/ligado a
+                <strong>uma única Máquina Virtual de cada vez</strong>, protegendo contra corrupção de sistema de arquivos.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            2. Armazenamento de Arquivos (File Storage)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Este é o modelo clássico de <strong>NAS (Network Attached Storage)</strong> ou de "Partilha de Rede" corporativa. Ele preserva a
+              estrutura de <span class="hl-sky">diretórios (hierarquia de pastas)</span> que os humanos estão acostumados a usar.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Características Principais:</h3>
+            <ul class="list-disc pl-6 space-y-2 mt-2 text-sm">
+              <li>
+                <strong>Montagem Concorrente:</strong> A grande vantagem em relação ao Bloco é que um único armazenamento de arquivos (como o AWS EFS)
+                pode ser montado e acedido por <strong>milhares de Máquinas Virtuais simultaneamente</strong>.
+              </li>
+              <li>
+                <strong>Protocolos de Rede Padrão:</strong> A comunicação não é crua; ela usa protocolos já estabelecidos que os S.O. conhecem de
+                origem, como <strong>NFS</strong> (para Linux) ou <strong>SMB/CIFS</strong> (para Windows).
+              </li>
+              <li>
+                <strong>Casos de Uso:</strong> Diretórios iniciais de utilizadores de empresas, repositórios de media para servidores web (vários
+                servidores do Auto Scaling partilham as mesmas imagens base), gestão de conteúdos e partilha de arquivos antigos.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
+            3. Armazenamento de Objetos (Object Storage)
+          </h2>
+          <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              Nascido para a nuvem, o armazenamento de objetos foi criado para resolver a necessidade de escala massiva da internet, onde ter uma
+              "árvore de pastas" com 10 bilhões de ficheiros deixaria a pesquisa insuportavelmente lenta.
+            </p>
+            <p>
+              Num Storage de Objetos (como o Amazon S3 ou o Azure Blob), os dados e os seus metadados (quem criou, que cor tem, etc.) são agrupados e
+              encapsulados juntamente com um <strong>Identificador Único (ID / Key)</strong>. A estrutura é
+              <span class="hl-green">100% Plana</span> (um gigantesco balde onde se atiram as coisas, sem subpastas reais).
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4 mb-2">Comunicação e Imutabilidade</h3>
+            <p>
+              Ao contrário do Bloco e do Arquivo que comunicam pelos drivers do S.O., o Objeto comunica
+              <strong>via Internet (APIs HTTP RESTful)</strong>. Você acede ao objeto com requisições <code>PUT</code>, <code>GET</code>,
+              <code>DELETE</code>.
+            </p>
+            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded border-l-4 border-emerald-500 mt-2 text-sm">
+              <strong class="text-emerald-800 dark:text-emerald-300 block mb-1">A Regra da Imutabilidade:</strong>
+              Em armazenamento de objeto, os ficheiros são salvos como peças únicas. Não é possível entrar e alterar apenas uma linha de um ficheiro
+              de registo (log) guardado. É necessário criar uma versão inteira nova (Upload total) ou apagá-lo. Isso torna-o péssimo para Bancos de
+              Dados Transacionais, mas <strong>perfeito para Data Lakes, Big Data, Imagens, Vídeos e Backups Inalteráveis</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Tab switching logic
+      const btnTab1 = document.getElementById("btn-tab-1");
+      const btnTab2 = document.getElementById("btn-tab-2");
+      const tab1 = document.getElementById("tab-1");
+      const tab2 = document.getElementById("tab-2");
+
+      function switchTab(activeBtn, inactiveBtn, activeTab, inactiveTab) {
+        // Update Buttons
+        activeBtn.classList.add("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        activeBtn.classList.remove("text-slate-500", "border-transparent", "font-medium");
+
+        inactiveBtn.classList.remove("text-sky-600", "border-sky-600", "dark:text-sky-400", "dark:border-sky-400", "font-bold");
+        inactiveBtn.classList.add("text-slate-500", "border-transparent", "font-medium");
+
+        // Update Tabs
+        activeTab.classList.add("active");
+        inactiveTab.classList.remove("active");
+      }
+
+      btnTab1.addEventListener("click", () => switchTab(btnTab1, btnTab2, tab1, tab2));
+      btnTab2.addEventListener("click", () => switchTab(btnTab2, btnTab1, tab2, tab1));
+
+      // Theme switching logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        lightIcon.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkIcon.classList.remove("hidden");
+      }
+
+      themeToggleBtn.addEventListener("click", function () {
+        darkIcon.classList.toggle("hidden");
+        lightIcon.classList.toggle("hidden");
+
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
